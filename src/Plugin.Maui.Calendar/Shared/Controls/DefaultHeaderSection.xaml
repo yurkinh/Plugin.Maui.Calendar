@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Plugin.Maui.Calendar.Controls.DefaultHeaderSection"
+             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
+             x:DataType="controls:Calendar">
+     <VerticalStackLayout
+        Spacing="6"
+        Grid.Row="0"       
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <Grid
+            RowSpacing="6"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding ShowMonthPicker}"
+            VerticalOptions="Start"
+            RowDefinitions="Auto"
+            ColumnDefinitions="*,Auto,*">
+            <!--Replace with Button-->
+            <Border
+                Grid.Column="0"
+                Padding="0"
+                BackgroundColor="{Binding BackgroundColor}"
+                StrokeShape="RoundRectangle 18"                
+                HeightRequest="36"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="36">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="True"
+                    Text="←"
+                    TextColor="{Binding ArrowsColor}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HorizontalOptions="Center"
+                Text="{Binding LayoutUnitText}"
+                TextColor="{Binding MonthLabelColor}"
+                VerticalOptions="Center" />
+             <!--Replace with Button-->
+            <Border
+                Grid.Column="2"
+                Padding="0"
+                BackgroundColor="{Binding BackgroundColor}"
+                StrokeShape="RoundRectangle 18"                
+                HeightRequest="36"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="36">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="True"
+                    Text="→"
+                    TextColor="{Binding ArrowsColor}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+        <Grid
+            HorizontalOptions="Fill"
+            IsVisible="{Binding ShowYearPicker}"
+            VerticalOptions="Start"
+            RowDefinitions="Auto"
+            RowSpacing="6"
+            ColumnDefinitions="*,Auto,*">
+            <Border
+                Grid.Column="0"
+                Padding="0"
+                BackgroundColor="{Binding BackgroundColor}"
+                StrokeShape="RoundRectangle 18"                
+                HeightRequest="36"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="36">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="True"
+                    Text="←"
+                    TextColor="{Binding ArrowsColor}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding PrevYearCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HorizontalOptions="Center"
+                Text="{Binding Year}"
+                TextColor="{Binding YearLabelColor}"
+                VerticalOptions="Center" />
+            <Border
+                Grid.Column="2"
+                Padding="0"
+                BackgroundColor="{Binding BackgroundColor}"
+                StrokeShape="RoundRectangle 18"                
+                HeightRequest="36"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="36">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="True"
+                    Text="→"
+                    TextColor="{Binding ArrowsColor}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NextYearCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+    </VerticalStackLayout>
+</ContentView>
+

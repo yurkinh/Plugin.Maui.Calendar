@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Plugin.Maui.Calendar.Controls.DayView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
+    xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
+    x:Name="dayView"
+    x:DataType="models:DayModel"
+    BackgroundColor="{Binding BackgroundFullEventColor}">
+    <ContentView.Resources>
+        <ResourceDictionary>            
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Border
+        Padding="0"
+        BackgroundColor="{Binding BackgroundColor}"
+        HeightRequest="{Binding DayViewSize}"
+        HorizontalOptions="Center"
+        Stroke="{Binding OutlineColor}"
+        StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}}"
+        WidthRequest="{Binding DayViewSize}">
+        <FlexLayout
+            AlignItems="Center"
+            Direction="{Binding EventLayoutDirection}"
+            JustifyContent="Center">
+            <Label
+                HorizontalTextAlignment="Center"
+                Style="{Binding DaysLabelStyle}"
+                Text="{Binding Date.Day}"
+                TextColor="{Binding TextColor}" />
+            <Border
+                Padding="0"
+                BackgroundColor="{Binding EventColor}"
+                StrokeShape="RoundRectangle 4"               
+                HeightRequest="8"
+                IsVisible="{Binding IsEventDotVisible}"
+                WidthRequest="8" />
+        </FlexLayout>
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapped" />
+        </Border.GestureRecognizers>
+    </Border>
+</ContentView>
+
