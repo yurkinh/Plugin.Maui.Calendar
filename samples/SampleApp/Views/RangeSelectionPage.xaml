@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.RangeSelectionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"   
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"    
+    x:Name="advancedRangeSelectionCalendarPage">
+
+    <ContentPage.BindingContext>
+        <local:RangeSelectionPageViewModel />
+    </ContentPage.BindingContext>
+
+    <plugin:RangeSelectionCalendar
+        x:Name="rangedCalendar"
+        Padding="10,0"
+        DayTappedCommand="{Binding DayTappedCommand}"
+        Events="{Binding Events}"
+        ShownDate="{Binding ShownDate}"
+        SelectedDates="{Binding SelectedDates}"
+        SelectedEndDate="{Binding SelectedEndDate}"
+        SelectedStartDate="{Binding SelectedStartDate}">
+
+        <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
+            <controls:CalendarHeader />
+        </plugin:RangeSelectionCalendar.HeaderSectionTemplate>
+
+        <plugin:RangeSelectionCalendar.FooterSectionTemplate>
+            <DataTemplate>
+                <controls:CalendarFooter />
+            </DataTemplate>
+        </plugin:RangeSelectionCalendar.FooterSectionTemplate>
+
+        <plugin:RangeSelectionCalendar.EventTemplate>
+            <DataTemplate>
+                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
+            </DataTemplate>
+        </plugin:RangeSelectionCalendar.EventTemplate>
+        <plugin:RangeSelectionCalendar.EmptyTemplate>
+            <DataTemplate>
+                <VerticalStackLayout Spacing="6">
+                    <Label
+                        Margin="0,5,0,5"
+                        HorizontalTextAlignment="Center"
+                        Text="NO EVENTS FOR THE SELECTED DATE" />
+                </VerticalStackLayout>
+            </DataTemplate>
+        </plugin:RangeSelectionCalendar.EmptyTemplate>
+    </plugin:RangeSelectionCalendar>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>

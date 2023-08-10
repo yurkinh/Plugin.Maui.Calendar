@@ -11,7 +11,7 @@ internal class DataTemplateView : ContentView
         set => SetValue(ItemTemplateProperty, value);
     }
 
-    internal DataTemplateView() { }
+    public DataTemplateView() { }
 
     private static void OnItemTemplateChanged(BindableObject bindable, object oldValue, object newValue)
     {

@@ -228,7 +228,7 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleColor
     /// </summary>
     public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(Calendar), Colors.Red);
 
     /// <summary>
     /// Specifies the color for the titles of days

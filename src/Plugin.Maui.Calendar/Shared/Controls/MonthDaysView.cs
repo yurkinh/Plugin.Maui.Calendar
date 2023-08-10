@@ -87,7 +87,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DaysTitleColor
     /// </summary>
     public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(MonthDaysView), Colors.Transparent);
+      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Color of weekday titles
@@ -117,7 +117,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DeselectedDayTextColor
     /// </summary>
     public static readonly BindableProperty DeselectedDayTextColorProperty =
-      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Transparent);
+      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Color of deselected day text
@@ -237,7 +237,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorTextColorProperty =
-     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Color of event indicator text
@@ -252,7 +252,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorSelectedTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Color of event indicator text on selected dates
@@ -502,7 +502,7 @@ public partial class MonthDaysView : ContentView
     private DateTime _lastAnimationTime;
     private bool _animating;
 
-    internal MonthDaysView()
+    public MonthDaysView()
     {
         RenderLayout();
     }

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.MainPage"
+   xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Calendar Plugin for Xamarin.Forms">
+
+    <ScrollView>
+
+        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+            <Label
+                Margin="0,30,0,0"
+                HorizontalOptions="Center"
+                Text="Event Calendar" />
+            <Button
+                Margin="5"
+                Clicked="SimpleCalendar"
+                Text="Simple Event Calendar" />
+            <Button
+                Margin="5"
+                Clicked="AdvancedCalendar"
+                Text="Advanced Event Calendar" />
+            <Button
+                Margin="5"
+                Clicked="RangeCalendar"
+                Text="Range Event Calendar" />
+            <Label
+                Margin="0,30,0,0"
+                HorizontalOptions="Center"
+                Text="Picker Popup" />
+            <Button
+                Margin="5"
+                Clicked="PickerPopup"
+                Text="Single Select Calendar" />
+            <Button
+                Margin="5"
+                Clicked="RangePickerPopup"
+                Text="Range Selection Calendar" />
+            <Button
+                Margin="5"
+                Clicked="RangeStartEndDatePickerPopup"
+                Text="Range Start-End Selection Calendar" />
+            <Label
+                Margin="0,30,0,0"
+                HorizontalOptions="Center"
+                Text="Week View Calendars" />
+            <Button
+                Margin="5"
+                Clicked="WeekViewCalendar"
+                Text="Single Week View Calendar" />
+            <Button
+                Margin="5"
+                Clicked="TwoWeekViewCalendar"
+                Text="Two Weeks View Calendar" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

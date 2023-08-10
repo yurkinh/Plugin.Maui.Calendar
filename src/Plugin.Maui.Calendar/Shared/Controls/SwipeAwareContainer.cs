@@ -16,7 +16,7 @@ internal class SwipeAwareContainer : ContentView
         set => SetValue(SwipeDetectionDisabledProperty, value);
     }
 
-    internal SwipeAwareContainer() : base()
+    public SwipeAwareContainer() : base()
     {
         leftSwipeGesture = new() { Direction = SwipeDirection.Left };
         rightSwipeGesture = new() { Direction = SwipeDirection.Right };

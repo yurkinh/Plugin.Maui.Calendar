@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 
 namespace Plugin.Maui.Calendar.Controls;
 
-public class GenericRepeaterView : VerticalStackLayout
+public class GenericRepeaterView : StackLayout
 {
     #region Bindable properties
 
@@ -36,10 +36,10 @@ public class GenericRepeaterView : VerticalStackLayout
 
     #endregion
 
-    internal GenericRepeaterView()
+    public GenericRepeaterView()
     {
         Spacing = 0;
-        VerticalOptions = LayoutOptions.Start;
+        VerticalOptions = LayoutOptions.StartAndExpand;
     }
 
     #region PropertyChanged
