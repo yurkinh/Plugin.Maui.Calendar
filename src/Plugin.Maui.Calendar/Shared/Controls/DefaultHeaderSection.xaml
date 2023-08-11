@@ -4,7 +4,7 @@
              x:Class="Plugin.Maui.Calendar.Controls.DefaultHeaderSection"
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
              x:DataType="controls:Calendar">
-     <VerticalStackLayout
+    <VerticalStackLayout
         Spacing="6"
         Grid.Row="0"       
         HorizontalOptions="Fill"
@@ -12,7 +12,7 @@
         <Grid
             RowSpacing="6"
             HorizontalOptions="Fill"
-            IsVisible="{Binding ShowMonthPicker}"
+            IsVisible="{Binding ShowMonthPicker}"            
             VerticalOptions="Start"
             RowDefinitions="Auto"
             ColumnDefinitions="*,Auto,*">
@@ -21,11 +21,12 @@
                 Grid.Column="0"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
-                StrokeShape="RoundRectangle 18"                
+                StrokeShape="RoundRectangle 18"
+                Stroke="Black"
                 HeightRequest="36"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                WidthRequest="36">
+                WidthRequest="36">                
                 <Label
                     FontAttributes="Bold"
                     FontSize="Medium"
@@ -33,6 +34,7 @@
                     HorizontalTextAlignment="Center"
                     InputTransparent="True"
                     Text="←"
+                    FontFamily="{Binding ArrowsFontFamily}"
                     TextColor="{Binding ArrowsColor}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
@@ -48,16 +50,17 @@
                 Text="{Binding LayoutUnitText}"
                 TextColor="{Binding MonthLabelColor}"
                 VerticalOptions="Center" />
-             <!--Replace with Button-->
+            <!--Replace with Button-->
             <Border
                 Grid.Column="2"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
                 StrokeShape="RoundRectangle 18"                
                 HeightRequest="36"
+                Stroke="Black"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                WidthRequest="36">
+                WidthRequest="36">                
                 <Label
                     FontAttributes="Bold"
                     FontSize="Medium"
@@ -65,6 +68,7 @@
                     HorizontalTextAlignment="Center"
                     InputTransparent="True"
                     Text="→"
+                    FontFamily="{Binding ArrowsFontFamily}"
                     TextColor="{Binding ArrowsColor}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
@@ -84,7 +88,8 @@
                 Grid.Column="0"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
-                StrokeShape="RoundRectangle 18"                
+                StrokeShape="RoundRectangle 18"
+                Stroke="Black"
                 HeightRequest="36"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
@@ -96,6 +101,7 @@
                     HorizontalTextAlignment="Center"
                     InputTransparent="True"
                     Text="←"
+                    FontFamily="{Binding ArrowsFontFamily}"
                     TextColor="{Binding ArrowsColor}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
@@ -115,6 +121,7 @@
                 Grid.Column="2"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
+                Stroke="Black"
                 StrokeShape="RoundRectangle 18"                
                 HeightRequest="36"
                 HorizontalOptions="Center"
@@ -127,6 +134,7 @@
                     HorizontalTextAlignment="Center"
                     InputTransparent="True"
                     Text="→"
+                    FontFamily="{Binding ArrowsFontFamily}"
                     TextColor="{Binding ArrowsColor}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />

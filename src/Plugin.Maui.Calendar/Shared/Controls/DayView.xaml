@@ -11,14 +11,15 @@
     <ContentView.Resources>
         <ResourceDictionary>            
             <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>
+            <conv:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
     <Border
         Padding="0"
         BackgroundColor="{Binding BackgroundColor}"
-        HeightRequest="{Binding DayViewSize}"
+        HeightRequest="{Binding DayViewSize}"        
         HorizontalOptions="Center"
-        Stroke="{Binding OutlineColor}"
+        Stroke="{Binding OutlineColor,Converter={StaticResource ColorToBrushConverter}}"
         StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}}"
         WidthRequest="{Binding DayViewSize}">
         <FlexLayout
@@ -26,7 +27,8 @@
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
             <Label
-                HorizontalTextAlignment="Center"
+                FontSize="Medium"
+                HorizontalTextAlignment="Center"               
                 Style="{Binding DaysLabelStyle}"
                 Text="{Binding Date.Day}"
                 TextColor="{Binding TextColor}" />

@@ -8,29 +8,22 @@
         Padding="0"
         HorizontalOptions="Fill"
         IsVisible="{Binding ShowMonthPicker}"
-        VerticalOptions="Start">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
-        <Frame
+        VerticalOptions="Start"
+        RowDefinitions="Auto"
+        ColumnDefinitions="1*,3*,1*">
+        <Border
             Grid.Column="0"
             Padding="0"
             BackgroundColor="White"
-            BorderColor="Orange"
-            CornerRadius="18"
-            HasShadow="False"
+            Stroke="Orange"
+            StrokeShape="RoundRectangle 18"           
             HeightRequest="36"
             HorizontalOptions="Center"
             VerticalOptions="Center"
             WidthRequest="36">
             <Label
                 FontAttributes="Bold"
-                FontFamily="{StaticResource FontAwesomeSolid}"
+                FontFamily="{Binding ArrowsFontFamily}"
                 FontSize="25"
                 HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
@@ -39,11 +32,10 @@
                 TextColor="{Binding ArrowsColor}"
                 VerticalOptions="Center"
                 VerticalTextAlignment="Center" />
-
-            <Frame.GestureRecognizers>
+            <Border.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
-            </Frame.GestureRecognizers>
-        </Frame>
+            </Border.GestureRecognizers>
+        </Border>
 
         <Label
             Grid.Column="1"
@@ -61,20 +53,19 @@
             </Label.FormattedText>
         </Label>
 
-        <Frame
+        <Border
             Grid.Column="2"
             Padding="0"
             BackgroundColor="White"
-            BorderColor="Orange"
-            CornerRadius="18"
-            HasShadow="False"
+            Stroke="Orange"
+            StrokeShape="RoundRectangle 18"            
             HeightRequest="36"
             HorizontalOptions="Center"
             VerticalOptions="Center"
             WidthRequest="36">
             <Label
                 FontAttributes="Bold"
-                FontFamily="{StaticResource FontAwesomeSolid}"
+                FontFamily="{Binding ArrowsFontFamily}"
                 FontSize="25"
                 HorizontalOptions="Center"
                 HorizontalTextAlignment="Center"
@@ -83,10 +74,9 @@
                 TextColor="{Binding ArrowsColor}"
                 VerticalOptions="Center"
                 VerticalTextAlignment="Center" />
-
-            <Frame.GestureRecognizers>
+            <Border.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
-            </Frame.GestureRecognizers>
-        </Frame>
+            </Border.GestureRecognizers>
+        </Border>
     </Grid>
 </DataTemplate>

@@ -228,7 +228,7 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleColor
     /// </summary>
     public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(Calendar), Colors.Red);
+      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the color for the titles of days
@@ -258,7 +258,7 @@ public partial class Calendar : ContentView
     /// Bindable property for DeselectedDayTextColor
     /// </summary>
     public static readonly BindableProperty DeselectedDayTextColorProperty =
-      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the text color for deselected days
@@ -273,7 +273,7 @@ public partial class Calendar : ContentView
     /// Bindable property for SelectedTodayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedTodayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+      BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the text color of today's date when selected
@@ -378,7 +378,7 @@ public partial class Calendar : ContentView
     /// Bindable property for EventIndicatorTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorTextColorProperty =
-     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the color of the event indicator text
@@ -393,7 +393,7 @@ public partial class Calendar : ContentView
     /// Bindable property for EventIndicatorSelectedText
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the color of the event indicator text on selected dates
@@ -408,7 +408,7 @@ public partial class Calendar : ContentView
     /// Bindable property for ArrowsColor
     /// </summary>
     public static readonly BindableProperty ArrowsColorProperty =
-      BindableProperty.Create(nameof(ArrowsColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+      BindableProperty.Create(nameof(ArrowsColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the color of month and year selection arrows
@@ -417,6 +417,21 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(ArrowsColorProperty);
         set => SetValue(ArrowsColorProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for ArrowsFontFamilyProperty
+    /// </summary>
+    public static readonly BindableProperty ArrowsFontFamilyProperty =
+      BindableProperty.Create(nameof(ArrowsColor), typeof(string), typeof(Calendar), "OpenSansSemibold");
+
+    /// <summary>
+    /// Specifies the FontFamily of month and year selection arrows
+    /// </summary>
+    public string ArrowsFontFamily
+    {
+        get => (string)GetValue(ArrowsFontFamilyProperty);
+        set => SetValue(ArrowsFontFamilyProperty, value);
     }
 
     /// <summary>

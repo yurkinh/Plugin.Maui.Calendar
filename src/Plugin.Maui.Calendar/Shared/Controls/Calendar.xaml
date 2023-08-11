@@ -7,11 +7,11 @@
              x:Name="calendar">
      <Grid
         Padding="0,15,0,0"
-        RowSpacing="6"
+        RowSpacing="6"        
         IsClippedToBounds="True"
-         RowDefinitions="Auto,Auto,*">        
-        <VerticalStackLayout x:Name="calendarContainer" Spacing="6">
-            <controls:DataTemplateView
+        RowDefinitions="Auto,Auto,*">        
+        <VerticalStackLayout x:Name="calendarContainer" Spacing="6" Grid.Row="0" HorizontalOptions="Fill">
+            <controls:DataTemplateView               
                 BindingContext="{x:Reference calendar}"
                 ItemTemplate="{Binding HeaderSectionTemplate}"
                 IsVisible="{Binding HeaderSectionVisible}" />
@@ -22,7 +22,7 @@
                 SwipedUp="OnSwipedUp">
                 <controls:MonthDaysView
                     x:Name="monthDaysView"
-                    x:FieldModifier="internal"
+                    x:FieldModifier="internal"                    
                     AnimateCalendar="{Binding AnimateCalendar, Source={x:Reference calendar}}"
                     CalendarLayout="{Binding CalendarLayout, Source={x:Reference calendar}}"
                     Culture="{Binding Culture, Source={x:Reference calendar}}"
@@ -64,7 +64,7 @@
         <ScrollView
             x:Name="eventsScrollView"
             Grid.Row="2">
-            <controls:GenericRepeaterView
+            <controls:GenericRepeaterView                
                 ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
                 ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"
                 EmptyTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}" />

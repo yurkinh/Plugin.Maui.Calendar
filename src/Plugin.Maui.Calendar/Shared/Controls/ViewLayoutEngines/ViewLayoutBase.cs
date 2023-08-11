@@ -43,9 +43,20 @@ internal abstract class ViewLayoutBase
         var grid = new Grid
         {
             ColumnSpacing = 0d,
+            RowSpacing = 6d,
             RowDefinitions = new RowDefinitionCollection()
             {
                 rowDefinition,
+            },
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
             }
         };
 
@@ -57,12 +68,9 @@ internal abstract class ViewLayoutBase
             };
             label.BindingContext = bindingContext;
             label.SetBinding(Label.TextColorProperty, daysTitleColorBindingName);
-            label.SetBinding(Label.StyleProperty, daysTitleLabelStyleBindingName);
+            label.SetBinding(Label.StyleProperty, daysTitleLabelStyleBindingName);  
 
-            Grid.SetRow(label, 0);
-            Grid.SetColumn(label, i);
-
-            grid.Children.Add(label);
+            grid.Add(label, i, 0);
         }
 
         dayViews.Clear();
@@ -85,11 +93,11 @@ internal abstract class ViewLayoutBase
                 dayModel.DayTappedCommand = dayTappedCommand;
                 dayModel.PropertyChanged += dayModelPropertyChanged;
 
-                Grid.SetRow(dayView, i);
-                Grid.SetColumn(dayView, ii);
+                //Grid.SetRow(dayView, i);
+                //Grid.SetColumn(dayView, ii);
 
                 dayViews.Add(dayView);
-                grid.Children.Add(dayView);
+                grid.Add(dayView,ii,i);
             }
         }
 
