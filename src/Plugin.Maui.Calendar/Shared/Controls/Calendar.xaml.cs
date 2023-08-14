@@ -4,6 +4,7 @@ using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using System.Collections;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -432,6 +433,22 @@ public partial class Calendar : ContentView
     {
         get => (string)GetValue(ArrowsFontFamilyProperty);
         set => SetValue(ArrowsFontFamilyProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for ArrowsFontSizeProperty
+    /// </summary>
+    public static readonly BindableProperty ArrowsFontSizeProperty =
+      BindableProperty.Create(nameof(ArrowsFontSize), typeof(double), typeof(Calendar), 14d);
+
+    /// <summary>
+    /// Specifies the FontSize of month and year selection arrows
+    /// </summary>
+    [TypeConverter (typeof(FontSizeConverter))]
+    public double ArrowsFontSize
+    {
+        get => (double)GetValue(ArrowsFontSizeProperty);
+        set => SetValue(ArrowsFontSizeProperty, value);
     }
 
     /// <summary>

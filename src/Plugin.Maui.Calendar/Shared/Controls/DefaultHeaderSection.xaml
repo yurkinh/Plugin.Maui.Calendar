@@ -16,32 +16,23 @@
             VerticalOptions="Start"
             RowDefinitions="Auto"
             ColumnDefinitions="*,Auto,*">
-            <!--Replace with Button-->
-            <Border
+            <Button
                 Grid.Column="0"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
-                StrokeShape="RoundRectangle 18"
-                Stroke="Black"
+                CornerRadius="18"
+                BorderColor="Black"
+                BorderWidth="1"
                 HeightRequest="36"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                WidthRequest="36">                
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    InputTransparent="True"
-                    Text="←"
-                    FontFamily="{Binding ArrowsFontFamily}"
-                    TextColor="{Binding ArrowsColor}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
-                </Border.GestureRecognizers>
-            </Border>
+                WidthRequest="36"
+                Command="{Binding PrevLayoutUnitCommand}"
+                FontAttributes="Bold"
+                FontSize="{Binding ArrowsFontSize}"
+                Text="←"
+                FontFamily="{Binding ArrowsFontFamily}"
+                TextColor="{Binding ArrowsColor}"/>
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
@@ -50,32 +41,23 @@
                 Text="{Binding LayoutUnitText}"
                 TextColor="{Binding MonthLabelColor}"
                 VerticalOptions="Center" />
-            <!--Replace with Button-->
-            <Border
+            <Button
                 Grid.Column="2"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
-                StrokeShape="RoundRectangle 18"                
+                CornerRadius="18"
+                BorderColor="Black"
+                BorderWidth="1"
                 HeightRequest="36"
-                Stroke="Black"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                WidthRequest="36">                
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    InputTransparent="True"
-                    Text="→"
-                    FontFamily="{Binding ArrowsFontFamily}"
-                    TextColor="{Binding ArrowsColor}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
-                </Border.GestureRecognizers>
-            </Border>
+                WidthRequest="36"
+                Command="{Binding NextLayoutUnitCommand}"
+                FontAttributes="Bold"
+                FontSize="{Binding ArrowsFontSize}"
+                Text="→"
+                FontFamily="{Binding ArrowsFontFamily}"
+                TextColor="{Binding ArrowsColor}"/>
         </Grid>
         <Grid
             HorizontalOptions="Fill"
@@ -84,31 +66,23 @@
             RowDefinitions="Auto"
             RowSpacing="6"
             ColumnDefinitions="*,Auto,*">
-            <Border
+            <Button
                 Grid.Column="0"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
-                StrokeShape="RoundRectangle 18"
-                Stroke="Black"
+                CornerRadius="18"
+                BorderColor="Black"
+                BorderWidth="1"
                 HeightRequest="36"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                WidthRequest="36">
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    InputTransparent="True"
-                    Text="←"
-                    FontFamily="{Binding ArrowsFontFamily}"
-                    TextColor="{Binding ArrowsColor}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding PrevYearCommand}" />
-                </Border.GestureRecognizers>
-            </Border>
+                WidthRequest="36"
+                Command="{Binding PrevYearCommand}"
+                FontAttributes="Bold"
+                FontSize="{Binding ArrowsFontSize}"
+                Text="←"
+                FontFamily="{Binding ArrowsFontFamily}"
+                TextColor="{Binding ArrowsColor}"/>
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
@@ -117,31 +91,23 @@
                 Text="{Binding Year}"
                 TextColor="{Binding YearLabelColor}"
                 VerticalOptions="Center" />
-            <Border
+            <Button
                 Grid.Column="2"
                 Padding="0"
                 BackgroundColor="{Binding BackgroundColor}"
-                Stroke="Black"
-                StrokeShape="RoundRectangle 18"                
+                CornerRadius="18"
+                BorderColor="Black"
+                BorderWidth="1"
                 HeightRequest="36"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                WidthRequest="36">
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    InputTransparent="True"
-                    Text="→"
-                    FontFamily="{Binding ArrowsFontFamily}"
-                    TextColor="{Binding ArrowsColor}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NextYearCommand}" />
-                </Border.GestureRecognizers>
-            </Border>
+                WidthRequest="36"
+                Command="{Binding NextYearCommand}"
+                FontAttributes="Bold"
+                FontSize="{Binding ArrowsFontSize}"
+                Text="→"
+                FontFamily="{Binding ArrowsFontFamily}"
+                TextColor="{Binding ArrowsColor}"/>
         </Grid>
     </VerticalStackLayout>
 </ContentView>

@@ -36,6 +36,7 @@
         SelectedDate="{Binding SelectedDate}"
         DaysLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+        ArrowsFontSize="Medium"
         Year="{Binding Year}"       
         Padding="10,0"
         HorizontalOptions="Fill"
