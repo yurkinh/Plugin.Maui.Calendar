@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Maui.BindableProperty.Generator.Core;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -274,7 +275,7 @@ public partial class Calendar : ContentView
     /// Bindable property for SelectedTodayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedTodayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+      BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(Calendar), Colors.White);
 
     /// <summary>
     /// Specifies the text color of today's date when selected
@@ -424,7 +425,7 @@ public partial class Calendar : ContentView
     /// Bindable property for ArrowsFontFamilyProperty
     /// </summary>
     public static readonly BindableProperty ArrowsFontFamilyProperty =
-      BindableProperty.Create(nameof(ArrowsColor), typeof(string), typeof(Calendar), "OpenSansSemibold");
+      BindableProperty.Create(nameof(ArrowsFontFamily), typeof(string), typeof(Calendar), "OpenSansSemibold");
 
     /// <summary>
     /// Specifies the FontFamily of month and year selection arrows
@@ -433,7 +434,7 @@ public partial class Calendar : ContentView
     {
         get => (string)GetValue(ArrowsFontFamilyProperty);
         set => SetValue(ArrowsFontFamilyProperty, value);
-    }
+    }    
 
     /// <summary>
     /// Bindable property for ArrowsFontSizeProperty
@@ -450,6 +451,25 @@ public partial class Calendar : ContentView
         get => (double)GetValue(ArrowsFontSizeProperty);
         set => SetValue(ArrowsFontSizeProperty, value);
     }
+
+    [AutoBindable(DefaultValue = "←")]
+    private string arrowsSymbolPrev;
+
+    [AutoBindable(DefaultValue = "→")]
+    private string arrowsSymbolNext;
+
+    [AutoBindable(DefaultValue = "FontAttributes.Bold")]
+    private FontAttributes arrowsFontAttribute;
+
+    [AutoBindable(DefaultValue = "Colors.Black")]
+    private Color arrowsBorderColor;
+
+    [AutoBindable(DefaultValue = "Colors.White")]
+    private Color arrowsBackgroundColor;
+
+    [AutoBindable(DefaultValue = "1d")]
+    private double arrowsBorderWidth;
+
 
     /// <summary>
     /// Bindable property for FooterArrowVisible
@@ -1291,6 +1311,11 @@ public partial class Calendar : ContentView
         calendarContainer.HeightRequest = _calendarSectionHeight * currentValue;
         calendarContainer.TranslationY = _calendarSectionHeight * (currentValue - 1);
         calendarContainer.Opacity = currentValue * currentValue * currentValue;
+    }
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
     }
 
     #endregion

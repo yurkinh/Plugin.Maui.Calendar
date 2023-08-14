@@ -80,7 +80,7 @@
 
         <plugin:Calendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter />
+                <controls:CalendarFooter  />
             </DataTemplate>
         </plugin:Calendar.FooterSectionTemplate>
 

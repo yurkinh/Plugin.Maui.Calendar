@@ -20,6 +20,7 @@
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         SelectedDate="{Binding SelectedDate}"
+        ArrowsFontFamily="FontAwesomeSolid"
         Day="{Binding Day}"
         Month="{Binding Month}"
         Year="{Binding Year}"

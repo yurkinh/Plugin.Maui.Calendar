@@ -3,7 +3,7 @@
     x:Class="SampleApp.Controls.CalenderEvent"
    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <StackLayout
+    <VerticalStackLayout
         Padding="15,0,0,0"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
@@ -20,8 +20,8 @@
             FontSize="Small"
             LineBreakMode="WordWrap"
             Text="{Binding Description}" />
-        <StackLayout.GestureRecognizers>
+        <VerticalStackLayout.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-        </StackLayout.GestureRecognizers>
-    </StackLayout>
+        </VerticalStackLayout.GestureRecognizers>
+    </VerticalStackLayout>
 </ContentView>

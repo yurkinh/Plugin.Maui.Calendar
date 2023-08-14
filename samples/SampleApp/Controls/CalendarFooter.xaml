@@ -24,7 +24,7 @@
             Margin="0,0,15,0"
             BackgroundColor="Transparent"
             FontAttributes="Bold"
-            FontFamily="{StaticResource FontAwesomeSolid}"
+            FontFamily="{Binding ArrowsFontFamily}"
             FontSize="25"
             HorizontalOptions="End"
             IsVisible="{Binding FooterArrowVisible}"

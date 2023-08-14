@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+samples/SampleApp/.meteor/generated/Microsoft.Maui.Controls.Compatibility.json
+samples/SampleApp/.meteor/generated/Microsoft.Maui.Controls.json
+samples/SampleApp/.meteor/generated/Mopups.json
+samples/SampleApp/.meteor/generated/Plugin.Maui.Calendar.json
+samples/SampleApp/.vscode/launch.json
+samples/SampleApp/.vscode/settings.json

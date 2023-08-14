@@ -35,6 +35,7 @@
                     MaximumDate="{Binding MaximumDate}"
                     MinimumDate="{Binding MinimumDate}"
                     ShownDate="{Binding ShownDate}"
+                    ArrowsFontFamily="FontAwesomeSolid"
                     SelectedDates="{Binding SelectedDates}"
                     VerticalOptions="Center"
                     WidthRequest="320">

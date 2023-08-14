@@ -18,6 +18,7 @@
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
         ShownDate="{Binding ShownDate}"
+        ArrowsFontFamily="FontAwesomeSolid"
         SelectedDates="{Binding SelectedDates}"
         SelectedEndDate="{Binding SelectedEndDate}"
         SelectedStartDate="{Binding SelectedStartDate}">
