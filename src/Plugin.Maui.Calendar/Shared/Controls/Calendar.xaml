@@ -64,10 +64,9 @@
         <ScrollView
             x:Name="eventsScrollView"
             Grid.Row="2">
-            <controls:GenericRepeaterView                
-                ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
-                ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"
-                EmptyTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}" />
+            <VerticalStackLayout                
+                BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
+                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"/>
         </ScrollView>
     </Grid>
 </ContentView>

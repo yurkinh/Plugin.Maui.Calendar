@@ -1,6 +1,6 @@
 ﻿namespace Plugin.Maui.Calendar.Controls;
 
-internal class DataTemplateView : ContentView
+public class DataTemplateView : ContentView
 {
     public static readonly BindableProperty ItemTemplateProperty =
         BindableProperty.Create(nameof(ItemTemplate), typeof(DataTemplate), typeof(DataTemplateView), null, propertyChanged: OnItemTemplateChanged);
@@ -32,6 +32,6 @@ internal class DataTemplateView : ContentView
 
         var itemContent = ItemTemplate?.CreateContent(BindingContext);
 
-        Content = itemContent as View ?? (itemContent as ViewCell)?.View;
+        Content = itemContent as View;
     }
 }
