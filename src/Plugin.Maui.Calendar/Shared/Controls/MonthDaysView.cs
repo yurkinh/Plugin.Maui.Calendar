@@ -132,7 +132,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for SelectedTodayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedTodayTextColorProperty =
-        BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Transparent);
+        BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Bindable property for SelectedTodayTextColor
@@ -282,7 +282,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for TodayTextColor
     /// </summary>
     public static readonly BindableProperty TodayTextColorProperty =
-        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Transparent);
+        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Color of today date's text
@@ -297,7 +297,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for TodayFillColor
     /// </summary>
     public static readonly BindableProperty TodayFillColorProperty =
-      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(MonthDaysView), Colors.Transparent);
+      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Color of today date's fill

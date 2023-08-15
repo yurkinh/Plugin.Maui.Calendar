@@ -419,22 +419,8 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(ArrowsColorProperty);
         set => SetValue(ArrowsColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for ArrowsFontFamilyProperty
-    /// </summary>
-    public static readonly BindableProperty ArrowsFontFamilyProperty =
-      BindableProperty.Create(nameof(ArrowsFontFamily), typeof(string), typeof(Calendar), "OpenSansSemibold");
-
-    /// <summary>
-    /// Specifies the FontFamily of month and year selection arrows
-    /// </summary>
-    public string ArrowsFontFamily
-    {
-        get => (string)GetValue(ArrowsFontFamilyProperty);
-        set => SetValue(ArrowsFontFamilyProperty, value);
-    }    
+    }   
+    
 
     /// <summary>
     /// Bindable property for ArrowsFontSizeProperty
@@ -451,6 +437,9 @@ public partial class Calendar : ContentView
         get => (double)GetValue(ArrowsFontSizeProperty);
         set => SetValue(ArrowsFontSizeProperty, value);
     }
+
+    [AutoBindable(DefaultValue = "OpenSansSemibold")]   
+    private string arrowsFontFamily;
 
     [AutoBindable(DefaultValue = "←")]
     private string arrowsSymbolPrev;
@@ -535,7 +524,7 @@ public partial class Calendar : ContentView
     /// Bindable property for
     /// </summary>
     public static readonly BindableProperty TodayTextColorProperty =
-        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
 
     /// <summary>
     /// Specifies the color of text for today's date
