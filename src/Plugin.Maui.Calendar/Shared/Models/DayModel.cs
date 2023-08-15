@@ -239,7 +239,7 @@ internal class DayModel : BindableBase<DayModel>
                 (false, false, _, false, _) => OtherMonthColor,
                 (false, false, false, true, true) => TodayTextColor == Colors.Transparent? DeselectedTextColor : TodayTextColor,
                 (false, false, false, true, false) => DeselectedTextColor,
-                (_, _, _, _, _) => Colors.Transparent
+                (_, _, _, _, _) => Colors.Black
             };
         }
     }
