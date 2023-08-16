@@ -683,7 +683,9 @@ public partial class MonthDaysView : ContentView
         foreach (var dayView in _daysControl.Children.OfType<DayView>())
         {
             (dayView.BindingContext as DayModel).PropertyChanged -= OnDayModelPropertyChanged;
-            dayView.BindingContext = null;
+            #if !WINDOWS
+            dayView.BindingContext = null;                        
+            #endif
         }
     }
 
