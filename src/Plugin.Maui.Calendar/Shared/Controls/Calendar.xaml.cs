@@ -448,8 +448,8 @@ public partial class Calendar : ContentView
     /// </summary>
     public string ArrowsFontFamily
     {
-        get => (string)GetValue(ArrowsSymbolPrevProperty);
-        set => SetValue(ArrowsSymbolPrevProperty, value);
+        get => (string)GetValue(ArrowsFontFamilyProperty);
+        set => SetValue(ArrowsFontFamilyProperty, value);
     }
 
     /// <summary>
