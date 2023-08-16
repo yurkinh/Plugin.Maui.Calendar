@@ -372,7 +372,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DaysLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(MonthDaysView), Device.Styles.BodyStyle);
+      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle);
 
     /// <summary>
     /// Style of weekday labels
