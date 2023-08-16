@@ -2,10 +2,10 @@
 
 internal class SwipeAwareContainer : ContentView
 {   
-    readonly SwipeGestureRecognizer leftSwipeGesture;
-    readonly SwipeGestureRecognizer rightSwipeGesture;
-    readonly SwipeGestureRecognizer upSwipeGesture;
-    readonly SwipeGestureRecognizer downSwipeGesture;
+    SwipeGestureRecognizer leftSwipeGesture;
+    SwipeGestureRecognizer rightSwipeGesture;
+    SwipeGestureRecognizer upSwipeGesture;
+    SwipeGestureRecognizer downSwipeGesture;
 
     public static readonly BindableProperty SwipeDetectionDisabledProperty =
       BindableProperty.Create(nameof(SwipeDetectionDisabled), typeof(bool), typeof(SwipeAwareContainer), false);
@@ -51,6 +51,11 @@ internal class SwipeAwareContainer : ContentView
         rightSwipeGesture.Swiped -= OnSwiped;
         upSwipeGesture.Swiped -= OnSwiped;
         downSwipeGesture.Swiped -= OnSwiped;
+
+        leftSwipeGesture = null;
+        rightSwipeGesture = null;
+        upSwipeGesture = null;
+        downSwipeGesture = null;
 
         Loaded -= SwipeAwareContainer_Loaded;
         Unloaded -= SwipeAwareContainer_Unloaded;
