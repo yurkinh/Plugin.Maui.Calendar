@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleApp.Views.MultiSelectionPage"
+             Title="MultiSelectionPage"
+             xmlns:local="clr-namespace:SampleApp.ViewModels"
+             xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"  
+             x:Name="multiCalendarPage">
+   <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="daysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
+            </Style>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />                
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.BindingContext>
+        <local:SimplePageViewModel />
+    </ContentPage.BindingContext>
+
+    <plugin:MultiSelectionCalendar
+        Events="{Binding Events}"
+        MaximumDate="{Binding MaximumDate}"
+        MinimumDate="{Binding MinimumDate}"
+        Month="{Binding Month}"        
+        SelectedDate="{Binding SelectedDate}"
+        DaysLabelStyle="{StaticResource daysLabelStyle}"       
+        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+        ArrowsFontSize="Medium"
+        Year="{Binding Year}"       
+        Padding="10,0"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <plugin:Calendar.EventTemplate>
+            <DataTemplate>
+                <VerticalStackLayout
+                    Spacing="6"
+                    Padding="15,0,0,0"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="Medium"
+                        Text="{Binding Name}" />
+                    <Label
+                        FontSize="Small"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding Description}" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference multiCalendarPage}}" CommandParameter="{Binding .}" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+            </DataTemplate>
+        </plugin:Calendar.EventTemplate>
+    </plugin:MultiSelectionCalendar>
+</ContentPage>

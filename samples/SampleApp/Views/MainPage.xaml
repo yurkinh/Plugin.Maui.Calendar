@@ -18,6 +18,10 @@
                 Text="Simple Event Calendar" />
             <Button
                 Margin="5"
+                Clicked="MultiSelectionCalendar"
+                Text="MultiSelection Event Calendar" />
+            <Button
+                Margin="5"
                 Clicked="AdvancedCalendar"
                 Text="Advanced Event Calendar" />
             <Button
