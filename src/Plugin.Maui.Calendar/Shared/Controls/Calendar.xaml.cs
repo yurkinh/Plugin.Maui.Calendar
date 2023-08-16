@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Maui.BindableProperty.Generator.Core;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -438,26 +437,115 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsFontSizeProperty, value);
     }
 
-    [AutoBindable(DefaultValue = "OpenSansSemibold")]   
-    private string arrowsFontFamily;
+    /// <summary>
+    /// Bindable property for ArrowsFontFamily
+    /// </summary>
+    public static readonly BindableProperty ArrowsFontFamilyProperty =
+      BindableProperty.Create(nameof(ArrowsFontFamily), typeof(string), typeof(Calendar), "OpenSansSemibold");
 
-    [AutoBindable(DefaultValue = "←")]
-    private string arrowsSymbolPrev;
+    /// <summary>
+    /// Specifies symbol for arrow prev
+    /// </summary>
+    public string ArrowsFontFamily
+    {
+        get => (string)GetValue(ArrowsSymbolPrevProperty);
+        set => SetValue(ArrowsSymbolPrevProperty, value);
+    }
 
-    [AutoBindable(DefaultValue = "→")]
-    private string arrowsSymbolNext;
+    /// <summary>
+    /// Bindable property for ArrowsSymbolPrev
+    /// </summary>
+    public static readonly BindableProperty ArrowsSymbolPrevProperty =
+      BindableProperty.Create(nameof(ArrowsSymbolPrev), typeof(string), typeof(Calendar), "←");
 
-    [AutoBindable(DefaultValue = "FontAttributes.Bold")]
-    private FontAttributes arrowsFontAttribute;
+    /// <summary>
+    /// Specifies symbol for arrow prev
+    /// </summary>
+    public string ArrowsSymbolPrev
+    {
+        get => (string)GetValue(ArrowsSymbolPrevProperty);
+        set => SetValue(ArrowsSymbolPrevProperty, value);
+    }
 
-    [AutoBindable(DefaultValue = "Colors.Black")]
-    private Color arrowsBorderColor;
+    /// <summary>
+    /// Bindable property for ArrowsSymbolNext
+    /// </summary>
+    public static readonly BindableProperty ArrowsSymbolNextProperty =
+      BindableProperty.Create(nameof(ArrowsSymbolNext), typeof(string), typeof(Calendar), "→");
 
-    [AutoBindable(DefaultValue = "Colors.White")]
-    private Color arrowsBackgroundColor;
+    /// <summary>
+    /// Specifies symbol for arrow next
+    /// </summary>
+    public string ArrowsSymbolNext
+    {
+        get => (string)GetValue(ArrowsSymbolNextProperty);
+        set => SetValue(ArrowsSymbolNextProperty, value);
+    }
 
-    [AutoBindable(DefaultValue = "1d")]
-    private double arrowsBorderWidth;
+
+    /// <summary>
+    /// Bindable property for ArrowsFontAttribute
+    /// </summary>
+    public static readonly BindableProperty ArrowsFontAttributeProperty =
+      BindableProperty.Create(nameof(ArrowsFontAttribute), typeof(FontAttributes), typeof(Calendar), FontAttributes.Bold);
+
+    /// <summary>
+    /// Specifies font attribute of the arrow
+    /// </summary>
+    public FontAttributes ArrowsFontAttribute
+    {
+        get => (FontAttributes)GetValue(ArrowsFontAttributeProperty);
+        set => SetValue(ArrowsFontAttributeProperty, value);
+    }
+
+
+    /// <summary>
+    /// Bindable property for ArrowsBorderColor
+    /// </summary>
+    public static readonly BindableProperty ArrowsBorderColorProperty =
+      BindableProperty.Create(nameof(ArrowsBorderColor), typeof(Color), typeof(Calendar), Colors.Black);
+
+    /// <summary>
+    /// Specifies the color of arrows border
+    /// </summary>
+    public Color ArrowsBorderColor
+    {
+        get => (Color)GetValue(ArrowsBorderColorProperty);
+        set => SetValue(ArrowsBorderColorProperty, value);
+    }
+
+
+    /// <summary>
+    /// Bindable property for ArrowsBackgroundColor
+    /// </summary>
+    public static readonly BindableProperty ArrowsBackgroundColorProperty =
+      BindableProperty.Create(nameof(ArrowsBackgroundColor), typeof(Color), typeof(Calendar), Colors.White);
+
+    /// <summary>
+    /// Specifies the color of arrows Background
+    /// </summary>
+    public Color ArrowsBackgroundColor
+    {
+        get => (Color)GetValue(ArrowsBackgroundColorProperty);
+        set => SetValue(ArrowsBackgroundColorProperty, value);
+    }
+
+
+    /// <summary>
+    /// Bindable property for ArrowsBorderWidth
+    /// </summary>
+    public static readonly BindableProperty ArrowsBorderWidthProperty =
+      BindableProperty.Create(nameof(ArrowsBorderWidth), typeof(double), typeof(Calendar), 1d);
+
+    /// <summary>
+    /// Specifies the ArrowsBorderWidth of month and year selection arrows
+    /// </summary>
+
+    public double ArrowsBorderWidth
+    {
+        get => (double)GetValue(ArrowsBorderWidthProperty);
+        set => SetValue(ArrowsBorderWidthProperty, value);
+    }
 
 
     /// <summary>
