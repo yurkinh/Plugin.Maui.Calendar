@@ -14,8 +14,28 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-	</PropertyGroup>
+
+		<!-- NuGet -->
+		<Authors>yurkinh</Authors>
+		<Copyright>Copyright © yurkinh and contributors</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageVersion>1.0.0</PackageVersion>
+		<IsPackable>True</IsPackable>
+		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.SegmentedControl</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.SegmentedControl</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>dotnet-maui;maui;calendar;calendartcontrol</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Title>.NET MAUI Calendar Control Plugin</Title>
+		<Description>Calendar Control for a .NET MAUI application.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<DebugType>portable</DebugType>
+		<PackageIcon>nuget.png</PackageIcon>
+	</PropertyGroup>	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
@@ -37,5 +57,10 @@
 	  <Folder Include="Shared\Models\" />
 	  <Folder Include="Shared\Controls\" />
 	  <Folder Include="Shared\Converters\" />
+	</ItemGroup>
+	<!-- Package additions -->
+	<ItemGroup>
+		<None Include="..\..\nuget.png" PackagePath="nuget.png" Pack="true" />
+		<None Include="..\..\README.md" PackagePath="README.md" Pack="true"/>
 	</ItemGroup>
 </Project>
