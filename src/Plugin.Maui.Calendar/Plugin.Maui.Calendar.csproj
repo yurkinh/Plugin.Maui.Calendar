@@ -21,10 +21,10 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageVersion>1.0.0</PackageVersion>
 		<IsPackable>True</IsPackable>
-		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.SegmentedControl</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.SegmentedControl</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>dotnet-maui;maui;calendar;calendartcontrol</PackageTags>
+		<PackageTags>dotnet-maui;maui;calendar;calendar tcontrol</PackageTags>
 		<IncludeSymbols>True</IncludeSymbols>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
