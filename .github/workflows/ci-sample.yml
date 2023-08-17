@@ -1,10 +1,7 @@
 name: Build Sample App for CI
 
 on:
-  push:
-    branches: [ "main" ]
-    paths-ignore:
-      - "**.md"
+  workflow_dispatch:
   pull_request:
     branches: [ "main" ]
 
