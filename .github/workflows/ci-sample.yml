@@ -1,0 +1,27 @@
+name: Build Sample App for CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-sample-ci:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.0.x
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Install .NET MAUI
+      run: dotnet workload install maui
+    - name: Build
+      run: msbuild samples\SampleApp.sln -r -property:Configuration=Release
