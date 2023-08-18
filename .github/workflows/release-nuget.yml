@@ -26,8 +26,8 @@ jobs:
         id: get_version
         uses: battila7/get-version-action@v2
       - name: Pack
-        run: msbuild -t:pack -r src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.sln -property:Configuration=Release /p:Version=${{ steps.get_version.outputs.version-without-v }}
+        run: msbuild -t:pack -r src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.sln -property:Configuration=Release /p:Version=$(PackageVersion)
       - name: Push
-        run: dotnet nuget push src\Plugin.Maui.Calendar\bin\Release\Plugin.Maui.Calendar.${{ steps.get_version.outputs.version-without-v }}.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push src\Plugin.Maui.Calendar\bin\Release\Plugin.Maui.Calendar.$(PackageVersion).nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
         env:
           GITHUB_TOKEN: ${{ secrets.NUGET_API_KEY }}
