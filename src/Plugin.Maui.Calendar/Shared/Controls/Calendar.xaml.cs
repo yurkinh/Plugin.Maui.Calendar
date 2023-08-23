@@ -594,6 +594,21 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for EventsScrollView
+    /// </summary>
+    public static readonly BindableProperty EventsScrollViewVisibleProperty =
+        BindableProperty.Create(nameof(EventsScrollViewVisible), typeof(bool), typeof(Calendar), false);
+
+    /// <summary>
+    /// Specifies whether the events section is visible
+    /// </summary>
+    public bool EventsScrollViewVisible
+    {
+        get => (bool)GetValue(EventsScrollViewVisibleProperty);
+        set => SetValue(EventsScrollViewVisibleProperty, value);
+    }
+
+    /// <summary>
     /// Bindable property for TodayOutlineColor
     /// </summary>
     public static readonly BindableProperty TodayOutlineColorProperty =
@@ -1085,7 +1100,7 @@ public partial class Calendar : ContentView
     private IViewLayoutEngine _viewLayoutEngine;
 
     /// <summary>
-    /// Calendar plugin for Xamarin.Forms
+    /// Calendar plugin for .NET MAUI
     /// </summary>
     public Calendar()
     {

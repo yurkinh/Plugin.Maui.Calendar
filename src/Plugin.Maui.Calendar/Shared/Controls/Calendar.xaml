@@ -63,6 +63,7 @@
             ItemTemplate="{Binding FooterSectionTemplate}" />
         <ScrollView
             x:Name="eventsScrollView"
+            IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}}"
             Grid.Row="2">
             <VerticalStackLayout                
                 BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
