@@ -37,6 +37,7 @@
         DaysLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         ArrowsFontSize="Medium"
+        DaysTitleColor = "{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}"
         Year="{Binding Year}"       
         Padding="10,0"
         HorizontalOptions="Fill"

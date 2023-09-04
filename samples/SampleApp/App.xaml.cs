@@ -11,5 +11,17 @@ public partial class App : Application
 
         MainPage = new NavigationPage(new MainPage());
     }
+   
+
+    protected override void OnStart()
+    {
+        AppTheme currentTheme = Application.Current.RequestedTheme;        
+    }   
+
+    protected override void OnResume()
+    {
+        AppTheme currentTheme = Application.Current.RequestedTheme;        
+    }
+  
 }
 
