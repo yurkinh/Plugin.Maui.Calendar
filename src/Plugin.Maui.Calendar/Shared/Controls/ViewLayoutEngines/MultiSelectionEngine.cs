@@ -16,9 +16,16 @@ public class MultiSelectionEngine : ISelectionEngine
 
     public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
     {
-        return _selectedDates
-            .Select(item => item.ToString(selectedDateTextFormat, culture))
-            .Aggregate((a, b) => $"{a}, {b}");
+        string dates = "";
+        if (_selectedDates?.Any(item => item > DateTime.MinValue) == true)
+        {
+            dates = _selectedDates
+                .Where(item => item > DateTime.MinValue)
+                .Select(item => item.ToString(selectedDateTextFormat, culture))
+                .Aggregate((a, b) => $"{a}, {b}");
+        }
+
+        return dates ?? string.Empty;
     }
 
     public bool TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
