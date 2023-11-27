@@ -29,6 +29,7 @@ Simple cross platform plugin for Calendar control featuring:
 * Added Multiselection support (Latest PR that was not merged previously)
 * Exposed a few more properties for Arrow buttons customization
 * Refactored and revamped code
+* Updated to .NET 8
 
 
 ### Usage
