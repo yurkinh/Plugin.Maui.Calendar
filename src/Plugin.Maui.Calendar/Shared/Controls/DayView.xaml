@@ -27,7 +27,7 @@
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
             <Label
-                FontSize="Medium"
+                FontSize="{Binding FontSize}"
                 HorizontalTextAlignment="Center"               
                 Style="{Binding DaysLabelStyle}"
                 Text="{Binding Date.Day}"

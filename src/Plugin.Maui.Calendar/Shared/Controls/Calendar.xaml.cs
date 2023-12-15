@@ -759,6 +759,24 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for DayViewFontSizeProperty
+    /// </summary>
+    public static readonly BindableProperty DayViewFontSizeProperty =
+      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(Calendar), 14d);
+
+    /// <summary>
+    /// Specifies the FontSize of DayView label
+    /// </summary>
+    [TypeConverter(typeof(FontSizeConverter))]
+    public double DayViewFontSize
+    {
+        get => (double)GetValue(DayViewFontSizeProperty);
+        set => SetValue(DayViewFontSizeProperty, value);
+    }
+
+
+
+    /// <summary>
     /// Bindable property for DayViewCornerRadius
     /// </summary>
     public static readonly BindableProperty DayViewCornerRadiusProperty =

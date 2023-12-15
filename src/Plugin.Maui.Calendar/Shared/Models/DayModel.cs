@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.Maui.Layouts;
 using Plugin.Maui.Calendar.Enums;
 
@@ -19,6 +20,13 @@ internal class DayModel : BindableBase<DayModel>
         get => GetProperty<double>();
         set => SetProperty(value);
     }
+    [TypeConverter(typeof(FontSizeConverter))]
+
+    public double FontSize
+    {
+        get => GetProperty<double>(14);
+        set => SetProperty(value);
+    }
 
     public float DayViewCornerRadius
     {
@@ -30,7 +38,7 @@ internal class DayModel : BindableBase<DayModel>
     {
         get => GetProperty(DefaultStyles.DefaultLabelStyle);
         set => SetProperty(value);
-    }
+    }    
 
     public ICommand DayTappedCommand
     {

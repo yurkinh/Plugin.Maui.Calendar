@@ -34,6 +34,7 @@
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"        
         SelectedDate="{Binding SelectedDate}"
+        DayViewFontSize="Medium"
         DaysLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         ArrowsFontSize="Medium"

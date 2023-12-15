@@ -29,6 +29,7 @@
                     DayTappedCommand="{Binding DayTappedCommand, Source={x:Reference calendar}}"
                     DayViewCornerRadius="{Binding DayViewCornerRadius, Source={x:Reference calendar}}"
                     DayViewSize="{Binding DayViewSize, Source={x:Reference calendar}}"
+                    DayViewFontSize="{Binding DayViewFontSize, Source={x:Reference calendar}}"
                     DaysLabelStyle="{Binding DaysLabelStyle, Source={x:Reference calendar}}"
                     DaysTitleColor="{Binding DaysTitleColor, Source={x:Reference calendar}}"
                     DaysTitleHeight="{Binding DaysTitleHeight, Source={x:Reference calendar}}"
