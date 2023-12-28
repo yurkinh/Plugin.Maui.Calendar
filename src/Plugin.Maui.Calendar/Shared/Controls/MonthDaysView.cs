@@ -615,11 +615,19 @@ public partial class MonthDaysView : ContentView
         if (Culture == null)
             return;
 
-        Animate(() => _daysControl.FadeTo(animate ? 0 : 1, 50),
-                () => _daysControl.FadeTo(1, 200),
-                () => UpdateDays(),
-                _lastAnimationTime = DateTime.UtcNow,
-                () => UpdateAndAnimateDays(false));//send false to prevent flashing if several property bindings are changed
+        if (BindingContext == null)
+        {
+            UpdateDays();
+            _lastAnimationTime = DateTime.UtcNow;
+        }
+        else
+        {
+            Animate(() => _daysControl.FadeTo(animate ? 0 : 1, 50),
+                    () => _daysControl.FadeTo(1, 200),
+                    () => UpdateDays(),
+                    _lastAnimationTime = DateTime.UtcNow,
+                    () => UpdateAndAnimateDays(false));//send false to prevent flashing if several property bindings are changed
+        }
     }
 
     private void UpdateDays()
@@ -702,9 +710,9 @@ public partial class MonthDaysView : ContentView
         foreach (var dayView in _daysControl.Children.OfType<DayView>())
         {
             (dayView.BindingContext as DayModel).PropertyChanged -= OnDayModelPropertyChanged;
-            #if !WINDOWS
-            dayView.BindingContext = null;                        
-            #endif
+#if !WINDOWS
+            dayView.BindingContext = null;
+#endif
         }
     }
 

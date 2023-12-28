@@ -36,8 +36,7 @@
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
-		<PackageReleaseNotes>Added columns initialization width binding from dayViewSizeBindingName for each column (WeekLayout: Week, TwoWeek, MonthView)</PackageReleaseNotes>
-
+		<PackageReleaseNotes>Fixed issue with missing IAnimationManager in some cases</PackageReleaseNotes>
 	</PropertyGroup>	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
