@@ -40,41 +40,35 @@ internal abstract class ViewLayoutBase
         };
         rowDefinition.SetBinding(RowDefinition.HeightProperty, daysTitleHeightBindingName);
 
-        var columnDefinition = new ColumnDefinition()
-        {
-            BindingContext = bindingContext,
-        };
-        columnDefinition.SetBinding(ColumnDefinition.WidthProperty, dayViewSizeBindingName);
-
         var grid = new Grid
         {
             ColumnSpacing = 0d,
             RowSpacing = 6d,
-            RowDefinitions = new RowDefinitionCollection()
-            {
+            RowDefinitions =
+            [
                 rowDefinition,
-            },
+            ],
             ColumnDefinitions =
-            {               
-                columnDefinition,
-                columnDefinition,
-                columnDefinition,
-                columnDefinition,
-                columnDefinition,
-                columnDefinition,
-                columnDefinition
+            {
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
+                new ColumnDefinition(){ Width = GridLength.Star},
             }
         };
 
         for (int i = 0; i < _numberOfDaysInWeek; i++)
         {
-            var label = new Label()
+            var label = new Label
             {
                 HorizontalTextAlignment = TextAlignment.Center,
+                BindingContext = bindingContext
             };
-            label.BindingContext = bindingContext;
             label.SetBinding(Label.TextColorProperty, daysTitleColorBindingName);
-            label.SetBinding(Label.StyleProperty, daysTitleLabelStyleBindingName);  
+            label.SetBinding(Label.StyleProperty, daysTitleLabelStyleBindingName);
 
             grid.Add(label, i, 0);
         }
@@ -99,11 +93,8 @@ internal abstract class ViewLayoutBase
                 dayModel.DayTappedCommand = dayTappedCommand;
                 dayModel.PropertyChanged += dayModelPropertyChanged;
 
-                //Grid.SetRow(dayView, i);
-                //Grid.SetColumn(dayView, ii);
-
                 dayViews.Add(dayView);
-                grid.Add(dayView,ii,i);
+                grid.Add(dayView, ii, i);
             }
         }
 
