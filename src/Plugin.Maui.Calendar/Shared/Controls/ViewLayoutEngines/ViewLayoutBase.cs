@@ -55,14 +55,7 @@ internal abstract class ViewLayoutBase
                 rowDefinition,
             },
             ColumnDefinitions =
-            {
-                //new ColumnDefinition(){ Width = GridLength.Star},
-                //new ColumnDefinition(){ Width = GridLength.Star},
-                //new ColumnDefinition(){ Width = GridLength.Star},
-                //new ColumnDefinition(){ Width = GridLength.Star},
-                //new ColumnDefinition(){ Width = GridLength.Star},
-                //new ColumnDefinition(){ Width = GridLength.Star},
-                //new ColumnDefinition(){ Width = GridLength.Star},
+            {               
                 columnDefinition,
                 columnDefinition,
                 columnDefinition,
