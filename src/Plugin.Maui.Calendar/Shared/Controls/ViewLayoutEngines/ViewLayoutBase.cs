@@ -40,6 +40,12 @@ internal abstract class ViewLayoutBase
         };
         rowDefinition.SetBinding(RowDefinition.HeightProperty, daysTitleHeightBindingName);
 
+        var columnDefinition = new ColumnDefinition()
+        {
+            BindingContext = bindingContext,
+        };
+        columnDefinition.SetBinding(ColumnDefinition.WidthProperty, dayViewSizeBindingName);
+
         var grid = new Grid
         {
             ColumnSpacing = 0d,
@@ -50,13 +56,20 @@ internal abstract class ViewLayoutBase
             },
             ColumnDefinitions =
             {
-                new ColumnDefinition(){ Width = GridLength.Star},
-                new ColumnDefinition(){ Width = GridLength.Star},
-                new ColumnDefinition(){ Width = GridLength.Star},
-                new ColumnDefinition(){ Width = GridLength.Star},
-                new ColumnDefinition(){ Width = GridLength.Star},
-                new ColumnDefinition(){ Width = GridLength.Star},
-                new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                //new ColumnDefinition(){ Width = GridLength.Star},
+                columnDefinition,
+                columnDefinition,
+                columnDefinition,
+                columnDefinition,
+                columnDefinition,
+                columnDefinition,
+                columnDefinition
             }
         };
 
