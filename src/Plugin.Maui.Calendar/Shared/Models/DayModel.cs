@@ -38,7 +38,7 @@ internal class DayModel : BindableBase<DayModel>
     {
         get => GetProperty(DefaultStyles.DefaultLabelStyle);
         set => SetProperty(value);
-    }    
+    }
 
     public ICommand DayTappedCommand
     {
@@ -95,7 +95,7 @@ internal class DayModel : BindableBase<DayModel>
                 .Notify(nameof(TextColor));
     }
 
-    public Color SelectedTodayTextColor 
+    public Color SelectedTodayTextColor
     {
         get => GetProperty(Colors.Transparent);
         set => SetProperty(value)
@@ -105,6 +105,13 @@ internal class DayModel : BindableBase<DayModel>
     public Color OtherMonthColor
     {
         get => GetProperty(Colors.Silver);
+        set => SetProperty(value)
+                .Notify(nameof(TextColor));
+    }
+
+    public Color WeekendDayColor
+    {
+        get => GetProperty(Colors.Transparent);
         set => SetProperty(value)
                 .Notify(nameof(TextColor));
     }
@@ -176,11 +183,11 @@ internal class DayModel : BindableBase<DayModel>
                 .Notify(nameof(OutlineColor));
     }
 
-    public Color TodayTextColor 
-    { 
-        get => GetProperty(Colors.Transparent); 
+    public Color TodayTextColor
+    {
+        get => GetProperty(Colors.Transparent);
         set => SetProperty(value)
-                .Notify(nameof(TextColor)); 
+                .Notify(nameof(TextColor));
     }
 
     public Color TodayFillColor
@@ -237,23 +244,25 @@ internal class DayModel : BindableBase<DayModel>
         {
             if (!IsVisible) return OtherMonthColor;
 
-            return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday) switch
+            return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
             {
-                (true, _, _, _, _) => DisabledColor,
-                (false, true, false, true, true) => SelectedTodayTextColor == Colors.Transparent? SelectedTextColor : SelectedTodayTextColor,
-                (false, true, false, true, false) => SelectedTextColor,
-                (false, true, true, true, _) => EventIndicatorSelectedTextColor,
-                (false, false, true, true, _) => EventIndicatorTextColor,
-                (false, false, _, false, _) => OtherMonthColor,
-                (false, false, false, true, true) => TodayTextColor == Colors.Transparent? DeselectedTextColor : TodayTextColor,
-                (false, false, false, true, false) => DeselectedTextColor,
-                (_, _, _, _, _) => Colors.Black
+                (true, _, _, _, _, _) => DisabledColor,
+                (false, true, false, true, true, _) => SelectedTodayTextColor == Colors.Transparent ? SelectedTextColor : SelectedTodayTextColor,
+                (false, true, false, true, false, _) => SelectedTextColor,
+                (false, true, true, true, _, _) => EventIndicatorSelectedTextColor,
+                (false, false, true, true, _, _) => EventIndicatorTextColor,
+                (false, false, _, false, _, _) => OtherMonthColor,
+                (false, false, false, true, true, _) => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
+                (false, _, _, _, _, true) => WeekendDayColor,
+                (false, false, false, true, false, _) => DeselectedTextColor,
+                (_, _, _, _, _, _) => Colors.Black
             };
         }
     }
 
     public bool IsVisible => IsThisMonth || OtherMonthIsVisible;
 
-    private bool IsToday
-        => Date.Date == DateTime.Today;
+    private bool IsToday => Date.Date == DateTime.Today;
+
+    public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;
 }

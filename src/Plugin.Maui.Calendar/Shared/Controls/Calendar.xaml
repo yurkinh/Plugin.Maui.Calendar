@@ -48,6 +48,7 @@
                     MaximumDate="{Binding MaximumDate, Source={x:Reference calendar}}"
                     MinimumDate="{Binding MinimumDate, Source={x:Reference calendar}}"
                     OtherMonthDayColor="{Binding OtherMonthDayColor, Source={x:Reference calendar}}"
+                    WeekendDayColor="{Binding WeekendDayColor, Source={x:Reference calendar}}"
                     OtherMonthDayIsVisible="{Binding OtherMonthDayIsVisible, Source={x:Reference calendar}}"
                     SelectedDates="{Binding SelectedDates, Source={x:Reference calendar}}"
                     SelectedDayBackgroundColor="{Binding SelectedDayBackgroundColor, Source={x:Reference calendar}}"

@@ -159,6 +159,21 @@ public partial class MonthDaysView : ContentView
     }
 
     /// <summary>
+    /// Bindable property for WeekendDayColor
+    /// </summary>
+    public static readonly BindableProperty WeekendDayColorProperty =
+      BindableProperty.Create(nameof(WeekendDayColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+
+    /// <summary>
+    /// Color of text for for days that are weekends
+    /// </summary>
+    public Color WeekendDayColor
+    {
+        get => (Color)GetValue(WeekendDayColorProperty);
+        set => SetValue(WeekendDayColorProperty, value);
+    }
+
+    /// <summary>
     /// Bindable property for OtherMonthDayColor
     /// </summary>
     public static readonly BindableProperty OtherMonthDayColorProperty =
@@ -575,6 +590,7 @@ public partial class MonthDaysView : ContentView
             case nameof(SelectedDayTextColor):
             case nameof(SelectedTodayTextColor):
             case nameof(OtherMonthDayColor):
+            case nameof(WeekendDayColor):
             case nameof(DeselectedDayTextColor):
             case nameof(SelectedDayBackgroundColor):
             case nameof(EventIndicatorColor):
@@ -694,6 +710,7 @@ public partial class MonthDaysView : ContentView
             dayModel.SelectedTextColor = SelectedDayTextColor;
             dayModel.SelectedTodayTextColor = SelectedTodayTextColor;
             dayModel.OtherMonthColor = OtherMonthDayColor;
+            dayModel.WeekendDayColor = WeekendDayColor;
             dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
             dayModel.TodayOutlineColor = TodayOutlineColor;
             dayModel.TodayFillColor = TodayFillColor;

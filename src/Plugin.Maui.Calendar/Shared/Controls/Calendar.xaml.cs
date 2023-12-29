@@ -301,6 +301,22 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for WeekendDayColor
+    /// </summary>
+    public static readonly BindableProperty WeekendDayColorProperty =
+      BindableProperty.Create(nameof(WeekendDayColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+
+    /// <summary>
+    /// Specifies the color of days belonging to a month other than the selected one
+    /// </summary>
+    public Color WeekendDayColor
+    {
+        get => (Color)GetValue(WeekendDayColorProperty);
+        set => SetValue(WeekendDayColorProperty, value);
+    }
+
+
+    /// <summary>
     /// Bindable property for OtherMonthDayColor
     /// </summary>
     public static readonly BindableProperty OtherMonthDayColorProperty =
