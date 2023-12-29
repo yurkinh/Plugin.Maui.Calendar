@@ -241,6 +241,21 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for DaysTitleWeekendColor
+    /// </summary>
+    public static readonly BindableProperty DaysTitleWeekendColorProperty =
+      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(Calendar), Colors.Black);
+
+    /// <summary>
+    /// Specifies the color for the titles of the weekend days
+    /// </summary>
+    public Color DaysTitleWeekendColor
+    {
+        get => (Color)GetValue(DaysTitleWeekendColorProperty);
+        set => SetValue(DaysTitleWeekendColorProperty, value);
+    }
+
+    /// <summary>
     /// Bindable property for SelectedDayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedDayTextColorProperty =

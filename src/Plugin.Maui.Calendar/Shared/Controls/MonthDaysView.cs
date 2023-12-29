@@ -99,6 +99,21 @@ public partial class MonthDaysView : ContentView
     }
 
     /// <summary>
+    /// Bindable property for DaysTitleColor
+    /// </summary>
+    public static readonly BindableProperty DaysTitleWeekendColorProperty =
+      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+
+    /// <summary>
+    /// Color of weekday titles
+    /// </summary>
+    public Color DaysTitleWeekendColor
+    {
+        get => (Color)GetValue(DaysTitleWeekendColorProperty);
+        set => SetValue(DaysTitleWeekendColorProperty, value);
+    }
+
+    /// <summary>
     /// Bindable property for SelectedDayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedDayTextColorProperty =
@@ -580,6 +595,9 @@ public partial class MonthDaysView : ContentView
                 break;
 
             case nameof(DaysTitleMaximumLength):
+            case nameof(DaysTitleColor):
+            case nameof(DaysTitleHeight):
+            case nameof(DaysTitleWeekendColor):
                 UpdateDayTitles();
                 break;
 
@@ -605,7 +623,15 @@ public partial class MonthDaysView : ContentView
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-            dayLabel.Text = abberivatedDayName.ToUpper().Substring(0, (int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength);
+            dayLabel.Text = abberivatedDayName.ToUpper()[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            // Detect weekend days
+            if (DaysTitleColor != DaysTitleWeekendColor && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
+            {
+                // It's a weekend day
+                // You can change the color of the label or do something else
+                dayLabel.TextColor = DaysTitleWeekendColor;
+            }
+
             dayNumber = (dayNumber + 1) % 7;
         }
     }

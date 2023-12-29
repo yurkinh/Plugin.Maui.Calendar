@@ -44,9 +44,7 @@ internal class WeekViewEngine : ViewLayoutBase, IViewLayoutEngine
 
     public DateTime GetFirstDate(DateTime dateToShow)
     {
-        var firstWeekStart = GetFirstDateOfWeek(dateToShow);
-
-        return firstWeekStart;
+        return GetFirstDateOfWeek(dateToShow);        
     }
 
     public DateTime GetNextUnit(DateTime forDate)

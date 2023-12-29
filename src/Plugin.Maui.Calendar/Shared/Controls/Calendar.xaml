@@ -32,6 +32,7 @@
                     DayViewFontSize="{Binding DayViewFontSize, Source={x:Reference calendar}}"
                     DaysLabelStyle="{Binding DaysLabelStyle, Source={x:Reference calendar}}"
                     DaysTitleColor="{Binding DaysTitleColor, Source={x:Reference calendar}}"
+                    DaysTitleWeekendColor="{Binding DaysTitleWeekendColor, Source={x:Reference calendar}}"
                     DaysTitleHeight="{Binding DaysTitleHeight, Source={x:Reference calendar}}"
                     DaysTitleMaximumLength="{Binding DaysTitleMaximumLength, Source={x:Reference calendar}}"
                     DaysTitleLabelStyle="{Binding DaysTitleLabelStyle, Source={x:Reference calendar}}"

@@ -42,8 +42,7 @@ internal class MonthViewEngine : ViewLayoutBase, IViewLayoutEngine
     public DateTime GetFirstDate(DateTime dateToShow)
     {
         var firstOfMonth = new DateTime(dateToShow.Year, dateToShow.Month, 1);
-        var firstWeekStart = GetFirstDateOfWeek(firstOfMonth);
-        return firstWeekStart;
+        return GetFirstDateOfWeek(firstOfMonth);        
     }
 
     public DateTime GetNextUnit(DateTime forDate)
