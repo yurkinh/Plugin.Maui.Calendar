@@ -1,7 +1,7 @@
 ﻿namespace Plugin.Maui.Calendar.Controls;
 
 internal class SwipeAwareContainer : ContentView
-{   
+{
     SwipeGestureRecognizer leftSwipeGesture;
     SwipeGestureRecognizer rightSwipeGesture;
     SwipeGestureRecognizer upSwipeGesture;
@@ -18,47 +18,57 @@ internal class SwipeAwareContainer : ContentView
 
     public SwipeAwareContainer() : base()
     {
-        leftSwipeGesture = new() { Direction = SwipeDirection.Left };
-        rightSwipeGesture = new() { Direction = SwipeDirection.Right };
-        upSwipeGesture = new() { Direction = SwipeDirection.Up };
-        downSwipeGesture = new() { Direction = SwipeDirection.Down };
+        if (!SwipeDetectionDisabled)
+        {
+            leftSwipeGesture = new() { Direction = SwipeDirection.Left };
+            rightSwipeGesture = new() { Direction = SwipeDirection.Right };
+            upSwipeGesture = new() { Direction = SwipeDirection.Up };
+            downSwipeGesture = new() { Direction = SwipeDirection.Down };
 
-        Loaded += SwipeAwareContainer_Loaded;
-        Unloaded += SwipeAwareContainer_Unloaded;
-    }   
+            Loaded += SwipeAwareContainer_Loaded;
+            Unloaded += SwipeAwareContainer_Unloaded;
+        }
+    }
 
     private void SwipeAwareContainer_Loaded(object sender, EventArgs e)
     {
-        GestureRecognizers.Add(leftSwipeGesture);
-        GestureRecognizers.Add(rightSwipeGesture);
-        GestureRecognizers.Add(upSwipeGesture);
-        GestureRecognizers.Add(downSwipeGesture);
+        if (!SwipeDetectionDisabled)
+        {
+            GestureRecognizers.Add(leftSwipeGesture);
+            GestureRecognizers.Add(rightSwipeGesture);
+            GestureRecognizers.Add(upSwipeGesture);
+            GestureRecognizers.Add(downSwipeGesture);
 
-        leftSwipeGesture.Swiped += OnSwiped;
-        rightSwipeGesture.Swiped += OnSwiped;
-        upSwipeGesture.Swiped += OnSwiped;
-        downSwipeGesture.Swiped += OnSwiped;       
+            leftSwipeGesture.Swiped += OnSwiped;
+            rightSwipeGesture.Swiped += OnSwiped;
+            upSwipeGesture.Swiped += OnSwiped;
+            downSwipeGesture.Swiped += OnSwiped;
+        }
+
     }
 
     private void SwipeAwareContainer_Unloaded(object sender, EventArgs e)
     {
-        GestureRecognizers.Remove(leftSwipeGesture);
-        GestureRecognizers.Remove(rightSwipeGesture);
-        GestureRecognizers.Remove(upSwipeGesture);
-        GestureRecognizers.Remove(downSwipeGesture);
+        if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
+        {
+            GestureRecognizers.Remove(leftSwipeGesture);
+            GestureRecognizers.Remove(rightSwipeGesture);
+            GestureRecognizers.Remove(upSwipeGesture);
+            GestureRecognizers.Remove(downSwipeGesture);
 
-        leftSwipeGesture.Swiped -= OnSwiped;
-        rightSwipeGesture.Swiped -= OnSwiped;
-        upSwipeGesture.Swiped -= OnSwiped;
-        downSwipeGesture.Swiped -= OnSwiped;
+            leftSwipeGesture.Swiped -= OnSwiped;
+            rightSwipeGesture.Swiped -= OnSwiped;
+            upSwipeGesture.Swiped -= OnSwiped;
+            downSwipeGesture.Swiped -= OnSwiped;
 
-        leftSwipeGesture = null;
-        rightSwipeGesture = null;
-        upSwipeGesture = null;
-        downSwipeGesture = null;
+            leftSwipeGesture = null;
+            rightSwipeGesture = null;
+            upSwipeGesture = null;
+            downSwipeGesture = null;
 
-        Loaded -= SwipeAwareContainer_Loaded;
-        Unloaded -= SwipeAwareContainer_Unloaded;
+            Loaded -= SwipeAwareContainer_Loaded;
+            Unloaded -= SwipeAwareContainer_Unloaded;
+        }
     }
 
     void OnSwiped(object sender, SwipedEventArgs e)
