@@ -583,6 +583,7 @@ public partial class MonthDaysView : ContentView
             case nameof(MinimumDate):
             case nameof(MaximumDate):
             case nameof(OtherMonthDayIsVisible):
+            case nameof(DayViewCornerRadius):
                 UpdateAndAnimateDays(AnimateCalendar);
                 break;
 
