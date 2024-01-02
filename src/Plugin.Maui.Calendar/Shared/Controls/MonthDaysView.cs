@@ -577,7 +577,6 @@ public partial class MonthDaysView : ContentView
             case nameof(SelectedDates):
                 CurrentSelectionEngine.UpdateDateSelection(SelectedDates);
                 break;
-
             case nameof(Events):
             case nameof(ShownDate):
             case nameof(MinimumDate):
@@ -586,7 +585,6 @@ public partial class MonthDaysView : ContentView
             case nameof(DayViewCornerRadius):
                 UpdateAndAnimateDays(AnimateCalendar);
                 break;
-
             case nameof(TodayTextColor):
             case nameof(SelectedDayTextColor):
             case nameof(SelectedTodayTextColor):
@@ -605,7 +603,6 @@ public partial class MonthDaysView : ContentView
             case nameof(DayViewFontSize):
                 UpdateDaysColors();
                 break;
-
             case nameof(Culture):
                 RenderLayout();
                 UpdateAndAnimateDays(AnimateCalendar);
