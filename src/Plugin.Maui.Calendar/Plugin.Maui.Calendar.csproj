@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.0.7</PackageVersion>
+		<PackageVersion>1.0.8</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -36,7 +36,11 @@
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
-		<PackageReleaseNotes>Fixed issue with missing IAnimationManager in some cases</PackageReleaseNotes>
+		<PackageReleaseNotes>
+							Added WeekendDayColor property.&#xD;&#xA;
+							Added DaysTitleWeekendColor property.&#xD;&#xA;
+							Fixed issue with DayViewCornerRadius not updated.
+       </PackageReleaseNotes>
 	</PropertyGroup>	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
