@@ -5,13 +5,9 @@ using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal class MonthViewEngine : ViewLayoutBase, IViewLayoutEngine
+internal class MonthViewEngine(CultureInfo culture) : ViewLayoutBase(culture), IViewLayoutEngine
 {
     private const int _monthNumberOfWeeks = 6;
-
-    public MonthViewEngine(CultureInfo culture) : base(culture)
-    {
-    }
 
     public Grid GenerateLayout(
         List<DayView> dayViews,
@@ -24,7 +20,8 @@ internal class MonthViewEngine : ViewLayoutBase, IViewLayoutEngine
         PropertyChangedEventHandler dayModelPropertyChanged
     )
     {
-        var grid = GenerateWeekLayout(
+
+        return GenerateWeekLayout(
             dayViews,
             bindingContext,
             daysTitleHeightBindingName,
@@ -35,14 +32,11 @@ internal class MonthViewEngine : ViewLayoutBase, IViewLayoutEngine
             dayModelPropertyChanged,
             _monthNumberOfWeeks
         );
-
-        return grid;
     }
 
     public DateTime GetFirstDate(DateTime dateToShow)
     {
-        var firstOfMonth = new DateTime(dateToShow.Year, dateToShow.Month, 1);
-        return GetFirstDateOfWeek(firstOfMonth);        
+        return GetFirstDateOfWeek(new DateTime(dateToShow.Year, dateToShow.Month, 1));
     }
 
     public DateTime GetNextUnit(DateTime forDate)

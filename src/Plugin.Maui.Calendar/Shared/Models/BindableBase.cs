@@ -8,22 +8,22 @@ internal abstract class BindableBase<TData> : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private readonly Dictionary<string, object> _properties = new();
-    private readonly Dictionary<string, PropertyChangedEventArgs> _propertyChangedArgs = new();
- 
+    private readonly Dictionary<string, object> _properties = [];
+    private readonly Dictionary<string, PropertyChangedEventArgs> _propertyChangedArgs = [];
+
     protected TProperty GetProperty<TProperty>(TProperty defaultValue = default, [CallerMemberName] string propertyName = "")
     {
-        if (!_properties.ContainsKey(propertyName))
+        if (!_properties.TryGetValue(propertyName, out object value))
             return defaultValue;
 
-        return (TProperty)_properties[propertyName];
+        return (TProperty)value;
     }
 
     protected BindableBase<TData> SetProperty<TProperty>(TProperty value, [CallerMemberName] string propertyName = "")
     {
         if (!_properties.TryGetValue(propertyName, out object storedValue))
             AddProperty(propertyName, value);
-        else if (storedValue is object && storedValue.Equals(value))
+        else if (storedValue is not null && storedValue.Equals(value))
             return this;
 
         _properties[propertyName] = value;

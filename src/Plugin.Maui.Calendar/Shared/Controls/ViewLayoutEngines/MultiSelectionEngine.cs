@@ -11,7 +11,7 @@ public class MultiSelectionEngine : ISelectionEngine
 
     public MultiSelectionEngine()
     {
-        _selectedDates = new HashSet<DateTime>();
+        _selectedDates = [];
     }
 
     public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
@@ -40,12 +40,10 @@ public class MultiSelectionEngine : ISelectionEngine
 
     public List<DateTime> PerformDateSelection(DateTime dateToSelect)
     {
-        if (_selectedDates.Contains(dateToSelect))
-            _selectedDates.Remove(dateToSelect);
-        else
+        if (!_selectedDates.Remove(dateToSelect))
             _selectedDates.Add(dateToSelect);
 
-        return _selectedDates.ToList();
+        return [.. _selectedDates];
     }
 
     public void UpdateDateSelection(List<DateTime> datesToSelect)
