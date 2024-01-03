@@ -54,6 +54,7 @@
                     SelectedTodayTextColor="{Binding SelectedTodayTextColor, Source={x:Reference calendar}}"
                     ShownDate="{Binding ShownDate, Source={x:Reference calendar}}"
                     SwipeDetectionDisabled="{Binding DisableSwipeDetection, Source={x:Reference calendar}}"
+                    DaysTitleLabelFirstUpperRestLower="{Binding DaysTitleLabelFirstUpperRestLower, Source={x:Reference calendar}}"
                     SwipedLeft="OnSwipedLeft"
                     SwipedRight="OnSwipedRight"
                     SwipedUp="OnSwipedUp"

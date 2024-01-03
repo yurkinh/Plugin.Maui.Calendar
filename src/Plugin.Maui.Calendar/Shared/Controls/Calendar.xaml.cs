@@ -859,6 +859,21 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for DaysTitleLabelFirstUpperRestLower
+    /// </summary>
+    public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
+      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(Calendar), false);
+
+    /// <summary>
+    /// Makes DaysTitleLabel text FirstCase Upper and rest lower
+    /// </summary>
+    public bool DaysTitleLabelFirstUpperRestLower
+    {
+        get => (bool)GetValue(DaysTitleLabelFirstUpperRestLowerProperty);
+        set => SetValue(DaysTitleLabelFirstUpperRestLowerProperty, value);
+    }
+
+    /// <summary>
     /// Bindable property for DaysLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysLabelStyleProperty =

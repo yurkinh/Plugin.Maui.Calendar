@@ -281,7 +281,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorTextColorProperty =
-     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Color of event indicator text
@@ -296,7 +296,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorSelectedTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
 
     /// <summary>
     /// Color of event indicator text on selected dates
@@ -371,7 +371,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DayViewFontSizeProperty
     /// </summary>
     public static readonly BindableProperty DayViewFontSizeProperty =
-      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(Calendar), 14d);
+      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(MonthDaysView), 14d);
 
     /// <summary>
     /// Specifies the FontSize of DayView label
@@ -433,6 +433,22 @@ public partial class MonthDaysView : ContentView
     /// </summary>
     public static readonly BindableProperty DaysLabelStyleProperty =
       BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle);
+
+
+    /// <summary>
+    /// Bindable property for DaysTitleLabelFirstUpperRestLower
+    /// </summary>
+    public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
+      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(MonthDaysView), false);
+
+    /// <summary>
+    /// Makes DaysTitleLabel text FirstCase Upper and rest lower
+    /// </summary>
+    public bool DaysTitleLabelFirstUpperRestLower
+    {
+        get => (bool)GetValue(DaysTitleLabelFirstUpperRestLowerProperty);
+        set => SetValue(DaysTitleLabelFirstUpperRestLowerProperty, value);
+    }
 
     /// <summary>
     /// Style of weekday labels
@@ -522,7 +538,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for AnimateCalendar
     /// </summary>
     public static readonly BindableProperty AnimateCalendarProperty =
-        BindableProperty.Create(nameof(AnimateCalendar), typeof(bool), typeof(Calendar), true);
+        BindableProperty.Create(nameof(AnimateCalendar), typeof(bool), typeof(MonthDaysView), true);
 
     /// <summary>
     /// Specifies if the calendar should animate or not
@@ -537,7 +553,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for WeekLayout
     /// </summary>
     public static readonly BindableProperty CalendarLayoutProperty =
-        BindableProperty.Create(nameof(CalendarLayout), typeof(WeekLayout), typeof(Calendar), WeekLayout.Month);
+        BindableProperty.Create(nameof(CalendarLayout), typeof(WeekLayout), typeof(MonthDaysView), WeekLayout.Month);
 
     /// <summary>
     /// Sets the layout of the calendar
@@ -593,7 +609,7 @@ public partial class MonthDaysView : ContentView
             downSwipeGesture.Swiped += OnSwiped;
         }
 
-    }    
+    }
 
     private void UnloadedMethod(object sender, EventArgs e)
     {
@@ -675,6 +691,7 @@ public partial class MonthDaysView : ContentView
             case nameof(DaysTitleColor):
             case nameof(DaysTitleHeight):
             case nameof(DaysTitleWeekendColor):
+            case nameof(DaysTitleLabelFirstUpperRestLower):
                 UpdateDayTitles();
                 break;
 
@@ -699,8 +716,9 @@ public partial class MonthDaysView : ContentView
 
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
-            var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-            dayLabel.Text = abberivatedDayName.ToUpper()[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];            
+            var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpper();
+            dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
             // Detect weekend days
             if (DaysTitleColor != DaysTitleWeekendColor && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
