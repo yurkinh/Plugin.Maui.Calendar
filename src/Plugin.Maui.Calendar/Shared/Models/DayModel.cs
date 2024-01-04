@@ -1,207 +1,114 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.Layouts;
 using Plugin.Maui.Calendar.Enums;
 
 namespace Plugin.Maui.Calendar.Models;
 
-internal class DayModel : BindableBase<DayModel>
+internal partial class DayModel : ObservableObject
 {
-    public DateTime Date
-    {
-        get => GetProperty<DateTime>();
-        set => SetProperty(value)
-                .Notify(nameof(BackgroundColor),
-                        nameof(OutlineColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
+    [NotifyPropertyChangedFor(nameof(OutlineColor))]
+    DateTime date;
 
-    public double DayViewSize
-    {
-        get => GetProperty<double>();
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    double dayViewSize;
+
     [TypeConverter(typeof(FontSizeConverter))]
+    [ObservableProperty]
+    double fontSize = 14;
 
-    public double FontSize
-    {
-        get => GetProperty<double>(14);
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    float dayViewCornerRadius;
 
-    public float DayViewCornerRadius
-    {
-        get => GetProperty<float>();
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    Style daysLabelStyle = DefaultStyles.DefaultLabelStyle;
 
-    public Style DaysLabelStyle
-    {
-        get => GetProperty(DefaultStyles.DefaultLabelStyle);
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    ICommand dayTappedCommand;
 
-    public ICommand DayTappedCommand
-    {
-        get => GetProperty<ICommand>();
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundFullEventColor))]
+    bool hasEvents;
 
-    public bool HasEvents
-    {
-        get => GetProperty<bool>();
-        set => SetProperty(value)
-                .Notify(nameof(IsEventDotVisible),
-                        nameof(BackgroundEventIndicator),
-                        nameof(BackgroundFullEventColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible))]
+    bool isThisMonth;
 
-    public bool IsThisMonth
-    {
-        get => GetProperty<bool>();
-        set => SetProperty(value)
-                .Notify(nameof(TextColor),
-                        nameof(IsVisible));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor), nameof(BackgroundColor), nameof(OutlineColor), nameof(EventColor), nameof(BackgroundFullEventColor))]
+    bool isSelected;
 
-    public bool IsSelected
-    {
-        get => GetProperty<bool>();
-        set => SetProperty(value)
-                .Notify(nameof(TextColor),
-                        nameof(BackgroundColor),
-                        nameof(OutlineColor),
-                        nameof(EventColor),
-                        nameof(BackgroundFullEventColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsVisible))]
+    bool otherMonthIsVisible;
 
-    public bool OtherMonthIsVisible
-    {
-        get => GetProperty(true);
-        set => SetProperty(value)
-                .Notify(nameof(IsVisible));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    bool isDisabled;
 
-    public bool IsDisabled
-    {
-        get => GetProperty<bool>();
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color selectedTextColor = Colors.White;
 
-    public Color SelectedTextColor
-    {
-        get => GetProperty(Colors.White);
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color selectedTodayTextColor = Colors.Transparent;
 
-    public Color SelectedTodayTextColor
-    {
-        get => GetProperty(Colors.Transparent);
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color otherMonthColor = Colors.Silver;
 
-    public Color OtherMonthColor
-    {
-        get => GetProperty(Colors.Silver);
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color weekendDayColor = Colors.Transparent;
 
-    public Color WeekendDayColor
-    {
-        get => GetProperty(Colors.Transparent);
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color deselectedTextColor = Colors.Transparent;
 
-    public Color DeselectedTextColor
-    {
-        get => GetProperty(Colors.Transparent);
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
+    Color selectedBackgroundColor = Color.FromArgb("#2196F3");
 
-    public Color SelectedBackgroundColor
-    {
-        get => GetProperty(Color.FromArgb("#2196F3"));
-        set => SetProperty(value)
-                .Notify(nameof(BackgroundColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
+    Color deselectedBackgroundColor = Colors.Transparent;
 
-    public Color DeselectedBackgroundColor
-    {
-        get => GetProperty(Colors.Transparent);
-        set => SetProperty(value)
-                .Notify(nameof(BackgroundColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundColor))]
+    EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
-    public EventIndicatorType EventIndicatorType
-    {
-        get => GetProperty(EventIndicatorType.BottomDot);
-        set => SetProperty(value)
-                .Notify(nameof(IsEventDotVisible),
-                        nameof(BackgroundEventIndicator),
-                        nameof(BackgroundColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    Color eventIndicatorColor = Color.FromArgb("#FF4081");
 
-    public Color EventIndicatorColor
-    {
-        get => GetProperty(Color.FromArgb("#FF4081"));
-        set => SetProperty(value)
-                .Notify(nameof(EventColor),
-                        nameof(BackgroundColor),
-                        nameof(BackgroundFullEventColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    Color eventIndicatorSelectedColor;
 
-    public Color EventIndicatorSelectedColor
-    {
-        get => GetProperty(SelectedBackgroundColor);
-        set => SetProperty(value)
-                .Notify(nameof(EventColor),
-                        nameof(BackgroundColor),
-                        nameof(BackgroundFullEventColor));
-    }
+    [ObservableProperty]
+    Color eventIndicatorTextColor;
 
-    public Color EventIndicatorTextColor
-    {
-        get => GetProperty(DeselectedTextColor);
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    Color eventIndicatorSelectedTextColor;
 
-    public Color EventIndicatorSelectedTextColor
-    {
-        get => GetProperty(SelectedTextColor);
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(OutlineColor))]
+    Color todayOutlineColor = Color.FromArgb("#FF4081");
 
-    public Color TodayOutlineColor
-    {
-        get => GetProperty(Color.FromArgb("#FF4081"));
-        set => SetProperty(value)
-                .Notify(nameof(OutlineColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color todayTextColor = Colors.Transparent;
 
-    public Color TodayTextColor
-    {
-        get => GetProperty(Colors.Transparent);
-        set => SetProperty(value)
-                .Notify(nameof(TextColor));
-    }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
+    Color todayFillColor = Colors.Transparent;
 
-    public Color TodayFillColor
-    {
-        get => GetProperty(Colors.Transparent);
-        set => SetProperty(value)
-                .Notify(nameof(BackgroundColor));
-    }
-
-    public Color DisabledColor
-    {
-        get => GetProperty(Color.FromArgb("#ECECEC"));
-        set => SetProperty(value);
-    }
+    [ObservableProperty]
+    Color disabledColor = Color.FromArgb("#ECECEC");
 
     public bool IsEventDotVisible => HasEvents && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
 
