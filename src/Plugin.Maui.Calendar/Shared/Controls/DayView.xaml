@@ -10,34 +10,33 @@
     BackgroundColor="{Binding BackgroundFullEventColor}">
     <ContentView.Resources>
         <ResourceDictionary>            
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>
-            <conv:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>            
         </ResourceDictionary>
     </ContentView.Resources>
     <Border
         Padding="0"
-        BackgroundColor="{Binding BackgroundColor}"
-        HeightRequest="{Binding DayViewSize}"        
+        BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
+        HeightRequest="{Binding DayViewSize, Mode=OneWay}"        
         HorizontalOptions="Center"
-        Stroke="{Binding OutlineColor,Converter={StaticResource ColorToBrushConverter}}"
-        StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}}"
-        WidthRequest="{Binding DayViewSize}">
+        Stroke="{Binding OutlineColor, Mode=OneWay}"
+        StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
+        WidthRequest="{Binding DayViewSize, Mode=OneWay}">
         <FlexLayout
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
             <Label
-                FontSize="{Binding FontSize}"
+                FontSize="{Binding FontSize,Mode=OneWay}"
                 HorizontalTextAlignment="Center"               
-                Style="{Binding DaysLabelStyle}"
-                Text="{Binding Date.Day}"
-                TextColor="{Binding TextColor}" />
+                Style="{Binding DaysLabelStyle,Mode=OneWay}"
+                Text="{Binding Date.Day,Mode=OneWay}"
+                TextColor="{Binding TextColor, Mode=OneWay }" />
             <Border
                 Padding="0"
-                BackgroundColor="{Binding EventColor}"
+                BackgroundColor="{Binding EventColor,Mode=OneWay}"
                 StrokeShape="RoundRectangle 4"               
                 HeightRequest="8"
-                IsVisible="{Binding IsEventDotVisible}"
+                IsVisible="{Binding IsEventDotVisible,Mode=OneWay}"
                 WidthRequest="8" />
         </FlexLayout>
         <Border.GestureRecognizers>

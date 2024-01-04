@@ -716,7 +716,7 @@ public partial class MonthDaysView : ContentView
 
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
-            var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];            
+            var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpper();
             dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
             // Detect weekend days
@@ -871,27 +871,25 @@ public partial class MonthDaysView : ContentView
         _propertyChangedNotificationSupressions[propertyName] = false;
     }
 
+   
+
     internal void AssignIndicatorColors(ref DayModel dayModel)
     {
-        Color? eventIndicatorColor = EventIndicatorColor;
-        Color? eventIndicatorSelectedColor = EventIndicatorSelectedColor;
-        Color? eventIndicatorTextColor = EventIndicatorTextColor;
-        Color? eventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
-
         if (Events.TryGetValue(dayModel.Date, out var dayEventCollection) && dayEventCollection is IPersonalizableDayEvent personalizableDay)
         {
-            eventIndicatorColor = personalizableDay?.EventIndicatorColor;
-            eventIndicatorSelectedColor = personalizableDay?.EventIndicatorSelectedColor ?? personalizableDay?.EventIndicatorColor;
-            eventIndicatorTextColor = personalizableDay?.EventIndicatorTextColor;
-            eventIndicatorSelectedTextColor = personalizableDay?.EventIndicatorSelectedTextColor ?? personalizableDay?.EventIndicatorTextColor;
+            dayModel.EventIndicatorColor = personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
+            dayModel.EventIndicatorSelectedColor = personalizableDay?.EventIndicatorSelectedColor ?? personalizableDay?.EventIndicatorColor ?? EventIndicatorSelectedColor;
+            dayModel.EventIndicatorTextColor = personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
+            dayModel.EventIndicatorSelectedTextColor = personalizableDay?.EventIndicatorSelectedTextColor ?? personalizableDay?.EventIndicatorTextColor ?? EventIndicatorSelectedTextColor;
         }
-
-        dayModel.EventIndicatorColor = eventIndicatorColor ?? EventIndicatorColor;
-        dayModel.EventIndicatorSelectedColor = eventIndicatorSelectedColor ?? EventIndicatorSelectedColor;
-        dayModel.EventIndicatorTextColor = eventIndicatorTextColor ?? EventIndicatorTextColor;
-        dayModel.EventIndicatorSelectedTextColor = eventIndicatorSelectedTextColor ?? EventIndicatorSelectedTextColor;
+        else
+        {
+            dayModel.EventIndicatorColor = EventIndicatorColor;
+            dayModel.EventIndicatorSelectedColor = EventIndicatorSelectedColor;
+            dayModel.EventIndicatorTextColor = EventIndicatorTextColor;
+            dayModel.EventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
+        }
     }
-
     void OnSwiped(object sender, SwipedEventArgs e)
     {
         switch (e.Direction)
