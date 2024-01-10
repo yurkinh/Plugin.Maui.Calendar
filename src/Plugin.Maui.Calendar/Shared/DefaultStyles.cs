@@ -4,10 +4,12 @@ public static class DefaultStyles
 {
     public static Style DefaultLabelStyle { get; }
     public static Style DefaultTitleLabelStyle { get; }
+    public static Style DefaultOtherMonthDayLabelStyle { get; }
 
     static DefaultStyles()
     {
         DefaultLabelStyle = CreateDefaultLabelStyle();
+        DefaultOtherMonthDayLabelStyle = CreateDefaultOtherMonthDayLabelStyle();
         DefaultTitleLabelStyle = CreateDefaultTitleLabelStyle();
     }
 
@@ -20,6 +22,13 @@ public static class DefaultStyles
         style.Setters.Add(new Setter() { Property = Label.LineBreakModeProperty, Value = LineBreakMode.WordWrap });
         style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = TextAlignment.Center });
         style.Setters.Add(new Setter() { Property = View.MarginProperty, Value = new Thickness(5, 2, 5, 2) });
+        return style;
+    }
+
+    static Style CreateDefaultOtherMonthDayLabelStyle()
+    {
+        Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };
+        style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Silver });
         return style;
     }
     static Style CreateDefaultTitleLabelStyle()

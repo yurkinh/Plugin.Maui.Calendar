@@ -170,22 +170,7 @@ public partial class MonthDaysView : ContentView
     {
         get => (Color)GetValue(WeekendDayColorProperty);
         set => SetValue(WeekendDayColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for OtherMonthDayColor
-    /// </summary>
-    public static readonly BindableProperty OtherMonthDayColorProperty =
-      BindableProperty.Create(nameof(OtherMonthDayColor), typeof(Color), typeof(MonthDaysView), Colors.Silver);
-
-    /// <summary>
-    /// Color of text for for days not belonging to the current month
-    /// </summary>
-    public Color OtherMonthDayColor
-    {
-        get => (Color)GetValue(OtherMonthDayColorProperty);
-        set => SetValue(OtherMonthDayColorProperty, value);
-    }
+    }    
 
     /// <summary>
     /// Bindable property for OtherMonthDayIsVisible
@@ -415,6 +400,24 @@ public partial class MonthDaysView : ContentView
             control.UpdateDays();
     }
 
+    public Style OtherMonthDaysLabelStyle
+    {
+        get => (Style)GetValue(OtherMonthDaysLabelStyleProperty);
+        set => SetValue(OtherMonthDaysLabelStyleProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for DaysLabelStyle
+    /// </summary>
+    public static readonly BindableProperty OtherMonthDaysLabelStyleProperty =
+      BindableProperty.Create(nameof(OtherMonthDaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultOtherMonthDayLabelStyle, propertyChanged: OtherMonthDaysLabelStyleChanges);
+
+    private static void OtherMonthDaysLabelStyleChanges(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+            control.UpdateDays();
+    }
+
     /// <summary>
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
     /// </summary>
@@ -635,8 +638,7 @@ public partial class MonthDaysView : ContentView
                 break;
             case nameof(TodayTextColor):
             case nameof(SelectedDayTextColor):
-            case nameof(SelectedTodayTextColor):
-            case nameof(OtherMonthDayColor):
+            case nameof(SelectedTodayTextColor):           
             case nameof(WeekendDayColor):
             case nameof(DeselectedDayTextColor):
             case nameof(SelectedDayBackgroundColor):
@@ -736,8 +738,8 @@ public partial class MonthDaysView : ContentView
             dayModel.EventIndicatorType = EventIndicatorType;
             dayModel.DayViewSize = DayViewSize;
             dayModel.DayViewCornerRadius = DayViewCornerRadius;
-            dayModel.DaysLabelStyle = DaysLabelStyle;
             dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
+            dayModel.DaysLabelStyle = dayModel.IsThisMonth ? DaysLabelStyle : OtherMonthDaysLabelStyle;            
             dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
             dayModel.HasEvents = Events.ContainsKey(currentDate);
             dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate;
@@ -756,8 +758,7 @@ public partial class MonthDaysView : ContentView
             dayModel.DeselectedTextColor = DeselectedDayTextColor;
             dayModel.TodayTextColor = TodayTextColor;
             dayModel.SelectedTextColor = SelectedDayTextColor;
-            dayModel.SelectedTodayTextColor = SelectedTodayTextColor;
-            dayModel.OtherMonthColor = OtherMonthDayColor;
+            dayModel.SelectedTodayTextColor = SelectedTodayTextColor;           
             dayModel.WeekendDayColor = WeekendDayColor;
             dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
             dayModel.TodayOutlineColor = TodayOutlineColor;

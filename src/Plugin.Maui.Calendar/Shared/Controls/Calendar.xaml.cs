@@ -298,23 +298,7 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(WeekendDayColorProperty);
         set => SetValue(WeekendDayColorProperty, value);
-    }
-
-
-    /// <summary>
-    /// Bindable property for OtherMonthDayColor
-    /// </summary>
-    public static readonly BindableProperty OtherMonthDayColorProperty =
-      BindableProperty.Create(nameof(OtherMonthDayColor), typeof(Color), typeof(Calendar), Colors.Silver);
-
-    /// <summary>
-    /// Specifies the color of days belonging to a month other than the selected one
-    /// </summary>
-    public Color OtherMonthDayColor
-    {
-        get => (Color)GetValue(OtherMonthDayColorProperty);
-        set => SetValue(OtherMonthDayColorProperty, value);
-    }
+    }    
 
     /// <summary>
     /// Bindable property for OtherMonthDayIsVisible
@@ -871,6 +855,21 @@ public partial class Calendar : ContentView
     {
         get => (Style)GetValue(DaysLabelStyleProperty);
         set => SetValue(DaysLabelStyleProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for DaysLabelStyle
+    /// </summary>
+    public static readonly BindableProperty OtherMonthDaysLabelStyleProperty =
+      BindableProperty.Create(nameof(OtherMonthDaysLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultOtherMonthDayLabelStyle);
+
+    /// <summary>
+    /// Specifies the style of day labels
+    /// </summary>
+    public Style OtherMonthDaysLabelStyle
+    {
+        get => (Style)GetValue(OtherMonthDaysLabelStyleProperty);
+        set => SetValue(OtherMonthDaysLabelStyleProperty, value);
     }
 
     /// <summary>
