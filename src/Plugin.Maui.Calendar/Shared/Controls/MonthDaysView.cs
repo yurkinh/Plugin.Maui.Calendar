@@ -432,8 +432,13 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DaysLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle);
+      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle, propertyChanged: DaysLabelStyleChanges);
 
+    private static void DaysLabelStyleChanges(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+            control.UpdateDays();
+    }
 
     /// <summary>
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
