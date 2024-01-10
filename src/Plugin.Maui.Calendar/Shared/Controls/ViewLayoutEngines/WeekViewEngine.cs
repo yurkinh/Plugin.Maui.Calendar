@@ -19,8 +19,7 @@ internal class WeekViewEngine : ViewLayoutBase, IViewLayoutEngine
     public Grid GenerateLayout(
         List<DayView> dayViews,
         object bindingContext,
-        string daysTitleHeightBindingName,
-        string daysTitleColorBindingName,
+        string daysTitleHeightBindingName,        
         string daysTitleLabelStyleBindingName,
         string dayViewSizeBindingName,
         ICommand dayTappedCommand,
@@ -30,8 +29,7 @@ internal class WeekViewEngine : ViewLayoutBase, IViewLayoutEngine
         var grid = GenerateWeekLayout(
             dayViews,
             bindingContext,
-            daysTitleHeightBindingName,
-            daysTitleColorBindingName,
+            daysTitleHeightBindingName,           
             daysTitleLabelStyleBindingName,
             dayViewSizeBindingName,
             dayTappedCommand,

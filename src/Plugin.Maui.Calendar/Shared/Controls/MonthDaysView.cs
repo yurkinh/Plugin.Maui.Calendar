@@ -656,7 +656,7 @@ public partial class MonthDaysView : ContentView
                 break;
 
             case nameof(DaysTitleMaximumLength):
-            case nameof(DaysTitleColor):
+            case nameof(DaysTitleLabelStyle):
             case nameof(DaysTitleHeight):
             case nameof(DaysTitleWeekendColor):
             case nameof(DaysTitleLabelFirstUpperRestLower):
@@ -690,7 +690,7 @@ public partial class MonthDaysView : ContentView
 
             dayLabel.Style = DaysTitleLabelStyle;
             // Detect weekend days
-            if (DaysTitleColor != DaysTitleWeekendColor && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
+            if (DaysTitleWeekendColor != null && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
                 // It's a weekend day
                 // You can change the color of the label or do something else
@@ -783,7 +783,6 @@ public partial class MonthDaysView : ContentView
             _dayViews,
             this,
             nameof(DaysTitleHeight),
-            nameof(DaysTitleColor),
             nameof(DaysTitleLabelStyle),
             nameof(DayViewSize),
             DayTappedCommand,

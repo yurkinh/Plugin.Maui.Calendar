@@ -12,8 +12,7 @@ internal class MonthViewEngine(CultureInfo culture) : ViewLayoutBase(culture), I
     public Grid GenerateLayout(
         List<DayView> dayViews,
         object bindingContext,
-        string daysTitleHeightBindingName,
-        string daysTitleColorBindingName,
+        string daysTitleHeightBindingName,        
         string daysTitleLabelStyleBindingName,
         string dayViewSizeBindingName,
         ICommand dayTappedCommand,
@@ -24,8 +23,7 @@ internal class MonthViewEngine(CultureInfo culture) : ViewLayoutBase(culture), I
         return GenerateWeekLayout(
             dayViews,
             bindingContext,
-            daysTitleHeightBindingName,
-            daysTitleColorBindingName,
+            daysTitleHeightBindingName,            
             daysTitleLabelStyleBindingName,
             dayViewSizeBindingName,
             dayTappedCommand,

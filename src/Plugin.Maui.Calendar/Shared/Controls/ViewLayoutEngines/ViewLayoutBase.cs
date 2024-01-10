@@ -21,7 +21,6 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
             List<DayView> dayViews,
             object bindingContext,
             string daysTitleHeightBindingName,
-            string daysTitleColorBindingName,
             string daysTitleLabelStyleBindingName,
             string dayViewSizeBindingName,
             ICommand dayTappedCommand,
@@ -62,7 +61,6 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
                 HorizontalTextAlignment = TextAlignment.Center,
                 BindingContext = bindingContext
             };
-            label.SetBinding(Label.TextColorProperty, daysTitleColorBindingName);
             label.SetBinding(Label.StyleProperty, daysTitleLabelStyleBindingName);
 
             grid.Add(label, i, 0);
