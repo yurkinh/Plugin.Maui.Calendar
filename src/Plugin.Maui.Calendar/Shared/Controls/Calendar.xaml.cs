@@ -892,7 +892,7 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), null);
+      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTitleLabelStyle);
 
     /// <summary>
     /// Specifies the style of day title labels

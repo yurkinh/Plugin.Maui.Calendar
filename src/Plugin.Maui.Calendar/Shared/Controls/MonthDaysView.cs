@@ -98,25 +98,10 @@ public partial class MonthDaysView : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DaysTitleColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
-
-    /// <summary>
-    /// Color of weekday titles
-    /// </summary>
-    public Color DaysTitleColor
-    {
-        get => (Color)GetValue(DaysTitleColorProperty);
-        set => SetValue(DaysTitleColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DaysTitleColor
+    /// Bindable property for DaysTitleWeekendColor
     /// </summary>
     public static readonly BindableProperty DaysTitleWeekendColorProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(MonthDaysView), null);
 
     /// <summary>
     /// Color of weekday titles
@@ -412,6 +397,12 @@ public partial class MonthDaysView : ContentView
         set => SetValue(DaysTitleMaximumLengthProperty, value);
     }
 
+    public Style DaysLabelStyle
+    {
+        get => (Style)GetValue(DaysLabelStyleProperty);
+        set => SetValue(DaysLabelStyleProperty, value);
+    }
+
     /// <summary>
     /// Bindable property for DaysLabelStyle
     /// </summary>
@@ -440,19 +431,16 @@ public partial class MonthDaysView : ContentView
     }
 
     /// <summary>
-    /// Style of weekday labels
-    /// </summary>
-    public Style DaysLabelStyle
-    {
-        get => (Style)GetValue(DaysLabelStyleProperty);
-        set => SetValue(DaysLabelStyleProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), null);
+      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), defaultValue: DefaultStyles.DefaultTitleLabelStyle, propertyChanged: DaysTitleLabelStyleChanges);
+
+    private static void DaysTitleLabelStyleChanges(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+            control.UpdateDayTitles();
+    }
 
     /// <summary>
     /// ???
@@ -699,6 +687,8 @@ public partial class MonthDaysView : ContentView
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpper();
             dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+
+            dayLabel.Style = DaysTitleLabelStyle;
             // Detect weekend days
             if (DaysTitleColor != DaysTitleWeekendColor && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
