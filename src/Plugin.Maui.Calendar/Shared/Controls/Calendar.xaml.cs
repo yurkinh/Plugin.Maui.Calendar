@@ -226,21 +226,6 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DaysTitleColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the color for the titles of days
-    /// </summary>
-    public Color DaysTitleColor
-    {
-        get => (Color)GetValue(DaysTitleColorProperty);
-        set => SetValue(DaysTitleColorProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for DaysTitleWeekendColor
     /// </summary>
     public static readonly BindableProperty DaysTitleWeekendColorProperty =
@@ -449,8 +434,8 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(ArrowsColorProperty);
         set => SetValue(ArrowsColorProperty, value);
-    }   
-    
+    }
+
 
     /// <summary>
     /// Bindable property for ArrowsFontSizeProperty
@@ -461,7 +446,7 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Specifies the FontSize of month and year selection arrows
     /// </summary>
-    [TypeConverter (typeof(FontSizeConverter))]
+    [TypeConverter(typeof(FontSizeConverter))]
     public double ArrowsFontSize
     {
         get => (double)GetValue(ArrowsFontSizeProperty);
