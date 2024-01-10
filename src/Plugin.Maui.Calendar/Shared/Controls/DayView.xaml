@@ -25,11 +25,9 @@
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
-            <Label                
-                HorizontalTextAlignment="Center"               
+            <Label            
                 Style="{Binding DaysLabelStyle,Mode=OneWay}"
-                Text="{Binding Date.Day,Mode=OneWay}"
-                TextColor="{Binding TextColor, Mode=OneWay }" />
+                Text="{Binding Date.Day,Mode=OneWay}"/>
             <Border
                 Padding="0"
                 BackgroundColor="{Binding EventColor,Mode=OneWay}"

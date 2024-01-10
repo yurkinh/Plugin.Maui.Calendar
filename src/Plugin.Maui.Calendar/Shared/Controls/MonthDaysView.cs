@@ -368,22 +368,6 @@ public partial class MonthDaysView : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DayViewFontSizeProperty
-    /// </summary>
-    public static readonly BindableProperty DayViewFontSizeProperty =
-      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(MonthDaysView), 14d);
-
-    /// <summary>
-    /// Specifies the FontSize of DayView label
-    /// </summary>
-    [TypeConverter(typeof(FontSizeConverter))]
-    public double DayViewFontSize
-    {
-        get => (double)GetValue(DayViewFontSizeProperty);
-        set => SetValue(DayViewFontSizeProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for DayViewCornerRadius
     /// </summary>
     public static readonly BindableProperty DayViewCornerRadiusProperty =
@@ -659,7 +643,6 @@ public partial class MonthDaysView : ContentView
             case nameof(MinimumDate):
             case nameof(MaximumDate):
             case nameof(OtherMonthDayIsVisible):
-            case nameof(DayViewCornerRadius):
                 UpdateAndAnimateDays(AnimateCalendar);
                 break;
             case nameof(TodayTextColor):
@@ -677,7 +660,6 @@ public partial class MonthDaysView : ContentView
             case nameof(TodayOutlineColor):
             case nameof(TodayFillColor):
             case nameof(DisabledDayColor):
-            case nameof(DayViewFontSize):
                 UpdateDaysColors();
                 break;
             case nameof(Culture):
@@ -763,7 +745,6 @@ public partial class MonthDaysView : ContentView
             dayModel.DayTappedCommand = DayTappedCommand;
             dayModel.EventIndicatorType = EventIndicatorType;
             dayModel.DayViewSize = DayViewSize;
-            dayModel.FontSize = DayViewFontSize;
             dayModel.DayViewCornerRadius = DayViewCornerRadius;
             dayModel.DaysLabelStyle = DaysLabelStyle;
             dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
@@ -792,7 +773,6 @@ public partial class MonthDaysView : ContentView
             dayModel.TodayOutlineColor = TodayOutlineColor;
             dayModel.TodayFillColor = TodayFillColor;
             dayModel.DisabledColor = DisabledDayColor;
-            dayModel.FontSize = DayViewFontSize;
 
             AssignIndicatorColors(ref dayModel);
         }
