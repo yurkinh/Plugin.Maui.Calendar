@@ -256,21 +256,6 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DeselectedDayTextColor
-    /// </summary>
-    public static readonly BindableProperty DeselectedDayTextColorProperty =
-      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the text color for deselected days
-    /// </summary>
-    public Color DeselectedDayTextColor
-    {
-        get => (Color)GetValue(DeselectedDayTextColorProperty);
-        set => SetValue(DeselectedDayTextColorProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for SelectedTodayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedTodayTextColorProperty =
@@ -298,7 +283,7 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(WeekendDayColorProperty);
         set => SetValue(WeekendDayColorProperty, value);
-    }    
+    }
 
     /// <summary>
     /// Bindable property for OtherMonthDayIsVisible
@@ -321,6 +306,26 @@ public partial class Calendar : ContentView
     public static readonly BindableProperty SelectedDayBackgroundColorProperty =
       BindableProperty.Create(nameof(SelectedDayBackgroundColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
 
+    public Style SelectedDayLabelStyle
+    {
+        get => (Style)GetValue(SelectedDayLabelStyleProperty);
+        set => SetValue(SelectedDayLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty SelectedDayLabelStyleProperty =
+      BindableProperty.Create(nameof(SelectedDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultSelectedDayLabelStyle);
+
+    public Style SelectedTodayLabelStyle
+    {
+        get => (Style)GetValue(SelectedTodayLabelStyleProperty);
+        set => SetValue(SelectedTodayLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty SelectedTodayLabelStyleProperty =
+      BindableProperty.Create(nameof(SelectedTodayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultSelectedTodayLabelStyle);
+
+
+
     /// <summary>
     /// Specifies the background color of selected days
     /// </summary>
@@ -334,7 +339,7 @@ public partial class Calendar : ContentView
     /// Bindable property for EventIndicatorType
     /// </summary>
     public static readonly BindableProperty EventIndicatorTypeProperty =
-      BindableProperty.Create(nameof(EventIndicatorType), typeof(EventIndicatorType), typeof(MonthDaysView), EventIndicatorType.BottomDot);
+      BindableProperty.Create(nameof(EventIndicatorType), typeof(EventIndicatorType), typeof(Calendar), EventIndicatorType.BottomDot);
 
     /// <summary>
     /// Specifies the way in which events will be shown on dates
@@ -845,16 +850,31 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DaysLabelStyle
     /// </summary>
-    public static readonly BindableProperty DaysLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultLabelStyle);
+    public static readonly BindableProperty DeselectedDayLabelStyleProperty =
+      BindableProperty.Create(nameof(DeselectedDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultDeselectedDayLabelStyle);
 
     /// <summary>
     /// Specifies the style of day labels
     /// </summary>
-    public Style DaysLabelStyle
+    public Style DeselectedDayLabelStyle
     {
-        get => (Style)GetValue(DaysLabelStyleProperty);
-        set => SetValue(DaysLabelStyleProperty, value);
+        get => (Style)GetValue(DeselectedDayLabelStyleProperty);
+        set => SetValue(DeselectedDayLabelStyleProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for DaysLabelStyle
+    /// </summary>
+    public static readonly BindableProperty DayLabelStyleProperty =
+      BindableProperty.Create(nameof(DayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultLabelStyle);
+
+    /// <summary>
+    /// Specifies the style of day labels
+    /// </summary>
+    public Style DayLabelStyle
+    {
+        get => (Style)GetValue(DayLabelStyleProperty);
+        set => SetValue(DayLabelStyleProperty, value);
     }
 
     /// <summary>
@@ -876,7 +896,7 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTitleLabelStyle);
+      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTitleDaysLabelStyle);
 
     /// <summary>
     /// Specifies the style of day title labels
@@ -886,6 +906,52 @@ public partial class Calendar : ContentView
         get => (Style)GetValue(DaysTitleLabelStyleProperty);
         set => SetValue(DaysTitleLabelStyleProperty, value);
     }
+
+    public Style DisabledDayLabelStyle
+    {
+        get => (Style)GetValue(DisabledDayLabelStyleProperty);
+        set => SetValue(DisabledDayLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty DisabledDayLabelStyleProperty =
+      BindableProperty.Create(nameof(DisabledDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultDisabledDayLabelStyle);
+
+    public Style EventIndicatorSelectedLabelStyle
+    {
+        get => (Style)GetValue(EventIndicatorSelectedLabelStyleProperty);
+        set => SetValue(EventIndicatorSelectedLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty EventIndicatorSelectedLabelStyleProperty =
+      BindableProperty.Create(nameof(EventIndicatorSelectedLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultEventIndicatorSelectedLabelStyle);
+
+    public Style EventIndicatorLabelStyle
+    {
+        get => (Style)GetValue(EventIndicatorLabelStyleProperty);
+        set => SetValue(EventIndicatorLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty EventIndicatorLabelStyleProperty =
+      BindableProperty.Create(nameof(EventIndicatorLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultEventIndicatorLabelStyle);
+
+    public Style TodayLabelStyle
+    {
+        get => (Style)GetValue(TodayLabelStyleProperty);
+        set => SetValue(TodayLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty TodayLabelStyleProperty =
+      BindableProperty.Create(nameof(TodayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTodayLabelStyle);
+
+    public Style WeekendDayLabelStyle
+    {
+        get => (Style)GetValue(WeekendDaysLabelStyleProperty);
+        set => SetValue(WeekendDaysLabelStyleProperty, value);
+    }
+
+    public static readonly BindableProperty WeekendDaysLabelStyleProperty =
+      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultWeekendDayLabelStyle);
+
 
     /// <summary>
     /// Bindable property for DisableSwipeDetection

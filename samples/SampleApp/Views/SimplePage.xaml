@@ -16,8 +16,15 @@
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
             </Style>
+            <Style
+                x:Key="otherMonthDaysTitleLabelStyle"
+                BasedOn="{StaticResource daysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Silver" />
+            </Style>
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />                
+                <Setter Property="FontSize" Value="18" />                   
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}" />             
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -33,12 +40,12 @@
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"        
-        SelectedDate="{Binding SelectedDate}"
+        SelectedDate="{Binding SelectedDate}"        
         DayViewFontSize="Medium"
         DaysLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        ArrowsFontSize="Medium"
-        DaysTitleColor = "{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}"
+        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
+        ArrowsFontSize="Medium"        
         Year="{Binding Year}"       
         Padding="10,0"
         HorizontalOptions="Fill"

@@ -23,4 +23,10 @@ internal static class Extensions
         dataTemplate.SetValue(BindableObject.BindingContextProperty, itemModel);
         return dataTemplate.CreateContent();
     }
+
+    public static T GetSetterValue<T>(this Style style, BindableProperty property)
+    {
+        var setter = style.Setters.OfType<Setter>().FirstOrDefault(s => s.Property == property);
+        return setter != null ? (T)setter.Value : default;
+    }
 }
