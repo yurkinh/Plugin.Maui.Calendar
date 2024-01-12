@@ -690,7 +690,7 @@ public partial class MonthDaysView : ContentView
             (false, true, true, true, _, _) => EventIndicatorSelectedLabelStyle,
             (false, false, true, true, _, _) => EventIndicatorLabelStyle,
             (false, false, _, false, _, _) => OtherMonthDaysLabelStyle,
-            (false, false, false, true, true, _) => TodayLabelStyle.GetSetterValue<Color>(Label.TextColorProperty) == Colors.Transparent ? DeselectedDayLabelStyle : TodayLabelStyle,
+            (false, false, false, true, true, _) => TodayLabelStyle,
             (false, _, _, _, _, true) => WeekendDayLabelStyle,
             (false, false, false, true, false, _) => DeselectedDayLabelStyle,
             (_, _, _, _, _, _) => DayLabelStyle

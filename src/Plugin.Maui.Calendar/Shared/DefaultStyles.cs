@@ -51,8 +51,7 @@ public static class DefaultStyles
 
     static Style CreateDefaultDeselectedDaysLabelStyle()
     {
-        Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };
-        style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Transparent });
+        Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };        
         return style;
     }
 

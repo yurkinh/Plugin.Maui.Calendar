@@ -6,7 +6,7 @@
     xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
     x:Name="dayView"
-    x:DataType="models:DayModel"
+    x:DataType="models:DayModel"    
     BackgroundColor="{Binding BackgroundFullEventColor}">
     <ContentView.Resources>
         <ResourceDictionary>            

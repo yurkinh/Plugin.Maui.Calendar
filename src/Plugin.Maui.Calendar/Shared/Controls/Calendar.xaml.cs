@@ -626,22 +626,7 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(TodayOutlineColorProperty);
         set => SetValue(TodayOutlineColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for
-    /// </summary>
-    public static readonly BindableProperty TodayTextColorProperty =
-        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the color of text for today's date
-    /// </summary>
-    public Color TodayTextColor
-    {
-        get => (Color)GetValue(TodayTextColorProperty);
-        set => SetValue(TodayTextColorProperty, value);
-    }
+    }    
 
     /// <summary>
     /// Bindable property for TodayFillColor
