@@ -12,16 +12,22 @@
             <Style x:Key="daysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
             </Style>
+            <Style x:Key="deselectedDayLabelStyle" TargetType="Label" BasedOn="{StaticResource daysLabelStyle}">
+                <Setter Property="TextColor" Value="Blue" />
+                </Style>
+             <Style x:Key="todayDayLabelStyle" TargetType="Label" BasedOn="{StaticResource daysLabelStyle}">
+                <Setter Property="TextColor" Value="Yellow" />
+                </Style>
             <Style
                 x:Key="otherMonthDaysLabelStyle"
                 BasedOn="{StaticResource daysLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="Gray" />
+                <Setter Property="TextColor" Value="Silver" />
             </Style>
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
@@ -39,17 +45,18 @@
     <plugin:Calendar
         Padding="10,0"
         AnimateCalendar="True"
-        ArrowsFontFamily="FontAwesomeSolid"
         CalendarLayout="{Binding CalendarLayout}"
         Culture="{Binding Culture}"
         DayTappedCommand="{Binding DayTappedCommand}"
         DayViewCornerRadius="3"
         DayViewSize="40"
-        DaysLabelStyle="{StaticResource daysLabelStyle}"
-        DaysTitleHeight="40"
+        DayLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+        DaysTitleHeight="40"
+        DaysTitleWeekendColor="Orange"
+        ArrowsFontFamily="FontAwesomeSolid"        
         DaysTitleMaximumLength="ThreeChars"
-        DeselectedDayTextColor="Blue"
+        DeselectedDayLabelStyle="{StaticResource deselectedDayLabelStyle}"
         DisableSwipeDetection="False"
         EventIndicatorColor="Red"
         EventIndicatorSelectedColor="IndianRed"
@@ -60,23 +67,23 @@
         HeaderSectionVisible="True"
         HorizontalOptions="Fill"
         MonthLabelColor="Red"
-        OtherMonthDayIsVisible="False"
+        ShownDate="{Binding ShownDate}"
         OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysLabelStyle}"
+        OtherMonthDayIsVisible="False"
         SelectedDate="{Binding SelectedDate}"
         SelectedDateColor="Red"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayBackgroundColor="DarkCyan"
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
-        ShownDate="{Binding ShownDate}"
         SwipeLeftCommand="{Binding SwipeLeftCommand}"
         SwipeRightCommand="{Binding SwipeRightCommand}"
         SwipeToChangeMonthEnabled="False"
         SwipeUpCommand="{Binding SwipeUpCommand}"
         SwipeUpToHideEnabled="False"
-        TodayFillColor="Silver"
+        TodayFillColor="Silver"        
         TodayOutlineColor="Blue"
-        TodayTextColor="Yellow"
+        TodayLabelStyle="{StaticResource todayDayLabelStyle}"
         VerticalOptions="Fill"
         YearLabelColor="Blue">
 

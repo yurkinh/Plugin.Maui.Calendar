@@ -10,7 +10,7 @@
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="TextColor" Value="Green" />
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
@@ -42,7 +42,7 @@
         Month="{Binding Month}"        
         SelectedDate="{Binding SelectedDate}"        
         DayViewFontSize="Medium"
-        DaysLabelStyle="{StaticResource daysLabelStyle}"       
+        DayLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
         ArrowsFontSize="Medium"        
