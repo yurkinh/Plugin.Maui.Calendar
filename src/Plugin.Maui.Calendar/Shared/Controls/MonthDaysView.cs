@@ -312,7 +312,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty WeekendDayLabelStyleProperty =
-      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultWeekendDayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: StylePropertyChanges);
 
     public Style DisabledDayLabelStyle
     {
@@ -691,7 +691,7 @@ public partial class MonthDaysView : ContentView
             (false, false, true, true, _, _) => EventIndicatorLabelStyle,
             (false, false, _, false, _, _) => OtherMonthDaysLabelStyle,
             (false, false, false, true, true, _) => TodayLabelStyle,
-            (false, _, _, _, _, true) => WeekendDayLabelStyle,
+            (false, _, _, _, _, true) => WeekendDayLabelStyle ?? DeselectedDayLabelStyle,
             (false, false, false, true, false, _) => DeselectedDayLabelStyle,
             (_, _, _, _, _, _) => DayLabelStyle
         };

@@ -229,7 +229,7 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleWeekendColor
     /// </summary>
     public static readonly BindableProperty DaysTitleWeekendColorProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(Calendar), Colors.Black);
+      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(Calendar), null);
 
     /// <summary>
     /// Specifies the color for the titles of the weekend days
@@ -626,7 +626,7 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(TodayOutlineColorProperty);
         set => SetValue(TodayOutlineColorProperty, value);
-    }    
+    }
 
     /// <summary>
     /// Bindable property for TodayFillColor
@@ -935,7 +935,7 @@ public partial class Calendar : ContentView
     }
 
     public static readonly BindableProperty WeekendDaysLabelStyleProperty =
-      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultWeekendDayLabelStyle);
+      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), null);
 
 
     /// <summary>
@@ -1269,7 +1269,7 @@ public partial class Calendar : ContentView
 
     #region PropertyChanged
 
-    private static void OnEventsChanged(BindableObject bindable, object oldValue, object newValue)
+    private static async void OnEventsChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Calendar view)
         {
@@ -1280,7 +1280,7 @@ public partial class Calendar : ContentView
                 newEvents.CollectionChanged += view.OnEventsCollectionChanged;
 
             view.UpdateEvents();
-            view.monthDaysView.UpdateAndAnimateDays(view.AnimateCalendar);
+            await view.monthDaysView.UpdateAndAnimateDays(view.AnimateCalendar);
         }
     }
 
@@ -1425,10 +1425,10 @@ public partial class Calendar : ContentView
         _calendarSectionHeight = calendarContainer.Height;
     }
 
-    private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
+    private async void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
     {
         UpdateEvents();
-        monthDaysView.UpdateAndAnimateDays(AnimateCalendar);
+        await monthDaysView.UpdateAndAnimateDays(AnimateCalendar);
     }
 
     #endregion

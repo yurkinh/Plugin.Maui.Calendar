@@ -7,7 +7,6 @@ public static class DefaultStyles
     public static Style DefaultDeselectedDayLabelStyle { get; }
     public static Style DefaultTitleDaysLabelStyle { get; }
     public static Style DefaultOtherMonthDayLabelStyle { get; }
-    public static Style DefaultWeekendDayLabelStyle { get; }
     public static Style DefaultDisabledDayLabelStyle { get; }
     public static Style DefaultSelectedTodayLabelStyle { get; }
     public static Style DefaultSelectedDayLabelStyle { get; }
@@ -21,7 +20,6 @@ public static class DefaultStyles
         DefaultLabelStyle = CreateDefaultLabelStyle();
         DefaultOtherMonthDayLabelStyle = CreateDefaultOtherMonthDayLabelStyle();
         DefaultDeselectedDayLabelStyle = CreateDefaultDeselectedDaysLabelStyle();
-        DefaultWeekendDayLabelStyle = CreateDefaultWeekendDaysLabelStyle();
         DefaultTitleDaysLabelStyle = CreateDefaultTitleLabelStyle();
         DefaultTodayLabelStyle = CreateDefaultTodayLabelStyle();
         DefaultSelectedTodayLabelStyle = CreateDefaultSelectedTodayLabelStyle();
@@ -51,7 +49,7 @@ public static class DefaultStyles
 
     static Style CreateDefaultDeselectedDaysLabelStyle()
     {
-        Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };        
+        Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };
         return style;
     }
 
@@ -62,11 +60,6 @@ public static class DefaultStyles
         return style;
     }
 
-    static Style CreateDefaultWeekendDaysLabelStyle()
-    {
-        Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };
-        return style;
-    }
     static Style CreateDefaultTitleLabelStyle()
     {
         Style style = new(typeof(Label)) { CanCascade = true };

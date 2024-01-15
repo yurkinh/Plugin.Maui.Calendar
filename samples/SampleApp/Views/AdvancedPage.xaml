@@ -33,7 +33,7 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="Orange" />
-            </Style>
+            </Style>            
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -52,11 +52,10 @@
         DayViewSize="40"
         DayLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleHeight="40"
-        DaysTitleWeekendColor="Orange"
+        DaysTitleHeight="40"        
         ArrowsFontFamily="FontAwesomeSolid"        
         DaysTitleMaximumLength="ThreeChars"
-        DeselectedDayLabelStyle="{StaticResource deselectedDayLabelStyle}"
+        DeselectedDayLabelStyle="{StaticResource deselectedDayLabelStyle}"       
         DisableSwipeDetection="False"
         EventIndicatorColor="Red"
         EventIndicatorSelectedColor="IndianRed"
