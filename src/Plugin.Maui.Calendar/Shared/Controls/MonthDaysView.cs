@@ -690,12 +690,12 @@ public partial class MonthDaysView : ContentView
         return (dayModel.IsDisabled, dayModel.IsSelected, dayModel.HasEvents, dayModel.IsThisMonth, dayModel.IsToday, dayModel.IsWeekend) switch
         {
             (true, _, _, _, _, _) => DisabledDayLabelStyle,
-            (false, true, false, true, true, _) => SelectedTodayLabelStyle.GetSetterValue<Color>(Label.TextColorProperty) == Colors.Transparent ? SelectedDayLabelStyle : SelectedTodayLabelStyle,
+            (false, true, false, true, true, _) => SelectedTodayLabelStyle,
             (false, true, false, true, false, _) => SelectedDayLabelStyle,
+            (false, false, false, true, true, _) => TodayLabelStyle,
             (false, true, true, true, _, _) => EventIndicatorSelectedLabelStyle,
             (false, false, true, true, _, _) => EventIndicatorLabelStyle,
             (false, false, _, false, _, _) => OtherMonthDaysLabelStyle,
-            (false, false, false, true, true, _) => TodayLabelStyle,
             (false, _, _, _, _, true) => WeekendDayLabelStyle ?? DeselectedDayLabelStyle,
             (false, false, false, true, false, _) => DeselectedDayLabelStyle,
             (_, _, _, _, _, _) => DayLabelStyle

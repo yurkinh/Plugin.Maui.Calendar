@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"    
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     x:Name="simpleCalendarPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -23,12 +23,19 @@
                 <Setter Property="TextColor" Value="Silver" />
             </Style>
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />                   
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}" />                            
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}" />
             </Style>
             <Style x:Key="daysTitleWeekedLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
-            </Style>            
+            </Style>
+            <Style
+                x:Key="todayDayLabelStyle"
+                BasedOn="{StaticResource daysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Yellow" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -39,27 +46,28 @@
     </ContentPage.BindingContext>
 
     <plugin:Calendar
-        Events="{Binding Events}"
-        MaximumDate="{Binding MaximumDate}"
-        MinimumDate="{Binding MinimumDate}"
-        Month="{Binding Month}"        
-        SelectedDate="{Binding SelectedDate}"        
+        Padding="10,0"
+        ArrowsFontSize="Medium"
+        DayLabelStyle="{StaticResource daysLabelStyle}"
         DayViewFontSize="Medium"
-        DayLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}}"
-        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"       
-        ArrowsFontSize="Medium"        
-        Year="{Binding Year}"       
-        Padding="10,0"
+        Events="{Binding Events}"
         HorizontalOptions="Fill"
-        VerticalOptions="Fill">
+        MaximumDate="{Binding MaximumDate}"
+        MinimumDate="{Binding MinimumDate}"
+        Month="{Binding Month}"
+        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
+        TodayLabelStyle="{StaticResource todayDayLabelStyle}"
+        SelectedDate="{Binding SelectedDate}"
+        VerticalOptions="Fill"
+        Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>
             <DataTemplate>
                 <VerticalStackLayout
-                    Spacing="6"
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
+                    Spacing="6"
                     VerticalOptions="Fill">
                     <Label
                         FontAttributes="Bold"
