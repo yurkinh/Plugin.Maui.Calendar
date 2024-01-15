@@ -6,8 +6,8 @@ public partial class DayView : ContentView
 {
 	internal DayView()
 	{
-		InitializeComponent();
-	}
+		InitializeComponent();        
+	}   
 
     private void OnTapped(object sender, EventArgs e)
     {

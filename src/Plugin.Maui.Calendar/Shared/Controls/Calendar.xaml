@@ -33,8 +33,7 @@
                     OtherMonthDaysLabelStyle="{Binding OtherMonthDaysLabelStyle, Source={x:Reference calendar}}"   
                     DaysTitleHeight="{Binding DaysTitleHeight, Source={x:Reference calendar}}"
                     DaysTitleLabelStyle="{Binding DaysTitleLabelStyle, Source={x:Reference calendar}}"
-                    DaysTitleMaximumLength="{Binding DaysTitleMaximumLength, Source={x:Reference calendar}}"
-                    DaysTitleWeekendColor="{Binding DaysTitleWeekendColor, Source={x:Reference calendar}}"                    
+                    DaysTitleMaximumLength="{Binding DaysTitleMaximumLength, Source={x:Reference calendar}}"                                      
                     DisabledDayLabelStyle="{Binding DisabledDayLabelStyle, Source={x:Reference calendar}}"
                     EventIndicatorColor="{Binding EventIndicatorColor, Source={x:Reference calendar}}"
                     EventIndicatorSelectedColor="{Binding EventIndicatorSelectedColor, Source={x:Reference calendar}}"
@@ -59,7 +58,8 @@
                     TodayFillColor="{Binding TodayFillColor, Source={x:Reference calendar}}"
                     TodayOutlineColor="{Binding TodayOutlineColor, Source={x:Reference calendar}}"
                     TodayLabelStyle="{Binding TodayLabelStyle, Source={x:Reference calendar}}"
-                    WeekendDayLabelStyle="{Binding WeekendDayLabelStyle, Source={x:Reference calendar}}" />            
+                    WeekendDayLabelStyle="{Binding WeekendDayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
+                    DaysTitleWeekendStyle="{Binding DaysTitleWeekendStyle, Source={x:Reference calendar}, Mode=OneWay}" />            
         </VerticalStackLayout>
         <controls:DataTemplateView
             Grid.Row="1"

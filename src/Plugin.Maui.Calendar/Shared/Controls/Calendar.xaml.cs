@@ -226,18 +226,18 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DaysTitleWeekendColor
+    /// Bindable property for DaysTitleWeekendColorStyle
     /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendColorProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(Calendar), null);
+    public static readonly BindableProperty DaysTitleWeekendStyleProperty =
+      BindableProperty.Create(nameof(DaysTitleWeekendStyle), typeof(Style), typeof(Calendar), null);
 
     /// <summary>
     /// Specifies the color for the titles of the weekend days
     /// </summary>
-    public Color DaysTitleWeekendColor
+    public Style DaysTitleWeekendStyle
     {
-        get => (Color)GetValue(DaysTitleWeekendColorProperty);
-        set => SetValue(DaysTitleWeekendColorProperty, value);
+        get => (Style)GetValue(DaysTitleWeekendStyleProperty);
+        set => SetValue(DaysTitleWeekendStyleProperty, value);
     }
 
     /// <summary>
@@ -1506,7 +1506,8 @@ public partial class Calendar : ContentView
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        if (Events is EventCollection events)
+            events.CollectionChanged -= OnEventsCollectionChanged;
     }
 
     #endregion

@@ -24,8 +24,11 @@
             </Style>
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />                   
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}" />             
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}" />                            
             </Style>
+            <Style x:Key="daysTitleWeekedLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+            </Style>            
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -44,7 +47,8 @@
         DayViewFontSize="Medium"
         DayLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
+        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}}"
+        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"       
         ArrowsFontSize="Medium"        
         Year="{Binding Year}"       
         Padding="10,0"

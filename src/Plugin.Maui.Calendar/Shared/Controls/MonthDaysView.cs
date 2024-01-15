@@ -98,21 +98,6 @@ public partial class MonthDaysView : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DaysTitleWeekendColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendColorProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(MonthDaysView), null);
-
-    /// <summary>
-    /// Color of weekday titles
-    /// </summary>
-    public Color DaysTitleWeekendColor
-    {
-        get => (Color)GetValue(DaysTitleWeekendColorProperty);
-        set => SetValue(DaysTitleWeekendColorProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for OtherMonthDayIsVisible
     /// </summary>
     public static readonly BindableProperty OtherMonthDayIsVisibleProperty =
@@ -285,7 +270,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty DayLabelStyleProperty =
-      BindableProperty.Create(nameof(DayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(DayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style OtherMonthDaysLabelStyle
     {
@@ -294,7 +279,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty OtherMonthDaysLabelStyleProperty =
-      BindableProperty.Create(nameof(OtherMonthDaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultOtherMonthDayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(OtherMonthDaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultOtherMonthDayLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style DeselectedDayLabelStyle
     {
@@ -303,7 +288,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty DeselectedDayLabelStyleProperty =
-      BindableProperty.Create(nameof(DeselectedDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultDeselectedDayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(DeselectedDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultDeselectedDayLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style WeekendDayLabelStyle
     {
@@ -312,7 +297,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty WeekendDayLabelStyleProperty =
-      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: DayStylePropertyChanges);
 
     public Style DisabledDayLabelStyle
     {
@@ -321,7 +306,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty DisabledDayLabelStyleProperty =
-      BindableProperty.Create(nameof(DisabledDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultDisabledDayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(DisabledDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultDisabledDayLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style SelectedTodayLabelStyle
     {
@@ -330,7 +315,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty SelectedTodayLabelStyleProperty =
-      BindableProperty.Create(nameof(SelectedTodayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultSelectedTodayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(SelectedTodayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultSelectedTodayLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style SelectedDayLabelStyle
     {
@@ -339,7 +324,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty SelectedDayLabelStyleProperty =
-      BindableProperty.Create(nameof(SelectedDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultSelectedDayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(SelectedDayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultSelectedDayLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style TodayLabelStyle
     {
@@ -348,7 +333,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty TodayLabelStyleProperty =
-      BindableProperty.Create(nameof(TodayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultTodayLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(TodayLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultTodayLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style EventIndicatorSelectedLabelStyle
     {
@@ -357,7 +342,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty EventIndicatorSelectedLabelStyleProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorSelectedLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(EventIndicatorSelectedLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorSelectedLabelStyle, propertyChanged: DayStylePropertyChanges);
 
     public Style EventIndicatorLabelStyle
     {
@@ -366,7 +351,7 @@ public partial class MonthDaysView : ContentView
     }
 
     public static readonly BindableProperty EventIndicatorLabelStyleProperty =
-      BindableProperty.Create(nameof(EventIndicatorLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(EventIndicatorLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorLabelStyle, propertyChanged: DayStylePropertyChanges);
 
 
     /// <summary>
@@ -388,13 +373,8 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), defaultValue: DefaultStyles.DefaultTitleDaysLabelStyle, propertyChanged: StylePropertyChanges);
+      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), defaultValue: DefaultStyles.DefaultTitleDaysLabelStyle, propertyChanged: TitleStylePropertyChanges);
 
-    private static void StylePropertyChanges(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
-            control.UpdateDays();
-    }
 
     /// <summary>
     /// ???
@@ -403,6 +383,21 @@ public partial class MonthDaysView : ContentView
     {
         get => (Style)GetValue(DaysTitleLabelStyleProperty);
         set => SetValue(DaysTitleLabelStyleProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for DaysTitleWeekendColor
+    /// </summary>
+    public static readonly BindableProperty DaysTitleWeekendStyleProperty =
+      BindableProperty.Create(nameof(DaysTitleWeekendStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: TitleStylePropertyChanges);
+
+    /// <summary>
+    /// Color of weekday titles
+    /// </summary>
+    public Style DaysTitleWeekendStyle
+    {
+        get => (Style)GetValue(DaysTitleWeekendStyleProperty);
+        set => SetValue(DaysTitleWeekendStyleProperty, value);
     }
 
     /// <summary>
@@ -481,6 +476,18 @@ public partial class MonthDaysView : ContentView
     }
 
     #endregion
+
+    private static void TitleStylePropertyChanges(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+            control.UpdateDayTitles();
+    }
+
+    private static void DayStylePropertyChanges(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+            control.UpdateDays();
+    }
 
     /// <summary>
     /// Current implementation of selection engine
@@ -586,9 +593,7 @@ public partial class MonthDaysView : ContentView
                 break;
 
             case nameof(DaysTitleMaximumLength):
-            case nameof(DaysTitleLabelStyle):
             case nameof(DaysTitleHeight):
-            case nameof(DaysTitleWeekendColor):
             case nameof(DaysTitleLabelFirstUpperRestLower):
                 UpdateDayTitles();
                 break;
@@ -620,11 +625,11 @@ public partial class MonthDaysView : ContentView
 
             dayLabel.Style = DaysTitleLabelStyle;
             // Detect weekend days
-            if (DaysTitleWeekendColor != null && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
+            if (DaysTitleWeekendStyle != null && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
                 // It's a weekend day
                 // You can change the color of the label or do something else
-                dayLabel.TextColor = DaysTitleWeekendColor;
+                dayLabel.Style = DaysTitleWeekendStyle;
             }
 
             dayNumber = (dayNumber + 1) % 7;
