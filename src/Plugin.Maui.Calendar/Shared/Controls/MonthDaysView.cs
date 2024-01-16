@@ -479,13 +479,14 @@ public partial class MonthDaysView : ContentView
 
     private static void TitleStylePropertyChanges(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+        if (bindable is MonthDaysView control && !Equals(newValue, oldValue))
             control.UpdateDayTitles();
     }
 
     private static void DayStylePropertyChanges(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is MonthDaysView control && (newValue is Style || newValue is null) && !Equals(newValue, oldValue))
+        //todo: separate to methods that update only styles
+        if (bindable is MonthDaysView control && !Equals(newValue, oldValue))
             control.UpdateDays();
     }
 
