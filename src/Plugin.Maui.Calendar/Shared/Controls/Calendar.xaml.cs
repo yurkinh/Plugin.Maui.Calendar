@@ -1508,6 +1508,8 @@ public partial class Calendar : ContentView
     {
         if (Events is EventCollection events)
             events.CollectionChanged -= OnEventsCollectionChanged;
+
+        calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
     }
 
     #endregion
