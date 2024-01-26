@@ -1,7 +1,7 @@
 ﻿
 
 
-namespace Plugin.Maui.Calendar;
+namespace Plugin.Maui.Calendar.Styles;
 
 public static class DefaultStyles
 {

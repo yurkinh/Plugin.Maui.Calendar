@@ -8,6 +8,7 @@ using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Styles;
 
 namespace Plugin.Maui.Calendar.Controls;
 

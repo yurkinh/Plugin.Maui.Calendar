@@ -3,6 +3,7 @@ using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Styles;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
@@ -439,37 +440,6 @@ public partial class Calendar : ContentView
         get => (Style)GetValue(ArrowButtonNextStyleProperty);
         set => SetValue(ArrowButtonNextStyleProperty, value);
     }
-
-    /// <summary>
-    /// Bindable property for ArrowFooterButtonStyle
-    /// </summary>
-    public static readonly BindableProperty ArrowFooterButtonUpStyleProperty =
-        BindableProperty.Create(nameof(ArrowFooterButtonUpStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultFooterArrowButtonUpStyle);
-
-    /// <summary>
-    /// Specifies the style for the footer arrow button
-    /// </summary>
-    public Style ArrowFooterButtonUpStyle
-    {
-        get => (Style)GetValue(ArrowFooterButtonUpStyleProperty);
-        set => SetValue(ArrowFooterButtonUpStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for ArrowFooterButtonDownStyle
-    /// </summary>
-    public static readonly BindableProperty ArrowFooterButtonDownStyleProperty =
-        BindableProperty.Create(nameof(ArrowFooterButtonDownStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultFooterArrowButtonDownStyle);
-
-    /// <summary>
-    /// Specifies the style for the footer arrow button when pressed down
-    /// </summary>
-    public Style ArrowFooterButtonDownStyle
-    {
-        get => (Style)GetValue(ArrowFooterButtonDownStyleProperty);
-        set => SetValue(ArrowFooterButtonDownStyleProperty, value);
-    }
-
 
     /// <summary>
     /// Bindable property for FooterArrowVisible
