@@ -1,4 +1,7 @@
-﻿namespace Plugin.Maui.Calendar;
+﻿
+
+
+namespace Plugin.Maui.Calendar;
 
 public static class DefaultStyles
 {
@@ -12,7 +15,11 @@ public static class DefaultStyles
     public static Style DefaultSelectedDayLabelStyle { get; }
     public static Style DefaultEventIndicatorSelectedLabelStyle { get; }
     public static Style DefaultEventIndicatorLabelStyle { get; }
+    public static Style DefaultArrowButtonPrevStyle { get; }
+    public static Style DefaultArrowButtonNextStyle { get; }
 
+    public static Style DefaultFooterArrowButtonUpStyle { get; }
+    public static Style DefaultFooterArrowButtonDownStyle { get; }
 
 
     static DefaultStyles()
@@ -27,6 +34,10 @@ public static class DefaultStyles
         DefaultSelectedDayLabelStyle = CreateDefaultSelectedDayLabelStyle();
         DefaultEventIndicatorSelectedLabelStyle = CreateDefaultEventIndicatorSelectedLabelStyle();
         DefaultEventIndicatorLabelStyle = CreateDefaultEventIndicatorLabelStyle();
+        DefaultArrowButtonPrevStyle = CreateDefaultArrowButtonPrevStyle();
+        DefaultArrowButtonNextStyle = CreateDefaultArrowButtonNextStyle();
+        DefaultFooterArrowButtonUpStyle = CreateDefaultFooterArrowButtonUpStyle();
+        DefaultFooterArrowButtonDownStyle = CreateDefaultFooterArrowButtonDownStyle();
     }
 
     static Style CreateDefaultLabelStyle()
@@ -103,6 +114,57 @@ public static class DefaultStyles
     {
         Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };
         // Add your custom setters for the event indicator label style here
+        return style;
+    }
+
+    private static Style CreateDefaultArrowButtonPrevStyle()
+    {
+        Style style = new(typeof(Button)) { CanCascade = true };
+        style.Setters.Add(new Setter() { Property = Button.PaddingProperty, Value = new Thickness(0) });
+        style.Setters.Add(new Setter() { Property = VisualElement.WidthRequestProperty, Value = 36 });
+        style.Setters.Add(new Setter() { Property = VisualElement.HeightRequestProperty, Value = 36 });
+        style.Setters.Add(new Setter() { Property = Button.CornerRadiusProperty, Value = 18 });
+        style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = VisualElement.BackgroundColorProperty, Value = Colors.White });
+        style.Setters.Add(new Setter() { Property = Button.BorderColorProperty, Value = Colors.Black });
+        style.Setters.Add(new Setter() { Property = Button.BorderWidthProperty, Value = 1 });
+        style.Setters.Add(new Setter() { Property = Button.FontAttributesProperty, Value = FontAttributes.Bold });
+        style.Setters.Add(new Setter() { Property = Button.FontSizeProperty, Value = 14 });
+        style.Setters.Add(new Setter() { Property = Button.FontFamilyProperty, Value = "OpenSansSemibold" });
+        style.Setters.Add(new Setter() { Property = Button.TextColorProperty, Value = Colors.Black });
+        style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "←" });
+
+        return style;
+    }
+
+    private static Style CreateDefaultArrowButtonNextStyle()
+    {
+        Style style = new(typeof(Button)) { CanCascade = true, BasedOn = DefaultArrowButtonPrevStyle };
+        style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "→" });
+
+        return style;
+    }
+
+    private static Style CreateDefaultFooterArrowButtonUpStyle()
+    {
+        Style style = new(typeof(Button)) { CanCascade = true, BasedOn = DefaultArrowButtonPrevStyle };
+        style.Setters.Add(new Setter() { Property = View.MarginProperty, Value = new Thickness(0, 15, 0, 0) });
+        style.Setters.Add(new Setter() { Property = Button.BorderColorProperty, Value = Colors.Transparent });
+        style.Setters.Add(new Setter() { Property = Button.BorderWidthProperty, Value = 0 });
+        style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.End });
+        style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = Button.LineBreakModeProperty, Value = LineBreakMode.TailTruncation });
+        style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "↑" });
+
+        return style;
+    }
+
+    private static Style CreateDefaultFooterArrowButtonDownStyle()
+    {
+        Style style = new(typeof(Button)) { CanCascade = true, BasedOn = DefaultFooterArrowButtonUpStyle };
+        style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "↓" });
+
         return style;
     }
 

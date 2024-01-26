@@ -6,6 +6,7 @@
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar;assembly=Plugin.Maui.Calendar"
     x:Name="advancedCalendarPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,12 +18,18 @@
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
             </Style>
-            <Style x:Key="deselectedDayLabelStyle" TargetType="Label" BasedOn="{StaticResource daysLabelStyle}">
+            <Style
+                x:Key="deselectedDayLabelStyle"
+                BasedOn="{StaticResource daysLabelStyle}"
+                TargetType="Label">
                 <Setter Property="TextColor" Value="Blue" />
-                </Style>
-             <Style x:Key="todayDayLabelStyle" TargetType="Label" BasedOn="{StaticResource daysLabelStyle}">
+            </Style>
+            <Style
+                x:Key="todayDayLabelStyle"
+                BasedOn="{StaticResource daysLabelStyle}"
+                TargetType="Label">
                 <Setter Property="TextColor" Value="Yellow" />
-                </Style>
+            </Style>
             <Style
                 x:Key="otherMonthDaysLabelStyle"
                 BasedOn="{StaticResource daysLabelStyle}"
@@ -33,29 +40,26 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="Orange" />
-            </Style>            
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <local:AdvancedPageViewModel />
     </ContentPage.BindingContext>
-
-
     <plugin:Calendar
         Padding="10,0"
-        AnimateCalendar="True"
+        AnimateCalendar="True"      
         CalendarLayout="{Binding CalendarLayout}"
         Culture="{Binding Culture}"
+        DayLabelStyle="{StaticResource daysLabelStyle}"
         DayTappedCommand="{Binding DayTappedCommand}"
         DayViewCornerRadius="3"
         DayViewSize="40"
-        DayLabelStyle="{StaticResource daysLabelStyle}"
+        DaysTitleHeight="40"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleHeight="40"        
-        ArrowsFontFamily="FontAwesomeSolid"        
         DaysTitleMaximumLength="ThreeChars"
-        DeselectedDayLabelStyle="{StaticResource deselectedDayLabelStyle}"       
+        DeselectedDayLabelStyle="{StaticResource deselectedDayLabelStyle}"
         DisableSwipeDetection="False"
         EventIndicatorColor="Red"
         EventIndicatorSelectedColor="IndianRed"
@@ -66,23 +70,23 @@
         HeaderSectionVisible="True"
         HorizontalOptions="Fill"
         MonthLabelColor="Red"
-        ShownDate="{Binding ShownDate}"
-        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysLabelStyle}"
         OtherMonthDayIsVisible="False"
+        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysLabelStyle}"
         SelectedDate="{Binding SelectedDate}"
         SelectedDateColor="Red"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayBackgroundColor="DarkCyan"
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
+        ShownDate="{Binding ShownDate}"
         SwipeLeftCommand="{Binding SwipeLeftCommand}"
         SwipeRightCommand="{Binding SwipeRightCommand}"
         SwipeToChangeMonthEnabled="False"
         SwipeUpCommand="{Binding SwipeUpCommand}"
         SwipeUpToHideEnabled="False"
-        TodayFillColor="Silver"        
-        TodayOutlineColor="Blue"
+        TodayFillColor="Silver"
         TodayLabelStyle="{StaticResource todayDayLabelStyle}"
+        TodayOutlineColor="Blue"
         VerticalOptions="Fill"
         YearLabelColor="Blue">
 

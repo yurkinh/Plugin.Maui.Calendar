@@ -4,11 +4,28 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar;assembly=Plugin.Maui.Calendar"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"    
     CloseWhenBackgroundIsClicked="False">
+    <rg:PopupPage.Resources>
+        <ResourceDictionary>
+            <Style
+                x:Key="arrowButtonPrevStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}"
+                TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+            </Style>
+            <Style
+                x:Key="arrowButtonNextStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
+                TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+            </Style>
 
+        </ResourceDictionary>
+    </rg:PopupPage.Resources>
     <rg:PopupPage.BindingContext>
         <local:CalendarRangePickerPopupViewModel />
     </rg:PopupPage.BindingContext>
@@ -35,7 +52,8 @@
                     MaximumDate="{Binding MaximumDate}"
                     MinimumDate="{Binding MinimumDate}"
                     ShownDate="{Binding ShownDate}"
-                    ArrowsFontFamily="FontAwesomeSolid"
+                    ArrowButtonPrevStyle="{StaticResource arrowButtonPrevStyle}"
+                    ArrowButtonNextStyle="{StaticResource arrowButtonNextStyle}"
                     SelectedEndDate="{Binding SelectedEndDate}"
                     SelectedStartDate="{Binding SelectedStartDate}"
                     VerticalOptions="Center"

@@ -2,11 +2,35 @@
 <ContentPage
     x:Class="SampleApp.Views.RangeSelectionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"   
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
-    xmlns:local="clr-namespace:SampleApp.ViewModels"    
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar;assembly=Plugin.Maui.Calendar"
     x:Name="advancedRangeSelectionCalendarPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style
+                x:Key="arrowButtonPrevStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}"
+                TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+            </Style>
+
+            <Style
+                x:Key="arrowButtonNextStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
+                TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+            </Style>
+
+             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <local:RangeSelectionPageViewModel />
@@ -15,13 +39,14 @@
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
         Padding="10,0"
+        ArrowButtonPrevStyle="{StaticResource arrowButtonPrevStyle}"
+        ArrowButtonNextStyle="{StaticResource arrowButtonNextStyle}"
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
-        ShownDate="{Binding ShownDate}"
-        ArrowsFontFamily="FontAwesomeSolid"
         SelectedDates="{Binding SelectedDates}"
         SelectedEndDate="{Binding SelectedEndDate}"
-        SelectedStartDate="{Binding SelectedStartDate}">
+        SelectedStartDate="{Binding SelectedStartDate}"
+        ShownDate="{Binding ShownDate}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
             <controls:CalendarHeader />
@@ -50,12 +75,5 @@
         </plugin:RangeSelectionCalendar.EmptyTemplate>
     </plugin:RangeSelectionCalendar>
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
+   
 </ContentPage>

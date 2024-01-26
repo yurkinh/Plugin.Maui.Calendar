@@ -411,145 +411,63 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for ArrowsColor
+    /// Bindable property for ArrowButtonPrevStyle
     /// </summary>
-    public static readonly BindableProperty ArrowsColorProperty =
-      BindableProperty.Create(nameof(ArrowsColor), typeof(Color), typeof(Calendar), Colors.Black);
+    public static readonly BindableProperty ArrowButtonPrevStyleProperty =
+        BindableProperty.Create(nameof(ArrowButtonPrevStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultArrowButtonPrevStyle);
 
     /// <summary>
-    /// Specifies the color of month and year selection arrows
+    /// Specifies the style for the previous arrow button
     /// </summary>
-    public Color ArrowsColor
+    public Style ArrowButtonPrevStyle
     {
-        get => (Color)GetValue(ArrowsColorProperty);
-        set => SetValue(ArrowsColorProperty, value);
-    }
-
-
-    /// <summary>
-    /// Bindable property for ArrowsFontSizeProperty
-    /// </summary>
-    public static readonly BindableProperty ArrowsFontSizeProperty =
-      BindableProperty.Create(nameof(ArrowsFontSize), typeof(double), typeof(Calendar), 14d);
-
-    /// <summary>
-    /// Specifies the FontSize of month and year selection arrows
-    /// </summary>
-    [TypeConverter(typeof(FontSizeConverter))]
-    public double ArrowsFontSize
-    {
-        get => (double)GetValue(ArrowsFontSizeProperty);
-        set => SetValue(ArrowsFontSizeProperty, value);
+        get => (Style)GetValue(ArrowButtonPrevStyleProperty);
+        set => SetValue(ArrowButtonPrevStyleProperty, value);
     }
 
     /// <summary>
-    /// Bindable property for ArrowsFontFamily
+    /// Bindable property for ArrowButtonNextStyle
     /// </summary>
-    public static readonly BindableProperty ArrowsFontFamilyProperty =
-      BindableProperty.Create(nameof(ArrowsFontFamily), typeof(string), typeof(Calendar), "OpenSansSemibold");
+    public static readonly BindableProperty ArrowButtonNextStyleProperty =
+        BindableProperty.Create(nameof(ArrowButtonNextStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultArrowButtonNextStyle);
 
     /// <summary>
-    /// Specifies symbol for arrow prev
+    /// Specifies the style for the next arrow button
     /// </summary>
-    public string ArrowsFontFamily
+    public Style ArrowButtonNextStyle
     {
-        get => (string)GetValue(ArrowsFontFamilyProperty);
-        set => SetValue(ArrowsFontFamilyProperty, value);
+        get => (Style)GetValue(ArrowButtonNextStyleProperty);
+        set => SetValue(ArrowButtonNextStyleProperty, value);
     }
 
     /// <summary>
-    /// Bindable property for ArrowsSymbolPrev
+    /// Bindable property for ArrowFooterButtonStyle
     /// </summary>
-    public static readonly BindableProperty ArrowsSymbolPrevProperty =
-      BindableProperty.Create(nameof(ArrowsSymbolPrev), typeof(string), typeof(Calendar), "←");
+    public static readonly BindableProperty ArrowFooterButtonUpStyleProperty =
+        BindableProperty.Create(nameof(ArrowFooterButtonUpStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultFooterArrowButtonUpStyle);
 
     /// <summary>
-    /// Specifies symbol for arrow prev
+    /// Specifies the style for the footer arrow button
     /// </summary>
-    public string ArrowsSymbolPrev
+    public Style ArrowFooterButtonUpStyle
     {
-        get => (string)GetValue(ArrowsSymbolPrevProperty);
-        set => SetValue(ArrowsSymbolPrevProperty, value);
+        get => (Style)GetValue(ArrowFooterButtonUpStyleProperty);
+        set => SetValue(ArrowFooterButtonUpStyleProperty, value);
     }
 
     /// <summary>
-    /// Bindable property for ArrowsSymbolNext
+    /// Bindable property for ArrowFooterButtonDownStyle
     /// </summary>
-    public static readonly BindableProperty ArrowsSymbolNextProperty =
-      BindableProperty.Create(nameof(ArrowsSymbolNext), typeof(string), typeof(Calendar), "→");
+    public static readonly BindableProperty ArrowFooterButtonDownStyleProperty =
+        BindableProperty.Create(nameof(ArrowFooterButtonDownStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultFooterArrowButtonDownStyle);
 
     /// <summary>
-    /// Specifies symbol for arrow next
+    /// Specifies the style for the footer arrow button when pressed down
     /// </summary>
-    public string ArrowsSymbolNext
+    public Style ArrowFooterButtonDownStyle
     {
-        get => (string)GetValue(ArrowsSymbolNextProperty);
-        set => SetValue(ArrowsSymbolNextProperty, value);
-    }
-
-
-    /// <summary>
-    /// Bindable property for ArrowsFontAttribute
-    /// </summary>
-    public static readonly BindableProperty ArrowsFontAttributeProperty =
-      BindableProperty.Create(nameof(ArrowsFontAttribute), typeof(FontAttributes), typeof(Calendar), FontAttributes.Bold);
-
-    /// <summary>
-    /// Specifies font attribute of the arrow
-    /// </summary>
-    public FontAttributes ArrowsFontAttribute
-    {
-        get => (FontAttributes)GetValue(ArrowsFontAttributeProperty);
-        set => SetValue(ArrowsFontAttributeProperty, value);
-    }
-
-
-    /// <summary>
-    /// Bindable property for ArrowsBorderColor
-    /// </summary>
-    public static readonly BindableProperty ArrowsBorderColorProperty =
-      BindableProperty.Create(nameof(ArrowsBorderColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the color of arrows border
-    /// </summary>
-    public Color ArrowsBorderColor
-    {
-        get => (Color)GetValue(ArrowsBorderColorProperty);
-        set => SetValue(ArrowsBorderColorProperty, value);
-    }
-
-
-    /// <summary>
-    /// Bindable property for ArrowsBackgroundColor
-    /// </summary>
-    public static readonly BindableProperty ArrowsBackgroundColorProperty =
-      BindableProperty.Create(nameof(ArrowsBackgroundColor), typeof(Color), typeof(Calendar), Colors.White);
-
-    /// <summary>
-    /// Specifies the color of arrows Background
-    /// </summary>
-    public Color ArrowsBackgroundColor
-    {
-        get => (Color)GetValue(ArrowsBackgroundColorProperty);
-        set => SetValue(ArrowsBackgroundColorProperty, value);
-    }
-
-
-    /// <summary>
-    /// Bindable property for ArrowsBorderWidth
-    /// </summary>
-    public static readonly BindableProperty ArrowsBorderWidthProperty =
-      BindableProperty.Create(nameof(ArrowsBorderWidth), typeof(double), typeof(Calendar), 1d);
-
-    /// <summary>
-    /// Specifies the ArrowsBorderWidth of month and year selection arrows
-    /// </summary>
-
-    public double ArrowsBorderWidth
-    {
-        get => (double)GetValue(ArrowsBorderWidthProperty);
-        set => SetValue(ArrowsBorderWidthProperty, value);
+        get => (Style)GetValue(ArrowFooterButtonDownStyleProperty);
+        set => SetValue(ArrowFooterButtonDownStyleProperty, value);
     }
 
 

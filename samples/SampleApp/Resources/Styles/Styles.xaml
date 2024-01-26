@@ -1,8 +1,50 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary 
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">     
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar;assembly=Plugin.Maui.Calendar">
+    <Style
+        x:Key="arrowButtonPrevStyle"
+        BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}"
+        TargetType="Button">
+        <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+        <Setter Property="BorderColor" Value="Orange" />
+        <Setter Property="Text" Value="&#xf060;" />
+        <Setter Property="FontSize" Value="25" />
+    </Style>
+
+    <Style
+        x:Key="arrowButtonNextStyle"
+        BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
+        TargetType="Button">
+        <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+        <Setter Property="Text" Value="&#xf061;" />
+        <Setter Property="BorderColor" Value="Orange" />
+        <Setter Property="FontSize" Value="25" />
+    </Style>
+
+    <Style
+        x:Key="ArrowFooterButtonUpStyle"
+        BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowButtonUpStyle}"
+        TargetType="Button">
+        <Setter Property="Margin" Value="0,0,15,0" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+        <Setter Property="FontAttributes" Value="Bold" />       
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="HorizontalOptions" Value="End" />        
+        <Setter Property="Text" Value="&#xf062;" />
+        <Setter Property="TextColor" Value="DarkCyan" />
+        <Setter Property="VerticalOptions" Value="Center" />        
+    </Style>
+
+    <Style
+        x:Key="ArrowFooterButtonDownStyle"
+        BasedOn="{StaticResource ArrowFooterButtonUpStyle}"
+        TargetType="Button">
+         <Setter Property="Text" Value="&#xf063;" />
+    </Style>
 
 </ResourceDictionary>
 

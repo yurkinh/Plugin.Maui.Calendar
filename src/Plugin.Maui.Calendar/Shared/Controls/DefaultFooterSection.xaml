@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Plugin.Maui.Calendar.Controls.DefaultFooterSection"
-             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
-             x:DataType="controls:Calendar">
+<ContentView
+    x:Class="Plugin.Maui.Calendar.Controls.DefaultFooterSection"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
+    x:DataType="controls:Calendar">
     <Grid
+        ColumnDefinitions="Auto,*"
         HeightRequest="40"
-        RowSpacing="6"
         HorizontalOptions="Fill"
-        VerticalOptions="Fill"
-        ColumnDefinitions="Auto,*">        
+        InputTransparent="True"
+        RowSpacing="6"
+        VerticalOptions="Fill">
         <Label
             Grid.Column="0"
             FontAttributes="Bold"
@@ -18,32 +20,20 @@
             TextColor="{Binding SelectedDateColor}"
             VerticalOptions="Center"
             VerticalTextAlignment="Center" />
-        <Label
-            x:Name="showHideLabel"
+        <Button           
             Grid.Column="1"
-            Margin="0,0,15,0"
-            FontAttributes="Bold"
-            FontSize="Medium"            
-            HorizontalOptions="End"
-            IsVisible="{Binding FooterArrowVisible}"
-            Text="↑"
-            LineBreakMode="TailTruncation"
-            FontFamily="{Binding ArrowsFontFamily}"
-            TextColor="{Binding ArrowsColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center">
-            <Label.Triggers>
+            Style ="{Binding ArrowFooterButtonUpStyle, Mode=OneWay}"
+            Command="{Binding ShowHideCalendarCommand, Mode=OneWay}"
+            IsVisible="{Binding FooterArrowVisible, Mode=OneWay}">
+            <Button.Triggers>
                 <DataTrigger
-                    Binding="{Binding CalendarSectionShown}"
-                    TargetType="Label"
+                    Binding="{Binding CalendarSectionShown, Mode=OneWay}"
+                    TargetType="Button"
                     Value="False">
-                    <Setter Property="Text" Value="↓" />
+                    <Setter Property="Style" Value="ArrowFooterButtonDownStyle" />
                 </DataTrigger>
-            </Label.Triggers>
-        </Label>
-        <Grid.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
-        </Grid.GestureRecognizers>
+            </Button.Triggers>
+        </Button>
     </Grid>
 </ContentView>
 

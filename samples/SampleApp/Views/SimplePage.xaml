@@ -35,7 +35,7 @@
                 TargetType="Label">
                 <Setter Property="TextColor" Value="Yellow" />
                 <Setter Property="FontSize" Value="18" />
-            </Style>
+            </Style>            
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -46,8 +46,7 @@
     </ContentPage.BindingContext>
 
     <plugin:Calendar
-        Padding="10,0"
-        ArrowsFontSize="Medium"
+        Padding="10,0"       
         DayLabelStyle="{StaticResource daysLabelStyle}"
         DayViewFontSize="Medium"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"

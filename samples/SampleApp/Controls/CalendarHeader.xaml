@@ -2,41 +2,22 @@
 <DataTemplate
     x:Class="SampleApp.Controls.CalendarHeader"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar;assembly=Plugin.Maui.Calendar"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">   
+
     <Grid
         Margin="0,2"
         Padding="0"
+        ColumnDefinitions="1*,3*,1*"
         HorizontalOptions="Fill"
         IsVisible="{Binding ShowMonthPicker}"
-        VerticalOptions="Start"
         RowDefinitions="Auto"
-        ColumnDefinitions="1*,3*,1*">
-        <Border
+        VerticalOptions="Start">
+        <Button
             Grid.Column="0"
             Padding="0"
-            BackgroundColor="White"
-            Stroke="Orange"
-            StrokeShape="RoundRectangle 18"           
-            HeightRequest="36"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            WidthRequest="36">
-            <Label
-                FontAttributes="Bold"
-                FontFamily="{Binding ArrowsFontFamily}"
-                FontSize="25"
-                HorizontalOptions="Center"
-                HorizontalTextAlignment="Center"
-                InputTransparent="True"
-                Text="&#xf060;"
-                TextColor="{Binding ArrowsColor}"
-                VerticalOptions="Center"
-                VerticalTextAlignment="Center" />
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
-
+            Command="{Binding PrevLayoutUnitCommand}, Mode=OneWay}"
+            Style="{StaticResource arrowButtonPrevStyle}" />
         <Label
             Grid.Column="1"
             FontAttributes="Bold"
@@ -52,31 +33,10 @@
                 </FormattedString>
             </Label.FormattedText>
         </Label>
-
-        <Border
+        <Button
             Grid.Column="2"
             Padding="0"
-            BackgroundColor="White"
-            Stroke="Orange"
-            StrokeShape="RoundRectangle 18"            
-            HeightRequest="36"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"
-            WidthRequest="36">
-            <Label
-                FontAttributes="Bold"
-                FontFamily="{Binding ArrowsFontFamily}"
-                FontSize="25"
-                HorizontalOptions="Center"
-                HorizontalTextAlignment="Center"
-                InputTransparent="True"
-                Text="&#xf061;"
-                TextColor="{Binding ArrowsColor}"
-                VerticalOptions="Center"
-                VerticalTextAlignment="Center" />
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
+            Command="{Binding NextLayoutUnitCommand}, Mode=OneWay}"
+            Style="{StaticResource arrowButtonNextStyle}" />
     </Grid>
 </DataTemplate>

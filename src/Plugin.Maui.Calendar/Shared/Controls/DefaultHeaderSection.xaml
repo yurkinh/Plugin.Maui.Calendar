@@ -1,38 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Plugin.Maui.Calendar.Controls.DefaultHeaderSection"
-             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
-             x:DataType="controls:Calendar">
+<ContentView
+    x:Class="Plugin.Maui.Calendar.Controls.DefaultHeaderSection"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
+    x:DataType="controls:Calendar">
     <VerticalStackLayout
-        Spacing="6"
-        Grid.Row="0"       
+        Grid.Row="0"
         HorizontalOptions="Fill"
+        Spacing="6"
         VerticalOptions="Fill">
         <Grid
-            RowSpacing="6"
+            ColumnDefinitions="*,Auto,*"
             HorizontalOptions="Fill"
-            IsVisible="{Binding ShowMonthPicker}"            
-            VerticalOptions="Start"
+            IsVisible="{Binding ShowMonthPicker}"
             RowDefinitions="Auto"
-            ColumnDefinitions="*,Auto,*">
+            RowSpacing="6"
+            VerticalOptions="Start">
             <Button
                 Grid.Column="0"
-                Padding="0"
-                BackgroundColor="{Binding ArrowsBackgroundColor}"
-                CornerRadius="18"
-                BorderColor="{Binding ArrowsBorderColor}"
-                BorderWidth="{Binding ArrowsBorderWidth}"
-                HeightRequest="36"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                WidthRequest="36"
-                Command="{Binding PrevLayoutUnitCommand}"
-                FontAttributes="{Binding ArrowsFontAttribute}"
-                FontSize="{Binding ArrowsFontSize}"
-                Text="{Binding ArrowsSymbolPrev}"
-                FontFamily="{Binding ArrowsFontFamily}"
-                TextColor="{Binding ArrowsColor}"/>
+                Command="{Binding PrevLayoutUnitCommand}, Mode=OneWay}"
+                Style="{Binding ArrowButtonPrevStyle, Mode=OneWay}" />
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
@@ -43,46 +31,20 @@
                 VerticalOptions="Center" />
             <Button
                 Grid.Column="2"
-                Padding="0"
-                BackgroundColor="{Binding ArrowsBackgroundColor}"
-                CornerRadius="18"
-                BorderColor="{Binding ArrowsBorderColor}"
-                BorderWidth="{Binding ArrowsBorderWidth}"
-                HeightRequest="36"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                WidthRequest="36"
-                Command="{Binding NextLayoutUnitCommand}"
-                FontAttributes="{Binding ArrowsFontAttribute}"
-                FontSize="{Binding ArrowsFontSize}"
-                Text="{Binding ArrowsSymbolNext}"
-                FontFamily="{Binding ArrowsFontFamily}"
-                TextColor="{Binding ArrowsColor}"/>
+                Command="{Binding NextLayoutUnitCommand}, Mode=OneWay}"
+                Style="{Binding ArrowButtonNextStyle, Mode=OneWay}" />
         </Grid>
         <Grid
+            ColumnDefinitions="*,Auto,*"
             HorizontalOptions="Fill"
             IsVisible="{Binding ShowYearPicker}"
-            VerticalOptions="Start"
             RowDefinitions="Auto"
             RowSpacing="6"
-            ColumnDefinitions="*,Auto,*">
+            VerticalOptions="Start">
             <Button
                 Grid.Column="0"
-                Padding="0"
-                BackgroundColor="{Binding ArrowsBackgroundColor}"
-                CornerRadius="18"
-                BorderColor="{Binding ArrowsBorderColor}"
-                BorderWidth="{Binding ArrowsBorderWidth}"
-                HeightRequest="36"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                WidthRequest="36"
-                Command="{Binding PrevYearCommand}"
-                FontAttributes="{Binding ArrowsFontAttribute}"
-                FontSize="{Binding ArrowsFontSize}"
-                Text="{Binding ArrowsSymbolPrev}"
-                FontFamily="{Binding ArrowsFontFamily}"
-                TextColor="{Binding ArrowsColor}"/>
+                Command="{Binding PrevYearCommand, Mode=OneWay}"
+                Style="{Binding ArrowButtonPrevStyle, Mode=OneWay}" />
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
@@ -93,21 +55,8 @@
                 VerticalOptions="Center" />
             <Button
                 Grid.Column="2"
-                Padding="0"
-                BackgroundColor="{Binding ArrowsBackgroundColor}"
-                CornerRadius="18"
-                BorderColor="{Binding ArrowsBorderColor}"
-                BorderWidth="{Binding ArrowsBorderWidth}"
-                HeightRequest="36"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                WidthRequest="36"
-                Command="{Binding NextYearCommand}"
-                FontAttributes="{Binding ArrowsFontAttribute}"
-                FontSize="{Binding ArrowsFontSize}"
-                Text="{Binding ArrowsSymbolNext}"
-                FontFamily="{Binding ArrowsFontFamily}"
-                TextColor="{Binding ArrowsColor}"/>
+                Command="{Binding NextYearCommand, Mode=OneWay}"
+                Style="{Binding ArrowButtonNextStyle, Mode=OneWay}" />
         </Grid>
     </VerticalStackLayout>
 </ContentView>
