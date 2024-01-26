@@ -9,24 +9,6 @@
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     x:Name="weekViewCalendarPage">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style
-                x:Key="arrowButtonPrevStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}"
-                TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-
-            <Style
-                x:Key="arrowButtonNextStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
-                TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
@@ -36,8 +18,6 @@
 
     <plugin:Calendar
         Padding="10,0"
-        ArrowButtonNextStyle="{StaticResource arrowButtonNextStyle}"
-        ArrowButtonPrevStyle="{StaticResource arrowButtonPrevStyle}"
         CalendarLayout="{Binding CalendarLayout}"
         Day="{Binding Day}"
         Events="{Binding Events}"

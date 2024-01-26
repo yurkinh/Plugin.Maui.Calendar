@@ -31,20 +31,20 @@
         <Setter Property="Margin" Value="0,0,15,0" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-        <Setter Property="FontAttributes" Value="Bold" />       
+        <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="FontSize" Value="25" />
-        <Setter Property="HorizontalOptions" Value="End" />        
+        <Setter Property="HorizontalOptions" Value="End" />
         <Setter Property="Text" Value="&#xf062;" />
         <Setter Property="TextColor" Value="DarkCyan" />
-        <Setter Property="VerticalOptions" Value="Center" />        
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
     <Style
         x:Key="ArrowFooterButtonDownStyle"
         BasedOn="{StaticResource ArrowFooterButtonUpStyle}"
         TargetType="Button">
-         <Setter Property="Text" Value="&#xf063;" />
-    </Style>
+        <Setter Property="Text" Value="&#xf063;" />
+    </Style>    
 
 </ResourceDictionary>
 

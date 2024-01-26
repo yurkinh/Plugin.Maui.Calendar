@@ -7,30 +7,7 @@
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-    x:Name="advancedRangeSelectionCalendarPage">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style
-                x:Key="arrowButtonPrevStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}"
-                TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-
-            <Style
-                x:Key="arrowButtonNextStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
-                TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-
-             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="20" />
-            </Style>
-
-        </ResourceDictionary>
-    </ContentPage.Resources>
+    x:Name="advancedRangeSelectionCalendarPage">   
 
     <ContentPage.BindingContext>
         <local:RangeSelectionPageViewModel />
@@ -38,9 +15,7 @@
 
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
-        Padding="10,0"
-        ArrowButtonPrevStyle="{StaticResource arrowButtonPrevStyle}"
-        ArrowButtonNextStyle="{StaticResource arrowButtonNextStyle}"
+        Padding="10,0"        
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
         SelectedDates="{Binding SelectedDates}"

@@ -412,36 +412,6 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for ArrowButtonPrevStyle
-    /// </summary>
-    public static readonly BindableProperty ArrowButtonPrevStyleProperty =
-        BindableProperty.Create(nameof(ArrowButtonPrevStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultArrowButtonPrevStyle);
-
-    /// <summary>
-    /// Specifies the style for the previous arrow button
-    /// </summary>
-    public Style ArrowButtonPrevStyle
-    {
-        get => (Style)GetValue(ArrowButtonPrevStyleProperty);
-        set => SetValue(ArrowButtonPrevStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for ArrowButtonNextStyle
-    /// </summary>
-    public static readonly BindableProperty ArrowButtonNextStyleProperty =
-        BindableProperty.Create(nameof(ArrowButtonNextStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultArrowButtonNextStyle);
-
-    /// <summary>
-    /// Specifies the style for the next arrow button
-    /// </summary>
-    public Style ArrowButtonNextStyle
-    {
-        get => (Style)GetValue(ArrowButtonNextStyleProperty);
-        set => SetValue(ArrowButtonNextStyleProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for FooterArrowVisible
     /// </summary>
     public static readonly BindableProperty FooterArrowVisibleProperty =

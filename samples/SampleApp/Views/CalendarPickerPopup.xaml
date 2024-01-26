@@ -7,23 +7,7 @@
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
-    CloseWhenBackgroundIsClicked="False">
-    <rg:PopupPage.Resources>
-        <ResourceDictionary>
-            <Style
-                x:Key="arrowButtonPrevStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}"
-                TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-            <Style
-                x:Key="arrowButtonNextStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
-                TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-        </ResourceDictionary>
-    </rg:PopupPage.Resources>
+    CloseWhenBackgroundIsClicked="False">   
 
     <rg:PopupPage.BindingContext>
         <local:CalendarPickerPopupViewModel />
@@ -43,9 +27,7 @@
                     Text="Choose Date"
                     VerticalOptions="Center" />
                 <plugin:Calendar
-                    Padding="10,0"
-                    ArrowButtonNextStyle="{StaticResource arrowButtonPrevStyle}"
-                    ArrowButtonPrevStyle="{StaticResource arrowButtonNextStyle}"
+                    Padding="10,0"                   
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
                     MaximumDate="{Binding MaximumDate}"

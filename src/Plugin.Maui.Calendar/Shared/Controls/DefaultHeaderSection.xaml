@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     x:DataType="controls:Calendar">
     <VerticalStackLayout
         Grid.Row="0"
@@ -20,7 +21,7 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding PrevLayoutUnitCommand}, Mode=OneWay}"
-                Style="{Binding ArrowButtonPrevStyle, Mode=OneWay}" />
+                Style="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}" />
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
@@ -32,7 +33,7 @@
             <Button
                 Grid.Column="2"
                 Command="{Binding NextLayoutUnitCommand}, Mode=OneWay}"
-                Style="{Binding ArrowButtonNextStyle, Mode=OneWay}" />
+                Style="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}" />
         </Grid>
         <Grid
             ColumnDefinitions="*,Auto,*"
@@ -44,7 +45,7 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding PrevYearCommand, Mode=OneWay}"
-                Style="{Binding ArrowButtonPrevStyle, Mode=OneWay}" />
+                Style="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}" />
             <Label
                 Grid.Column="1"
                 FontAttributes="Bold"
@@ -56,7 +57,7 @@
             <Button
                 Grid.Column="2"
                 Command="{Binding NextYearCommand, Mode=OneWay}"
-                Style="{Binding ArrowButtonNextStyle, Mode=OneWay}" />
+                Style="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}" />
         </Grid>
     </VerticalStackLayout>
 </ContentView>
