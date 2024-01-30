@@ -16,7 +16,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		// when initializing collection
 		Events = new EventCollection
 		{
-			[DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Cool")),
+			[DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
 			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
 			{
 				new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
@@ -25,31 +25,31 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		};
 
 		//Adding a day with a different dot color
-		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
-		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
-		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
+		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
+		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
+		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
 
 		// with add method
-		Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(5, "Cool")));
+		Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
 		// with indexer
-		Events[DateTime.Now] = new List<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(2, "Boring"));
+		Events[DateTime.Now] = new List<AdvancedEventModel>(GenerateEvents(2, "Boring"));
 
 		ShownDate = ShownDate.AddMonths(1);
 
 		Task.Delay(5000).ContinueWith(_ =>
 	   {
 		   // indexer - update later
-		   Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Cool"));
+		   Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
 
 		   // add later
-		   Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(5, "Cool")));
+		   Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
 		   // indexer later
-		   Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Boring"));
+		   Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
 
 		   // add later
-		   Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(AdvancedPageViewModel.GenerateEvents(10, "Cool")));
+		   Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
 		   Task.Delay(3000).ContinueWith(t =>
 		   {
@@ -67,7 +67,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		SelectedDate = DateTime.Today.AddDays(10);
 	}
 
-	static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
+	IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
 	{
 		return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
 		{
