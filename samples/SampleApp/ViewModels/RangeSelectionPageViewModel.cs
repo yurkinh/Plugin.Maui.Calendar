@@ -1,8 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Plugin.Maui.Calendar.Enums;
+﻿using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
-using SampleApp.Model;
 
 namespace SampleApp.ViewModels;
 
@@ -57,7 +54,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
 	public EventCollection Events { get; }
 
 	[RelayCommand]
-	async Task EventSelected(object item)
+	static async Task EventSelected(object item)
 	{
 		if (item is AdvancedEventModel eventModel)
 		{

@@ -1,8 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Mopups.Services;
+﻿using Mopups.Services;
 using Plugin.Maui.Calendar.Enums;
-using SampleApp.Model;
 
 namespace SampleApp.ViewModels;
 
@@ -49,5 +46,5 @@ public partial class CalendarPickerPopupViewModel : BasePageViewModel
 	{
 		Closed?.Invoke(new CalendarPickerResult() { IsSuccess = false });
 		await MopupService.Instance.PopAsync();
-	}	
+	}
 }

@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Plugin.Maui.Calendar.Models;
-using SampleApp.Model;
+﻿using Plugin.Maui.Calendar.Models;
 using System.Collections.ObjectModel;
 
 namespace SampleApp.ViewModels;
@@ -85,7 +82,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 	DateTime maximumDate = DateTime.Today.AddMonths(5);
 
 	[RelayCommand]
-	async Task ExecuteEventSelected(object item)
+	static async Task ExecuteEventSelected(object item)
 	{
 		if (item is EventModel eventModel)
 		{
@@ -101,7 +98,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 	}
 
 	[RelayCommand]
-	async Task EventSelected(object item)
+	static async Task EventSelected(object item)
 	{
 		if (item is AdvancedEventModel eventModel)
 		{

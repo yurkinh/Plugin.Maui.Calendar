@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace SampleApp.ViewModels;
+﻿namespace SampleApp.ViewModels;
 
 public partial class BasePageViewModel : ObservableObject
 {

@@ -1,34 +1,35 @@
 ﻿using Mopups.Pages;
-using SampleApp.Model;
-using SampleApp.ViewModels;
 
-namespace SampleApp.Views
+namespace SampleApp.Views;
+
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class CalendarRangePickerPopupSelectedDates : PopupPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CalendarRangePickerPopupSelectedDates : PopupPage
-    {
-        private readonly Action<CalendarRangePickerResult> _onClosedPopup;
+	readonly Action<CalendarRangePickerResult> onClosedPopup;
 
-        public CalendarRangePickerPopupSelectedDates(Action<CalendarRangePickerResult> onClosedPopup)
-        {
-            _onClosedPopup = onClosedPopup;
-            InitializeComponent();
-        }
+	public CalendarRangePickerPopupSelectedDates(Action<CalendarRangePickerResult> onClosedPopup)
+	{
+		this.onClosedPopup = onClosedPopup;
+		InitializeComponent();
+	}
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
 
-            if (BindingContext is CalendarRangePickerPopupSelectedDatesViewModel vm)
-                vm.Closed += _onClosedPopup;
-        }
+		if (BindingContext is CalendarRangePickerPopupSelectedDatesViewModel vm)
+		{
+			vm.Closed += onClosedPopup;
+		}
+	}
 
-        protected override void OnDisappearing()
-        {
-            if (BindingContext is CalendarRangePickerPopupSelectedDatesViewModel vm)
-                vm.Closed -= _onClosedPopup;
+	protected override void OnDisappearing()
+	{
+		if (BindingContext is CalendarRangePickerPopupSelectedDatesViewModel vm)
+		{
+			vm.Closed -= onClosedPopup;
+		}
 
-            base.OnDisappearing();
-        }
-    }
+		base.OnDisappearing();
+	}
 }
