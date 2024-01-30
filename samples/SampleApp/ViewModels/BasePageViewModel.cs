@@ -1,27 +1,10 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SampleApp.ViewModels
+namespace SampleApp.ViewModels;
+
+public partial class BasePageViewModel : ObservableObject
 {
-    public class BasePageViewModel : INotifyPropertyChanged
+    public BasePageViewModel()
     {
-        public BasePageViewModel()
-        { }
-        
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void SetProperty<TData>(ref TData storage, TData value, [CallerMemberName] string propertyName = "")
-        {
-            if (storage?.Equals(value) == true)
-                return;
-
-            storage = value;
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-    }
+    }        
 }

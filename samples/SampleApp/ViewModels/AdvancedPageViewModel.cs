@@ -1,165 +1,140 @@
-﻿using Plugin.Maui.Calendar.Enums;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
 using SampleApp.Model;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
 
-namespace SampleApp.ViewModels
+namespace SampleApp.ViewModels;
+
+public partial class AdvancedPageViewModel : BasePageViewModel
 {
-    public class AdvancedPageViewModel : BasePageViewModel
-    {
-        public ICommand DayTappedCommand => new Command<DateTime>(async (date) => await DayTapped(date));
-        public ICommand SwipeLeftCommand => new Command(() => ChangeShownUnit(1));
-        public ICommand SwipeRightCommand => new Command(() => ChangeShownUnit(-1));
-        public ICommand SwipeUpCommand => new Command(() => { ShownDate = DateTime.Today; });
+	public AdvancedPageViewModel() : base()
+	{
+		MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
-        public ICommand EventSelectedCommand => new Command(async (item) => await ExecuteEventSelectedCommand(item));
+		Culture = CultureInfo.CreateSpecificCulture("en-GB");
+		// testing all kinds of adding events
+		// when initializing collection
+		Events = new EventCollection
+		{
+			[DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
+			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
+			{
+				new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
+				new AdvancedEventModel { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
+			}
+		};
 
-        public AdvancedPageViewModel() : base()
-        {            
-            MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
+		//Adding a day with a different dot color
+		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
+		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
+		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
 
-            Culture = CultureInfo.CreateSpecificCulture("en-GB");
-            // testing all kinds of adding events
-            // when initializing collection
-            Events = new EventCollection
-            {
-                [DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
-                [DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
-                {
-                    new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
-                    new AdvancedEventModel { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
-                }
-            };
+		// with add method
+		Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
-            //Adding a day with a different dot color
-            Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
-            Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
-            Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
+		// with indexer
+		Events[DateTime.Now] = new List<AdvancedEventModel>(GenerateEvents(2, "Boring"));
 
-            // with add method
-            Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
+		ShownDate = ShownDate.AddMonths(1);
 
-            // with indexer
-            Events[DateTime.Now] = new List<AdvancedEventModel>(GenerateEvents(2, "Boring"));
+		Task.Delay(5000).ContinueWith(_ =>
+	   {
+		   // indexer - update later
+		   Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
 
-            ShownDate = ShownDate.AddMonths(1);
+		   // add later
+		   Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
-            Task.Delay(5000).ContinueWith(_ =>
-           {
-               // indexer - update later
-               Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
+		   // indexer later
+		   Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
 
-               // add later
-               Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
+		   // add later
+		   Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
-               // indexer later
-               Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
+		   Task.Delay(3000).ContinueWith(t =>
+		   {
+			   ShownDate = ShownDate.AddMonths(-2);
 
-               // add later
-               Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
+			   // get observable collection later
+			   var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
 
-               Task.Delay(3000).ContinueWith(t =>
-               {
-                   ShownDate = ShownDate.AddMonths(-2);
+			   // insert/add items to observable collection
+			   todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
+			   todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
+		   }, TaskScheduler.FromCurrentSynchronizationContext());
+	   }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                   // get observable collection later
-                   var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
+		SelectedDate = DateTime.Today.AddDays(10);
+	}
 
-                   // insert/add items to observable collection
-                   todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
-                   todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
-               }, TaskScheduler.FromCurrentSynchronizationContext());
-           }, TaskScheduler.FromCurrentSynchronizationContext());
+	IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
+	{
+		return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
+		{
+			Name = $"{name} event{x}",
+			Description = $"This is {name} event{x}'s description!",
+			Starting = new DateTime(2000, 1, 1, (x * 2) % 24, (x * 3) % 60, 0)
+		});
+	}
+	
+	public EventCollection Events { get; }
 
-            SelectedDate = DateTime.Today.AddDays(10);
-        }
+	[ObservableProperty]
+	DateTime shownDate = DateTime.Today;
 
-        private IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
-        {
-            return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
-            {
-                Name = $"{name} event{x}",
-                Description = $"This is {name} event{x}'s description!",
-                Starting = new DateTime(2000, 1, 1, (x * 2) % 24, (x * 3) % 60, 0)
-            });
-        }
+	[ObservableProperty]
+	WeekLayout calendarLayout = WeekLayout.Month;
 
-        public EventCollection Events { get; }
+	[ObservableProperty]
+	DateTime? selectedDate = DateTime.Today;
 
-        private DateTime _shownDate = DateTime.Today;
+	[ObservableProperty]
+	CultureInfo culture = CultureInfo.InvariantCulture;
 
-        public DateTime ShownDate
-        {
-            get => _shownDate;
-            set => SetProperty(ref _shownDate, value);
-        }
+	[RelayCommand]
+	static async Task DayTapped(DateTime date)
+	{
+		var message = $"Received tap event from date: {date}";
+		await App.Current.MainPage.DisplayAlert("DayTapped", message, "Ok");
+	}
+	[RelayCommand]
+	async Task ExecuteEventSelected(object item)
+	{
+		if (item is AdvancedEventModel eventModel)
+		{
+			var title = $"Selected: {eventModel.Name}";
+			var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
+			await App.Current.MainPage.DisplayAlert(title, message, "Ok");
+		}
+	}
 
-        private WeekLayout _calendarLayout = WeekLayout.Month;
+	void ChangeShownUnit(int amountToAdd)
+	{
+		switch (CalendarLayout)
+		{
+			case WeekLayout.Week:
+			case WeekLayout.TwoWeek:
+				ChangeShownWeek(amountToAdd);
+				break;
 
-        public WeekLayout CalendarLayout
-        {
-            get => _calendarLayout;
-            set => SetProperty(ref _calendarLayout, value);
-        }
+			case WeekLayout.Month:
+			default:
+				ChangeShownMonth(amountToAdd);
+				break;
+		}
+	}
 
-        private DateTime? _selectedDate = DateTime.Today;
+	void ChangeShownMonth(int monthsToAdd)
+	{
+		ShownDate.AddMonths(monthsToAdd);
+	}
 
-        public DateTime? SelectedDate
-        {
-            get => _selectedDate;
-            set => SetProperty(ref _selectedDate, value);
-        }
-
-        private CultureInfo _culture = CultureInfo.InvariantCulture;
-
-        public CultureInfo Culture
-        {
-            get => _culture;
-            set => SetProperty(ref _culture, value);
-        }
-
-        private static async Task DayTapped(DateTime date)
-        {
-            var message = $"Received tap event from date: {date}";
-            await App.Current.MainPage.DisplayAlert("DayTapped", message, "Ok");
-        }
-
-        private async Task ExecuteEventSelectedCommand(object item)
-        {
-            if (item is AdvancedEventModel eventModel)
-            {
-                var title = $"Selected: {eventModel.Name}";
-                var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
-                await App.Current.MainPage.DisplayAlert(title, message, "Ok");
-            }
-        }
-
-        private void ChangeShownUnit(int amountToAdd)
-        {
-            switch (CalendarLayout)
-            {
-                case WeekLayout.Week:
-                case WeekLayout.TwoWeek:
-                    ChangeShownWeek(amountToAdd);
-                    break;
-
-                case WeekLayout.Month:
-                default:
-                    ChangeShownMonth(amountToAdd);
-                    break;
-            }
-        }
-
-        private void ChangeShownMonth(int monthsToAdd)
-        {
-            ShownDate.AddMonths(monthsToAdd);
-        }
-
-        private void ChangeShownWeek(int weeksToAdd)
-        {
-            ShownDate.AddDays(weeksToAdd * 7);
-        }
-    }
+	void ChangeShownWeek(int weeksToAdd)
+	{
+		ShownDate.AddDays(weeksToAdd * 7);
+	}
 }
