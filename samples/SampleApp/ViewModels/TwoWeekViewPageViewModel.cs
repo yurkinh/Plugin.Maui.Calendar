@@ -1,8 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Plugin.Maui.Calendar.Enums;
+﻿using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
-using SampleApp.Model;
 using System.Collections.ObjectModel;
 
 namespace SampleApp.ViewModels;

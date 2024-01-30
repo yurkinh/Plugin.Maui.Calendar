@@ -1,11 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Plugin.Maui.Calendar.Enums;
+﻿using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
-using SampleApp.Model;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Windows.Input;
 
 namespace SampleApp.ViewModels;
 
@@ -80,7 +76,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 			Starting = new DateTime(2000, 1, 1, (x * 2) % 24, (x * 3) % 60, 0)
 		});
 	}
-	
+
 	public EventCollection Events { get; }
 
 	[ObservableProperty]
@@ -101,8 +97,9 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		var message = $"Received tap event from date: {date}";
 		await App.Current.MainPage.DisplayAlert("DayTapped", message, "Ok");
 	}
+
 	[RelayCommand]
-	async Task ExecuteEventSelected(object item)
+	static async Task ExecuteEventSelected(object item)
 	{
 		if (item is AdvancedEventModel eventModel)
 		{

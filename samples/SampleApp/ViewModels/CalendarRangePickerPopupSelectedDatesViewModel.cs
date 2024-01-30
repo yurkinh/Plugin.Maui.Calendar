@@ -1,8 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Mopups.Services;
+﻿using Mopups.Services;
 using Plugin.Maui.Calendar.Enums;
-using SampleApp.Model;
 
 namespace SampleApp.ViewModels;
 
@@ -25,11 +22,11 @@ public partial class CalendarRangePickerPopupSelectedDatesViewModel : BasePageVi
 
 	public CalendarRangePickerPopupSelectedDatesViewModel()
 	{
-		SelectedDates = new List<DateTime>
-		{
+		SelectedDates =
+		[
 			DateTime.Today,
 			DateTime.Today.AddDays(6),
-		};
+		];
 	}
 
 	public event Action<CalendarRangePickerResult> Closed;

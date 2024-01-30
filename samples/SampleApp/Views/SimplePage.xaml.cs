@@ -1,11 +1,10 @@
-﻿namespace SampleApp.Views
+﻿namespace SampleApp.Views;
+
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class SimplePage : ContentPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SimplePage : ContentPage
-    {
-        public SimplePage()
-        {
-            InitializeComponent();
-        }
-    }
+	public SimplePage()
+	{
+		InitializeComponent();
+	}
 }
