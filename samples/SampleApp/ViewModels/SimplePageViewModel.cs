@@ -1,127 +1,113 @@
-﻿using Plugin.Maui.Calendar.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Plugin.Maui.Calendar.Models;
 using SampleApp.Model;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
-namespace SampleApp.ViewModels
+namespace SampleApp.ViewModels;
+public partial class SimplePageViewModel : BasePageViewModel
 {
-    public class SimplePageViewModel : BasePageViewModel
-    {
-        public ICommand TodayCommand => new Command(() =>
-        {
-            Year = DateTime.Today.Year;
-            Month = DateTime.Today.Month;
-        });
+	public SimplePageViewModel() : base()
+	{
+		MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
-        public ICommand EventSelectedCommand => new Command(async (item) => await ExecuteEventSelectedCommand(item));
+		// testing all kinds of adding events
+		// when initializing collection
+		Events = new EventCollection
+		{
+			[DateTime.Now.AddDays(-3)] = new List<EventModel>(SimplePageViewModel.GenerateEvents(10, "Cool")),
+			[DateTime.Now.AddDays(4)] = new List<EventModel>(SimplePageViewModel.GenerateEvents(2, "Simple2")),
+			[DateTime.Now.AddDays(2)] = new List<EventModel>(SimplePageViewModel.GenerateEvents(1, "Simple1")),
+			[DateTime.Now.AddDays(1)] = new List<EventModel>(SimplePageViewModel.GenerateEvents(3, "Simple3")),
+		};
 
-        public SimplePageViewModel() : base()
-        {
-            MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
+		// with add method
+		Events.Add(DateTime.Now.AddDays(-1), new List<EventModel>(SimplePageViewModel.GenerateEvents(5, "Cool")));
 
-            // testing all kinds of adding events
-            // when initializing collection
-            Events = new EventCollection
-            {
-                [DateTime.Now.AddDays(-3)] = new List<EventModel>(GenerateEvents(10, "Cool")),
-                [DateTime.Now.AddDays(4)] = new List<EventModel>(GenerateEvents(2, "Simple2")),
-                [DateTime.Now.AddDays(2)] = new List<EventModel>(GenerateEvents(1, "Simple1")),
-                [DateTime.Now.AddDays(1)] = new List<EventModel>(GenerateEvents(3, "Simple3")),
-            };
+		// with indexer
+		Events[DateTime.Now] = new List<EventModel>(SimplePageViewModel.GenerateEvents(2, "Boring"));
 
-            // with add method
-            Events.Add(DateTime.Now.AddDays(-1), new List<EventModel>(GenerateEvents(5, "Cool")));
+		Task.Delay(5000).ContinueWith(_ =>
+		{
+			// indexer - update later
+			Events[DateTime.Now] = new ObservableCollection<EventModel>(SimplePageViewModel.GenerateEvents(10, "Cool"));
 
-            // with indexer
-            Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
+			// add later
+			Events.Add(DateTime.Now.AddDays(3), new List<EventModel>(SimplePageViewModel.GenerateEvents(5, "Cool")));
 
-            Task.Delay(5000).ContinueWith(_ =>
-            {
-                // indexer - update later
-                Events[DateTime.Now] = new ObservableCollection<EventModel>(GenerateEvents(10, "Cool"));
+			// indexer later
+			Events[DateTime.Now.AddDays(10)] = new List<EventModel>(SimplePageViewModel.GenerateEvents(10, "Boring"));
 
-                // add later
-                Events.Add(DateTime.Now.AddDays(3), new List<EventModel>(GenerateEvents(5, "Cool")));
+			// add later
+			Events.Add(DateTime.Now.AddDays(15), new List<EventModel>(SimplePageViewModel.GenerateEvents(10, "Cool")));
 
-                // indexer later
-                Events[DateTime.Now.AddDays(10)] = new List<EventModel>(GenerateEvents(10, "Boring"));
+			Month += 1;
 
-                // add later
-                Events.Add(DateTime.Now.AddDays(15), new List<EventModel>(GenerateEvents(10, "Cool")));
+			Task.Delay(3000).ContinueWith(t =>
+			{
+				// get observable collection later
+				var todayEvents = Events[DateTime.Now] as ObservableCollection<EventModel>;
 
-                Month += 1;
+				// insert/add items to observable collection
+				todayEvents.Insert(0, new EventModel { Name = "Cool event insert", Description = "This is Cool event's description!" });
+				todayEvents.Add(new EventModel { Name = "Cool event add", Description = "This is Cool event's description!" });
 
-                Task.Delay(3000).ContinueWith(t =>
-                {
-                    // get observable collection later
-                    var todayEvents = Events[DateTime.Now] as ObservableCollection<EventModel>;
+				Month += 1;
+			}, TaskScheduler.FromCurrentSynchronizationContext());
+		}, TaskScheduler.FromCurrentSynchronizationContext());
+	}
 
-                    // insert/add items to observable collection
-                    todayEvents.Insert(0, new EventModel { Name = "Cool event insert", Description = "This is Cool event's description!" });
-                    todayEvents.Add(new EventModel { Name = "Cool event add", Description = "This is Cool event's description!" });
+	static IEnumerable<EventModel> GenerateEvents(int count, string name)
+	{
+		return Enumerable.Range(1, count).Select(x => new EventModel
+		{
+			Name = $"{name} event{x}",
+			Description = $"This is {name} event{x}'s description!"
+		});
+	}
 
-                    Month += 1;
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }
+	
+	public EventCollection Events { get; }
 
-        private IEnumerable<EventModel> GenerateEvents(int count, string name)
-        {
-            return Enumerable.Range(1, count).Select(x => new EventModel
-            {
-                Name = $"{name} event{x}",
-                Description = $"This is {name} event{x}'s description!"
-            });
-        }
+	[ObservableProperty]
+	int month = DateTime.Today.Month;
 
-        public EventCollection Events { get; }
+	[ObservableProperty]
+	int year = DateTime.Today.Year;
 
-        private int _month = DateTime.Today.Month;
+	[ObservableProperty]
+	DateTime? selectedDate = DateTime.Today;
 
-        public int Month
-        {
-            get => _month;
-            set => SetProperty(ref _month, value);
-        }
+	[ObservableProperty]
+	DateTime minimumDate = new DateTime(2019, 4, 29);
 
-        private int _year = DateTime.Today.Year;
+	[ObservableProperty]
+	DateTime maximumDate = DateTime.Today.AddMonths(5);
 
-        public int Year
-        {
-            get => _year;
-            set => SetProperty(ref _year, value);
-        }
+	[RelayCommand]
+	async Task ExecuteEventSelected(object item)
+	{
+		if (item is EventModel eventModel)
+		{
+			await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
+		}
+	}
 
-        private DateTime? _selectedDate = DateTime.Today;
+	[RelayCommand]
+	void Today()
+	{
+		Year = DateTime.Today.Year;
+		Month = DateTime.Today.Month;
+	}
 
-        public DateTime? SelectedDate
-        {
-            get => _selectedDate;
-            set => SetProperty(ref _selectedDate, value);
-        }
-
-        private DateTime _minimumDate = new DateTime(2019, 4, 29);
-
-        public DateTime MinimumDate
-        {
-            get => _minimumDate;
-            set => SetProperty(ref _minimumDate, value);
-        }
-
-        private DateTime _maximumDate = DateTime.Today.AddMonths(5);
-
-        public DateTime MaximumDate
-        {
-            get => _maximumDate;
-            set => SetProperty(ref _maximumDate, value);
-        }
-
-        private async Task ExecuteEventSelectedCommand(object item)
-        {
-            if (item is EventModel eventModel)
-            {
-                await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
-            }
-        }
-    }
+	[RelayCommand]
+	async Task EventSelected(object item)
+	{
+		if (item is AdvancedEventModel eventModel)
+		{
+			var title = $"Selected: {eventModel.Name}";
+			var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
+			await App.Current.MainPage.DisplayAlert(title, message, "Ok");
+		}
+	}
 }

@@ -1,75 +1,53 @@
-﻿using Mopups.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Mopups.Services;
 using Plugin.Maui.Calendar.Enums;
 using SampleApp.Model;
-using System.Windows.Input;
 
-namespace SampleApp.ViewModels
+namespace SampleApp.ViewModels;
+
+public partial class CalendarPickerPopupViewModel : BasePageViewModel
 {
-    public class CalendarPickerPopupViewModel : BasePageViewModel
-    {
-        public event Action<CalendarPickerResult> Closed;
+	public event Action<CalendarPickerResult> Closed;
 
-        public CalendarPickerPopupViewModel() : base()
-        {
-            SelectedDate = new DateTime(2021, 6, 13);
-        }
+	public CalendarPickerPopupViewModel() : base()
+	{
+		SelectedDate = new DateTime(2021, 6, 13);
+	}
 
-        public ICommand ClearCommand => new Command(() =>
-        {
-            SelectedDate = null;
-        });
+	[ObservableProperty]
+	DateTime shownDate = DateTime.Today;
 
-        public ICommand SuccessCommand => new Command(async () =>
-        {
-            Closed?.Invoke(new CalendarPickerResult() { IsSuccess = SelectedDate.HasValue, SelectedDate = SelectedDate });
+	[ObservableProperty]
+	WeekLayout calendarLayout = WeekLayout.Month;
 
-            await MopupService.Instance.PopAsync();
-        });
+	[ObservableProperty]
+	DateTime? selectedDate;
 
-        public ICommand CancelCommand => new Command(async () =>
-        {
-            Closed?.Invoke(new CalendarPickerResult() { IsSuccess = false });
-            await MopupService.Instance.PopAsync();
-        });
+	[ObservableProperty]
+	DateTime minimumDate = new DateTime(1900, 1, 1);
 
-        private DateTime _shownDate = DateTime.Today;
+	[ObservableProperty]
+	DateTime maximumDate = DateTime.Today;
 
-        public DateTime ShownDate
-        {
-            get => _shownDate;
-            set => SetProperty(ref _shownDate, value);
-        }
+	[RelayCommand]
+	void Clear()
+	{
+		SelectedDate = null;
+	}
 
-        private WeekLayout _calendarLayout = WeekLayout.Month;
+	[RelayCommand]
+	async Task Success()
+	{
+		Closed?.Invoke(new CalendarPickerResult() { IsSuccess = SelectedDate.HasValue, SelectedDate = SelectedDate });
 
-        public WeekLayout CalendarLayout
-        {
-            get => _calendarLayout;
-            set => SetProperty(ref _calendarLayout, value);
-        }
+		await MopupService.Instance.PopAsync();
+	}
 
-        private DateTime? _selectedDate;
-
-        public DateTime? SelectedDate
-        {
-            get => _selectedDate;
-            set => SetProperty(ref _selectedDate, value);
-        }
-
-        private DateTime _minimumDate = new DateTime(1900, 1, 1);
-
-        public DateTime MinimumDate
-        {
-            get => _minimumDate;
-            set => SetProperty(ref _minimumDate, value);
-        }
-
-        private DateTime _maximumDate = DateTime.Today;
-
-        public DateTime MaximumDate
-        {
-            get => _maximumDate;
-            set => SetProperty(ref _maximumDate, value);
-        }
-    }
+	[RelayCommand]
+	async Task Cancel()
+	{
+		Closed?.Invoke(new CalendarPickerResult() { IsSuccess = false });
+		await MopupService.Instance.PopAsync();
+	}	
 }

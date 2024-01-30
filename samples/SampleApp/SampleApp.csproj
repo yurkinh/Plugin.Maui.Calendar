@@ -53,6 +53,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="DotNetMeteor.HotReload.Plugin" Version="3.1.2" Condition="'$(Configuration)' == 'Debug'" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6" />		
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -70,5 +71,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EditorConfigFiles Remove="..\..\samples\SampleApp\.editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\..\samples\SampleApp\.editorconfig" />
 	</ItemGroup>
 </Project>

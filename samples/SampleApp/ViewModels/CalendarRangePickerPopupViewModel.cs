@@ -1,82 +1,56 @@
-﻿using Mopups.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Mopups.Services;
 using Plugin.Maui.Calendar.Enums;
 using SampleApp.Model;
-using System.Windows.Input;
 
-namespace SampleApp.ViewModels
+namespace SampleApp.ViewModels;
+
+public partial class CalendarRangePickerPopupViewModel : BasePageViewModel
 {
-    public class CalendarRangePickerPopupViewModel : BasePageViewModel
-    {
-        private DateTime _maximumDate = DateTime.Today.AddYears(1);
+	[ObservableProperty]
+	DateTime maximumDate = DateTime.Today.AddYears(1);
 
-        private DateTime _minimumDate = DateTime.Today.AddYears(-1);
+	[ObservableProperty]
+	DateTime minimumDate = DateTime.Today.AddYears(-1);
 
-        private DateTime _shownDate = DateTime.Today;
+	[ObservableProperty]
+	DateTime shownDate = DateTime.Today;
 
-        private WeekLayout _calendarLayout = WeekLayout.Month;
+	[ObservableProperty]
+	WeekLayout calendarLayout = WeekLayout.Month;
 
-        private DateTime? _selectedStartDate = DateTime.Today.AddDays(-5);
-        private DateTime? _selectedEndDate = DateTime.Today.AddDays(5);
+	[ObservableProperty]
+	DateTime? selectedStartDate = DateTime.Today.AddDays(-5);
 
-        public event Action<CalendarRangePickerResult> Closed;
+	[ObservableProperty]
+	DateTime? selectedEndDate = DateTime.Today.AddDays(5);
 
-        public ICommand CancelCommand => new Command(async () =>
-        {
-            Closed?.Invoke(new CalendarRangePickerResult() { IsSuccess = false });
-            await MopupService.Instance.PopAsync();
-        });
+	public event Action<CalendarRangePickerResult> Closed;
 
-        public ICommand ClearCommand => new Command(() =>
-                {
-                    SelectedEndDate = null;
-                    SelectedStartDate = null;
-                });
+	[RelayCommand]
+	async Task Cancel()
+	{
+		Closed?.Invoke(new CalendarRangePickerResult() { IsSuccess = false });
+		await MopupService.Instance.PopAsync();
+	}
 
-        public DateTime MaximumDate
-        {
-            get => _maximumDate;
-            set => SetProperty(ref _maximumDate, value);
-        }
+	[RelayCommand]
+	void Clear()
+	{
+		SelectedEndDate = null;
+		SelectedStartDate = null;
+	}
 
-        public DateTime MinimumDate
-        {
-            get => _minimumDate;
-            set => SetProperty(ref _minimumDate, value);
-        }
-
-        public DateTime ShownDate
-        {
-            get => _shownDate;
-            set => SetProperty(ref _shownDate, value);
-        }
-
-        public WeekLayout CalendarLayout
-        {
-            get => _calendarLayout;
-            set => SetProperty(ref _calendarLayout, value);
-        }
-
-        public DateTime? SelectedStartDate
-        {
-            get => _selectedStartDate;
-            set => SetProperty(ref _selectedStartDate, value);
-        }
-
-        public DateTime? SelectedEndDate
-        {
-            get => _selectedEndDate;
-            set => SetProperty(ref _selectedEndDate, value);
-        }
-
-        public ICommand SuccessCommand => new Command(async () =>
-            {
-                Closed?.Invoke(new CalendarRangePickerResult()
-                {
-                    IsSuccess = true,
-                    SelectedStartDate = SelectedStartDate,
-                    SelectedEndDate = SelectedEndDate
-                });
-                await MopupService.Instance.PopAsync();
-            });
-    }
+	[RelayCommand]
+	async Task Success()
+	{
+		Closed?.Invoke(new CalendarRangePickerResult()
+		{
+			IsSuccess = true,
+			SelectedStartDate = SelectedStartDate,
+			SelectedEndDate = SelectedEndDate
+		});
+		await MopupService.Instance.PopAsync();
+	}
 }
