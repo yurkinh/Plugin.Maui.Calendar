@@ -210,21 +210,7 @@ public partial class Calendar : ContentView
         get => (Color)GetValue(YearLabelColorProperty);
         set => SetValue(YearLabelColorProperty, value);
     }
-
-    /// <summary>
-    /// Bindable property for SelectedDateColor
-    /// </summary>
-    public static readonly BindableProperty SelectedDateColorProperty =
-      BindableProperty.Create(nameof(SelectedDateColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
-
-    /// <summary>
-    /// Specifies the text color for the selected date
-    /// </summary>
-    public Color SelectedDateColor
-    {
-        get => (Color)GetValue(SelectedDateColorProperty);
-        set => SetValue(SelectedDateColorProperty, value);
-    }
+   
 
     /// <summary>
     /// Bindable property for DaysTitleWeekendColorStyle

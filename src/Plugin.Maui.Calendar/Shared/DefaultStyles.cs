@@ -1,6 +1,7 @@
 ﻿
 
 
+
 namespace Plugin.Maui.Calendar.Styles;
 
 public static class DefaultStyles
@@ -17,8 +18,8 @@ public static class DefaultStyles
     public static Style DefaultEventIndicatorLabelStyle { get; }
     public static Style DefaultArrowButtonPrevStyle { get; }
     public static Style DefaultArrowButtonNextStyle { get; }
-
     public static Style DefaultFooterArrowButtonStyle { get; }
+    public static Style DefaultFooterLabelStyle { get; }
 
 
     static DefaultStyles()
@@ -36,6 +37,7 @@ public static class DefaultStyles
         DefaultArrowButtonPrevStyle = CreateDefaultArrowButtonPrevStyle();
         DefaultArrowButtonNextStyle = CreateDefaultArrowButtonNextStyle();
         DefaultFooterArrowButtonStyle = CreateDefaultFooterArrowButtonStyle();
+        DefaultFooterLabelStyle = CreateDefaultFooterLabelStyle();
     }
 
     static Style CreateDefaultLabelStyle()
@@ -158,5 +160,16 @@ public static class DefaultStyles
         return style;
     }
 
-}
+    private static Style CreateDefaultFooterLabelStyle()
+    {
+        Style style = new(typeof(Label)) { CanCascade = true };
+        style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
+        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 16 });
+        style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
+        style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = TextAlignment.Center });
+        style.Setters.Add(new Setter() { Property = Label.FontFamilyProperty, Value = "OpenSansSemibold" });
 
+        return style;
+    }
+}
