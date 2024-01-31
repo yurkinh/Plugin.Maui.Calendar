@@ -18,8 +18,7 @@ public static class DefaultStyles
     public static Style DefaultArrowButtonPrevStyle { get; }
     public static Style DefaultArrowButtonNextStyle { get; }
 
-    public static Style DefaultFooterArrowButtonUpStyle { get; }
-    public static Style DefaultFooterArrowButtonDownStyle { get; }
+    public static Style DefaultFooterArrowButtonStyle { get; }
 
 
     static DefaultStyles()
@@ -36,8 +35,7 @@ public static class DefaultStyles
         DefaultEventIndicatorLabelStyle = CreateDefaultEventIndicatorLabelStyle();
         DefaultArrowButtonPrevStyle = CreateDefaultArrowButtonPrevStyle();
         DefaultArrowButtonNextStyle = CreateDefaultArrowButtonNextStyle();
-        DefaultFooterArrowButtonUpStyle = CreateDefaultFooterArrowButtonUpStyle();
-        DefaultFooterArrowButtonDownStyle = CreateDefaultFooterArrowButtonDownStyle();
+        DefaultFooterArrowButtonStyle = CreateDefaultFooterArrowButtonStyle();
     }
 
     static Style CreateDefaultLabelStyle()
@@ -146,7 +144,7 @@ public static class DefaultStyles
         return style;
     }
 
-    private static Style CreateDefaultFooterArrowButtonUpStyle()
+    private static Style CreateDefaultFooterArrowButtonStyle()
     {
         Style style = new(typeof(Button)) { CanCascade = true, BasedOn = DefaultArrowButtonPrevStyle };
         style.Setters.Add(new Setter() { Property = View.MarginProperty, Value = new Thickness(0, 15, 0, 0) });
@@ -156,14 +154,6 @@ public static class DefaultStyles
         style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = Button.LineBreakModeProperty, Value = LineBreakMode.TailTruncation });
         style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "↑" });
-
-        return style;
-    }
-
-    private static Style CreateDefaultFooterArrowButtonDownStyle()
-    {
-        Style style = new(typeof(Button)) { CanCascade = true, BasedOn = DefaultFooterArrowButtonUpStyle };
-        style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "↓" });
 
         return style;
     }

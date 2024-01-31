@@ -22,7 +22,7 @@
             VerticalTextAlignment="Center" />
         <Button           
             Grid.Column="1"
-            Style ="{x:Static styles:DefaultStyles.DefaultFooterArrowButtonUpStyle}"
+            Style ="{x:Static styles:DefaultStyles.DefaultFooterArrowButtonStyle}"
             Command="{Binding ShowHideCalendarCommand, Mode=OneWay}"
             IsVisible="{Binding FooterArrowVisible, Mode=OneWay}">
             <Button.Triggers>
