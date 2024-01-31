@@ -26,7 +26,7 @@
 
     <Style
         x:Key="ArrowFooterButtonUpStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowButtonUpStyle}"
+        BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowButtonStyle}"
         TargetType="Button">
         <Setter Property="Margin" Value="0,0,15,0" />
         <Setter Property="BackgroundColor" Value="Transparent" />
@@ -44,7 +44,14 @@
         BasedOn="{StaticResource ArrowFooterButtonUpStyle}"
         TargetType="Button">
         <Setter Property="Text" Value="&#xf063;" />
-    </Style>    
+    </Style>
+
+    <Style
+        x:Key="FooterLabelStyle"
+        BasedOn="{x:Static styles:DefaultStyles.DefaultFooterLabelStyle}"
+        TargetType="Label">
+        <Setter Property="TextColor" Value="Red" />
+    </Style>
 
 </ResourceDictionary>
 

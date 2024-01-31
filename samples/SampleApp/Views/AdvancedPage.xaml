@@ -40,7 +40,7 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="Orange" />
-            </Style>
+            </Style>           
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -72,8 +72,7 @@
         MonthLabelColor="Red"
         OtherMonthDayIsVisible="False"
         OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysLabelStyle}"
-        SelectedDate="{Binding SelectedDate}"
-        SelectedDateColor="Red"
+        SelectedDate="{Binding SelectedDate}"       
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayBackgroundColor="DarkCyan"
         SelectedDayTextColor="Cyan"
@@ -96,7 +95,7 @@
 
         <plugin:Calendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter />
+                <controls:CalendarFooter  />
             </DataTemplate>
         </plugin:Calendar.FooterSectionTemplate>
 

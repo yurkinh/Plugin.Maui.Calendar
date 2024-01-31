@@ -11,12 +11,8 @@
         VerticalOptions="Fill">
         <Label
             Grid.Column="0"
-            FontAttributes="Bold"
-            FontSize="Medium"
-            Text="{Binding SelectedDateText}"
-            TextColor="{Binding SelectedDateColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center" />
+            Style="{StaticResource FooterLabelStyle}"
+            Text="{Binding SelectedDateText}"/>
         <Button
             Grid.Column="1"           
             Command="{Binding ShowHideCalendarCommand, Mode=OneWay}"
