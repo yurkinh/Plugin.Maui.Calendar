@@ -78,4 +78,12 @@
 	<ItemGroup>
 	  <None Include="..\..\samples\SampleApp\.editorconfig" />
 	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Controls\CalendarMinimalisticHeader.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\WeekendCalendarPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
 </Project>
