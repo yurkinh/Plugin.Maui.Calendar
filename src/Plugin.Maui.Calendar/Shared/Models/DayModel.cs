@@ -58,7 +58,7 @@ internal partial class DayModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
-    Color eventIndicatorColor = Color.FromArgb("#FF4081");
+    Color eventIndicatorColor = Color.FromArgb("#81ff40");
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
@@ -66,7 +66,7 @@ internal partial class DayModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OutlineColor))]
-    Color todayOutlineColor = Color.FromArgb("#FF4081");
+    Color todayOutlineColor = Color.FromArgb("#81ff40");
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(BackgroundColor))]

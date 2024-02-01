@@ -15,6 +15,11 @@ public partial class MainPage : ContentPage
 		await Navigation.PushAsync(new SimplePage());
 	}
 
+	async void WeekendCalendar(object sender, EventArgs e)
+	{
+		await Navigation.PushAsync(new WeekendCalendarPage());
+	}
+
 	async void MultiSelectionCalendar(object sender, EventArgs e)
 	{
 		await Navigation.PushAsync(new MultiSelectionPage());
