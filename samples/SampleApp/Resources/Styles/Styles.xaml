@@ -31,9 +31,8 @@
         <Setter Property="FontFamily" Value="FontAwesomeSolid" />
         <Setter Property="BorderColor" Value="White" />
         <Setter Property="BackgroundColor"  Value="White" />
-        <Setter Property="Text" Value="&#xf060;" />
+        <Setter Property="Text" Value="&#xf053;" />
         <Setter Property="FontSize" Value="25" />
-        <Setter Property="Text" Value="&lt;" />
         <Setter Property="TextColor"  Value="DarkSlateGray" />
     </Style>
 
@@ -42,13 +41,11 @@
         BasedOn="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}"
         TargetType="Button">
         <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-        <Setter Property="Text" Value="&#xf061;" />
+        <Setter Property="Text" Value="&#xf054;" />
         <Setter Property="BorderColor" Value="White" />
         <Setter Property="BackgroundColor"  Value="White" />
-
         <Setter Property="FontSize" Value="25" />
-        <Setter Property="Text" Value=">" />
-         <Setter Property="TextColor"  Value="DarkSlateGray" />
+        <Setter Property="TextColor"  Value="DarkSlateGray" />
     </Style>
 
     <Style
