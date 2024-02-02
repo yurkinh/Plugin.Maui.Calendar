@@ -77,7 +77,6 @@
         TodayOutlineColor ="green"
         TodayFillColor="LightGreen"
         SelectedDate="{Binding SelectedDate}"
-        SelectedDateColor="DarkSlateGray"
         VerticalOptions="Fill"
         Year="{Binding Year}"
         YearLabelColor="DarkSlateGray"
