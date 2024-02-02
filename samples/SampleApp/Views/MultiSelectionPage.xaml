@@ -4,6 +4,9 @@
              x:Class="SampleApp.Views.MultiSelectionPage"
              Title="MultiSelectionPage"
              xmlns:local="clr-namespace:SampleApp.ViewModels"
+             xmlns:vm="clr-namespace:SampleApp.ViewModels"
+             xmlns:model="clr-namespace:SampleApp.Model"
+             x:DataType="vm:SimplePageViewModel"
              xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"  
              x:Name="multiCalendarPage">
    <ContentPage.Resources>
@@ -41,7 +44,7 @@
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:EventModel">
                 <VerticalStackLayout
                     Spacing="6"
                     Padding="15,0,0,0"

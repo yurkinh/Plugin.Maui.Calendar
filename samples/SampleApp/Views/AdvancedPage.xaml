@@ -5,9 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:AdvancedPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     x:Name="advancedCalendarPage">
+    
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -40,14 +45,14 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="Orange" />
-            </Style>           
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <local:AdvancedPageViewModel />
     </ContentPage.BindingContext>
-    <plugin:Calendar
+    <plugin:Calendar x:Name="MyCalendar"
         Padding="10,0"
         AnimateCalendar="True"      
         CalendarLayout="{Binding CalendarLayout, Mode=OneWay}"
@@ -78,10 +83,9 @@
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
         ShownDate="{Binding ShownDate, Mode=OneWay}"
-        SwipeLeftCommand="{Binding SwipeLeftCommand}"
-        SwipeRightCommand="{Binding SwipeRightCommand}"
+        SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
+        SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeToChangeMonthEnabled="False"
-        SwipeUpCommand="{Binding SwipeUpCommand}"
         SwipeUpToHideEnabled="False"
         TodayFillColor="Silver"
         TodayLabelStyle="{StaticResource todayDayLabelStyle}"

@@ -4,8 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:SimplePageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     x:Name="simpleCalendarPage">
+    
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -50,7 +55,7 @@
         DayLabelStyle="{StaticResource daysLabelStyle}"
         DayViewFontSize="Medium"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}}"
+        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
@@ -62,7 +67,7 @@
         VerticalOptions="Fill"
         Year="{Binding Year, Mode=TwoWay}">
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:EventModel">
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"

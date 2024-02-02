@@ -5,6 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:RangeSelectionPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     x:Name="advancedRangeSelectionCalendarPage">   
@@ -16,7 +19,6 @@
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
         Padding="10,0"        
-        DayTappedCommand="{Binding DayTappedCommand, Mode=OneWay}"
         Events="{Binding Events, Mode=OneWay}"
         SelectedDates="{Binding SelectedDates, Mode=OneWay}"
         SelectedEndDate="{Binding SelectedEndDate, Mode=OneWay}"

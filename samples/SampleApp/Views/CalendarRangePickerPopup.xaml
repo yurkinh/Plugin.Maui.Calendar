@@ -7,7 +7,10 @@
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:controls="clr-namespace:SampleApp.Controls"
-    xmlns:local="clr-namespace:SampleApp.ViewModels"    
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:CalendarRangePickerPopupViewModel"    
     CloseWhenBackgroundIsClicked="False">   
     <rg:PopupPage.BindingContext>
         <local:CalendarRangePickerPopupViewModel />
