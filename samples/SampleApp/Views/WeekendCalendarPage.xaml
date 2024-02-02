@@ -4,9 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:controls="clr-namespace:SampleApp.Controls"
              xmlns:local="clr-namespace:SampleApp.ViewModels"
-             xmlns:vm="clr-namespace:SampleApp.ViewModels"
-             xmlns:model="clr-namespace:SampleApp.Model"
-             x:DataType="vm:WeekendCalendarPageViewModel"
              xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
              xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
              x:Name="weekendCalendarPage">
@@ -29,14 +26,27 @@
                 <Setter Property="TextColor" Value="Silver" />
             </Style>
             
+            <Style
+                x:Key="WeekendDaysLabelStyle"
+                BasedOn="{StaticResource daysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+            
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource daysTitleLabelColor}, Dark={StaticResource daysTitleLabelColor}}" />
             </Style>
-            
+
             <Style x:Key="daysTitleWeekedLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />    
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+            
+            <Style x:Key="daysWeekedLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="Red" />
             </Style>
 
             <Style
@@ -66,7 +76,6 @@
         DayViewFontSize="Medium"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}"
-        WeekendDayColor="red"
         Events="{Binding Events, Mode=OneWay}"
         EventIndicatorColor ="Teal"
         EventIndicatorSelectedColor="DarkSlateGray"
@@ -86,14 +95,14 @@
         SelectedDayBackgroundColor ="Gainsboro"
         HeaderSectionVisible ="true"
         DayViewCornerRadius="16"
-        WeekendDayLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
+        WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
         >
         <plugin:Calendar.HeaderSectionTemplate>
             <controls:CalendarMinimalisticHeader />
         </plugin:Calendar.HeaderSectionTemplate>
         
         <plugin:Calendar.EventTemplate>
-            <DataTemplate x:DataType="model:EventModel">
+            <DataTemplate>
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
