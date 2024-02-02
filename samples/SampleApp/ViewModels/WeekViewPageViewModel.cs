@@ -85,7 +85,7 @@ public partial class WeekViewPageViewModel : BasePageViewModel
 	}
 
 	[RelayCommand]
-	void TodayCommand()
+	void Today()
 	{
 		ShownDate = DateTime.Today;
 		SelectedDate = DateTime.Today;

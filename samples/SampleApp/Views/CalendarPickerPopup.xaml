@@ -30,10 +30,10 @@
                     Padding="10,0"                   
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
-                    MaximumDate="{Binding MaximumDate}"
-                    MinimumDate="{Binding MinimumDate}"
-                    SelectedDate="{Binding SelectedDate}"
-                    ShownDate="{Binding InitalDate}"
+                    MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+                    MinimumDate="{Binding MinimumDate, Mode=OneWay}"
+                    SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+                    ShownDate="{Binding InitalDate, Mode=OneWay}"
                     VerticalOptions="Center"
                     WidthRequest="320" />
                 <FlexLayout JustifyContent="SpaceBetween">

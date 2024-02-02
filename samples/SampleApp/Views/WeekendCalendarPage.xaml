@@ -50,7 +50,7 @@
    
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}" Text="Today"/>       
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today"/>       
     </ContentPage.ToolbarItems>
 
     <ContentPage.BindingContext>
@@ -64,19 +64,19 @@
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}"
         WeekendDayColor="red"
-        Events="{Binding Events}"
+        Events="{Binding Events, Mode=OneWay}"
         EventIndicatorColor ="Teal"
         EventIndicatorSelectedColor="DarkSlateGray"
         HorizontalOptions="Fill"
-        MaximumDate="{Binding MaximumDate}"
-        MinimumDate="{Binding MinimumDate}"
+        MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+        MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"
         MonthLabelColor="DarkSlateGray"
         OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
         TodayLabelStyle="{StaticResource todayDayLabelStyle}"
         TodayOutlineColor ="green"
         TodayFillColor="LightGreen"
-        SelectedDate="{Binding SelectedDate}"
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         VerticalOptions="Fill"
         Year="{Binding Year}"
         YearLabelColor="DarkSlateGray"
@@ -99,13 +99,13 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name, Mode=OneWay}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                        Text="{Binding Description, Mode=OneWay}" />
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference weekendCalendarPage}}" CommandParameter="{Binding .}" />
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference weekendCalendarPage}}" CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

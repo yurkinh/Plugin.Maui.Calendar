@@ -16,12 +16,12 @@
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
         Padding="10,0"        
-        DayTappedCommand="{Binding DayTappedCommand}"
-        Events="{Binding Events}"
-        SelectedDates="{Binding SelectedDates}"
-        SelectedEndDate="{Binding SelectedEndDate}"
-        SelectedStartDate="{Binding SelectedStartDate}"
-        ShownDate="{Binding ShownDate}">
+        DayTappedCommand="{Binding DayTappedCommand, Mode=OneWay}"
+        Events="{Binding Events, Mode=OneWay}"
+        SelectedDates="{Binding SelectedDates, Mode=OneWay}"
+        SelectedEndDate="{Binding SelectedEndDate, Mode=OneWay}"
+        SelectedStartDate="{Binding SelectedStartDate, Mode=OneWay}"
+        ShownDate="{Binding ShownDate, Mode=OneWay}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
             <controls:CalendarHeader />
@@ -35,7 +35,7 @@
 
         <plugin:RangeSelectionCalendar.EventTemplate>
             <DataTemplate>
-                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
+                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EventTemplate>
         <plugin:RangeSelectionCalendar.EmptyTemplate>
