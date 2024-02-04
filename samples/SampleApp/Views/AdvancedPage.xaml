@@ -5,9 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:AdvancedPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     x:Name="advancedCalendarPage">
+    
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -40,20 +45,20 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="Orange" />
-            </Style>           
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <local:AdvancedPageViewModel />
     </ContentPage.BindingContext>
-    <plugin:Calendar
+    <plugin:Calendar x:Name="MyCalendar"
         Padding="10,0"
         AnimateCalendar="True"      
-        CalendarLayout="{Binding CalendarLayout}"
-        Culture="{Binding Culture}"
+        CalendarLayout="{Binding CalendarLayout, Mode=OneWay}"
+        Culture="{Binding Culture, Mode=OneWay}"
         DayLabelStyle="{StaticResource daysLabelStyle}"
-        DayTappedCommand="{Binding DayTappedCommand}"
+        DayTappedCommand="{Binding DayTappedCommand, Mode=OneWay}"
         DayViewCornerRadius="3"
         DayViewSize="40"
         DaysTitleHeight="40"
@@ -66,22 +71,21 @@
         EventIndicatorSelectedTextColor="AliceBlue"
         EventIndicatorTextColor="WhiteSmoke"
         EventIndicatorType="Background"
-        Events="{Binding Events}"
+        Events="{Binding Events, Mode=OneWay}"
         HeaderSectionVisible="True"
         HorizontalOptions="Fill"
         MonthLabelColor="Red"
         OtherMonthDayIsVisible="False"
         OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysLabelStyle}"
-        SelectedDate="{Binding SelectedDate}"       
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"       
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayBackgroundColor="DarkCyan"
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
-        ShownDate="{Binding ShownDate}"
-        SwipeLeftCommand="{Binding SwipeLeftCommand}"
-        SwipeRightCommand="{Binding SwipeRightCommand}"
+        ShownDate="{Binding ShownDate, Mode=OneWay}"
+        SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
+        SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeToChangeMonthEnabled="False"
-        SwipeUpCommand="{Binding SwipeUpCommand}"
         SwipeUpToHideEnabled="False"
         TodayFillColor="Silver"
         TodayLabelStyle="{StaticResource todayDayLabelStyle}"

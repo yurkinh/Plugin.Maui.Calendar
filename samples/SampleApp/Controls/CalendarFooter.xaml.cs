@@ -1,11 +1,10 @@
-﻿namespace SampleApp.Controls
+﻿namespace SampleApp.Controls;
+
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class CalendarFooter : ContentView
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CalendarFooter : ContentView
-    {
-        public CalendarFooter()
-        {
-            InitializeComponent();
-        }
-    }
+	public CalendarFooter()
+	{
+		InitializeComponent();
+	}
 }

@@ -7,7 +7,10 @@
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:controls="clr-namespace:SampleApp.Controls"
-    xmlns:local="clr-namespace:SampleApp.ViewModels"    
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:CalendarRangePickerPopupSelectedDatesViewModel"    
     CloseWhenBackgroundIsClicked="False">   
 
     <rg:PopupPage.BindingContext>
@@ -33,10 +36,10 @@
                     Padding="10,0"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
-                    MaximumDate="{Binding MaximumDate}"
-                    MinimumDate="{Binding MinimumDate}"
-                    ShownDate="{Binding ShownDate}"                    
-                    SelectedDates="{Binding SelectedDates}"
+                    MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+                    MinimumDate="{Binding MinimumDate, Mode=OneWay}"
+                    ShownDate="{Binding ShownDate, Mode=OneWay}"                    
+                    SelectedDates="{Binding SelectedDates, Mode=OneWay}"
                     VerticalOptions="Center"
                     WidthRequest="320">
                     <plugin:Calendar.HeaderSectionTemplate>

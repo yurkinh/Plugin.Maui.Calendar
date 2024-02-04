@@ -4,6 +4,9 @@
              x:Class="SampleApp.Views.MultiSelectionPage"
              Title="MultiSelectionPage"
              xmlns:local="clr-namespace:SampleApp.ViewModels"
+             xmlns:vm="clr-namespace:SampleApp.ViewModels"
+             xmlns:model="clr-namespace:SampleApp.Model"
+             x:DataType="vm:SimplePageViewModel"
              xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"  
              x:Name="multiCalendarPage">
    <ContentPage.Resources>
@@ -22,18 +25,18 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <local:SimplePageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:MultiSelectionCalendar
-        Events="{Binding Events}"
-        MaximumDate="{Binding MaximumDate}"
-        MinimumDate="{Binding MinimumDate}"
+        Events="{Binding Events, Mode=OneWay}"
+        MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+        MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"        
-        SelectedDate="{Binding SelectedDate}"
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         DayLabelStyle="{StaticResource daysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"       
         Year="{Binding Year}"       
@@ -41,7 +44,7 @@
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:EventModel">
                 <VerticalStackLayout
                     Spacing="6"
                     Padding="15,0,0,0"
@@ -50,13 +53,13 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name, Mode=OneWay}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                        Text="{Binding Description, Mode=OneWay}" />
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference multiCalendarPage}}" CommandParameter="{Binding .}" />
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference multiCalendarPage}}" CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

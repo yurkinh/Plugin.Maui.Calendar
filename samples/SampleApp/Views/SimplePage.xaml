@@ -4,8 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:SimplePageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     x:Name="simpleCalendarPage">
+    
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -39,7 +44,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <local:SimplePageViewModel />
@@ -50,19 +55,19 @@
         DayLabelStyle="{StaticResource daysLabelStyle}"
         DayViewFontSize="Medium"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}}"
-        Events="{Binding Events}"
+        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}"
+        Events="{Binding Events, Mode=OneWay}"
         HorizontalOptions="Fill"
-        MaximumDate="{Binding MaximumDate}"
-        MinimumDate="{Binding MinimumDate}"
-        Month="{Binding Month}"
+        MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+        MinimumDate="{Binding MinimumDate, Mode=OneWay}"
+        Month="{Binding Month, Mode=TwoWay}"
         OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
         TodayLabelStyle="{StaticResource todayDayLabelStyle}"
-        SelectedDate="{Binding SelectedDate}"
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         VerticalOptions="Fill"
-        Year="{Binding Year}">
+        Year="{Binding Year, Mode=TwoWay}">
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:EventModel">
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
@@ -71,13 +76,13 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name, Mode=OneWay}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                        Text="{Binding Description, Mode=OneWay}" />
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference simpleCalendarPage}}" CommandParameter="{Binding .}" />
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference simpleCalendarPage}}" CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

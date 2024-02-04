@@ -5,12 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    x:DataType="vm:WeekViewPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     x:Name="weekViewCalendarPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <local:WeekViewPageViewModel />
@@ -18,14 +21,14 @@
 
     <plugin:Calendar
         Padding="10,0"
-        CalendarLayout="{Binding CalendarLayout}"
-        Day="{Binding Day}"
-        Events="{Binding Events}"
+        CalendarLayout="{Binding CalendarLayout, Mode=OneWay}"
+        Day="{Binding Day, Mode=OneWay}"
+        Events="{Binding Events, Mode=OneWay}"
         HorizontalOptions="Fill"
-        MaximumDate="{Binding MaximumDate}"
-        MinimumDate="{Binding MinimumDate}"
+        MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+        MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"
-        SelectedDate="{Binding SelectedDate}"
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         ShownDate="{Binding ShownDate}"
         VerticalOptions="Fill"
         Year="{Binding Year}">
@@ -35,7 +38,7 @@
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:EventModel">
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
@@ -44,13 +47,13 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name, Mode=OneWay}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                        Text="{Binding Description, Mode=OneWay}" />
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}" CommandParameter="{Binding .}" />
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference weekViewCalendarPage}}" CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>
