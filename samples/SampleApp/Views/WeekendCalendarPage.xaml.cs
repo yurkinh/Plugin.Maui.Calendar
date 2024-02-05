@@ -1,3 +1,4 @@
+
 namespace SampleApp.Views;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]

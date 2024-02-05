@@ -1,5 +1,4 @@
 ﻿using Plugin.Maui.Calendar.Models;
-using System.Collections.ObjectModel;
 
 namespace SampleApp.ViewModels;
 public partial class WeekendCalendarPageViewModel : BasePageViewModel
@@ -77,4 +76,11 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 			await App.Current.MainPage.DisplayAlert(title, message, "Ok");
 		}
 	}
+	public object ThemeParameter { get; set; }
+
+	void ThemeValueChanged(object sender, CheckedChangedEventArgs e)
+	{
+		
+	}
+
 }

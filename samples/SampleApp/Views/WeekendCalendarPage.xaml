@@ -69,7 +69,14 @@
     <ContentPage.BindingContext>
         <local:WeekendCalendarPageViewModel />
     </ContentPage.BindingContext>
-    <plugin:Calendar 
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <plugin:Calendar 
         FooterArrowVisible="False"       
         Padding="10,0"       
         DayLabelStyle="{StaticResource daysLabelStyle}"
@@ -123,5 +130,19 @@
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
     </plugin:Calendar>
+        <StackLayout Grid.Row="1" RadioButtonGroup.GroupName="themes">
+            <Label Text="Feel free to choose the theme" />
+            
+            <RadioButton Content="Same as system" 
+                         IsChecked="True"  
+                         CheckedChanged =" ThemeValueChanged"/>
+            
+            <RadioButton Content="Dark (if you're a straight boy)"
+                         CheckedChanged =" ThemeValueChanged"/>
+            
+            <RadioButton Content="Light (if you like to look at the sun for a long time)"
+                         CheckedChanged =" ThemeValueChanged"/>
+
+        </StackLayout>
+    </Grid>
 </ContentPage>
-    
