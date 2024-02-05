@@ -8,19 +8,32 @@
              xmlns:model="clr-namespace:SampleApp.Model"
              x:DataType="vm:SimplePageViewModel"
              xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"  
-             x:Name="multiCalendarPage">
-   <ContentPage.Resources>
+             x:Name="multiCalendarPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysLabelStyle" TargetType="Label">
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysLabelTextColor}" />
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
             </Style>
-            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />                
+            <Style
+                 x:Key="DeselectedDayLabelStyle"
+                 BasedOn="{StaticResource DaysLabelStyle}"
+                 TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+            </Style>
+            <Style
+                  x:Key="OtherMonthDaysLabelStyle"
+                  BasedOn="{StaticResource DaysLabelStyle}"
+                  TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource OtherMonthDaysLabelTextColor}" />
+            </Style>
+            <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -36,10 +49,12 @@
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"        
+        OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
-        DayLabelStyle="{StaticResource daysLabelStyle}"       
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"       
-        Year="{Binding Year}"       
+        DayLabelStyle="{StaticResource DaysLabelStyle}"       
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"       
+        Year="{Binding Year}"    
+        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         Padding="10,0"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">

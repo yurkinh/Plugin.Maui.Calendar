@@ -10,7 +10,22 @@
     x:DataType="vm:TwoWeekViewPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-    x:Name="twoWeekViewCalendarPage">
+    x:Name="twoWeekViewCalendarPage"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <ContentPage.Resources>
+        <Style
+            x:Key="DeselectedDayLabelStyle"
+            BasedOn="{StaticResource DaysLabelStyle}"
+            TargetType="Label">
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+        </Style>
+        <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+        </Style>
+    </ContentPage.Resources>
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
@@ -18,6 +33,8 @@
         <local:TwoWeekViewPageViewModel />
     </ContentPage.BindingContext>
     <plugin:Calendar
+        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         Padding="10,0"
         CalendarLayout="{Binding CalendarLayout, Mode=OneWay}"
         Day="{Binding Day, Mode=OneWay}"

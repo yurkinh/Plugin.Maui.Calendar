@@ -10,14 +10,31 @@
     x:DataType="vm:RangeSelectionPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-    x:Name="advancedRangeSelectionCalendarPage">   
+    x:Name="advancedRangeSelectionCalendarPage"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
+    <ContentPage.Resources>
+        <Style
+            x:Key="DeselectedDayLabelStyle"
+            BasedOn="{StaticResource DaysLabelStyle}"
+            TargetType="Label">
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+        </Style>
+        <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+        </Style>
+    </ContentPage.Resources>
+    
     <ContentPage.BindingContext>
         <local:RangeSelectionPageViewModel />
     </ContentPage.BindingContext>
 
+   
     <plugin:RangeSelectionCalendar
-        x:Name="rangedCalendar"
+        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+        x:Name="RangedCalendar"
         Padding="10,0"        
         Events="{Binding Events, Mode=OneWay}"
         SelectedDates="{Binding SelectedDates, Mode=OneWay}"
@@ -52,5 +69,4 @@
         </plugin:RangeSelectionCalendar.EmptyTemplate>
     </plugin:RangeSelectionCalendar>
 
-   
 </ContentPage>

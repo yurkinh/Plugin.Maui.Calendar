@@ -2,7 +2,18 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <toolkit:AppThemeColor Light="Red" Dark="Orange" x:Key="DaysLabelTextColor" />
+    <toolkit:AppThemeColor Light="Black" Dark="White" x:Key="DeselectedDayLabelTextColor" />
+    <toolkit:AppThemeColor Light="Black" Dark="#F7B548" x:Key="DaysTitleLabelTextColor" />
+    <toolkit:AppThemeColor Light="Yellow" Dark="ForestGreen" x:Key="TodayDayLabeTextlColor" />
+    <toolkit:AppThemeColor Light="Silver" Dark="DimGray" x:Key="OtherMonthDaysLabelTextColor" />
+    <toolkit:AppThemeColor Light="Red" Dark="Green" x:Key="EventIndicatorColor" />
+    <toolkit:AppThemeColor Light="Red" Dark="Red" x:Key="WeekendDaysLabelTextColor" />
+    <toolkit:AppThemeColor Light="White" Dark="#212121" x:Key="BackgroundColor" />
+
 
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
@@ -40,9 +51,6 @@
     <Color x:Key="Blue100Accent">#3E8EED</Color>
     <Color x:Key="Blue200Accent">#72ACF1</Color>
     <Color x:Key="Blue300Accent">#A7CBF6</Color>
-
-
-    <Color x:Key="daysTitleLabelColor">DarkSlateGray</Color>
 
 
 
