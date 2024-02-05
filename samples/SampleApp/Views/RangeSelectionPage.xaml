@@ -33,7 +33,7 @@
    
     <plugin:RangeSelectionCalendar
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
-        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelTextColor}"
         x:Name="RangedCalendar"
         Padding="10,0"        
         Events="{Binding Events, Mode=OneWay}"

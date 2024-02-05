@@ -8,7 +8,7 @@
     <toolkit:AppThemeColor Light="Red" Dark="Orange" x:Key="DaysLabelTextColor" />
     <toolkit:AppThemeColor Light="Black" Dark="White" x:Key="DeselectedDayLabelTextColor" />
     <toolkit:AppThemeColor Light="Black" Dark="#F7B548" x:Key="DaysTitleLabelTextColor" />
-    <toolkit:AppThemeColor Light="Yellow" Dark="ForestGreen" x:Key="TodayDayLabeTextlColor" />
+    <toolkit:AppThemeColor Light="Yellow" Dark="ForestGreen" x:Key="TodayDayLabelTextColor" />
     <toolkit:AppThemeColor Light="Silver" Dark="DimGray" x:Key="OtherMonthDaysLabelTextColor" />
     <toolkit:AppThemeColor Light="Red" Dark="Green" x:Key="EventIndicatorColor" />
     <toolkit:AppThemeColor Light="Red" Dark="Red" x:Key="WeekendDaysLabelTextColor" />
