@@ -78,9 +78,6 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 	}
 	public object ThemeParameter { get; set; }
 
-	void ThemeValueChanged(object sender, CheckedChangedEventArgs e)
-	{
-		
-	}
+	
 
 }
