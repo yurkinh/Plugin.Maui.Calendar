@@ -60,7 +60,7 @@
             x:Key="TodayDayLabelStyle"
             BasedOn="{StaticResource DaysLabelStyle}"
             TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabeTextlColor}" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
                 <Setter Property="FontSize" Value="25" />
             </Style>
 

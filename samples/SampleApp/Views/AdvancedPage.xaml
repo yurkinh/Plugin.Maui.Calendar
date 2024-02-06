@@ -17,7 +17,9 @@
         <ResourceDictionary>
             <toolkit:AppThemeColor Light="Blue" Dark="LightSkyBlue" x:Key="DeselectedDayLabelTextColor" />
             <toolkit:AppThemeColor Light="#F7B548" Dark="Khaki" x:Key="DaysTitleLabelTextColor" />
-            
+            <toolkit:AppThemeColor Light="Black" Dark="Red" x:Key="WeekendDaysTitleLabelTextColor" />
+            <toolkit:AppThemeColor Light="Yellow" Dark="ForestGreen" x:Key="TodayDayLabelTextColor" />
+
             <Style x:Key="DaysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysLabelTextColor}" />
@@ -36,7 +38,7 @@
                 x:Key="TodayDayLabelStyle"
                 BasedOn="{StaticResource DaysLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabeTextlColor}" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
             </Style>
             <Style
                 x:Key="OtherMonthDaysLabelStyle"
@@ -49,6 +51,15 @@
                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
+            <Style x:Key="DaysTitleWeekendLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendDaysTitleLabelTextColor}" />
+            </Style>
+            <Style x:Key="TodayLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
+            </Style>
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -95,7 +106,8 @@
         TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
         TodayOutlineColor="Blue"
         VerticalOptions="Fill"
-        YearLabelColor="Blue">
+        YearLabelColor="Blue"
+        DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}">
 
         <plugin:Calendar.HeaderSectionTemplate>
             <controls:CalendarHeader />
