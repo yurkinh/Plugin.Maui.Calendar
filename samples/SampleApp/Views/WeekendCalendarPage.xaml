@@ -9,82 +9,78 @@
              x:Name="weekendCalendarPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     
+   
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysLabelStyle" TargetType="Label">
+            <toolkit:AppThemeColor Light="Green" Dark="Green" x:Key="DaysLabelTextColor" />
+            <toolkit:AppThemeColor Light="DarkSlateGray" Dark="DarkSlateGray" x:Key="DaysTitleLabelTextColor" />
+
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Green" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysLabelTextColor}" />
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
             </Style>
-            
+
             <Style
-                x:Key="otherMonthDaysTitleLabelStyle"
-                BasedOn="{StaticResource daysLabelStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="Silver" />
+                 x:Key="DeselectedDayLabelStyle"
+                 BasedOn="{StaticResource DaysLabelStyle}"
+                 TargetType="Label">    
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
             
+            <Style
+                x:Key="OtherMonthDaysTitleLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource OtherMonthDaysLabelTextColor}" />
+            </Style>
+
             <Style
                 x:Key="WeekendDaysLabelStyle"
-                BasedOn="{StaticResource daysLabelStyle}"
+                BasedOn="{StaticResource DaysLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="Red" />
-            </Style>
-            
-            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource daysTitleLabelColor}, Dark={StaticResource daysTitleLabelColor}}" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendDaysLabelTextColor}" />
             </Style>
 
-            <Style x:Key="daysTitleWeekedLabelStyle" TargetType="Label">
+            <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
-            
-            <Style x:Key="daysWeekedLabelStyle" TargetType="Label">
+
+            <Style x:Key="DaysTitleWeekendLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendDaysLabelTextColor}" />
             </Style>
 
             <Style
-            x:Key="todayDayLabelStyle"
-            BasedOn="{StaticResource daysLabelStyle}"
+            x:Key="TodayDayLabelStyle"
+            BasedOn="{StaticResource DaysLabelStyle}"
             TargetType="Label">
-                <Setter Property="TextColor" Value="Teal" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
                 <Setter Property="FontSize" Value="25" />
             </Style>
 
         </ResourceDictionary>
     </ContentPage.Resources>
 
-   
-    
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today"/>       
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.BindingContext>
         <local:WeekendCalendarPageViewModel />
     </ContentPage.BindingContext>
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" /> 
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
-        <plugin:Calendar 
+    <plugin:Calendar 
         FooterArrowVisible="False"       
         Padding="10,0"       
-        DayLabelStyle="{StaticResource daysLabelStyle}"
+        DayLabelStyle="{StaticResource DaysLabelStyle}"
         DayViewFontSize="Medium"
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+        DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"
         EventIndicatorColor ="Teal"
         EventIndicatorSelectedColor="DarkSlateGray"
@@ -93,8 +89,8 @@
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"
         MonthLabelColor="DarkSlateGray"
-        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
-        TodayLabelStyle="{StaticResource todayDayLabelStyle}"
+        OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysTitleLabelStyle}"
+        TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
         TodayOutlineColor ="green"
         TodayFillColor="LightGreen"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
@@ -105,11 +101,12 @@
         HeaderSectionVisible ="true"
         DayViewCornerRadius="16"
         WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
+        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         >
         <plugin:Calendar.HeaderSectionTemplate>
             <controls:CalendarMinimalisticHeader />
         </plugin:Calendar.HeaderSectionTemplate>
-        
+
         <plugin:Calendar.EventTemplate>
             <DataTemplate>
                 <VerticalStackLayout
@@ -132,26 +129,4 @@
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
     </plugin:Calendar>
-        <VerticalStackLayout Grid.Row="1" RadioButtonGroup.GroupName="themes">
-            <Label Text="Feel free to choose the theme" />
-            
-            <RadioButton Content="Same as system" 
-                         IsChecked="True"                           
-                         CheckedChanged="OnThemeValueChanged"/>
-            
-            <RadioButton Content="Dark (if you're a straight boy)"
-                         IsChecked="False"  
-                         CheckedChanged="OnThemeValueChanged"/>
-            
-            <RadioButton Content="Light (if you like to look at the sun for a long time)"
-                         IsChecked="False"  
-                         CheckedChanged="OnThemeValueChanged"/>
-
-        </VerticalStackLayout>
-        <VerticalStackLayout Grid.Row="2">
-            <Entry Text="{Binding SelectedThemeEntry}"/>
-            <Button Text="Enter" Command="{Binding EnterThemeCommand}"/>
-        </VerticalStackLayout>
-        
-    </Grid>
 </ContentPage>

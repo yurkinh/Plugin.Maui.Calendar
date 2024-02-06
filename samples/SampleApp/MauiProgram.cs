@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
+using CommunityToolkit.Maui;
+
+
 
 #if DEBUG
 using DotNet.Meteor.HotReload.Plugin;
@@ -15,6 +18,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.ConfigureMopups()
+			.UseMauiCommunityToolkit()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -31,4 +35,3 @@ public static class MauiProgram
 		return builder.Build();
 	}
 }
-

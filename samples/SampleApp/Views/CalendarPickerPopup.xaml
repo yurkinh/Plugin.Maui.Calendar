@@ -10,7 +10,29 @@
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
-    CloseWhenBackgroundIsClicked="False">   
+    CloseWhenBackgroundIsClicked="False"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <ContentPage.Resources>
+        <Style x:Key="DaysLabelStyle" TargetType="Label">
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysLabelTextColor}" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,2" />
+        </Style>
+        <Style
+            x:Key="DeselectedDayLabelStyle"
+            BasedOn="{StaticResource DaysLabelStyle}"
+            TargetType="Label">
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+        </Style>
+        <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+        </Style>
+    </ContentPage.Resources>
 
     <rg:PopupPage.BindingContext>
         <local:CalendarPickerPopupViewModel />
@@ -18,7 +40,7 @@
 
     <rg:PopupPage.Content>
         <Border
-            BackgroundColor="White"
+            BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
             HorizontalOptions="Center"
             VerticalOptions="Center">
             <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
@@ -30,6 +52,8 @@
                     Text="Choose Date"
                     VerticalOptions="Center" />
                 <plugin:Calendar
+                    DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
+                    DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
                     Padding="10,0"                   
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
