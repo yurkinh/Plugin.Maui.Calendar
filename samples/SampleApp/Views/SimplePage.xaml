@@ -8,62 +8,70 @@
     xmlns:model="clr-namespace:SampleApp.Model"
     x:DataType="vm:SimplePageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    x:Name="simpleCalendarPage">
-    
+    x:Name="simpleCalendarPage"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysLabelStyle" TargetType="Label">
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Green" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysLabelTextColor}" />
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style
-                x:Key="otherMonthDaysTitleLabelStyle"
-                BasedOn="{StaticResource daysLabelStyle}"
+                x:Key="OtherMonthDaysLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="Silver" />
-            </Style>
-            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}" />
-            </Style>
-            <Style x:Key="daysTitleWeekedLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource OtherMonthDaysLabelTextColor}" />
             </Style>
             <Style
-                x:Key="todayDayLabelStyle"
-                BasedOn="{StaticResource daysLabelStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="Yellow" />
+                 x:Key="DeselectedDayLabelStyle"
+                 BasedOn="{StaticResource DaysLabelStyle}"
+                 TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+            </Style>
+
+            <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
-            </Style>            
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="TodayDayLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
+    
     <ContentPage.BindingContext>
         <local:SimplePageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:Calendar
         Padding="10,0"       
-        DayLabelStyle="{StaticResource daysLabelStyle}"
+        EventIndicatorColor="{toolkit:AppThemeResource  EventIndicatorColor}"
+        DayLabelStyle="{StaticResource DaysLabelStyle}"
         DayViewFontSize="Medium"
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleWeekendStyle="{StaticResource daysTitleWeekedLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+        DaysTitleWeekendStyle="{StaticResource DaysTitleLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month, Mode=TwoWay}"
-        OtherMonthDaysLabelStyle="{StaticResource otherMonthDaysTitleLabelStyle}"
-        TodayLabelStyle="{StaticResource todayDayLabelStyle}"
+        OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
+        TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         VerticalOptions="Fill"
         Year="{Binding Year, Mode=TwoWay}">
         <plugin:Calendar.EventTemplate>
@@ -88,4 +96,5 @@
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
     </plugin:Calendar>
+    
 </ContentPage>
