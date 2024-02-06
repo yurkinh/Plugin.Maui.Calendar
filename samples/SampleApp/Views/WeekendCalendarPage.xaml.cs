@@ -8,7 +8,7 @@ public partial class WeekendCalendarPage : ContentPage
 	{
 		InitializeComponent();
 	}
-	void ThemeValueChanged(object sender, CheckedChangedEventArgs e)
+	void OnThemeValueChanged(object sender, CheckedChangedEventArgs e)
 	{
 
 	}

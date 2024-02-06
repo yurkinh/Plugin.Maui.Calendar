@@ -1,8 +1,11 @@
 ﻿using Plugin.Maui.Calendar.Models;
 
 namespace SampleApp.ViewModels;
+
 public partial class WeekendCalendarPageViewModel : BasePageViewModel
 {
+	public string SelectedThemeEntry { get; set; }
+
 	public WeekendCalendarPageViewModel() : base()
 	{
 		MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
@@ -76,8 +79,14 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 			await App.Current.MainPage.DisplayAlert(title, message, "Ok");
 		}
 	}
-	public object ThemeParameter { get; set; }
 
-	
+	[RelayCommand]
+	void EnterTheme()
+	{
+		App.Current.MainPage.DisplayAlert("Hi", SelectedThemeEntry, "OK");
+	}
+
+
+
 
 }

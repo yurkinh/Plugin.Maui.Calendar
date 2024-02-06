@@ -2,12 +2,13 @@
 <ContentPage x:Class="SampleApp.Views.WeekendCalendarPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              xmlns:controls="clr-namespace:SampleApp.Controls"
+             xmlns:controls="clr-namespace:SampleApp.Controls"
              xmlns:local="clr-namespace:SampleApp.ViewModels"
              xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
              xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-             x:Name="weekendCalendarPage">
-
+             x:Name="weekendCalendarPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -72,6 +73,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" /> 
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -135,14 +137,21 @@
             
             <RadioButton Content="Same as system" 
                          IsChecked="True"                           
-                         CheckedChanged =" ThemeValueChanged"/>
+                         CheckedChanged="OnThemeValueChanged"/>
             
             <RadioButton Content="Dark (if you're a straight boy)"
-                         CheckedChanged =" ThemeValueChanged"/>
+                         IsChecked="False"  
+                         CheckedChanged="OnThemeValueChanged"/>
             
             <RadioButton Content="Light (if you like to look at the sun for a long time)"
-                         CheckedChanged =" ThemeValueChanged"/>
+                         IsChecked="False"  
+                         CheckedChanged="OnThemeValueChanged"/>
 
         </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="2">
+            <Entry Text="{Binding SelectedThemeEntry}"/>
+            <Button Text="Enter" Command="{Binding EnterThemeCommand}"/>
+        </VerticalStackLayout>
+        
     </Grid>
 </ContentPage>
