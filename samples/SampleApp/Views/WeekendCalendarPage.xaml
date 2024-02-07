@@ -11,6 +11,7 @@
     
    
     <ContentPage.Resources>
+        
         <ResourceDictionary>
             <toolkit:AppThemeColor Light="Green" Dark="Green" x:Key="DaysLabelTextColor" />
             <toolkit:AppThemeColor Light="DarkSlateGray" Dark="DarkSlateGray" x:Key="DaysTitleLabelTextColor" />
@@ -74,7 +75,11 @@
     <ContentPage.BindingContext>
         <local:WeekendCalendarPageViewModel />
     </ContentPage.BindingContext>
-    <plugin:Calendar 
+
+
+    <VerticalStackLayout>
+
+        <plugin:Calendar Grid.Row="0" 
         FooterArrowVisible="False"       
         Padding="10,0"       
         DayLabelStyle="{StaticResource DaysLabelStyle}"
@@ -103,30 +108,35 @@
         WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         >
-        <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarMinimalisticHeader />
-        </plugin:Calendar.HeaderSectionTemplate>
+            <plugin:Calendar.HeaderSectionTemplate>
+                <controls:CalendarMinimalisticHeader />
+            </plugin:Calendar.HeaderSectionTemplate>
 
-        <plugin:Calendar.EventTemplate>
-            <DataTemplate>
-                <VerticalStackLayout
+            <plugin:Calendar.EventTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout
+                    
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
                     Spacing="6"
                     VerticalOptions="Fill">
-                    <Label
+                        <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
                         Text="{Binding Name, Mode=OneWay}" />
-                    <Label
+                        <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
                         Text="{Binding Description, Mode=OneWay}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference weekendCalendarPage}}" CommandParameter="{Binding .}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-            </DataTemplate>
-        </plugin:Calendar.EventTemplate>
-    </plugin:Calendar>
+                        <VerticalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference weekendCalendarPage}}" CommandParameter="{Binding .}" />
+                        </VerticalStackLayout.GestureRecognizers>
+                    </VerticalStackLayout>
+                </DataTemplate>
+                
+            </plugin:Calendar.EventTemplate>
+            
+        </plugin:Calendar>
+        <controls:ThemeControl/>
+    </VerticalStackLayout>
 </ContentPage>

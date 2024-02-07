@@ -80,13 +80,26 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 		}
 	}
 
-	[RelayCommand]
-	void EnterTheme()
+	[ObservableProperty]
+	bool isSystemChecked;
+	partial void OnIsSystemCheckedChanged(bool value)
 	{
-		App.Current.MainPage.DisplayAlert("Hi", SelectedThemeEntry, "OK");
+		App.Current.MainPage.DisplayAlert("You have chosen a System theme", value.ToString(), "OK");
 	}
 
+	[ObservableProperty]
+	bool isDarkChecked;
+	partial void OnIsDarkCheckedChanged(bool value)
+	{
+		App.Current.MainPage.DisplayAlert("You have chosen a Dark theme", value.ToString(), "OK");
+	}
 
+	[ObservableProperty]
+	bool isLightChecked;
+	partial void OnIsLightCheckedChanged(bool value)
+	{
+		App.Current.MainPage.DisplayAlert("You have chosen a Light theme", value.ToString(), "OK");
+	}
 
 
 }
