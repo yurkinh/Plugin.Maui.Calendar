@@ -8,7 +8,7 @@ public partial class ThemeControl : ContentView
 	}
 	
 	public static readonly BindableProperty IsSystemThemeCheckedProperty = 
-		BindableProperty.Create(nameof(IsSystemThemeChecked), typeof(bool), typeof(ThemeControl), true);
+		BindableProperty.Create(nameof(IsSystemThemeChecked), typeof(bool), typeof(ThemeControl), true, BindingMode.TwoWay);
 
 	public bool IsSystemThemeChecked
 	{
@@ -18,7 +18,7 @@ public partial class ThemeControl : ContentView
 
 
 	public static readonly BindableProperty IsDarkThemeCheckedProperty = 
-		BindableProperty.Create(nameof(IsDarkThemeChecked), typeof(bool), typeof(ThemeControl), false);
+		BindableProperty.Create(nameof(IsDarkThemeChecked), typeof(bool), typeof(ThemeControl), false, BindingMode.TwoWay);
 
 	public bool IsDarkThemeChecked
 	{
@@ -27,7 +27,7 @@ public partial class ThemeControl : ContentView
 	}
 	
 	public static readonly BindableProperty IsLightThemeCheckedProperty = 
-		BindableProperty.Create(nameof(IsLightThemeChecked), typeof(bool), typeof(ThemeControl), false);
+		BindableProperty.Create(nameof(IsLightThemeChecked), typeof(bool), typeof(ThemeControl), false, BindingMode.TwoWay);
 
 	public bool IsLightThemeChecked
 	{
