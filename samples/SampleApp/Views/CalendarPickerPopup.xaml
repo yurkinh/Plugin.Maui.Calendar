@@ -59,7 +59,7 @@
                     HorizontalOptions="Center"
                     MaximumDate="{Binding MaximumDate, Mode=OneWay}"
                     MinimumDate="{Binding MinimumDate, Mode=OneWay}"
-                    SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+                    SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
                     ShownDate="{Binding ShownDate, Mode=OneWay}"
                     VerticalOptions="Center"
                     WidthRequest="320" />

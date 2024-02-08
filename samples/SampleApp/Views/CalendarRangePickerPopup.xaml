@@ -63,8 +63,8 @@
                     MaximumDate="{Binding MaximumDate, Mode=OneWay}"
                     MinimumDate="{Binding MinimumDate, Mode=OneWay}"
                     ShownDate="{Binding ShownDate, Mode=OneWay}"                   
-                    SelectedEndDate="{Binding SelectedEndDate, Mode=OneWay}"
-                    SelectedStartDate="{Binding SelectedStartDate, Mode=OneWay}"
+                    SelectedEndDate="{Binding SelectedEndDate, Mode=TwoWay}"
+                    SelectedStartDate="{Binding SelectedStartDate, Mode=TwoWay}"
                     VerticalOptions="Center"
                     WidthRequest="320">
                     <plugin:Calendar.HeaderSectionTemplate>
