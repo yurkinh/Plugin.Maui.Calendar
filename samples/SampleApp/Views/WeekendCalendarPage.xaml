@@ -137,6 +137,9 @@
             </plugin:Calendar.EventTemplate>
             
         </plugin:Calendar>
-        <controls:ThemeControl/>
+        <controls:ThemeControl
+            IsSystemThemeChecked="{Binding IsSystemChecked}"
+            IsDarkThemeChecked="{Binding IsDarkChecked}"
+            IsLightThemeChecked="{Binding IsLightChecked}"/>
     </VerticalStackLayout>
 </ContentPage>
