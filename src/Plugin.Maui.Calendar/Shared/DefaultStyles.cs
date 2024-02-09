@@ -179,9 +179,9 @@ public static class DefaultStyles
     {
         Style style = new(typeof(Label)) { CanCascade = true };
         style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
-        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 14 });
-        style.Setters.Add(new Setter() { Property = Label.VerticalOptionsProperty, Value = LayoutOptions.Center });
-        style.Setters.Add(new Setter() { Property = Label.HorizontalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
+        style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = "#2196F3" });
 
         return style;
