@@ -20,19 +20,16 @@
             VerticalOptions="Start">
             <Button
                 Grid.Column="0"
-                Command="{Binding PrevLayoutUnitCommand}, Mode=OneWay}"
+                Command="{Binding PrevLayoutUnitCommand, Mode=OneWay}"
                 Style="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}" />
             <Label
                 Grid.Column="1"
-                FontAttributes="Bold"
-                FontSize="Medium"
-                HorizontalOptions="Center"
                 Text="{Binding LayoutUnitText}"
-                TextColor="{Binding MonthLabelColor}"
-                VerticalOptions="Center" />
+                Style="{x:Static styles:DefaultStyles.DefaultHeaderLabelStyle}" 
+                TextColor="{Binding MonthLabelColor}"  />
             <Button
                 Grid.Column="2"
-                Command="{Binding NextLayoutUnitCommand}, Mode=OneWay}"
+                Command="{Binding NextLayoutUnitCommand, Mode=OneWay}"
                 Style="{x:Static styles:DefaultStyles.DefaultArrowButtonNextStyle}" />
         </Grid>
         <Grid
@@ -47,13 +44,9 @@
                 Command="{Binding PrevYearCommand, Mode=OneWay}"
                 Style="{x:Static styles:DefaultStyles.DefaultArrowButtonPrevStyle}" />
             <Label
-                Grid.Column="1"
-                FontAttributes="Bold"
-                FontSize="Medium"
-                HorizontalOptions="Center"
+                Grid.Column="1" 
                 Text="{Binding Year}"
-                TextColor="{Binding YearLabelColor}"
-                VerticalOptions="Center" />
+                Style="{x:Static styles:DefaultStyles.DefaultHeaderLabelStyle}"    />
             <Button
                 Grid.Column="2"
                 Command="{Binding NextYearCommand, Mode=OneWay}"

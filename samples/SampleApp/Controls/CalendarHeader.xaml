@@ -20,11 +20,7 @@
             Style="{StaticResource arrowButtonPrevStyle}" />
         <Label
             Grid.Column="1"
-            FontAttributes="Bold"
-            FontSize="Medium"
-            HorizontalOptions="Center"
-            TextColor="{Binding MonthLabelColor}"
-            VerticalOptions="Center">
+            Style="{StaticResource HeaderLabelStyle}">
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="{Binding LayoutUnitText, Mode=TwoWay}" />
