@@ -1,11 +1,9 @@
-﻿using Plugin.Maui.Calendar.Interfaces;
-
-namespace SampleApp.Model;
+﻿namespace SampleApp.Model;
 
 /// <summary>
 /// Wrapper to allow change the dot color
 /// </summary>
-public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
+public class DayEventCollection<T> : List<T>
 {
 	/// <summary>
 	/// Empty contructor extends from base()
@@ -16,12 +14,12 @@ public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
 	/// <summary>
 	/// Color contructor extends from base()
 	/// </summary>
-	/// <param name="eventIndicatorColor"></param>
-	/// <param name="eventIndicatorSelectedColor"></param>
-	public DayEventCollection(Color? eventIndicatorColor, Color? eventIndicatorSelectedColor) : base()
+	/// <param name="eventIndicatorStyle"></param>
+	/// <param name="eventIndicatorSelectedStyle"></param>
+	public DayEventCollection(Style eventIndicatorStyle, Style eventIndicatorSelectedStyle) : base()
 	{
-		EventIndicatorColor = eventIndicatorColor;
-		EventIndicatorSelectedColor = eventIndicatorSelectedColor;
+		EventIndicatorStyle = eventIndicatorStyle;
+		EventIndicatorSelectedStyle = eventIndicatorSelectedStyle;
 	}
 
 	/// <summary>
@@ -39,10 +37,8 @@ public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
 	{ }
 
 	#region PersonalizableProperties
-	public Color? EventIndicatorColor { get; set; }
-	public Color? EventIndicatorSelectedColor { get; set; }
-	public Color? EventIndicatorTextColor { get; set; }
-	public Color? EventIndicatorSelectedTextColor { get; set; }
+	public Style EventIndicatorStyle { get; set; }
+	public Style EventIndicatorSelectedStyle { get; set; }
 
 	#endregion
 }

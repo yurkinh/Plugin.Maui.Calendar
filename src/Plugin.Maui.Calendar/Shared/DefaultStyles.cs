@@ -1,6 +1,4 @@
-﻿
-
-
+﻿using Microsoft.Maui.Controls.Shapes;
 
 namespace Plugin.Maui.Calendar.Styles;
 
@@ -21,6 +19,8 @@ public static class DefaultStyles
     public static Style DefaultFooterArrowButtonStyle { get; }
     public static Style DefaultFooterLabelStyle { get; }
     public static Style DefaultHeaderLabelStyle { get; }
+    public static Style DefaultEventIndicatorStyle { get; }
+    public static Style DefaultEventIndicatorSelectedStyle { get; }
 
 
     static DefaultStyles()
@@ -33,13 +33,15 @@ public static class DefaultStyles
         DefaultSelectedTodayLabelStyle = CreateDefaultSelectedTodayLabelStyle();
         DefaultDisabledDayLabelStyle = CreateDefaultDisabledDayLabelStyle();
         DefaultSelectedDayLabelStyle = CreateDefaultSelectedDayLabelStyle();
-        DefaultEventIndicatorSelectedLabelStyle = CreateDefaultEventIndicatorSelectedLabelStyle();
-        DefaultEventIndicatorLabelStyle = CreateDefaultEventIndicatorLabelStyle();
         DefaultArrowButtonPrevStyle = CreateDefaultArrowButtonPrevStyle();
         DefaultArrowButtonNextStyle = CreateDefaultArrowButtonNextStyle();
         DefaultFooterArrowButtonStyle = CreateDefaultFooterArrowButtonStyle();
         DefaultFooterLabelStyle = CreateDefaultFooterLabelStyle();
         DefaultHeaderLabelStyle = CreateDefaultHeaderLabelStyle();
+        DefaultEventIndicatorStyle = CreateDefaultEventIndicatorStyle();
+        DefaultEventIndicatorSelectedStyle = CreateDefaultEventIndicatorSelectedStyle();
+        DefaultEventIndicatorSelectedLabelStyle = CreateDefaultEventIndicatorSelectedLabelStyle();
+        DefaultEventIndicatorLabelStyle = CreateDefaultEventIndicatorLabelStyle();
     }
 
     static Style CreateDefaultLabelStyle()
@@ -183,6 +185,26 @@ public static class DefaultStyles
         style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = "#2196F3" });
+
+        return style;
+    }
+
+    private static Style CreateDefaultEventIndicatorStyle()
+    {
+        Style style = new(typeof(Border)) { CanCascade = true };
+        style.Setters.Add(new Setter { Property = Border.PaddingProperty, Value = new Thickness(0) });
+        style.Setters.Add(new Setter { Property = VisualElement.BackgroundColorProperty, Value = Color.FromArgb("#FF4081") });
+        style.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 4 } });
+        style.Setters.Add(new Setter { Property = VisualElement.HeightRequestProperty, Value = 8 });
+        style.Setters.Add(new Setter { Property = VisualElement.WidthRequestProperty, Value = 8 });
+
+        return style;
+    }
+
+    private static Style CreateDefaultEventIndicatorSelectedStyle()
+    {
+        Style style = new(typeof(Border)) { CanCascade = true, BasedOn = DefaultEventIndicatorStyle };
+        style.Setters.Add(new Setter { Property = VisualElement.BackgroundColorProperty, Value = Color.FromArgb("#FF4081") });
 
         return style;
     }

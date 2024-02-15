@@ -146,31 +146,31 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for EventIndicatorColor
     /// </summary>
-    public static readonly BindableProperty EventIndicatorColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty EventIndicatorStyleProperty =
+      BindableProperty.Create(nameof(EventIndicatorStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorStyle);
 
     /// <summary>
     /// Color of event indicator on dates
     /// </summary>
-    public Color EventIndicatorColor
+    public Style EventIndicatorStyle
     {
-        get => (Color)GetValue(EventIndicatorColorProperty);
-        set => SetValue(EventIndicatorColorProperty, value);
+        get => (Style)GetValue(EventIndicatorStyleProperty);
+        set => SetValue(EventIndicatorStyleProperty, value);
     }
 
     /// <summary>
-    /// Bindable property for EventIndicatorSelectedColor
+    /// Bindable property for EventIndicatorSelectedStyle
     /// </summary>
-    public static readonly BindableProperty EventIndicatorSelectedColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty EventIndicatorSelectedStyleProperty =
+      BindableProperty.Create(nameof(EventIndicatorSelectedStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorSelectedStyle);
 
     /// <summary>
     /// Color of event indicator on selected dates
     /// </summary>
-    public Color EventIndicatorSelectedColor
+    public Style EventIndicatorSelectedStyle
     {
-        get => (Color)GetValue(EventIndicatorSelectedColorProperty);
-        set => SetValue(EventIndicatorSelectedColorProperty, value);
+        get => (Style)GetValue(EventIndicatorSelectedStyleProperty);
+        set => SetValue(EventIndicatorSelectedStyleProperty, value);
     }
 
 
@@ -582,8 +582,8 @@ public partial class MonthDaysView : ContentView
                 await UpdateAndAnimateDays(AnimateCalendar);
                 break;
             case nameof(SelectedDayBackgroundColor):
-            case nameof(EventIndicatorColor):
-            case nameof(EventIndicatorSelectedColor):
+            case nameof(EventIndicatorStyle):
+            case nameof(EventIndicatorSelectedStyle):
             case nameof(EventIndicatorType):
             case nameof(TodayOutlineColor):
             case nameof(TodayFillColor):
@@ -681,7 +681,7 @@ public partial class MonthDaysView : ContentView
             dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate;
 
             ChangePropertySilently(nameof(dayModel.IsSelected), () => dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date));
-            AssignIndicatorColors(ref dayModel);
+            AssignIndicatorStyles(ref dayModel);
         }
     }
 
@@ -714,7 +714,7 @@ public partial class MonthDaysView : ContentView
             dayModel.TodayOutlineColor = TodayOutlineColor;
             dayModel.TodayFillColor = TodayFillColor;
 
-            AssignIndicatorColors(ref dayModel);
+            AssignIndicatorStyles(ref dayModel);
         }
     }
 
@@ -791,22 +791,10 @@ public partial class MonthDaysView : ContentView
 
 
 
-    internal void AssignIndicatorColors(ref DayModel dayModel)
+    internal void AssignIndicatorStyles(ref DayModel dayModel)
     {
-        if (Events.TryGetValue(dayModel.Date, out var dayEventCollection) && dayEventCollection is IPersonalizableDayEvent personalizableDay)
-        {
-            dayModel.EventIndicatorColor = personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
-            dayModel.EventIndicatorSelectedColor = personalizableDay?.EventIndicatorSelectedColor ?? personalizableDay?.EventIndicatorColor ?? EventIndicatorSelectedColor;
-            //dayModel.EventIndicatorTextColor = personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
-            // dayModel.EventIndicatorSelectedTextColor = personalizableDay?.EventIndicatorSelectedTextColor ?? personalizableDay?.EventIndicatorTextColor ?? EventIndicatorSelectedTextColor;
-        }
-        else
-        {
-            dayModel.EventIndicatorColor = EventIndicatorColor;
-            dayModel.EventIndicatorSelectedColor = EventIndicatorSelectedColor;
-            //dayModel.EventIndicatorTextColor = EventIndicatorTextColor;
-            // dayModel.EventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
-        }
+        dayModel.EventIndicatorStyle = EventIndicatorStyle;
+        dayModel.EventIndicatorSelectedStyle = EventIndicatorSelectedStyle;
     }
     void OnSwiped(object sender, SwipedEventArgs e)
     {

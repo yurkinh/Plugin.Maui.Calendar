@@ -7,6 +7,9 @@
              xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
              xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
              x:Name="weekendCalendarPage"
+             xmlns:vm="clr-namespace:SampleApp.ViewModels"
+             x:DataType="vm:WeekendCalendarPageViewModel"
+             xmlns:model="clr-namespace:SampleApp.Model"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     
    
@@ -63,6 +66,18 @@
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
                 <Setter Property="FontSize" Value="25" />
             </Style>
+            <Style
+                x:Key="EventIndicatorStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorStyle}"
+                TargetType="Border">
+                <Setter Property="BackgroundColor" Value="Teal" />                
+            </Style>
+            <Style
+                x:Key="EventIndicatorSelectedLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorSelectedLabelStyle}"
+                TargetType="Label">                
+                <Setter Property="TextColor" Value="DarkSlateGray" />
+            </Style>
 
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -82,8 +97,8 @@
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"
-        EventIndicatorColor ="Teal"
-        EventIndicatorSelectedColor="DarkSlateGray"
+        EventIndicatorStyle ="{StaticResource EventIndicatorStyle}"
+        EventIndicatorSelectedLabelStyle="{StaticResource EventIndicatorSelectedLabelStyle}"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
@@ -108,7 +123,7 @@
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:EventModel">
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"

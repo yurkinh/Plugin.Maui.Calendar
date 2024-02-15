@@ -337,34 +337,31 @@ public partial class Calendar : ContentView
         set => SetValue(EventIndicatorTypeProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for EventIndicatorColor
-    /// </summary>
-    public static readonly BindableProperty EventIndicatorColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+   public static readonly BindableProperty EventIndicatorStyleProperty =
+      BindableProperty.Create(nameof(EventIndicatorStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultEventIndicatorStyle);
 
     /// <summary>
-    /// Specifies the color of the event indicators
+    /// Color of event indicator on dates
     /// </summary>
-    public Color EventIndicatorColor
+    public Style EventIndicatorStyle
     {
-        get => (Color)GetValue(EventIndicatorColorProperty);
-        set => SetValue(EventIndicatorColorProperty, value);
+        get => (Style)GetValue(EventIndicatorStyleProperty);
+        set => SetValue(EventIndicatorStyleProperty, value);
     }
 
     /// <summary>
-    /// Bindable property for EventIndicatorSelectedColor
+    /// Bindable property for EventIndicatorSelectedStyle
     /// </summary>
-    public static readonly BindableProperty EventIndicatorSelectedColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty EventIndicatorSelectedStyleProperty =
+      BindableProperty.Create(nameof(EventIndicatorSelectedStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultEventIndicatorSelectedStyle);
 
     /// <summary>
-    /// Specifies the color of the event indicators on selected dates
+    /// Color of event indicator on selected dates
     /// </summary>
-    public Color EventIndicatorSelectedColor
+    public Style EventIndicatorSelectedStyle
     {
-        get => (Color)GetValue(EventIndicatorSelectedColorProperty);
-        set => SetValue(EventIndicatorSelectedColorProperty, value);
+        get => (Style)GetValue(EventIndicatorSelectedStyleProperty);
+        set => SetValue(EventIndicatorSelectedStyleProperty, value);
     }
 
     /// <summary>
