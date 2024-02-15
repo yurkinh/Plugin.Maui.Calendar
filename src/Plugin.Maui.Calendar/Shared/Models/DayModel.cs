@@ -34,7 +34,7 @@ internal partial class DayModel : ObservableObject
     bool isThisMonth;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundColor), nameof(OutlineColor), nameof(EventColor), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(BackgroundColor), nameof(OutlineColor), nameof(EventStyle), nameof(BackgroundFullEventColor))]
     bool isSelected;
 
     [ObservableProperty]
@@ -57,12 +57,12 @@ internal partial class DayModel : ObservableObject
     EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
-    Color eventIndicatorColor = Color.FromArgb("#FF4081");
+    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    Style eventIndicatorStyle = DefaultStyles.DefaultEventIndicatorStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
-    Color eventIndicatorSelectedColor;
+    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    Style eventIndicatorSelectedStyle = DefaultStyles.DefaultEventIndicatorSelectedStyle;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OutlineColor))]
@@ -80,12 +80,12 @@ internal partial class DayModel : ObservableObject
     public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
     public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
-                                           ? EventColor
+                                           ? Color.FromArgb("#FF4081") //Todo: replace later with style //EventStyle
                                            : Colors.Transparent;
 
-    public Color EventColor => IsSelected
-                             ? EventIndicatorSelectedColor
-                             : EventIndicatorColor;
+    public Style EventStyle => IsSelected
+                             ? EventIndicatorSelectedStyle
+                             : EventIndicatorStyle;
 
     public Color OutlineColor => IsToday && !IsSelected
                                ? TodayOutlineColor
@@ -99,8 +99,8 @@ internal partial class DayModel : ObservableObject
 
             return (BackgroundEventIndicator, IsSelected, IsToday) switch
             {
-                (true, false, _) => EventIndicatorColor,
-                (true, true, _) => EventIndicatorSelectedColor,
+                (true, false, _) => Color.FromArgb("#FF4081"), //Todo: replace later with style //EventIndicatorStyle,
+                (true, true, _) => Colors.Black,              //Todo: replace later with style  //EventIndicatorSelectedStyle,
                 (false, true, _) => SelectedBackgroundColor,
                 (false, false, true) => TodayFillColor,
                 (_, _, _) => DeselectedBackgroundColor

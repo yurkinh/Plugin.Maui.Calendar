@@ -3,21 +3,21 @@
     x:Class="Plugin.Maui.Calendar.Controls.DayView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
+    xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     x:Name="dayView"
-    x:DataType="models:DayModel"    
+    x:DataType="models:DayModel"
     BackgroundColor="{Binding BackgroundFullEventColor}">
     <ContentView.Resources>
-        <ResourceDictionary>            
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>            
+        <ResourceDictionary>
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
     <Border
         x:Name="dayViewBorder"
         Padding="0"
         BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
-        HeightRequest="{Binding DayViewSize, Mode=OneWay}"        
+        HeightRequest="{Binding DayViewSize, Mode=OneWay}"
         HorizontalOptions="Center"
         Stroke="{Binding OutlineColor, Mode=OneWay}"
         StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
@@ -26,16 +26,8 @@
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
-            <Label            
-                Style="{Binding DaysLabelStyle,Mode=OneWay}"
-                Text="{Binding Date.Day,Mode=OneWay}"/>
-            <Border
-                Padding="0"
-                BackgroundColor="{Binding EventColor,Mode=OneWay}"
-                StrokeShape="RoundRectangle 4"               
-                HeightRequest="8"
-                IsVisible="{Binding IsEventDotVisible,Mode=OneWay}"
-                WidthRequest="8" />
+            <Label Style="{Binding DaysLabelStyle, Mode=OneWay}" Text="{Binding Date.Day, Mode=OneWay}" />
+            <Border IsVisible="{Binding IsEventDotVisible, Mode=OneWay}" Style="{Binding EventStyle, Mode=OneWay}" />
         </FlexLayout>
         <Border.GestureRecognizers>
             <TapGestureRecognizer Tapped="OnTapped" />

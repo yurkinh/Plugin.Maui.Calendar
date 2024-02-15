@@ -14,20 +14,38 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		Culture = CultureInfo.CreateSpecificCulture("en-GB");
 		// testing all kinds of adding events
 		// when initializing collection
+		Style eventIndicatorStyle = new(typeof(Border))
+		{
+			Setters =
+			{
+				new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Purple }
+				//Add any other border properties here
+			}
+		};
+
+		Style eventIndicatorSelectedStyle = new(typeof(Border))
+		{
+			Setters =
+			{
+				new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Purple }
+				//Add any other border properties here
+			}
+		};
+
 		Events = new EventCollection
 		{
 			[DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
-			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
+			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(eventIndicatorStyle, eventIndicatorSelectedStyle)
 			{
-				new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
-				new AdvancedEventModel { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
+				new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting = new DateTime() },
+				new AdvancedEventModel { Name = "Cool event2", Description = "This is Cool event2's description!", Starting = new DateTime() }
 			}
 		};
 
 		//Adding a day with a different dot color
-		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
-		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
-		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
+		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Blue } } }, EventIndicatorSelectedStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Blue } } } });
+		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Green } } }, EventIndicatorSelectedStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.White } } } });
+		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Orange } } }, EventIndicatorSelectedStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Orange } } } });
 
 		// with add method
 		Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
@@ -67,13 +85,13 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		SelectedDate = DateTime.Today.AddDays(10);
 	}
 
-	IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
+	static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
 	{
 		return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
 		{
 			Name = $"{name} event{x}",
 			Description = $"This is {name} event{x}'s description!",
-			Starting = new DateTime(2000, 1, 1, (x * 2) % 24, (x * 3) % 60, 0)
+			Starting = new DateTime(2000, 1, 1, x * 2 % 24, x * 3 % 60, 0)
 		});
 	}
 

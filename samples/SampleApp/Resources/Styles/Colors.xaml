@@ -15,8 +15,4 @@
     <toolkit:AppThemeColor Light="White" Dark="#212121" x:Key="BackgroundColor" />
 
 
-
-
-
-
 </ResourceDictionary>

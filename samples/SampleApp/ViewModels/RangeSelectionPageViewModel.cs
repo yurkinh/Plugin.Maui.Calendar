@@ -9,13 +9,31 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
 	{
 		// testing all kinds of adding events
 		// when initializing collection
+		Style eventIndicatorStyle = new(typeof(Border))
+		{
+			Setters =
+			{
+				new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Purple }
+				//Add any other border properties here
+			}
+		};
+
+		Style eventIndicatorSelectedStyle = new(typeof(Border))
+		{
+			Setters =
+			{
+				new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Purple }
+				//Add any other border properties here
+			}
+		};
+
 		Events = new EventCollection
 		{
 			[DateTime.Now.AddDays(-1)] = new List<AdvancedEventModel>(GenerateEvents(5, "Cool", DateTime.Now.AddDays(-1))),
 			[DateTime.Now.AddDays(-2)] = new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool", DateTime.Now.AddDays(-2))),
 			[DateTime.Now.AddDays(-4)] = new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Super Cool", DateTime.Now.AddDays(-4))),
 			[DateTime.Now.AddDays(-5)] = new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool", DateTime.Now.AddDays(-5))),
-			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
+			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(eventIndicatorStyle, eventIndicatorSelectedStyle)
 			{
 				new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= DateTime.Now.AddDays(-6)},
 				new AdvancedEventModel { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= DateTime.Now.AddDays(-6)}
@@ -46,7 +64,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
 	WeekLayout calendarLayout = WeekLayout.Month;
 
 	[ObservableProperty]
-	List<DateTime> selectedDates = new();
+	List<DateTime> selectedDates = [];
 
 	[ObservableProperty]
 	DateTime? selectedStartDate = DateTime.Today.AddDays(-9);
@@ -64,7 +82,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
 		}
 	}
 
-	IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name, DateTime timeOfEvent)
+	static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name, DateTime timeOfEvent)
 	{
 		return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
 		{

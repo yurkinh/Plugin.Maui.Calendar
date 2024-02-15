@@ -7,6 +7,7 @@
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     xmlns:model="clr-namespace:SampleApp.Model"
     x:DataType="vm:SimplePageViewModel"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     x:Name="simpleCalendarPage"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
@@ -45,6 +46,12 @@
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
                 <Setter Property="FontSize" Value="18" />
             </Style>
+            <Style
+                x:Key="EventIndicatorStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorStyle}"
+                TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource  EventIndicatorColor}" />                
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -58,7 +65,7 @@
 
     <plugin:Calendar
         Padding="10,0"       
-        EventIndicatorColor="{toolkit:AppThemeResource  EventIndicatorColor}"
+        EventIndicatorStyle="{StaticResource EventIndicatorStyle}"
         DayLabelStyle="{StaticResource DaysLabelStyle}"
         DayViewFontSize="Medium"
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
