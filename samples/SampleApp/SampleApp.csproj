@@ -56,10 +56,9 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="DotNetMeteor.HotReload.Plugin" Version="3.1.2" Condition="'$(Configuration)' == 'Debug'" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6" />		
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />		
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Mopups" Version="1.3.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.6" />
+		<PackageReference Include="Mopups" Version="1.3.0" />		
 	</ItemGroup>
 
 	<ItemGroup>
