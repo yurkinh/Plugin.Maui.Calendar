@@ -48,7 +48,7 @@
                     MinimumDate="{Binding MinimumDate, Source={x:Reference calendar}}"
                     OtherMonthDayColor="{Binding OtherMonthDayColor, Source={x:Reference calendar}}"
                     OtherMonthDayIsVisible="{Binding OtherMonthDayIsVisible, Source={x:Reference calendar}}"
-                    SelectedDates="{Binding SelectedDates, Source={x:Reference calendar}}"
+                    SelectedDates="{Binding SelectedDates, Source={x:Reference calendar},Mode=TwoWay}"
                     SelectedDayBackgroundColor="{Binding SelectedDayBackgroundColor, Source={x:Reference calendar}}"
                     SelectedDayTextColor="{Binding SelectedDayTextColor, Source={x:Reference calendar}}"
                     SelectedTodayTextColor="{Binding SelectedTodayTextColor, Source={x:Reference calendar}}"
