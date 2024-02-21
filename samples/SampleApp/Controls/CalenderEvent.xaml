@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentView
     x:Class="SampleApp.Controls.CalenderEvent"
-   xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    x:Name="Event"
+    x:DataType="controls:CalendarEvent">
     <VerticalStackLayout
         Padding="15,0,0,0"
         HorizontalOptions="Fill"
@@ -10,16 +13,16 @@
         <Label FontAttributes="Bold" FontSize="Medium">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding Starting, StringFormat='{0:MM/dd HH\\:mm}'}" TextColor="Black" />
+                    <Span Text="{Binding BindingContext.Starting,Source={x:Reference Event}, StringFormat='{0:MM/dd HH\\:mm}'}" TextColor="Black" />
                     <Span Text=" - " />
-                    <Span Text="{Binding Name}" />
+                    <Span Text="{Binding BindingContext.Name, Source={x:Reference Event}}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
         <Label
             FontSize="Small"
             LineBreakMode="WordWrap"
-            Text="{Binding Description}" />
+            Text="{Binding BindingContext.Description, Source={x:Reference Event}}" />
         <VerticalStackLayout.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
         </VerticalStackLayout.GestureRecognizers>
