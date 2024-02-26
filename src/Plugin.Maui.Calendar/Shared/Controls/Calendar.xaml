@@ -36,6 +36,7 @@
                 DaysTitleMaximumLength="{Binding DaysTitleMaximumLength, Source={x:Reference calendar}}"
                 DaysTitleWeekendStyle="{Binding DaysTitleWeekendStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 DeselectedDayLabelStyle="{Binding DeselectedDayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
+                DisabledDates="{Binding DisabledDates, Source={x:Reference calendar}, Mode=TwoWay}"
                 DisabledDayLabelStyle="{Binding DisabledDayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 EventIndicatorLabelStyle="{Binding EventIndicatorLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 EventIndicatorSelectedLabelStyle="{Binding EventIndicatorSelectedLabelStyle, Source={x:Reference calendar}}"
