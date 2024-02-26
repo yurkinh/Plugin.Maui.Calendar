@@ -70,7 +70,10 @@
             x:Name="eventsScrollView"
             Grid.Row="2"
             IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}}">
-            <VerticalStackLayout BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}" BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}" />
+            <VerticalStackLayout
+                BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
+                BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
+                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}" />
         </ScrollView>
     </Grid>
 </ContentView>
