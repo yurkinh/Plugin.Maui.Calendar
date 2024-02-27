@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <rg:PopupPage
     x:Class="SampleApp.Views.CalendarRangePickerPopupSelectedDates"
-     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:vm="clr-namespace:SampleApp.ViewModels"
     xmlns:model="clr-namespace:SampleApp.Model"
-    x:DataType="vm:CalendarRangePickerPopupSelectedDatesViewModel"    
-    CloseWhenBackgroundIsClicked="False"
-    
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    x:DataType="vm:CalendarRangePickerPopupSelectedDatesViewModel"
+    CloseWhenBackgroundIsClicked="False">
 
     <ContentPage.Resources>
         <Style x:Key="DaysLabelStyle" TargetType="Label">
@@ -45,9 +44,7 @@
             BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
             HorizontalOptions="Center"
             VerticalOptions="Center">
-            <VerticalStackLayout
-                IsClippedToBounds="True"               
-                Spacing="3">
+            <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
                 <Label
                     FontAttributes="Bold"
                     FontSize="Large"
@@ -56,19 +53,21 @@
                     Text="Choose Date Range"
                     VerticalOptions="Center" />
                 <plugin:RangeSelectionCalendar
-                    DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
-                    DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
                     Padding="10,0"
+                    DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+                    DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
                     MaximumDate="{Binding MaximumDate, Mode=OneWay}"
                     MinimumDate="{Binding MinimumDate, Mode=OneWay}"
-                    ShownDate="{Binding ShownDate, Mode=OneWay}"                    
                     SelectedDates="{Binding SelectedDates, Mode=TwoWay}"
+                    ShownDate="{Binding ShownDate, Mode=OneWay}"
                     VerticalOptions="Center"
                     WidthRequest="320">
                     <plugin:Calendar.HeaderSectionTemplate>
-                        <controls:CalendarHeader />
+                        <DataTemplate>
+                            <controls:CalendarHeader />
+                        </DataTemplate>
                     </plugin:Calendar.HeaderSectionTemplate>
                 </plugin:RangeSelectionCalendar>
 

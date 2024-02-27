@@ -2,6 +2,9 @@
 <ContentView
     x:Class="SampleApp.Controls.CalendarFooter"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:controls="clr-namespace:SampleApp.Controls"   
+    x:DataType="controls:CalendarFooter"
+    x:Name="Footer"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Grid
         ColumnDefinitions="Auto,*"
@@ -12,15 +15,15 @@
         <Label
             Grid.Column="0"
             Style="{StaticResource FooterLabelStyle}"
-            Text="{Binding SelectedDateText}"/>
+            Text="{Binding BindingContext.SelectedDateText, Source={x:Reference Footer}}"/>
         <Button
             Grid.Column="1"           
-            Command="{Binding ShowHideCalendarCommand, Mode=OneWay}"
-            IsVisible="{Binding FooterArrowVisible, Mode=OneWay}"
+            Command="{Binding BindingContext.ShowHideCalendarCommand,Source={x:Reference Footer}, Mode=OneWay}"
+            IsVisible="{Binding BindingContext.FooterArrowVisible, Source={x:Reference Footer}}"
             Style="{StaticResource ArrowFooterButtonUpStyle}">
             <Button.Triggers>
                 <DataTrigger
-                    Binding="{Binding CalendarSectionShown, Mode=OneWay}"
+                    Binding="{Binding BindingContext.CalendarSectionShown,Source={x:Reference Footer}}"
                     TargetType="Button"
                     Value="False">
                     <Setter Property="Text" Value="&#xf063;" />

@@ -1,7 +1,7 @@
 namespace SampleApp.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class CalendarMinimalisticHeader : DataTemplate
+public partial class CalendarMinimalisticHeader : ContentView
 {
 	public CalendarMinimalisticHeader()
 	{

@@ -5,13 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:vm="clr-namespace:SampleApp.ViewModels"
     xmlns:model="clr-namespace:SampleApp.Model"
-    x:DataType="vm:RangeSelectionPageViewModel"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
     x:Name="advancedRangeSelectionCalendarPage"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    x:DataType="vm:RangeSelectionPageViewModel">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -25,9 +25,9 @@
             </Style>
 
             <Style
-              x:Key="DeselectedDayLabelStyle"
-              BasedOn="{StaticResource DaysLabelStyle}"
-              TargetType="Label">
+                x:Key="DeselectedDayLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
             <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
@@ -37,24 +37,26 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <ContentPage.BindingContext>
         <local:RangeSelectionPageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
-        Padding="10,0"        
+        Padding="10,0"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"
         SelectedDates="{Binding SelectedDates, Mode=OneWay}"
         SelectedEndDate="{Binding SelectedEndDate, Mode=OneWay}"
         SelectedStartDate="{Binding SelectedStartDate, Mode=OneWay}"
-        ShownDate="{Binding ShownDate, Mode=OneWay}"
-        DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
-        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}">
+        ShownDate="{Binding ShownDate, Mode=OneWay}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
-            <controls:CalendarHeader />
+            <DataTemplate>
+                <controls:CalendarHeader />
+            </DataTemplate>
         </plugin:RangeSelectionCalendar.HeaderSectionTemplate>
 
         <plugin:RangeSelectionCalendar.FooterSectionTemplate>

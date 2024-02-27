@@ -1,7 +1,7 @@
 ﻿namespace SampleApp.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class CalendarHeader : DataTemplate
+public partial class CalendarHeader : ContentView
 {
 	public CalendarHeader()
 	{
