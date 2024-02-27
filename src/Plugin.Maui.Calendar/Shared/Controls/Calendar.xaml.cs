@@ -210,7 +210,7 @@ public partial class Calendar : ContentView
         get => (Color)GetValue(YearLabelColorProperty);
         set => SetValue(YearLabelColorProperty, value);
     }
-   
+
 
     /// <summary>
     /// Bindable property for DaysTitleWeekendColorStyle
@@ -337,8 +337,8 @@ public partial class Calendar : ContentView
         set => SetValue(EventIndicatorTypeProperty, value);
     }
 
-   public static readonly BindableProperty EventIndicatorStyleProperty =
-      BindableProperty.Create(nameof(EventIndicatorStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultEventIndicatorStyle);
+    public static readonly BindableProperty EventIndicatorStyleProperty =
+       BindableProperty.Create(nameof(EventIndicatorStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultEventIndicatorStyle);
 
     /// <summary>
     /// Color of event indicator on dates
@@ -1027,7 +1027,14 @@ public partial class Calendar : ContentView
             SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
         }
     }
+    public static readonly BindableProperty DisabledDatesProperty =
+        BindableProperty.Create(nameof(DisabledDates), typeof(List<DateTime>), typeof(Calendar), defaultValue: new List<DateTime>(), BindingMode.TwoWay);
 
+    public List<DateTime> DisabledDates
+    {
+        get => (List<DateTime>)GetValue(DisabledDatesProperty);
+        set => SetValue(DisabledDatesProperty, value);
+    }
     #endregion
 
     private const uint CalendarSectionAnimationRate = 16;
