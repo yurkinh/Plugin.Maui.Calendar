@@ -449,8 +449,8 @@ public partial class Calendar : ContentView
     {
         get => (Color)GetValue(ArrowsColorProperty);
         set => SetValue(ArrowsColorProperty, value);
-    }   
-    
+    }
+
 
     /// <summary>
     /// Bindable property for ArrowsFontSizeProperty
@@ -461,7 +461,7 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Specifies the FontSize of month and year selection arrows
     /// </summary>
-    [TypeConverter (typeof(FontSizeConverter))]
+    [TypeConverter(typeof(FontSizeConverter))]
     public double ArrowsFontSize
     {
         get => (double)GetValue(ArrowsFontSizeProperty);
@@ -1150,6 +1150,15 @@ public partial class Calendar : ContentView
             _isSelectingDates = true;
             SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
         }
+    }
+
+    public static readonly BindableProperty DisabledDatesProperty =
+     BindableProperty.Create(nameof(DisabledDates), typeof(List<DateTime>), typeof(Calendar), defaultValue: new List<DateTime>(), BindingMode.TwoWay);
+
+    public List<DateTime> DisabledDates
+    {
+        get => (List<DateTime>)GetValue(DisabledDatesProperty);
+        set => SetValue(DisabledDatesProperty, value);
     }
 
     #endregion

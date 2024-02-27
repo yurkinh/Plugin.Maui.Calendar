@@ -67,6 +67,26 @@ public partial class MonthDaysView : ContentView
         set => SetValue(SelectedDatesProperty, value);
     }
 
+    //////////////////////Disabled dates//////////////////////////////
+
+    public static readonly BindableProperty DisabledDatesProperty =
+      BindableProperty.Create(nameof(DisabledDates), typeof(List<DateTime>), typeof(MonthDaysView), new List<DateTime>(), BindingMode.TwoWay, propertyChanged: DisabledDatesChanged);
+
+    private static void DisabledDatesChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is MonthDaysView control && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
+            control.UpdateDays();
+    }
+
+    /// <summary>
+    /// Selected date in single date selection mode
+    /// </summary>
+    public List<DateTime> DisabledDates
+    {
+        get => (List<DateTime>)GetValue(DisabledDatesProperty);
+        set => SetValue(DisabledDatesProperty, value);
+    }
+    //////////////////////////////////////
     /// <summary>
     /// Bindable property for Culture
     /// </summary>
@@ -764,7 +784,7 @@ public partial class MonthDaysView : ContentView
             dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
             dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
             dayModel.HasEvents = Events.ContainsKey(currentDate);
-            dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate;
+            dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || DisabledDates.Contains(currentDate.Date);
 
             ChangePropertySilently(nameof(dayModel.IsSelected), () => dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date));
             AssignIndicatorColors(ref dayModel);
