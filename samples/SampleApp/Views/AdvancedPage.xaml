@@ -149,7 +149,9 @@
         YearLabelColor="Blue">
 
         <plugin:Calendar.HeaderSectionTemplate>
+        <DataTemplate>
             <controls:CalendarHeader />
+        </DataTemplate>
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.FooterSectionTemplate>
