@@ -2,26 +2,14 @@
 <ContentView
     x:Class="Plugin.Maui.Calendar.Controls.DayView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
     xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     x:Name="dayView"
     x:DataType="models:DayModel"
-    BackgroundColor="{Binding BackgroundFullEventColor}">
-    <ContentView.Resources>
-        <ResourceDictionary>
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter" />
-        </ResourceDictionary>
-    </ContentView.Resources>
+    BackgroundColor="{Binding BackgroundFullEventColor}">   
     <Border
-        x:Name="dayViewBorder"
-        Padding="0"
-        BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
-        HeightRequest="{Binding DayViewSize, Mode=OneWay}"
-        HorizontalOptions="Center"
-        Stroke="{Binding OutlineColor, Mode=OneWay}"
-        StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
-        WidthRequest="{Binding DayViewSize, Mode=OneWay}">
+        x:Name="DayViewBorder"       
+        Style="{Binding BackgroundStyle, Mode=OneWay}">
         <FlexLayout
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"

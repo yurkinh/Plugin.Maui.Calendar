@@ -287,11 +287,7 @@ public partial class Calendar : ContentView
         set => SetValue(OtherMonthDayIsVisibleProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for SelectedDayBackgroundColor
-    /// </summary>
-    public static readonly BindableProperty SelectedDayBackgroundColorProperty =
-      BindableProperty.Create(nameof(SelectedDayBackgroundColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
+
 
     public Style SelectedDayLabelStyle
     {
@@ -314,12 +310,30 @@ public partial class Calendar : ContentView
 
 
     /// <summary>
-    /// Specifies the background color of selected days
+    /// Bindable property for SelectedDayBackgroundColor
     /// </summary>
-    public Color SelectedDayBackgroundColor
+    public static readonly BindableProperty SelectedDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(SelectedDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultSelectedDayViewBorderStyle);
+
+    /// <summary>
+    /// Background color of currently selected date
+    /// </summary>
+    public Style SelectedDayViewBorderStyle
     {
-        get => (Color)GetValue(SelectedDayBackgroundColorProperty);
-        set => SetValue(SelectedDayBackgroundColorProperty, value);
+        get => (Style)GetValue(SelectedDayViewBorderStyleProperty);
+        set => SetValue(SelectedDayViewBorderStyleProperty, value);
+    }
+
+    public static readonly BindableProperty DeselectedDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(DeselectedDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultDeselectedDayViewBorderStyle);
+
+    /// <summary>
+    /// Background color of currently Deselected date
+    /// </summary>
+    public Style DeselectedDayViewBorderStyle
+    {
+        get => (Style)GetValue(DeselectedDayViewBorderStyleProperty);
+        set => SetValue(DeselectedDayViewBorderStyleProperty, value);
     }
 
     /// <summary>
@@ -457,16 +471,16 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for TodayOutlineColor
     /// </summary>
-    public static readonly BindableProperty TodayOutlineColorProperty =
-      BindableProperty.Create(nameof(TodayOutlineColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty TodayDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(TodayDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTodayDayViewBorderStyle);
 
     /// <summary>
     /// Specifies the color of outline for today's date
     /// </summary>
-    public Color TodayOutlineColor
+    public Style TodayDayViewBorderStyle
     {
-        get => (Color)GetValue(TodayOutlineColorProperty);
-        set => SetValue(TodayOutlineColorProperty, value);
+        get => (Style)GetValue(TodayDayViewBorderStyleProperty);
+        set => SetValue(TodayDayViewBorderStyleProperty, value);
     }
 
     /// <summary>
@@ -573,54 +587,7 @@ public partial class Calendar : ContentView
         get => (bool)GetValue(CalendarSectionShownProperty);
         set => SetValue(CalendarSectionShownProperty, value);
     }
-
-    /// <summary>
-    /// Bindable property for DayViewSize
-    /// </summary>
-    public static readonly BindableProperty DayViewSizeProperty =
-      BindableProperty.Create(nameof(DayViewSize), typeof(double), typeof(Calendar), 40.0);
-
-    /// <summary>
-    /// Specifies the size of individual dates
-    /// </summary>
-    public double DayViewSize
-    {
-        get => (double)GetValue(DayViewSizeProperty);
-        set => SetValue(DayViewSizeProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DayViewFontSizeProperty
-    /// </summary>
-    public static readonly BindableProperty DayViewFontSizeProperty =
-      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(Calendar), 14d);
-
-    /// <summary>
-    /// Specifies the FontSize of DayView label
-    /// </summary>
-    [TypeConverter(typeof(FontSizeConverter))]
-    public double DayViewFontSize
-    {
-        get => (double)GetValue(DayViewFontSizeProperty);
-        set => SetValue(DayViewFontSizeProperty, value);
-    }
-
-
-
-    /// <summary>
-    /// Bindable property for DayViewCornerRadius
-    /// </summary>
-    public static readonly BindableProperty DayViewCornerRadiusProperty =
-      BindableProperty.Create(nameof(DayViewCornerRadius), typeof(float), typeof(Calendar), 20f);
-
-    /// <summary>
-    /// Specifies the corner radius of individual dates
-    /// </summary>
-    public float DayViewCornerRadius
-    {
-        get => (float)GetValue(DayViewCornerRadiusProperty);
-        set => SetValue(DayViewCornerRadiusProperty, value);
-    }
+    
 
     /// <summary>
     /// Bindable property for DaysTitleMaximumLength
@@ -643,20 +610,6 @@ public partial class Calendar : ContentView
         set => SetValue(DaysTitleMaximumLengthProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for DaysTitleHeight
-    /// </summary>
-    public static readonly BindableProperty DaysTitleHeightProperty =
-      BindableProperty.Create(nameof(DaysTitleHeight), typeof(double), typeof(Calendar), 30.0);
-
-    /// <summary>
-    /// Specifies the height of weekday titles
-    /// </summary>
-    public double DaysTitleHeight
-    {
-        get => (double)GetValue(DaysTitleHeightProperty);
-        set => SetValue(DaysTitleHeightProperty, value);
-    }
 
     /// <summary>
     /// Bindable property for DaysTitleLabelFirstUpperRestLower

@@ -3,8 +3,7 @@
     x:Class="SampleApp.Views.WeekendCalendarPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:SampleApp.Controls"
-    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:controls="clr-namespace:SampleApp.Controls"    
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
@@ -85,6 +84,13 @@
                 TargetType="Label">
                 <Setter Property="TextColor" Value="DarkSlateGray" />
             </Style>
+             <Style x:Key="SelectedDayViewBorderStyle" TargetType="Border" BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDayViewBorderStyle}">
+                <Setter Property="BackgroundColor" Value="DarkCyan"/>
+            </Style>
+
+            <Style x:Key="TodayDayViewBorderStyle" TargetType="Border" BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}">
+                <Setter Property="Stroke" Value="Green"/>
+            </Style>
 
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -94,13 +100,12 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.BindingContext>
-        <local:WeekendCalendarPageViewModel />
+        <vm:WeekendCalendarPageViewModel />
     </ContentPage.BindingContext>
     <plugin:Calendar
         Padding="10,0"
-        DayLabelStyle="{StaticResource DaysLabelStyle}"
-        DayViewCornerRadius="16"
-        DayViewFontSize="Medium"
+        DayLabelStyle="{StaticResource DaysLabelStyle}"      
+        
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}"
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
@@ -116,10 +121,10 @@
         MonthLabelColor="DarkSlateGray"
         OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysTitleLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
-        SelectedDayBackgroundColor="Gainsboro"
+       SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
         TodayFillColor="LightGreen"
         TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
-        TodayOutlineColor="green"
+        TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
         VerticalOptions="Fill"
         WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
         Year="{Binding Year}"

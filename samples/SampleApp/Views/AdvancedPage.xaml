@@ -96,6 +96,13 @@
                 TargetType="Label">                
                 <Setter Property="TextColor" Value="AliceBlue" />
             </Style>
+            <Style x:Key="SelectedDayViewBorderStyle" TargetType="Border" BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDayViewBorderStyle}">
+                <Setter Property="BackgroundColor" Value="DarkCyan"/>
+            </Style>
+
+            <Style x:Key="TodayDayViewBorderStyle" TargetType="Border" BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}">
+                <Setter Property="Stroke" Value="Blue"/>
+            </Style>
 
 
         </ResourceDictionary>
@@ -112,10 +119,7 @@
         CalendarLayout="{Binding CalendarLayout, Mode=OneWay}"
         Culture="{Binding Culture, Mode=OneWay}"
         DayLabelStyle="{StaticResource DaysLabelStyle}"
-        DayTappedCommand="{Binding DayTappedCommand, Mode=OneWay}"
-        DayViewCornerRadius="3"
-        DayViewSize="40"
-        DaysTitleHeight="40"
+        DayTappedCommand="{Binding DayTappedCommand, Mode=OneWay}"       
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
         DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}"
@@ -134,7 +138,7 @@
         OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
-        SelectedDayBackgroundColor="DarkCyan"
+        SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
         ShownDate="{Binding ShownDate, Mode=OneWay}"
@@ -144,7 +148,7 @@
         SwipeUpToHideEnabled="False"
         TodayFillColor="Silver"
         TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
-        TodayOutlineColor="Blue"
+        TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
         VerticalOptions="Fill"
         YearLabelColor="Blue">
 

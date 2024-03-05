@@ -28,9 +28,6 @@
                 Culture="{Binding Culture, Source={x:Reference calendar}}"
                 DayLabelStyle="{Binding DayLabelStyle, Source={x:Reference calendar}}"
                 DayTappedCommand="{Binding DayTappedCommand, Source={x:Reference calendar}}"
-                DayViewCornerRadius="{Binding DayViewCornerRadius, Source={x:Reference calendar}}"
-                DayViewSize="{Binding DayViewSize, Source={x:Reference calendar}}"
-                DaysTitleHeight="{Binding DaysTitleHeight, Source={x:Reference calendar}}"
                 DaysTitleLabelFirstUpperRestLower="{Binding DaysTitleLabelFirstUpperRestLower, Source={x:Reference calendar}}"
                 DaysTitleLabelStyle="{Binding DaysTitleLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 DaysTitleMaximumLength="{Binding DaysTitleMaximumLength, Source={x:Reference calendar}}"
@@ -41,7 +38,7 @@
                 EventIndicatorLabelStyle="{Binding EventIndicatorLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 EventIndicatorSelectedLabelStyle="{Binding EventIndicatorSelectedLabelStyle, Source={x:Reference calendar}}"
                 EventIndicatorSelectedStyle="{Binding EventIndicatorSelectedStyle, Source={x:Reference calendar}}"
-                EventIndicatorStyle="{Binding EventIndicatorColor, Source={x:Reference calendar}}"
+                EventIndicatorStyle="{Binding EventIndicatorStyle, Source={x:Reference calendar}}"
                 EventIndicatorType="{Binding EventIndicatorType, Source={x:Reference calendar}}"
                 Events="{Binding Events, Source={x:Reference calendar}}"
                 MaximumDate="{Binding MaximumDate, Source={x:Reference calendar}}"
@@ -49,7 +46,8 @@
                 OtherMonthDayIsVisible="{Binding OtherMonthDayIsVisible, Source={x:Reference calendar}}"
                 OtherMonthDaysLabelStyle="{Binding OtherMonthDaysLabelStyle, Source={x:Reference calendar}}"
                 SelectedDates="{Binding SelectedDates, Source={x:Reference calendar}, Mode=TwoWay}"
-                SelectedDayBackgroundColor="{Binding SelectedDayBackgroundColor, Source={x:Reference calendar}}"
+                SelectedDayViewBorderStyle="{Binding SelectedDayViewBorderStyle, Source={x:Reference calendar}}"
+                DeselectedDayViewBorderStyle="{Binding DeselectedDayViewBorderStyle, Source={x:Reference calendar}}"
                 SelectedDayLabelStyle="{Binding SelectedDayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 SelectedTodayLabelStyle="{Binding SelectedTodayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 ShownDate="{Binding ShownDate, Source={x:Reference calendar}}"
@@ -59,7 +57,7 @@
                 SwipedUp="OnSwipedUp"
                 TodayFillColor="{Binding TodayFillColor, Source={x:Reference calendar}}"
                 TodayLabelStyle="{Binding TodayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
-                TodayOutlineColor="{Binding TodayOutlineColor, Source={x:Reference calendar}}"
+                TodayDayViewBorderStyle="{Binding TodayDayViewBorderStyle, Source={x:Reference calendar}}"
                 WeekendDayLabelStyle="{Binding WeekendDayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}" />
         </VerticalStackLayout>
         <controls:DataTemplateView

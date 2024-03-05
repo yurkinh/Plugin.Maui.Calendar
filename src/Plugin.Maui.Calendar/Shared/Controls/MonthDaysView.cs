@@ -136,16 +136,28 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for SelectedDayBackgroundColor
     /// </summary>
-    public static readonly BindableProperty SelectedDayBackgroundColorProperty =
-      BindableProperty.Create(nameof(SelectedDayBackgroundColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#2196F3"));
+    public static readonly BindableProperty SelectedDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(SelectedDayViewBorderStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultSelectedDayViewBorderStyle);
 
     /// <summary>
     /// Background color of currently selected date
     /// </summary>
-    public Color SelectedDayBackgroundColor
+    public Style SelectedDayViewBorderStyle
     {
-        get => (Color)GetValue(SelectedDayBackgroundColorProperty);
-        set => SetValue(SelectedDayBackgroundColorProperty, value);
+        get => (Style)GetValue(SelectedDayViewBorderStyleProperty);
+        set => SetValue(SelectedDayViewBorderStyleProperty, value);
+    }
+
+    public static readonly BindableProperty DeselectedDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(DeselectedDayViewBorderStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultDeselectedDayViewBorderStyle);
+
+    /// <summary>
+    /// Background color of currently Deselected date
+    /// </summary>
+    public Style DeselectedDayViewBorderStyle
+    {
+        get => (Style)GetValue(DeselectedDayViewBorderStyleProperty);
+        set => SetValue(DeselectedDayViewBorderStyleProperty, value);
     }
 
     /// <summary>
@@ -197,16 +209,16 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for TodayOutlineColor
     /// </summary>
-    public static readonly BindableProperty TodayOutlineColorProperty =
-      BindableProperty.Create(nameof(TodayOutlineColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty TodayDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(TodayDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTodayDayViewBorderStyle);
 
     /// <summary>
-    /// Color of today date's outline
+    /// Specifies the color of outline for today's date
     /// </summary>
-    public Color TodayOutlineColor
+    public Style TodayDayViewBorderStyle
     {
-        get => (Color)GetValue(TodayOutlineColorProperty);
-        set => SetValue(TodayOutlineColorProperty, value);
+        get => (Style)GetValue(TodayDayViewBorderStyleProperty);
+        set => SetValue(TodayDayViewBorderStyleProperty, value);
     }
 
     /// <summary>
@@ -222,51 +234,6 @@ public partial class MonthDaysView : ContentView
     {
         get => (Color)GetValue(TodayFillColorProperty);
         set => SetValue(TodayFillColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DayViewSize
-    /// </summary>
-    public static readonly BindableProperty DayViewSizeProperty =
-      BindableProperty.Create(nameof(DayViewSize), typeof(double), typeof(MonthDaysView), 40.0);
-
-    /// <summary>
-    /// Size of all individual dates
-    /// </summary>
-    public double DayViewSize
-    {
-        get => (double)GetValue(DayViewSizeProperty);
-        set => SetValue(DayViewSizeProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DayViewCornerRadius
-    /// </summary>
-    public static readonly BindableProperty DayViewCornerRadiusProperty =
-      BindableProperty.Create(nameof(DayViewCornerRadius), typeof(float), typeof(MonthDaysView), 20f);
-
-    /// <summary>
-    /// Corner radius of individual dates
-    /// </summary>
-    public float DayViewCornerRadius
-    {
-        get => (float)GetValue(DayViewCornerRadiusProperty);
-        set => SetValue(DayViewCornerRadiusProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DaysTitleHeight
-    /// </summary>
-    public static readonly BindableProperty DaysTitleHeightProperty =
-      BindableProperty.Create(nameof(DaysTitleHeight), typeof(double), typeof(MonthDaysView), 30.0);
-
-    /// <summary>
-    /// Height of the weekday names container
-    /// </summary>
-    public double DaysTitleHeight
-    {
-        get => (double)GetValue(DaysTitleHeightProperty);
-        set => SetValue(DaysTitleHeightProperty, value);
     }
 
     /// <summary>
@@ -601,11 +568,12 @@ public partial class MonthDaysView : ContentView
             case nameof(OtherMonthDayIsVisible):
                 await UpdateAndAnimateDays(AnimateCalendar);
                 break;
-            case nameof(SelectedDayBackgroundColor):
+            case nameof(SelectedDayViewBorderStyle):
+            case nameof(DeselectedDayViewBorderStyle):
             case nameof(EventIndicatorStyle):
             case nameof(EventIndicatorSelectedStyle):
             case nameof(EventIndicatorType):
-            case nameof(TodayOutlineColor):
+            case nameof(TodayDayViewBorderStyle):
             case nameof(TodayFillColor):
                 UpdateDaysColors();
                 break;
@@ -615,7 +583,7 @@ public partial class MonthDaysView : ContentView
                 break;
 
             case nameof(DaysTitleMaximumLength):
-            case nameof(DaysTitleHeight):
+            case nameof(DaysTitleLabelStyle):
             case nameof(DaysTitleLabelFirstUpperRestLower):
                 UpdateDayTitles();
                 break;
@@ -692,8 +660,6 @@ public partial class MonthDaysView : ContentView
             dayModel.Date = currentDate.Date;
             dayModel.DayTappedCommand = DayTappedCommand;
             dayModel.EventIndicatorType = EventIndicatorType;
-            dayModel.DayViewSize = DayViewSize;
-            dayModel.DayViewCornerRadius = DayViewCornerRadius;
             dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
             dayModel.DaysLabelStyle = GetDayLabelStyle(dayModel);
             dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
@@ -730,9 +696,9 @@ public partial class MonthDaysView : ContentView
         {
             var dayModel = dayView.BindingContext as DayModel;
 
-            dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
-            dayModel.TodayOutlineColor = TodayOutlineColor;
-            dayModel.TodayFillColor = TodayFillColor;
+            dayModel.SelectedDayViewBorderStyle = SelectedDayViewBorderStyle;
+            dayModel.TodayDayViewBorderStyle = TodayDayViewBorderStyle;
+            dayModel.DeselectedDayViewBorderStyle = DeselectedDayViewBorderStyle;
 
             AssignIndicatorStyles(ref dayModel);
         }
@@ -752,9 +718,7 @@ public partial class MonthDaysView : ContentView
         _daysControl = CurrentViewLayoutEngine.GenerateLayout(
             _dayViews,
             this,
-            nameof(DaysTitleHeight),
             nameof(DaysTitleLabelStyle),
-            nameof(DayViewSize),
             DayTappedCommand,
             OnDayModelPropertyChanged);
 
