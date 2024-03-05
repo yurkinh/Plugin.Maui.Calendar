@@ -66,8 +66,7 @@
     <plugin:Calendar
         Padding="10,0"       
         EventIndicatorStyle="{StaticResource EventIndicatorStyle}"
-        DayLabelStyle="{StaticResource DaysLabelStyle}"
-        DayViewFontSize="Medium"
+        DayLabelStyle="{StaticResource DaysLabelStyle}"       
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource DaysTitleLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"

@@ -104,8 +104,7 @@
     </ContentPage.BindingContext>
     <plugin:Calendar
         Padding="10,0"
-        DayLabelStyle="{StaticResource DaysLabelStyle}"      
-        
+        DayLabelStyle="{StaticResource DaysLabelStyle}"
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}"
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
@@ -117,18 +116,15 @@
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
-        Month="{Binding Month}"
-        MonthLabelColor="DarkSlateGray"
+        Month="{Binding Month}"       
         OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysTitleLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
-       SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
-        TodayFillColor="LightGreen"
+        SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"       
         TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
         TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
         VerticalOptions="Fill"
         WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
-        Year="{Binding Year}"
-        YearLabelColor="DarkSlateGray">
+        Year="{Binding Year}">
         <plugin:Calendar.HeaderSectionTemplate>
             <DataTemplate>
                 <controls:CalendarMinimalisticHeader />

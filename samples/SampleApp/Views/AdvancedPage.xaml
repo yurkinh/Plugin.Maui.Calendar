@@ -132,25 +132,20 @@
         EventIndicatorType="Background"
         Events="{Binding Events, Mode=OneWay}"
         HeaderSectionVisible="True"
-        HorizontalOptions="Fill"
-        MonthLabelColor="Red"
+        HorizontalOptions="Fill"       
         OtherMonthDayIsVisible="False"
         OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
-        SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
-        SelectedDayTextColor="Cyan"
-        SelectedTodayTextColor="Green"
+        SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"       
         ShownDate="{Binding ShownDate, Mode=OneWay}"
         SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeToChangeMonthEnabled="False"
-        SwipeUpToHideEnabled="False"
-        TodayFillColor="Silver"
+        SwipeUpToHideEnabled="False"       
         TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
         TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
-        VerticalOptions="Fill"
-        YearLabelColor="Blue">
+        VerticalOptions="Fill">
 
         <plugin:Calendar.HeaderSectionTemplate>
         <DataTemplate>
