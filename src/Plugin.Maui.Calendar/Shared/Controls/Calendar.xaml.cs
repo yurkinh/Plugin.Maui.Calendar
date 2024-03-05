@@ -5,7 +5,6 @@ using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
 using System.Collections;
-using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -302,23 +301,6 @@ public partial class Calendar : ContentView
         set => SetValue(EventIndicatorSelectedStyleProperty, value);
     }
 
-
-
-    /// <summary>
-    /// Bindable property for EventIndicatorSelectedText
-    /// </summary>
-    public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the color of the event indicator text on selected dates
-    /// </summary>
-    public Color EventIndicatorSelectedTextColor
-    {
-        get => (Color)GetValue(EventIndicatorSelectedTextColorProperty);
-        set => SetValue(EventIndicatorSelectedTextColorProperty, value);
-    }
-
     /// <summary>
     /// Bindable property for FooterArrowVisible
     /// </summary>
@@ -392,21 +374,6 @@ public partial class Calendar : ContentView
     {
         get => (Style)GetValue(TodayDayViewBorderStyleProperty);
         set => SetValue(TodayDayViewBorderStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for TodayFillColor
-    /// </summary>
-    public static readonly BindableProperty TodayFillColorProperty =
-      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(Calendar), Colors.Transparent);
-
-    /// <summary>
-    /// Specifies the fill for today's date
-    /// </summary>
-    public Color TodayFillColor
-    {
-        get => (Color)GetValue(TodayFillColorProperty);
-        set => SetValue(TodayFillColorProperty, value);
     }
 
     /// <summary>

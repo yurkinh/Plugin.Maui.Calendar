@@ -54,8 +54,7 @@
                 SwipeDetectionDisabled="{Binding DisableSwipeDetection, Source={x:Reference calendar}}"
                 SwipedLeft="OnSwipedLeft"
                 SwipedRight="OnSwipedRight"
-                SwipedUp="OnSwipedUp"
-                TodayFillColor="{Binding TodayFillColor, Source={x:Reference calendar}}"
+                SwipedUp="OnSwipedUp"                
                 TodayLabelStyle="{Binding TodayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}"
                 TodayDayViewBorderStyle="{Binding TodayDayViewBorderStyle, Source={x:Reference calendar}}"
                 WeekendDayLabelStyle="{Binding WeekendDayLabelStyle, Source={x:Reference calendar}, Mode=OneWay}" />

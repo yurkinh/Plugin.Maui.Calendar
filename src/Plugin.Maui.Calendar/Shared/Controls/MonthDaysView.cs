@@ -219,22 +219,7 @@ public partial class MonthDaysView : ContentView
     {
         get => (Style)GetValue(TodayDayViewBorderStyleProperty);
         set => SetValue(TodayDayViewBorderStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for TodayFillColor
-    /// </summary>
-    public static readonly BindableProperty TodayFillColorProperty =
-      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
-
-    /// <summary>
-    /// Color of today date's fill
-    /// </summary>
-    public Color TodayFillColor
-    {
-        get => (Color)GetValue(TodayFillColorProperty);
-        set => SetValue(TodayFillColorProperty, value);
-    }
+    }   
 
     /// <summary>
     /// Bindable property for DaysTitleMaximumLength
@@ -573,8 +558,7 @@ public partial class MonthDaysView : ContentView
             case nameof(EventIndicatorStyle):
             case nameof(EventIndicatorSelectedStyle):
             case nameof(EventIndicatorType):
-            case nameof(TodayDayViewBorderStyle):
-            case nameof(TodayFillColor):
+            case nameof(TodayDayViewBorderStyle):           
                 UpdateDaysColors();
                 break;
             case nameof(Culture):
