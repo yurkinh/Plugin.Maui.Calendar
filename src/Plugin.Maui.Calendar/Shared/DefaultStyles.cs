@@ -239,7 +239,7 @@ public static class DefaultStyles
     private static Style CreateDefaultSelectedDayViewBorderStyle()
     {
         Style style = new(typeof(Border)) { CanCascade = true, BasedOn = DefaultDayViewBorderStyle };
-        style.Setters.Add(new Setter { Property = Border.StrokeProperty, Value = Color.FromArgb("#2196F3") });
+        style.Setters.Add(new Setter { Property = VisualElement.BackgroundColorProperty, Value = Color.FromArgb("#2196F3") });
 
         return style;
     }
