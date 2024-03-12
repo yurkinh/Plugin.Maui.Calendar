@@ -219,7 +219,7 @@ public partial class MonthDaysView : ContentView
     {
         get => (Style)GetValue(TodayDayViewBorderStyleProperty);
         set => SetValue(TodayDayViewBorderStyleProperty, value);
-    }   
+    }
 
     /// <summary>
     /// Bindable property for DaysTitleMaximumLength
@@ -271,6 +271,21 @@ public partial class MonthDaysView : ContentView
 
     public static readonly BindableProperty WeekendDayLabelStyleProperty =
       BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: DayStylePropertyChanges);
+
+    /// <summary>
+    /// Bindable property for WeekendDaysPaintFirst
+    /// </summary>
+    public static readonly BindableProperty WeekendDaysPaintFirstProperty =
+      BindableProperty.Create(nameof(WeekendDaysPaintFirst), typeof(bool), typeof(MonthDaysView), false, propertyChanged: DayStylePropertyChanges);
+
+    /// <summary>
+    /// Specifies whether the weekend days should be painted first
+    /// </summary>
+    public bool WeekendDaysPaintFirst
+    {
+        get => (bool)GetValue(WeekendDaysPaintFirstProperty);
+        set => SetValue(WeekendDaysPaintFirstProperty, value);
+    }
 
     public Style DisabledDayLabelStyle
     {
@@ -558,7 +573,7 @@ public partial class MonthDaysView : ContentView
             case nameof(EventIndicatorStyle):
             case nameof(EventIndicatorSelectedStyle):
             case nameof(EventIndicatorType):
-            case nameof(TodayDayViewBorderStyle):           
+            case nameof(TodayDayViewBorderStyle):
                 UpdateDaysColors();
                 break;
             case nameof(Culture):
@@ -644,8 +659,8 @@ public partial class MonthDaysView : ContentView
             dayModel.Date = currentDate.Date;
             dayModel.DayTappedCommand = DayTappedCommand;
             dayModel.EventIndicatorType = EventIndicatorType;
-            dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
-            dayModel.DaysLabelStyle = GetDayLabelStyle(dayModel);
+            dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;            
+            dayModel.DaysLabelStyle = GetDayLabelStyle(dayModel, WeekendDaysPaintFirst);
             dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
             dayModel.HasEvents = Events.ContainsKey(currentDate);
             dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || DisabledDates.Contains(currentDate.Date);
@@ -655,22 +670,21 @@ public partial class MonthDaysView : ContentView
         }
     }
 
-    Style GetDayLabelStyle(DayModel dayModel)
+    Style GetDayLabelStyle(DayModel dayModel, bool weekendDaysPaintFirst)
     {
-        if (!dayModel.IsVisible) return OtherMonthDaysLabelStyle;
-
-        return (dayModel.IsDisabled, dayModel.IsSelected, dayModel.HasEvents, dayModel.IsThisMonth, dayModel.IsToday, dayModel.IsWeekend) switch
+        return (dayModel.IsDisabled, dayModel.IsSelected, dayModel.HasEvents, dayModel.IsThisMonth, dayModel.IsToday, dayModel.IsWeekend, weekendDaysPaintFirst) switch
         {
-            (true, _, _, _, _, _) => DisabledDayLabelStyle,
-            (false, true, false, true, true, _) => SelectedTodayLabelStyle,
-            (false, true, false, true, false, _) => SelectedDayLabelStyle,
-            (false, false, false, true, true, _) => TodayLabelStyle,
-            (false, true, true, true, _, _) => EventIndicatorSelectedLabelStyle,
-            (false, false, true, true, _, _) => EventIndicatorLabelStyle,
-            (false, false, _, false, _, _) => OtherMonthDaysLabelStyle,
-            (false, _, _, _, _, true) => WeekendDayLabelStyle ?? DeselectedDayLabelStyle,
-            (false, false, false, true, false, _) => DeselectedDayLabelStyle,
-            (_, _, _, _, _, _) => DayLabelStyle
+            (true, _, _, _, _, _,_) => DisabledDayLabelStyle,
+            (false, true, false, true, true, _,_) => SelectedTodayLabelStyle,
+            (false, true, false, true, false, _,_) => SelectedDayLabelStyle,
+            (false, false, false, true, true, _,_) => TodayLabelStyle,
+            (false, _, _, _, _, true,true) => WeekendDayLabelStyle,
+            (false, true, true, true, _, _,_) => EventIndicatorSelectedLabelStyle,
+            (false, false, true, true, _, _,_) => EventIndicatorLabelStyle,
+            (false, false, _, false, _, _,_) => OtherMonthDaysLabelStyle,
+            (false, _, _, _, _, true,false) => WeekendDayLabelStyle,
+            (false, false, false, true, false, _,_) => DeselectedDayLabelStyle,
+            (_, _, _, _, _, _,_) => DayLabelStyle
         };
     }
 

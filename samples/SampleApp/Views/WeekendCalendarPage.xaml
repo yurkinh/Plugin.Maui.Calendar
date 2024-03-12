@@ -124,6 +124,7 @@
         TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
         VerticalOptions="Fill"
         WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
+        WeekendDaysPaintFirst="False"
         Year="{Binding Year}">
         <plugin:Calendar.HeaderSectionTemplate>
             <DataTemplate>

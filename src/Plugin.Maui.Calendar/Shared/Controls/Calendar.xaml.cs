@@ -471,9 +471,9 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleMaximumLength
     /// </summary>
     public static readonly BindableProperty DaysTitleMaximumLengthProperty =
-      BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(Calendar), DaysTitleMaxLength.ThreeChars, propertyChanged: T);
+      BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(Calendar), DaysTitleMaxLength.ThreeChars, propertyChanged: UpdateTitleLabelsLength);
 
-    private static void T(BindableObject bindable, object oldValue, object newValue)
+    private static void UpdateTitleLabelsLength(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Calendar vm)
             vm.monthDaysView.DaysTitleMaximumLength = (DaysTitleMaxLength)newValue;
@@ -608,6 +608,28 @@ public partial class Calendar : ContentView
 
     public static readonly BindableProperty WeekendDaysLabelStyleProperty =
       BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), null);
+
+    /// <summary>
+    /// Bindable property for WeekendDaysPaintFirst
+    /// </summary>
+    public static readonly BindableProperty WeekendDaysPaintFirstProperty =
+      BindableProperty.Create(nameof(WeekendDaysPaintFirst), typeof(bool), typeof(Calendar), false, propertyChanged: OnWeekendDaysPaintFirstChanged);
+
+    private static void OnWeekendDaysPaintFirstChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm)
+            vm.monthDaysView.WeekendDaysPaintFirst = (bool)newValue;
+    }
+
+    /// <summary>
+    /// Specifies whether the weekend days should be painted first
+    /// </summary>
+    public bool WeekendDaysPaintFirst
+    {
+        get => (bool)GetValue(WeekendDaysPaintFirstProperty);
+        set => SetValue(WeekendDaysPaintFirstProperty, value);
+    }
+
 
 
     /// <summary>
