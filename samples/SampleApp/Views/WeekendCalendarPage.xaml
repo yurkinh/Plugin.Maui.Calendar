@@ -57,11 +57,13 @@
             <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
 
             <Style x:Key="DaysTitleWeekendLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendDaysLabelTextColor}" />
             </Style>
 
@@ -124,7 +126,7 @@
         TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
         VerticalOptions="Fill"
         WeekendDayLabelStyle="{StaticResource WeekendDaysLabelStyle}"
-        WeekendDaysPaintFirst="False"
+        WeekendDaysPaintFirst="True"
         Year="{Binding Year}">
         <plugin:Calendar.HeaderSectionTemplate>
             <DataTemplate>

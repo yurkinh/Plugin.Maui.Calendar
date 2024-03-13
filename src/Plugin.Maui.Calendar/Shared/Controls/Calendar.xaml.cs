@@ -607,7 +607,7 @@ public partial class Calendar : ContentView
     }
 
     public static readonly BindableProperty WeekendDaysLabelStyleProperty =
-      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), null);
+      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTodayLabelStyle);
 
     /// <summary>
     /// Bindable property for WeekendDaysPaintFirst

@@ -659,7 +659,7 @@ public partial class MonthDaysView : ContentView
             dayModel.Date = currentDate.Date;
             dayModel.DayTappedCommand = DayTappedCommand;
             dayModel.EventIndicatorType = EventIndicatorType;
-            dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;            
+            dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
             dayModel.DaysLabelStyle = GetDayLabelStyle(dayModel, WeekendDaysPaintFirst);
             dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
             dayModel.HasEvents = Events.ContainsKey(currentDate);
@@ -674,17 +674,17 @@ public partial class MonthDaysView : ContentView
     {
         return (dayModel.IsDisabled, dayModel.IsSelected, dayModel.HasEvents, dayModel.IsThisMonth, dayModel.IsToday, dayModel.IsWeekend, weekendDaysPaintFirst) switch
         {
-            (true, _, _, _, _, _,_) => DisabledDayLabelStyle,
-            (false, true, false, true, true, _,_) => SelectedTodayLabelStyle,
-            (false, true, false, true, false, _,_) => SelectedDayLabelStyle,
-            (false, false, false, true, true, _,_) => TodayLabelStyle,
-            (false, _, _, _, _, true,true) => WeekendDayLabelStyle,
-            (false, true, true, true, _, _,_) => EventIndicatorSelectedLabelStyle,
-            (false, false, true, true, _, _,_) => EventIndicatorLabelStyle,
-            (false, false, _, false, _, _,_) => OtherMonthDaysLabelStyle,
-            (false, _, _, _, _, true,false) => WeekendDayLabelStyle,
-            (false, false, false, true, false, _,_) => DeselectedDayLabelStyle,
-            (_, _, _, _, _, _,_) => DayLabelStyle
+            (true, _, _, _, _, _, _) => DisabledDayLabelStyle,
+            (false, true, false, true, true, _, _) => SelectedTodayLabelStyle,
+            (false, true, false, true, false, _, _) => SelectedDayLabelStyle,
+            (false, false, false, true, true, _, _) => TodayLabelStyle,
+            (false, _, _, _, _, true, true) => WeekendDayLabelStyle,
+            (false, true, true, true, _, _, _) => EventIndicatorSelectedLabelStyle,
+            (false, false, true, true, _, _, _) => EventIndicatorLabelStyle,
+            (false, false, _, false, _, _, _) => OtherMonthDaysLabelStyle,
+            (false, false, false, true, false, _, _) => DeselectedDayLabelStyle,
+            (false, _, _, _, _, true, false) => WeekendDayLabelStyle,
+            (_, _, _, _, _, _, _) => DayLabelStyle
         };
     }
 

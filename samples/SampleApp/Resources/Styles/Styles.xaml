@@ -75,6 +75,7 @@
         BasedOn="{x:Static styles:DefaultStyles.DefaultFooterLabelStyle}"
         TargetType="Label">
         <Setter Property="TextColor" Value="Red" />
+        <Setter Property="FontAttributes" Value="Bold" />
     </Style>
 
     <Style
