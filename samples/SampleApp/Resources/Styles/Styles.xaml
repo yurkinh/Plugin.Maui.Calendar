@@ -84,6 +84,13 @@
         TargetType="Label">
         <Setter Property="FontSize" Value="Medium" />        
     </Style>
+     <Style
+        x:Key="AdvancedHeaderLabelStyle"
+        BasedOn="{x:Static styles:DefaultStyles.DefaultHeaderLabelStyle}"
+        TargetType="Label">
+        <Setter Property="FontSize" Value="Medium" /> 
+        <Setter Property="TextColor" Value="Red" />          
+    </Style>
 
 </ResourceDictionary>
 
