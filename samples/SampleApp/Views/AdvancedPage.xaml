@@ -47,6 +47,12 @@
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
             <Style
+                x:Key="SelectedDayLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Cyan" />
+            </Style>
+            <Style
                 x:Key="TodayDayLabelStyle"
                 BasedOn="{StaticResource DaysLabelStyle}"
                 TargetType="Label">
@@ -67,11 +73,7 @@
                 <Setter Property="FontSize" Value="18" />
                  <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendDaysTitleLabelTextColor}" />
-            </Style>
-            <Style x:Key="TodayLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
-            </Style>
+            </Style>            
             <Style
                 x:Key="EventIndicatorStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorStyle}"
@@ -95,13 +97,14 @@
                 x:Key="EventIndicatorSelectedLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorSelectedLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="AliceBlue" />
+                <Setter Property="TextColor" Value="WhiteSmoke" />
             </Style>
             <Style
                 x:Key="SelectedDayViewBorderStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDayViewBorderStyle}"
                 TargetType="Border">
                 <Setter Property="BackgroundColor" Value="DarkCyan" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 3" />
             </Style>
 
             <Style
@@ -109,6 +112,9 @@
                 BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}"
                 TargetType="Border">
                 <Setter Property="Stroke" Value="Blue" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 3" />
+                <Setter Property="BackgroundColor" Value="Silver" />
             </Style>
 
         </ResourceDictionary>
@@ -132,7 +138,7 @@
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         DisableSwipeDetection="False"
         EventIndicatorLabelStyle="{StaticResource EventIndicatorLabelStyle}"
-        EventIndicatorSelectedLabelStyle="{StaticResource EventIndicatorSelectedStyle}"
+        EventIndicatorSelectedLabelStyle="{StaticResource EventIndicatorSelectedLabelStyle}"
         EventIndicatorSelectedStyle="{StaticResource EventIndicatorSelectedStyle}"
         EventIndicatorStyle="{StaticResource EventIndicatorStyle}"
         EventIndicatorType="Background"
@@ -144,6 +150,7 @@
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
+        SelectedDayLabelStyle="{StaticResource SelectedDayLabelStyle}"
         ShownDate="{Binding ShownDate, Mode=OneWay}"
         SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
