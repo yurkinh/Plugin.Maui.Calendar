@@ -2,11 +2,10 @@
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Plugin.Maui.Calendar.Controls.Interfaces;
+using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
-using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
 
@@ -771,12 +770,24 @@ public partial class MonthDaysView : ContentView
         _propertyChangedNotificationSupressions[propertyName] = false;
     }
 
-
-
     internal void AssignIndicatorStyles(ref DayModel dayModel)
     {
-        dayModel.EventIndicatorStyle = EventIndicatorStyle;
-        dayModel.EventIndicatorSelectedStyle = EventIndicatorSelectedStyle;
+        if (Events.TryGetValue(dayModel.Date, out var dayEventCollection) && dayEventCollection is IPersonalizableDayEvent personalizableDay)
+        {
+            dayModel.EventIndicatorStyle = personalizableDay?.EventIndicatorStyle ?? EventIndicatorStyle;
+            dayModel.EventIndicatorSelectedStyle = personalizableDay?.EventIndicatorSelectedStyle ?? personalizableDay?.EventIndicatorStyle ?? EventIndicatorSelectedStyle;
+            dayModel.EventIndicatorLabelStyle = personalizableDay?.EventIndicatorLabelStyle ?? EventIndicatorLabelStyle;
+            dayModel.EventIndicatorSelectedLabelStyle = personalizableDay?.EventIndicatorSelectedLabelStyle ?? personalizableDay?.EventIndicatorLabelStyle ?? EventIndicatorSelectedLabelStyle;
+
+        }
+        else
+        {
+            dayModel.EventIndicatorStyle = EventIndicatorStyle;
+            dayModel.EventIndicatorSelectedStyle = EventIndicatorSelectedStyle;
+            dayModel.EventIndicatorLabelStyle = EventIndicatorLabelStyle;
+            dayModel.EventIndicatorSelectedLabelStyle = EventIndicatorSelectedLabelStyle;
+        }
+
     }
     void OnSwiped(object sender, SwipedEventArgs e)
     {

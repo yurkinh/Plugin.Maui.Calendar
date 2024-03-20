@@ -60,6 +60,12 @@ internal partial class DayModel : ObservableObject
     [ObservableProperty]
     Style todayDayViewBorderStyle = DefaultStyles.DefaultTodayDayViewBorderStyle;
 
+    [ObservableProperty]
+    Style eventIndicatorLabelStyle = DefaultStyles.DefaultEventIndicatorLabelStyle;
+
+    [ObservableProperty]
+    Style eventIndicatorSelectedLabelStyle = DefaultStyles.DefaultEventIndicatorSelectedLabelStyle;
+
     public bool IsEventDotVisible => HasEvents && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
 
     public FlexDirection EventLayoutDirection => (HasEvents && EventIndicatorType == EventIndicatorType.TopDot) ? FlexDirection.ColumnReverse : FlexDirection.Column;

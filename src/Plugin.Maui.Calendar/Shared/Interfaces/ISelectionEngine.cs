@@ -2,7 +2,7 @@
 using System.Globalization;
 using Plugin.Maui.Calendar.Models;
 
-namespace Plugin.Maui.Calendar.Controls.Interfaces
+namespace Plugin.Maui.Calendar.Interfaces
 {
     /// <summary>
     /// Interface for different selection implementations within MonthDaysView

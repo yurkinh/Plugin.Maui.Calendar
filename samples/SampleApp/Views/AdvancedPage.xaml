@@ -52,6 +52,13 @@
                 TargetType="Label">
                 <Setter Property="TextColor" Value="Cyan" />
             </Style>
+
+            <Style
+                x:Key="SelectedTodayLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Green" />
+            </Style>
             <Style
                 x:Key="TodayDayLabelStyle"
                 BasedOn="{StaticResource DaysLabelStyle}"
@@ -142,15 +149,16 @@
         EventIndicatorSelectedStyle="{StaticResource EventIndicatorSelectedStyle}"
         EventIndicatorStyle="{StaticResource EventIndicatorStyle}"
         EventIndicatorType="Background"
-        Events="{Binding Events, Mode=OneWay}"
+        Events="{Binding Events}"
         HeaderSectionVisible="True"
         HorizontalOptions="Fill"
         OtherMonthDayIsVisible="False"
         OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
-        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+        SelectedDate="{Binding SelectedDate}"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
         SelectedDayLabelStyle="{StaticResource SelectedDayLabelStyle}"
+        SelectedTodayLabelStyle="{StaticResource SelectedTodayLabelStyle}"
         ShownDate="{Binding ShownDate, Mode=OneWay}"
         SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"

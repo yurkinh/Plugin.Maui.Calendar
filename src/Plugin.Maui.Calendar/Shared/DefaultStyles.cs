@@ -110,7 +110,7 @@ public static class DefaultStyles
     {
         Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultLabelStyle };
         style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.White });
-        
+
         // Add your custom setters for the selected label style here
         return style;
     }
@@ -204,9 +204,11 @@ public static class DefaultStyles
         Style style = new(typeof(Border)) { CanCascade = true };
         style.Setters.Add(new Setter { Property = Border.PaddingProperty, Value = new Thickness(0) });
         style.Setters.Add(new Setter { Property = VisualElement.BackgroundColorProperty, Value = Color.FromArgb("#FF4081") });
-        style.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 3 } });
-        style.Setters.Add(new Setter { Property = VisualElement.HeightRequestProperty, Value = 40 });
-        style.Setters.Add(new Setter { Property = VisualElement.WidthRequestProperty, Value = 40 });
+        //Todo Set different default style for different Event indicator type
+        style.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 4 } });
+        style.Setters.Add(new Setter { Property = VisualElement.HeightRequestProperty, Value = 8 });
+        style.Setters.Add(new Setter { Property = VisualElement.WidthRequestProperty, Value = 8 });
+
 
         return style;
     }
