@@ -402,3 +402,6 @@ samples/SampleApp/.meteor/generated/Mopups.json
 samples/SampleApp/.meteor/generated/Plugin.Maui.Calendar.json
 samples/SampleApp/.vscode/launch.json
 samples/SampleApp/.vscode/settings.json
+samples/SampleApp/.meteor/resolve.drc
+samples/SampleApp/.meteor/generated/SampleApp.json
+samples/SampleApp/.meteor/*

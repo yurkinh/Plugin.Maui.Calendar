@@ -20,7 +20,7 @@
             Padding="0"
             Command="{Binding BindingContext.PrevLayoutUnitCommand,Source={x:Reference Header}, Mode=OneWay}"
             Style="{StaticResource arrowButtonPrevStyle}" />
-        <Label Grid.Column="1" Style="{StaticResource HeaderLabelStyle}">
+        <Label Grid.Column="1" Style="{StaticResource AdvancedHeaderLabelStyle}">
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="{Binding BindingContext.LayoutUnitText, Source={x:Reference Header} ,Mode=TwoWay}" />

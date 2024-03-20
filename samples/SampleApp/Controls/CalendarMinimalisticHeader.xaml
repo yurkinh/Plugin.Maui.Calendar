@@ -25,7 +25,7 @@
             FontAttributes="Bold"
             FontSize="Medium"
             HorizontalOptions="Center"
-            TextColor="{Binding BindingContext.MonthLabelColor, Source={x:Reference Header}}"
+            Style="{StaticResource HeaderLabelStyle}"
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>

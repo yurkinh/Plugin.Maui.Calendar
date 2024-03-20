@@ -18,20 +18,16 @@ internal class WeekViewEngine : ViewLayoutBase, IViewLayoutEngine
 
     public Grid GenerateLayout(
         List<DayView> dayViews,
-        object bindingContext,
-        string daysTitleHeightBindingName,        
-        string daysTitleLabelStyleBindingName,
-        string dayViewSizeBindingName,
+        object bindingContext,                
+        string daysTitleLabelStyleBindingName,        
         ICommand dayTappedCommand,
         PropertyChangedEventHandler dayModelPropertyChanged
     )
     {
         var grid = GenerateWeekLayout(
             dayViews,
-            bindingContext,
-            daysTitleHeightBindingName,           
-            daysTitleLabelStyleBindingName,
-            dayViewSizeBindingName,
+            bindingContext,                      
+            daysTitleLabelStyleBindingName,            
             dayTappedCommand,
             dayModelPropertyChanged,
             _numberOfWeeks

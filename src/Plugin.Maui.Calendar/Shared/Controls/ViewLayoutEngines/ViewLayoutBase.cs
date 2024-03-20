@@ -20,9 +20,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
     protected Grid GenerateWeekLayout(
             List<DayView> dayViews,
             object bindingContext,
-            string daysTitleHeightBindingName,
             string daysTitleLabelStyleBindingName,
-            string dayViewSizeBindingName,
             ICommand dayTappedCommand,
             PropertyChangedEventHandler dayModelPropertyChanged,
             int numberOfWeeks
@@ -31,8 +29,8 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
         var rowDefinition = new RowDefinition()
         {
             BindingContext = bindingContext,
+            Height = 30
         };
-        rowDefinition.SetBinding(RowDefinition.HeightProperty, daysTitleHeightBindingName);
 
         var grid = new Grid
         {
@@ -61,7 +59,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
                 HorizontalTextAlignment = TextAlignment.Center,
                 BindingContext = bindingContext
             };
-            label.SetBinding(Label.StyleProperty, daysTitleLabelStyleBindingName);
+            label.SetBinding(VisualElement.StyleProperty, daysTitleLabelStyleBindingName);
 
             grid.Add(label, i, 0);
         }
@@ -73,8 +71,8 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
             rowDefinition = new RowDefinition()
             {
                 BindingContext = bindingContext,
+                Height = 40
             };
-            rowDefinition.SetBinding(RowDefinition.HeightProperty, dayViewSizeBindingName);
             grid.RowDefinitions.Add(rowDefinition);
 
             for (int ii = 0; ii < 7; ii++)
