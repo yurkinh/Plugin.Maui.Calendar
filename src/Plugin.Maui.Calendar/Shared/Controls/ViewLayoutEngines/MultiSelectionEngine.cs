@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Globalization;
-using Plugin.Maui.Calendar.Controls.Interfaces;
+using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;

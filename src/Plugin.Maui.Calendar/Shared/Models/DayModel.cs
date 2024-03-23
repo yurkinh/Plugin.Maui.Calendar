@@ -9,15 +9,8 @@ namespace Plugin.Maui.Calendar.Models;
 internal partial class DayModel : ObservableObject
 {
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
-    [NotifyPropertyChangedFor(nameof(OutlineColor))]
+    [NotifyPropertyChangedFor(nameof(BackgroundStyle))]
     DateTime date;
-
-    [ObservableProperty]
-    double dayViewSize;
-
-    [ObservableProperty]
-    float dayViewCornerRadius;
 
     [ObservableProperty]
     Style daysLabelStyle = DefaultStyles.DefaultLabelStyle;
@@ -34,7 +27,7 @@ internal partial class DayModel : ObservableObject
     bool isThisMonth;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundColor), nameof(OutlineColor), nameof(EventStyle), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(BackgroundStyle), nameof(EventStyle), nameof(BackgroundFullEventColor))]
     bool isSelected;
 
     [ObservableProperty]
@@ -45,33 +38,33 @@ internal partial class DayModel : ObservableObject
     bool isDisabled;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
-    Color selectedBackgroundColor = Color.FromArgb("#2196F3");
+    [NotifyPropertyChangedFor(nameof(BackgroundStyle))]
+    Style selectedDayViewBorderStyle = DefaultStyles.DefaultSelectedDayViewBorderStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
-    Color deselectedBackgroundColor = Colors.Transparent;
+    [NotifyPropertyChangedFor(nameof(BackgroundStyle))]
+    Style deselectedDayViewBorderStyle = DefaultStyles.DefaultDeselectedDayViewBorderStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundColor))]
+    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundStyle))]
     EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundStyle), nameof(BackgroundFullEventColor))]
     Style eventIndicatorStyle = DefaultStyles.DefaultEventIndicatorStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundStyle), nameof(BackgroundFullEventColor))]
     Style eventIndicatorSelectedStyle = DefaultStyles.DefaultEventIndicatorSelectedStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(OutlineColor))]
-    Color todayOutlineColor = Color.FromArgb("#FF4081");
+    Style todayDayViewBorderStyle = DefaultStyles.DefaultTodayDayViewBorderStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundColor))]
-    Color todayFillColor = Colors.Transparent;
+    Style eventIndicatorLabelStyle = DefaultStyles.DefaultEventIndicatorLabelStyle;
 
+    [ObservableProperty]
+    Style eventIndicatorSelectedLabelStyle = DefaultStyles.DefaultEventIndicatorSelectedLabelStyle;
 
     public bool IsEventDotVisible => HasEvents && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
 
@@ -87,23 +80,20 @@ internal partial class DayModel : ObservableObject
                              ? EventIndicatorSelectedStyle
                              : EventIndicatorStyle;
 
-    public Color OutlineColor => IsToday && !IsSelected
-                               ? TodayOutlineColor
-                               : Colors.Transparent;
 
-    public Color BackgroundColor
+    public Style BackgroundStyle
     {
         get
         {
-            if (!IsVisible) return DeselectedBackgroundColor;
+            if (!IsVisible) return DeselectedDayViewBorderStyle;
 
             return (BackgroundEventIndicator, IsSelected, IsToday) switch
             {
-                (true, false, _) => Color.FromArgb("#FF4081"), //Todo: replace later with style //EventIndicatorStyle,
-                (true, true, _) => Colors.Black,              //Todo: replace later with style  //EventIndicatorSelectedStyle,
-                (false, true, _) => SelectedBackgroundColor,
-                (false, false, true) => TodayFillColor,
-                (_, _, _) => DeselectedBackgroundColor
+                (true, false, _) => EventIndicatorStyle,
+                (true, true, _) => EventIndicatorSelectedStyle,
+                (false, true, _) => SelectedDayViewBorderStyle,
+                (false, false, true) => TodayDayViewBorderStyle,
+                (_, _, _) => DeselectedDayViewBorderStyle
             };
         }
     }

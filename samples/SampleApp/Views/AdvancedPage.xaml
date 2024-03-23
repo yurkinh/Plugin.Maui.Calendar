@@ -47,6 +47,19 @@
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
             <Style
+                x:Key="SelectedDayLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Cyan" />
+            </Style>
+
+            <Style
+                x:Key="SelectedTodayLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Green" />
+            </Style>
+            <Style
                 x:Key="TodayDayLabelStyle"
                 BasedOn="{StaticResource DaysLabelStyle}"
                 TargetType="Label">
@@ -65,38 +78,51 @@
             </Style>
             <Style x:Key="DaysTitleWeekendLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
+                 <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendDaysTitleLabelTextColor}" />
-            </Style>
-            <Style x:Key="TodayLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
-            </Style>
+            </Style>            
             <Style
                 x:Key="EventIndicatorStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorStyle}"
                 TargetType="Border">
-                <Setter Property="BackgroundColor" Value="Red" />                
+                <Setter Property="BackgroundColor" Value="Red" />
             </Style>
             <Style
                 x:Key="EventIndicatorSelectedStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorSelectedStyle}"
                 TargetType="Border">
-                <Setter Property="BackgroundColor" Value="IndianRed" />                
+                <Setter Property="BackgroundColor" Value="IndianRed" />
             </Style>
             <Style
                 x:Key="EventIndicatorLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorLabelStyle}"
-                TargetType="Label">                
+                TargetType="Label">
                 <Setter Property="TextColor" Value="WhiteSmoke" />
             </Style>
 
             <Style
                 x:Key="EventIndicatorSelectedLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorSelectedLabelStyle}"
-                TargetType="Label">                
-                <Setter Property="TextColor" Value="AliceBlue" />
+                TargetType="Label">
+                <Setter Property="TextColor" Value="WhiteSmoke" />
+            </Style>
+            <Style
+                x:Key="SelectedDayViewBorderStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDayViewBorderStyle}"
+                TargetType="Border">
+                <Setter Property="BackgroundColor" Value="DarkCyan" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 3" />
             </Style>
 
+            <Style
+                x:Key="TodayDayViewBorderStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}"
+                TargetType="Border">
+                <Setter Property="Stroke" Value="Blue" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 3" />
+                <Setter Property="BackgroundColor" Value="Silver" />
+            </Style>
 
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -113,45 +139,39 @@
         Culture="{Binding Culture, Mode=OneWay}"
         DayLabelStyle="{StaticResource DaysLabelStyle}"
         DayTappedCommand="{Binding DayTappedCommand, Mode=OneWay}"
-        DayViewCornerRadius="3"
-        DayViewSize="40"
-        DaysTitleHeight="40"
         DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
         DaysTitleWeekendStyle="{StaticResource DaysTitleWeekendLabelStyle}"
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         DisableSwipeDetection="False"
-        EventIndicatorStyle="{StaticResource EventIndicatorStyle}"
         EventIndicatorLabelStyle="{StaticResource EventIndicatorLabelStyle}"
+        EventIndicatorSelectedLabelStyle="{StaticResource EventIndicatorSelectedLabelStyle}"
         EventIndicatorSelectedStyle="{StaticResource EventIndicatorSelectedStyle}"
-        EventIndicatorSelectedLabelStyle="{StaticResource EventIndicatorSelectedStyle}"             
+        EventIndicatorStyle="{StaticResource EventIndicatorStyle}"
         EventIndicatorType="Background"
-        Events="{Binding Events, Mode=OneWay}"
+        Events="{Binding Events}"
         HeaderSectionVisible="True"
         HorizontalOptions="Fill"
-        MonthLabelColor="Red"
         OtherMonthDayIsVisible="False"
         OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
-        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+        SelectedDate="{Binding SelectedDate}"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
-        SelectedDayBackgroundColor="DarkCyan"
-        SelectedDayTextColor="Cyan"
-        SelectedTodayTextColor="Green"
+        SelectedDayViewBorderStyle="{StaticResource SelectedDayViewBorderStyle}"
+        SelectedDayLabelStyle="{StaticResource SelectedDayLabelStyle}"
+        SelectedTodayLabelStyle="{StaticResource SelectedTodayLabelStyle}"
         ShownDate="{Binding ShownDate, Mode=OneWay}"
         SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeToChangeMonthEnabled="False"
         SwipeUpToHideEnabled="False"
-        TodayFillColor="Silver"
+        TodayDayViewBorderStyle="{StaticResource TodayDayViewBorderStyle}"
         TodayLabelStyle="{StaticResource TodayDayLabelStyle}"
-        TodayOutlineColor="Blue"
-        VerticalOptions="Fill"
-        YearLabelColor="Blue">
+        VerticalOptions="Fill">
 
         <plugin:Calendar.HeaderSectionTemplate>
-        <DataTemplate>
-            <controls:CalendarHeader />
-        </DataTemplate>
+            <DataTemplate>
+                <controls:CalendarHeader />
+            </DataTemplate>
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.FooterSectionTemplate>

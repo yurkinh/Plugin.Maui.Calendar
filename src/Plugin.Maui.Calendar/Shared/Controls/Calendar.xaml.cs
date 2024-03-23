@@ -5,7 +5,6 @@ using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
 using System.Collections;
-using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -181,36 +180,6 @@ public partial class Calendar : ContentView
         set => SetValue(EmptyTemplateProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for MonthLabelColor
-    /// </summary>
-    public static readonly BindableProperty MonthLabelColorProperty =
-      BindableProperty.Create(nameof(MonthLabelColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
-
-    /// <summary>
-    /// Specifies the color of the month label
-    /// </summary>
-    public Color MonthLabelColor
-    {
-        get => (Color)GetValue(MonthLabelColorProperty);
-        set => SetValue(MonthLabelColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for YearLabelColor
-    /// </summary>
-    public static readonly BindableProperty YearLabelColorProperty =
-      BindableProperty.Create(nameof(YearLabelColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
-
-    /// <summary>
-    /// Specifies the color of the year label
-    /// </summary>
-    public Color YearLabelColor
-    {
-        get => (Color)GetValue(YearLabelColorProperty);
-        set => SetValue(YearLabelColorProperty, value);
-    }
-
 
     /// <summary>
     /// Bindable property for DaysTitleWeekendColorStyle
@@ -228,51 +197,6 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for SelectedDayTextColor
-    /// </summary>
-    public static readonly BindableProperty SelectedDayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedDayTextColor), typeof(Color), typeof(Calendar), Colors.White);
-
-    /// <summary>
-    /// Specifies the text color for the titles of days
-    /// </summary>
-    public Color SelectedDayTextColor
-    {
-        get => (Color)GetValue(SelectedDayTextColorProperty);
-        set => SetValue(SelectedDayTextColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for SelectedTodayTextColor
-    /// </summary>
-    public static readonly BindableProperty SelectedTodayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(Calendar), Colors.White);
-
-    /// <summary>
-    /// Specifies the text color of today's date when selected
-    /// </summary>
-    public Color SelectedTodayTextColor
-    {
-        get => (Color)GetValue(SelectedTodayTextColorProperty);
-        set => SetValue(SelectedTodayTextColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for WeekendDayColor
-    /// </summary>
-    public static readonly BindableProperty WeekendDayColorProperty =
-      BindableProperty.Create(nameof(WeekendDayColor), typeof(Color), typeof(Calendar), Colors.Transparent);
-
-    /// <summary>
-    /// Specifies the color of days belonging to a month other than the selected one
-    /// </summary>
-    public Color WeekendDayColor
-    {
-        get => (Color)GetValue(WeekendDayColorProperty);
-        set => SetValue(WeekendDayColorProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for OtherMonthDayIsVisible
     /// </summary>
     public static readonly BindableProperty OtherMonthDayIsVisibleProperty =
@@ -287,11 +211,6 @@ public partial class Calendar : ContentView
         set => SetValue(OtherMonthDayIsVisibleProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for SelectedDayBackgroundColor
-    /// </summary>
-    public static readonly BindableProperty SelectedDayBackgroundColorProperty =
-      BindableProperty.Create(nameof(SelectedDayBackgroundColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
 
     public Style SelectedDayLabelStyle
     {
@@ -314,12 +233,30 @@ public partial class Calendar : ContentView
 
 
     /// <summary>
-    /// Specifies the background color of selected days
+    /// Bindable property for SelectedDayBackgroundColor
     /// </summary>
-    public Color SelectedDayBackgroundColor
+    public static readonly BindableProperty SelectedDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(SelectedDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultSelectedDayViewBorderStyle);
+
+    /// <summary>
+    /// Background color of currently selected date
+    /// </summary>
+    public Style SelectedDayViewBorderStyle
     {
-        get => (Color)GetValue(SelectedDayBackgroundColorProperty);
-        set => SetValue(SelectedDayBackgroundColorProperty, value);
+        get => (Style)GetValue(SelectedDayViewBorderStyleProperty);
+        set => SetValue(SelectedDayViewBorderStyleProperty, value);
+    }
+
+    public static readonly BindableProperty DeselectedDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(DeselectedDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultDeselectedDayViewBorderStyle);
+
+    /// <summary>
+    /// Background color of currently Deselected date
+    /// </summary>
+    public Style DeselectedDayViewBorderStyle
+    {
+        get => (Style)GetValue(DeselectedDayViewBorderStyleProperty);
+        set => SetValue(DeselectedDayViewBorderStyleProperty, value);
     }
 
     /// <summary>
@@ -362,36 +299,6 @@ public partial class Calendar : ContentView
     {
         get => (Style)GetValue(EventIndicatorSelectedStyleProperty);
         set => SetValue(EventIndicatorSelectedStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for EventIndicatorTextColor
-    /// </summary>
-    public static readonly BindableProperty EventIndicatorTextColorProperty =
-     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the color of the event indicator text
-    /// </summary>
-    public Color EventIndicatorTextColor
-    {
-        get => (Color)GetValue(EventIndicatorTextColorProperty);
-        set => SetValue(EventIndicatorTextColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for EventIndicatorSelectedText
-    /// </summary>
-    public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Black);
-
-    /// <summary>
-    /// Specifies the color of the event indicator text on selected dates
-    /// </summary>
-    public Color EventIndicatorSelectedTextColor
-    {
-        get => (Color)GetValue(EventIndicatorSelectedTextColorProperty);
-        set => SetValue(EventIndicatorSelectedTextColorProperty, value);
     }
 
     /// <summary>
@@ -457,31 +364,16 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for TodayOutlineColor
     /// </summary>
-    public static readonly BindableProperty TodayOutlineColorProperty =
-      BindableProperty.Create(nameof(TodayOutlineColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty TodayDayViewBorderStyleProperty =
+      BindableProperty.Create(nameof(TodayDayViewBorderStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTodayDayViewBorderStyle);
 
     /// <summary>
     /// Specifies the color of outline for today's date
     /// </summary>
-    public Color TodayOutlineColor
+    public Style TodayDayViewBorderStyle
     {
-        get => (Color)GetValue(TodayOutlineColorProperty);
-        set => SetValue(TodayOutlineColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for TodayFillColor
-    /// </summary>
-    public static readonly BindableProperty TodayFillColorProperty =
-      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(Calendar), Colors.Transparent);
-
-    /// <summary>
-    /// Specifies the fill for today's date
-    /// </summary>
-    public Color TodayFillColor
-    {
-        get => (Color)GetValue(TodayFillColorProperty);
-        set => SetValue(TodayFillColorProperty, value);
+        get => (Style)GetValue(TodayDayViewBorderStyleProperty);
+        set => SetValue(TodayDayViewBorderStyleProperty, value);
     }
 
     /// <summary>
@@ -574,61 +466,14 @@ public partial class Calendar : ContentView
         set => SetValue(CalendarSectionShownProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for DayViewSize
-    /// </summary>
-    public static readonly BindableProperty DayViewSizeProperty =
-      BindableProperty.Create(nameof(DayViewSize), typeof(double), typeof(Calendar), 40.0);
-
-    /// <summary>
-    /// Specifies the size of individual dates
-    /// </summary>
-    public double DayViewSize
-    {
-        get => (double)GetValue(DayViewSizeProperty);
-        set => SetValue(DayViewSizeProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DayViewFontSizeProperty
-    /// </summary>
-    public static readonly BindableProperty DayViewFontSizeProperty =
-      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(Calendar), 14d);
-
-    /// <summary>
-    /// Specifies the FontSize of DayView label
-    /// </summary>
-    [TypeConverter(typeof(FontSizeConverter))]
-    public double DayViewFontSize
-    {
-        get => (double)GetValue(DayViewFontSizeProperty);
-        set => SetValue(DayViewFontSizeProperty, value);
-    }
-
-
-
-    /// <summary>
-    /// Bindable property for DayViewCornerRadius
-    /// </summary>
-    public static readonly BindableProperty DayViewCornerRadiusProperty =
-      BindableProperty.Create(nameof(DayViewCornerRadius), typeof(float), typeof(Calendar), 20f);
-
-    /// <summary>
-    /// Specifies the corner radius of individual dates
-    /// </summary>
-    public float DayViewCornerRadius
-    {
-        get => (float)GetValue(DayViewCornerRadiusProperty);
-        set => SetValue(DayViewCornerRadiusProperty, value);
-    }
 
     /// <summary>
     /// Bindable property for DaysTitleMaximumLength
     /// </summary>
     public static readonly BindableProperty DaysTitleMaximumLengthProperty =
-      BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(Calendar), DaysTitleMaxLength.ThreeChars, propertyChanged: T);
+      BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(Calendar), DaysTitleMaxLength.ThreeChars, propertyChanged: UpdateTitleLabelsLength);
 
-    private static void T(BindableObject bindable, object oldValue, object newValue)
+    private static void UpdateTitleLabelsLength(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Calendar vm)
             vm.monthDaysView.DaysTitleMaximumLength = (DaysTitleMaxLength)newValue;
@@ -643,20 +488,6 @@ public partial class Calendar : ContentView
         set => SetValue(DaysTitleMaximumLengthProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for DaysTitleHeight
-    /// </summary>
-    public static readonly BindableProperty DaysTitleHeightProperty =
-      BindableProperty.Create(nameof(DaysTitleHeight), typeof(double), typeof(Calendar), 30.0);
-
-    /// <summary>
-    /// Specifies the height of weekday titles
-    /// </summary>
-    public double DaysTitleHeight
-    {
-        get => (double)GetValue(DaysTitleHeightProperty);
-        set => SetValue(DaysTitleHeightProperty, value);
-    }
 
     /// <summary>
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
@@ -776,7 +607,29 @@ public partial class Calendar : ContentView
     }
 
     public static readonly BindableProperty WeekendDaysLabelStyleProperty =
-      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), null);
+      BindableProperty.Create(nameof(WeekendDayLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTodayLabelStyle);
+
+    /// <summary>
+    /// Bindable property for WeekendDaysPaintFirst
+    /// </summary>
+    public static readonly BindableProperty WeekendDaysPaintFirstProperty =
+      BindableProperty.Create(nameof(WeekendDaysPaintFirst), typeof(bool), typeof(Calendar), false, propertyChanged: OnWeekendDaysPaintFirstChanged);
+
+    private static void OnWeekendDaysPaintFirstChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm)
+            vm.monthDaysView.WeekendDaysPaintFirst = (bool)newValue;
+    }
+
+    /// <summary>
+    /// Specifies whether the weekend days should be painted first
+    /// </summary>
+    public bool WeekendDaysPaintFirst
+    {
+        get => (bool)GetValue(WeekendDaysPaintFirstProperty);
+        set => SetValue(WeekendDaysPaintFirstProperty, value);
+    }
+
 
 
     /// <summary>
@@ -908,16 +761,6 @@ public partial class Calendar : ContentView
         set => SetValue(MaximumDateProperty, value);
     }
 
-    /// <summary> Bindable property for DisabledDayColor </summary>
-    public static readonly BindableProperty DisabledDayColorProperty =
-      BindableProperty.Create(nameof(DisabledDayColor), typeof(Color), typeof(Calendar), Color.FromArgb("#ECECEC"));
-
-    /// <summary> Color for days which are out of MinimumDate - MaximumDate range </summary>
-    public Color DisabledDayColor
-    {
-        get => (Color)GetValue(DisabledDayColorProperty);
-        set => SetValue(DisabledDayColorProperty, value);
-    }
 
     /// <summary>
     /// Bindable property for AnimateCalendar
