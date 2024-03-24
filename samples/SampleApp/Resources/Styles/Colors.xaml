@@ -5,6 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
+    <Color x:Key="EmGreen">#33A78F</Color>
+    <Color x:Key="Transparent">Transparent</Color>
+    <Color x:Key="RadioButtonColor">#33A78F</Color>
     <toolkit:AppThemeColor
         x:Key="DaysLabelTextColor"
         Dark="Orange"

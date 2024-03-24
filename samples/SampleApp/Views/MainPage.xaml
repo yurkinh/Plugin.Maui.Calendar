@@ -18,7 +18,7 @@
                     FontFamily="FontAwesomeSolid"
                     Glyph="&#xf013;"
                     Size="30"
-                    Color="{toolkit:AppThemeResource LabelButtonMainPageColor}" />
+                    Color="{toolkit:AppThemeResource ButtonMainPageColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -42,6 +42,9 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{toolkit:AppThemeResource BackgroundMainPageColor}" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill" Spacing="6">
             <Label

@@ -1,26 +1,27 @@
 ﻿namespace SampleApp.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 
-partial class UserSettingViewModel:ObservableObject
+public partial class UserSettingViewModel : ObservableObject
 {
 	[ObservableProperty]
-	public bool isCheckedLight;
+	bool isCheckedLight;
 
 	[ObservableProperty]
-	public bool isCheckedDark;
+	bool isCheckedDark;
 
 	[ObservableProperty]
-	public bool isCheckedSystem;
+	bool isCheckedSystem;
 
-	partial void OnIsCheckedLightChanged(bool value)
+	void OnIsCheckedLightChanged(object sender, CheckedChangedEventArgs e)
 	{
-		
+
 	}
-	partial void OnIsCheckedDarkChanged(bool value)
+	void OnIsCheckedDarkChanged(object sender, CheckedChangedEventArgs e)
 	{
-		
+
 	}
-	partial void OnIsCheckedSystemChanged(bool value)
+	void OnIsCheckedSystemChanged(object sender, CheckedChangedEventArgs e)
 	{
-		
+
 	}
 }
