@@ -20,15 +20,24 @@ public partial class UserSettingViewModel : ObservableObject
 	bool isCheckedSystem;
 	partial void OnIsCheckedLightChanged(bool value)
 	{
-		themeService.SetTheme((AppTheme)1);
+		if (value)
+		{
+			themeService.SetTheme((AppTheme)1);
+		}
 	}
 	partial void OnIsCheckedDarkChanged(bool value)
 	{
-		themeService.SetTheme((AppTheme)2);
+		if (value)
+		{
+			themeService.SetTheme((AppTheme)2);
+		}
 	}
 	partial void OnIsCheckedSystemChanged(bool value)
 	{
-		themeService.SetTheme((AppTheme)0);
+		if (value)
+		{
+			themeService.SetTheme((AppTheme)0);
+		}
 	}
 
 }

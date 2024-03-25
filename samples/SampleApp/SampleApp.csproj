@@ -62,12 +62,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Fonts\font-awesome-5-free-regular.otf" />
-	  <None Remove="Resources\Fonts\font-awesome-5-free-solid.otf" />
+	  <None Remove="Resources\Fonts\font-awesome-6-free-regular.otf" />
+	  <None Remove="Resources\Fonts\font-awesome-6-free-solid.otf" />
 	</ItemGroup>
 	<ItemGroup>
-	  <BundleResource Include="Resources\Fonts\font-awesome-5-free-regular.otf" />
-	  <BundleResource Include="Resources\Fonts\font-awesome-5-free-solid.otf" />
+	  <BundleResource Include="Resources\Fonts\font-awesome-6-free-regular.otf" />
+	  <BundleResource Include="Resources\Fonts\font-awesome-6-free-solid.otf" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj" />
