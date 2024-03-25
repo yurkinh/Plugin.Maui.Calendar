@@ -1,5 +1,6 @@
 ﻿using Mopups.Services;
-
+using SampleApp.Helpers;
+using SampleApp.Services;
 namespace SampleApp.Views;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -11,8 +12,8 @@ public partial class MainPage : ContentPage
 	}
 
 	async void SettingPage(object sender, EventArgs e)
-	{
-		await Navigation.PushAsync(new UserSettingPage());
+	{	
+		await Navigation.PushAsync(ServiceHelper.GetService<UserSettingPage>());
 	}
 	async void SimpleCalendar(object sender, EventArgs e)
 	{

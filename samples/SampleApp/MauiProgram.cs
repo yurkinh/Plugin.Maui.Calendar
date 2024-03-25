@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using CommunityToolkit.Maui;
-
+using SampleApp.Services;
+using SampleApp.Views;
+using SampleApp.Helpers;
 
 
 #if DEBUG
@@ -19,6 +21,8 @@ public static class MauiProgram
 			.UseMauiApp<App>()
 			.ConfigureMopups()
 			.UseMauiCommunityToolkit()
+			.InjectServices()
+			.InjectViewsAndViewModels()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -32,6 +36,24 @@ public static class MauiProgram
 		builder.EnableHotReload();
 #endif
 
-		return builder.Build();
+		var app = builder.Build();
+
+        //we must initialize our service helper before using it
+        ServiceHelper.Initialize(app.Services);
+
+        return app;
 	}
+	static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
+	{
+		builder.Services.AddTransient<UserSettingPage>();
+		builder.Services.AddTransient<UserSettingViewModel>();
+		return builder;
+	}
+	static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
+	{
+		
+		builder.Services.AddSingleton<IThemeService, ThemeService>();
+		return builder;
+	}
+
 }
