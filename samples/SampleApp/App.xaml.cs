@@ -1,27 +1,31 @@
-﻿using SampleApp.Views;
+﻿using SampleApp.Services;
+using SampleApp.Views;
+using SampleApp.Model;
+
 
 namespace SampleApp;
 
 public partial class App : Application
 {
-    public static new App Current => (App)Application.Current;
-    public App()
+	readonly IThemeService themeService;
+
+	public static new App Current => (App)Application.Current;
+	public App(IThemeService themeService)
 	{
+		this.themeService = themeService;
 		InitializeComponent();
 
-        MainPage = new NavigationPage(new MainPage());
-    }
-   
+		MainPage = new NavigationPage(new MainPage());
+	}
+	protected override void OnStart()
+	{
+		themeService.SetTheme((AppTheme)(Themes.System));
+	}
 
-    protected override void OnStart()
-    {
-        AppTheme currentTheme = Application.Current.RequestedTheme;        
-    }   
+	protected override void OnResume()
+	{
+	
+	}
 
-    protected override void OnResume()
-    {
-        AppTheme currentTheme = Application.Current.RequestedTheme;        
-    }
-  
 }
 
