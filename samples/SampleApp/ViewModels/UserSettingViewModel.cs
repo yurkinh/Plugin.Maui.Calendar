@@ -1,6 +1,7 @@
 ﻿namespace SampleApp.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SampleApp.Services;
+using SampleApp.Model;
 
 public partial class UserSettingViewModel : ObservableObject
 {
@@ -22,21 +23,21 @@ public partial class UserSettingViewModel : ObservableObject
 	{
 		if (value)
 		{
-			themeService.SetTheme((AppTheme)1);
+			themeService.SetTheme((AppTheme)(Themes.Light));
 		}
 	}
 	partial void OnIsCheckedDarkChanged(bool value)
 	{
 		if (value)
 		{
-			themeService.SetTheme((AppTheme)2);
+			themeService.SetTheme((AppTheme)(Themes.Dark));
 		}
 	}
 	partial void OnIsCheckedSystemChanged(bool value)
 	{
 		if (value)
 		{
-			themeService.SetTheme((AppTheme)0);
+			themeService.SetTheme((AppTheme)(Themes.System));
 		}
 	}
 

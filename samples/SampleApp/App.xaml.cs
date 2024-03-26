@@ -1,5 +1,7 @@
 ﻿using SampleApp.Services;
 using SampleApp.Views;
+using SampleApp.Model;
+
 
 namespace SampleApp;
 
@@ -17,7 +19,7 @@ public partial class App : Application
 	}
 	protected override void OnStart()
 	{
-		themeService.SetTheme(0);
+		themeService.SetTheme((AppTheme)(Themes.System));
 	}
 
 	protected override void OnResume()
