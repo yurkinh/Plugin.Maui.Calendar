@@ -1,5 +1,6 @@
 ﻿using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Styles;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -9,13 +10,13 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 {
 	public AdvancedPageViewModel() : base()
 	{
-		//MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
 		Culture = CultureInfo.CreateSpecificCulture("en-GB");
 		// testing all kinds of adding events
 		// when initializing collection
 		Style eventIndicatorStyle = new(typeof(Border))
 		{
+			BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorStyle,
 			Setters =
 			{
 				new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Purple }
@@ -25,6 +26,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 
 		Style eventIndicatorSelectedStyle = new(typeof(Border))
 		{
+			BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorSelectedStyle,
 			Setters =
 			{
 				new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Purple }
@@ -34,18 +36,56 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 
 		Events = new EventCollection
 		{
-			//[DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
+			[DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
 			[DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(eventIndicatorStyle, eventIndicatorSelectedStyle)
 			{
-				new AdvancedEventModel { Name = "Cool event1", Description = "This is Cool event1's description!", Starting = new DateTime() },
-				new AdvancedEventModel { Name = "Cool event2", Description = "This is Cool event2's description!", Starting = new DateTime() }
+				new() { Name = "Cool event1", Description = "This is Cool event1's description!", Starting = new DateTime() },
+				new() { Name = "Cool event2", Description = "This is Cool event2's description!", Starting = new DateTime() }
 			}
 		};
 
 		//Adding a day with a different dot color
-		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Blue } } }, EventIndicatorSelectedStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Blue } } } });
-		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Green } } }, EventIndicatorSelectedStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.White } } } });
-		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Orange } } }, EventIndicatorSelectedStyle = new Style(typeof(Border)) { Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Orange } } } });
+		Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"))
+		{
+			EventIndicatorStyle = new Style(typeof(Border))
+			{
+				BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorStyle,
+				Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Blue } }
+			},
+			EventIndicatorSelectedStyle = new Style(typeof(Border))
+			{
+				BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorSelectedStyle,
+				Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Blue } }
+			}
+		});
+
+		Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"))
+		{
+			EventIndicatorStyle = new Style(typeof(Border))
+			{
+				BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorStyle,
+				Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Green } }
+			},
+			EventIndicatorSelectedStyle = new Style(typeof(Border))
+			{
+				BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorSelectedStyle,
+				Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.White } }
+			}
+		});
+
+		Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"))
+		{
+			EventIndicatorStyle = new Style(typeof(Border))
+			{
+				BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorStyle,
+				Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Orange } }
+			},
+			EventIndicatorSelectedStyle = new Style(typeof(Border))
+			{
+				BasedOn = DefaultStyles.DefaultBackgroundEventIndicatorSelectedStyle,
+				Setters = { new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Orange } }
+			}
+		});
 
 		// with add method
 		Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
@@ -56,31 +96,27 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 		ShownDate = ShownDate.AddMonths(1);
 
 		// //Task.Delay(5000).ContinueWith(_ =>
-		{
-			// indexer - update later
-			Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
+		// indexer - update later
+		Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
 
-			// add later
-			Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
+		// add later
+		Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
-			// indexer later
-			Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
+		// indexer later
+		Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
 
-			// add later
-			Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
+		// add later
+		Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
-			//Task.Delay(3000).ContinueWith(t =>
-			{
-				ShownDate = ShownDate.AddMonths(-2);
+		ShownDate = ShownDate.AddMonths(-2);
 
-				// get observable collection later
-				var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
+		// get observable collection later
+		var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
 
-				// insert/add items to observable collection
-				todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
-				todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
-			};
-		};
+		// insert/add items to observable collection
+		todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
+		todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
+
 
 		SelectedDate = DateTime.Today.AddDays(10);
 	}

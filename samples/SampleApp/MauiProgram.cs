@@ -27,8 +27,8 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				fonts.AddFont("font-awesome-6-free-solid-900.otf", "FontAwesomeSolid");
-				fonts.AddFont("font-awesome-6-free-regular-400.otf", "FontAwesomeRegular");
+				fonts.AddFont("font-awesome-6-free-solid.otf", "FontAwesomeSolid");
+				fonts.AddFont("font-awesome-6-free-regular.otf", "FontAwesomeRegular");
 			});
 
 #if DEBUG
@@ -38,10 +38,10 @@ public static class MauiProgram
 
 		var app = builder.Build();
 
-        //we must initialize our service helper before using it
-        ServiceHelper.Initialize(app.Services);
+		//we must initialize our service helper before using it
+		ServiceHelper.Initialize(app.Services);
 
-        return app;
+		return app;
 	}
 	static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
 	{
@@ -51,7 +51,7 @@ public static class MauiProgram
 	}
 	static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
 	{
-		
+
 		builder.Services.AddSingleton<IThemeService, ThemeService>();
 		return builder;
 	}
