@@ -83,13 +83,13 @@
             </Style>            
             <Style
                 x:Key="EventIndicatorStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorStyle}"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultBackgroundEventIndicatorStyle}"
                 TargetType="Border">
                 <Setter Property="BackgroundColor" Value="Red" />
             </Style>
             <Style
                 x:Key="EventIndicatorSelectedStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultEventIndicatorSelectedStyle}"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultBackgroundEventIndicatorSelectedStyle}"
                 TargetType="Border">
                 <Setter Property="BackgroundColor" Value="IndianRed" />
             </Style>

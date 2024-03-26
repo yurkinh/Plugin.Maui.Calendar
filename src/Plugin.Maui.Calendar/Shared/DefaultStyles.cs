@@ -19,7 +19,9 @@ public static class DefaultStyles
     public static Style DefaultFooterLabelStyle { get; }
     public static Style DefaultHeaderLabelStyle { get; }
     public static Style DefaultEventIndicatorStyle { get; }
+    public static Style DefaultBackgroundEventIndicatorStyle { get; }
     public static Style DefaultEventIndicatorSelectedStyle { get; }
+    public static Style DefaultBackgroundEventIndicatorSelectedStyle { get; }
     public static Style DefaultDayViewBorderStyle { get; }
     public static Style DefaultTodayDayViewBorderStyle { get; }
     public static Style DefaultSelectedDayViewBorderStyle { get; }
@@ -42,7 +44,9 @@ public static class DefaultStyles
         DefaultFooterLabelStyle = CreateDefaultFooterLabelStyle();
         DefaultHeaderLabelStyle = CreateDefaultHeaderLabelStyle();
         DefaultEventIndicatorStyle = CreateDefaultEventIndicatorStyle();
+        DefaultBackgroundEventIndicatorStyle = CreateDefaultBackgroundEventIndicatorStyle();
         DefaultEventIndicatorSelectedStyle = CreateDefaultEventIndicatorSelectedStyle();
+        DefaultBackgroundEventIndicatorSelectedStyle = CreateDefaultBackgroundEventIndicatorSelectedStyle();
         DefaultEventIndicatorSelectedLabelStyle = CreateDefaultEventIndicatorSelectedLabelStyle();
         DefaultEventIndicatorLabelStyle = CreateDefaultEventIndicatorLabelStyle();
         DefaultDayViewBorderStyle = CreateDefaultDayViewBorderStyle();
@@ -209,7 +213,15 @@ public static class DefaultStyles
         style.Setters.Add(new Setter { Property = VisualElement.HeightRequestProperty, Value = 8 });
         style.Setters.Add(new Setter { Property = VisualElement.WidthRequestProperty, Value = 8 });
 
+        return style;
+    }
 
+    private static Style CreateDefaultBackgroundEventIndicatorStyle()
+    {
+        Style style = new(typeof(Border)) { CanCascade = true, BasedOn = DefaultEventIndicatorStyle };
+        style.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 4 } });
+        style.Setters.Add(new Setter { Property = VisualElement.HeightRequestProperty, Value = 40 });
+        style.Setters.Add(new Setter { Property = VisualElement.WidthRequestProperty, Value = 40 });
         return style;
     }
 
@@ -218,6 +230,15 @@ public static class DefaultStyles
         Style style = new(typeof(Border)) { CanCascade = true, BasedOn = DefaultEventIndicatorStyle };
         style.Setters.Add(new Setter { Property = VisualElement.BackgroundColorProperty, Value = Color.FromArgb("#FF4081") });
 
+        return style;
+    }
+
+    private static Style CreateDefaultBackgroundEventIndicatorSelectedStyle()
+    {
+        Style style = new(typeof(Border)) { CanCascade = true, BasedOn = DefaultEventIndicatorSelectedStyle };
+        style.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 4 } });
+        style.Setters.Add(new Setter { Property = VisualElement.HeightRequestProperty, Value = 40 });
+        style.Setters.Add(new Setter { Property = VisualElement.WidthRequestProperty, Value = 40 });
         return style;
     }
 
