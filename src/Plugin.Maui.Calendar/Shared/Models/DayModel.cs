@@ -73,7 +73,7 @@ internal partial class DayModel : ObservableObject
     public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
     public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
-                                           ? Color.FromArgb("#FF4081") //Todo: replace later with style //EventStyle
+                                           ? EventStyle.GetSetterValue<Color>(VisualElement.BackgroundColorProperty)
                                            : Colors.Transparent;
 
     public Style EventStyle => IsSelected
