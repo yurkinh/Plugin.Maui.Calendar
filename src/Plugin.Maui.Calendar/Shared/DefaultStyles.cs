@@ -26,6 +26,8 @@ public static class DefaultStyles
     public static Style DefaultTodayDayViewBorderStyle { get; }
     public static Style DefaultSelectedDayViewBorderStyle { get; }
     public static Style DefaultDeselectedDayViewBorderStyle { get; }
+    public static Style DefaultBackgroundFullEventStyle { get; }
+
 
 
     static DefaultStyles()
@@ -53,6 +55,7 @@ public static class DefaultStyles
         DefaultTodayDayViewBorderStyle = CreateDefaultTodayDayViewBorderStyle();
         DefaultSelectedDayViewBorderStyle = CreateDefaultSelectedDayViewBorderStyle();
         DefaultDeselectedDayViewBorderStyle = CreateDefaultDeselectedDayViewBorderStyle();
+        DefaultBackgroundFullEventStyle = CreateDefaultBackgroundFullEventStyle();
     }
 
     static Style CreateDefaultLabelStyle()
@@ -274,6 +277,19 @@ public static class DefaultStyles
     {
         Style style = new(typeof(Border)) { CanCascade = true, BasedOn = DefaultDayViewBorderStyle };
         style.Setters.Add(new Setter { Property = Border.StrokeProperty, Value = Colors.Transparent });
+
+        return style;
+    }
+
+    private static Style CreateDefaultBackgroundFullEventStyle()
+    {
+        Style style = new(typeof(ContentView)) { CanCascade = true };
+        style.Setters.Add(new Setter { Property = VisualElement.BackgroundColorProperty, Value = Colors.Transparent });
+        style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Fill });
+        style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Fill });
+        style.Setters.Add(new Setter() { Property = View.MarginProperty, Value = new Thickness(0) });
+        style.Setters.Add(new Setter() { Property = VisualElement.HeightRequestProperty, Value = 40 });
+        style.Setters.Add(new Setter() { Property = VisualElement.WidthRequestProperty, Value = 54 });
 
         return style;
     }
