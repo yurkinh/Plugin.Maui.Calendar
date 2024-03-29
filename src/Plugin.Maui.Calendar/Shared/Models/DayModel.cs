@@ -19,7 +19,7 @@ internal partial class DayModel : ObservableObject
     ICommand dayTappedCommand;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundFullEventStyle))]
     bool hasEvents;
 
     [ObservableProperty]
@@ -27,7 +27,7 @@ internal partial class DayModel : ObservableObject
     bool isThisMonth;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BackgroundStyle), nameof(EventStyle), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(BackgroundStyle), nameof(EventStyle), nameof(BackgroundFullEventStyle))]
     bool isSelected;
 
     [ObservableProperty]
@@ -50,11 +50,11 @@ internal partial class DayModel : ObservableObject
     EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundStyle), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundStyle), nameof(BackgroundFullEventStyle))]
     Style eventIndicatorStyle = DefaultStyles.DefaultEventIndicatorStyle;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundStyle), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(nameof(EventStyle), nameof(BackgroundStyle), nameof(BackgroundFullEventStyle))]
     Style eventIndicatorSelectedStyle = DefaultStyles.DefaultEventIndicatorSelectedStyle;
 
     [ObservableProperty]
@@ -72,9 +72,9 @@ internal partial class DayModel : ObservableObject
 
     public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
-    public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
-                                           ? EventStyle.GetSetterValue<Color>(VisualElement.BackgroundColorProperty)
-                                           : Colors.Transparent;
+    public Style BackgroundFullEventStyle => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
+                                           ? EventStyle
+                                           : DefaultStyles.DefaultBackgroundFullEventStyle;
 
     public Style EventStyle => IsSelected
                              ? EventIndicatorSelectedStyle
