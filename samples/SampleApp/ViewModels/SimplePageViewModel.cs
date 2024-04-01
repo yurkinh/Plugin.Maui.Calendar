@@ -6,8 +6,6 @@ public partial class SimplePageViewModel : BasePageViewModel
 {
 	public SimplePageViewModel() : base()
 	{
-		MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
-
 		// testing all kinds of adding events
 		// when initializing collection
 		Events = new EventCollection
@@ -21,37 +19,32 @@ public partial class SimplePageViewModel : BasePageViewModel
 		// with add method
 		Events.Add(DateTime.Now.AddDays(-1), new List<EventModel>(GenerateEvents(5, "Cool")));
 
-		// with indexer
+		// // with indexer
 		Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
 
-		Task.Delay(5000).ContinueWith(_ =>
-		{
-			// indexer - update later
-			Events[DateTime.Now] = new ObservableCollection<EventModel>(GenerateEvents(10, "Cool"));
+		// // indexer - update later
+		Events[DateTime.Now] = new ObservableCollection<EventModel>(GenerateEvents(10, "Cool"));
 
-			// add later
-			Events.Add(DateTime.Now.AddDays(3), new List<EventModel>(GenerateEvents(5, "Cool")));
+		// // add later
+		Events.Add(DateTime.Now.AddDays(3), new List<EventModel>(GenerateEvents(5, "Cool")));
 
-			// indexer later
-			Events[DateTime.Now.AddDays(10)] = new List<EventModel>(GenerateEvents(10, "Boring"));
+		// // indexer later
+		Events[DateTime.Now.AddDays(10)] = new List<EventModel>(GenerateEvents(10, "Boring"));
 
-			// add later
-			Events.Add(DateTime.Now.AddDays(15), new List<EventModel>(GenerateEvents(10, "Cool")));
+		// // add later
+		Events.Add(DateTime.Now.AddDays(15), new List<EventModel>(GenerateEvents(10, "Cool")));
 
-			Month += 1;
+		Month += 1;
 
-			Task.Delay(3000).ContinueWith(t =>
-			{
-				// get observable collection later
-				var todayEvents = Events[DateTime.Now] as ObservableCollection<EventModel>;
+		// // get observable collection later
+		var todayEvents = Events[DateTime.Now] as ObservableCollection<EventModel>;
 
-				// insert/add items to observable collection
-				todayEvents.Insert(0, new EventModel { Name = "Cool event insert", Description = "This is Cool event's description!" });
-				todayEvents.Add(new EventModel { Name = "Cool event add", Description = "This is Cool event's description!" });
+		// // insert/add items to observable collection
+		todayEvents.Insert(0, new EventModel { Name = "Cool event insert", Description = "This is Cool event's description!" });
+		todayEvents.Add(new EventModel { Name = "Cool event add", Description = "This is Cool event's description!" });
 
-				Month += 1;
-			}, TaskScheduler.FromCurrentSynchronizationContext());
-		}, TaskScheduler.FromCurrentSynchronizationContext());
+		Month += 1;
+
 	}
 
 	static IEnumerable<EventModel> GenerateEvents(int count, string name)
@@ -63,7 +56,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 		});
 	}
 
-	
+
 	public EventCollection Events { get; }
 
 	[ObservableProperty]
