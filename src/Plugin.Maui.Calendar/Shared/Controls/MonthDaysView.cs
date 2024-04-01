@@ -608,7 +608,7 @@ public partial class MonthDaysView : ContentView
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-            var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpper();
+            var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpperInvariant();
             dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
 
             dayLabel.Style = DaysTitleLabelStyle;
