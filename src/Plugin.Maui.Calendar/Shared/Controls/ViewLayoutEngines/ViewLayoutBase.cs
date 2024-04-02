@@ -27,8 +27,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
         )
     {
         var rowDefinition = new RowDefinition()
-        {
-            BindingContext = bindingContext,
+        {            
             Height = 30
         };
 
@@ -69,8 +68,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture)
         for (int i = 1; i <= numberOfWeeks; i++)
         {
             rowDefinition = new RowDefinition()
-            {
-                BindingContext = bindingContext,
+            {                
                 Height = 40
             };
             grid.RowDefinitions.Add(rowDefinition);
