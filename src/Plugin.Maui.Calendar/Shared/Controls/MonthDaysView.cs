@@ -609,15 +609,26 @@ public partial class MonthDaysView : ContentView
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpperInvariant();
-            dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            var calculatedTitleText = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            if (dayLabel.Text != calculatedTitleText)
+            {
+                dayLabel.Text = calculatedTitleText;
+            }
 
-            dayLabel.Style = DaysTitleLabelStyle;
+            if (!Equals(dayLabel.Style, DaysTitleLabelStyle))
+            {
+                dayLabel.Style = DaysTitleLabelStyle;
+            }
+
             // Detect weekend days
             if (DaysTitleWeekendStyle != null && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
                 // It's a weekend day
                 // You can change the color of the label or do something else
-                dayLabel.Style = DaysTitleWeekendStyle;
+                if (!Equals(dayLabel.Style, DaysTitleWeekendStyle))
+                {
+                    dayLabel.Style = DaysTitleWeekendStyle;
+                }
             }
 
             dayNumber = (dayNumber + 1) % 7;
