@@ -220,20 +220,12 @@ public partial class MonthDaysView : ContentView
         set => SetValue(TodayDayViewBorderStyleProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for DaysTitleMaximumLength
-    /// </summary>
-    public static readonly BindableProperty DaysTitleMaximumLengthProperty =
-    BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(MonthDaysView), DaysTitleMaxLength.ThreeChars);
 
     /// <summary>
     /// Maximum character length of weekday titles
     /// </summary>
-    public DaysTitleMaxLength DaysTitleMaximumLength
-    {
-        get => (DaysTitleMaxLength)GetValue(DaysTitleMaximumLengthProperty);
-        set => SetValue(DaysTitleMaximumLengthProperty, value);
-    }
+    public DaysTitleMaxLength DaysTitleMaximumLength { get; set; } = DaysTitleMaxLength.ThreeChars;
+
 
     public Style DayLabelStyle
     {
@@ -580,7 +572,7 @@ public partial class MonthDaysView : ContentView
                 await UpdateAndAnimateDays(AnimateCalendar);
                 break;
 
-            case nameof(DaysTitleMaximumLength):
+
             case nameof(DaysTitleLabelStyle):
             case nameof(DaysTitleLabelFirstUpperRestLower):
                 UpdateDayTitles();
@@ -601,7 +593,7 @@ public partial class MonthDaysView : ContentView
         SelectedDates = CurrentSelectionEngine.PerformDateSelection(newSelected.Date);
     }
 
-    private void UpdateDayTitles()
+    internal void UpdateDayTitles()
     {
         var dayNumber = (int)Culture.DateTimeFormat.FirstDayOfWeek;
 

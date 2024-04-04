@@ -475,8 +475,11 @@ public partial class Calendar : ContentView
 
     private static void UpdateTitleLabelsLength(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is Calendar vm)
+        if (bindable is Calendar vm && !Equals(oldValue, newValue))
+        {
             vm.monthDaysView.DaysTitleMaximumLength = (DaysTitleMaxLength)newValue;
+            vm.monthDaysView.UpdateDayTitles();
+        }
     }
 
     /// <summary>
