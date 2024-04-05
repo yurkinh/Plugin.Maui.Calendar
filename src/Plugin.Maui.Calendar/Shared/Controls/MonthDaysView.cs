@@ -333,20 +333,10 @@ public partial class MonthDaysView : ContentView
       BindableProperty.Create(nameof(EventIndicatorLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorLabelStyle, propertyChanged: DayStylePropertyChanges);
 
 
-    /// <summary>
-    /// Bindable property for DaysTitleLabelFirstUpperRestLower
-    /// </summary>
-    public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(MonthDaysView), false);
+   
 
-    /// <summary>
-    /// Makes DaysTitleLabel text FirstCase Upper and rest lower
-    /// </summary>
-    public bool DaysTitleLabelFirstUpperRestLower
-    {
-        get => (bool)GetValue(DaysTitleLabelFirstUpperRestLowerProperty);
-        set => SetValue(DaysTitleLabelFirstUpperRestLowerProperty, value);
-    }
+    public bool DaysTitleLabelFirstUpperRestLower { get; set; }
+   
 
     /// <summary>
     /// Bindable property for DaysTitleLabelStyle
@@ -573,8 +563,7 @@ public partial class MonthDaysView : ContentView
                 break;
 
 
-            case nameof(DaysTitleLabelStyle):
-            case nameof(DaysTitleLabelFirstUpperRestLower):
+            case nameof(DaysTitleLabelStyle):            
                 UpdateDayTitles();
                 break;
 
@@ -607,20 +596,14 @@ public partial class MonthDaysView : ContentView
                 dayLabel.Text = calculatedTitleText;
             }
 
-            if (!Equals(dayLabel.Style, DaysTitleLabelStyle))
-            {
-                dayLabel.Style = DaysTitleLabelStyle;
-            }
+            dayLabel.Style = DaysTitleLabelStyle;
 
             // Detect weekend days
             if (DaysTitleWeekendStyle != null && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
                 // It's a weekend day
                 // You can change the color of the label or do something else
-                if (!Equals(dayLabel.Style, DaysTitleWeekendStyle))
-                {
-                    dayLabel.Style = DaysTitleWeekendStyle;
-                }
+               dayLabel.Style = DaysTitleWeekendStyle;
             }
 
             dayNumber = (dayNumber + 1) % 7;

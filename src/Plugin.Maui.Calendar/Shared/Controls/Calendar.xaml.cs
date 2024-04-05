@@ -496,7 +496,15 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(Calendar), false);
+      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(Calendar), false, propertyChanged: UpdateTDaysTitleLabelFirstUpperRestLower);
+       private static void UpdateTDaysTitleLabelFirstUpperRestLower(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm && !Equals(oldValue, newValue))
+        {
+            vm.monthDaysView.DaysTitleLabelFirstUpperRestLower = (bool)newValue;
+            vm.monthDaysView.UpdateDayTitles();
+        }
+    }
 
     /// <summary>
     /// Makes DaysTitleLabel text FirstCase Upper and rest lower
