@@ -185,7 +185,16 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleWeekendColorStyle
     /// </summary>
     public static readonly BindableProperty DaysTitleWeekendStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendStyle), typeof(Style), typeof(Calendar), null);
+      BindableProperty.Create(nameof(DaysTitleWeekendStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTitleDaysLabelStyle, propertyChanged: OnDaysTitleWeekendStyleChanged);
+
+    private static void OnDaysTitleWeekendStyleChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm && !Equals(oldValue, newValue))
+        {
+            vm.monthDaysView.DaysTitleWeekendStyle = (Style)newValue;
+            vm.monthDaysView.UpdateDayTitles();
+        }
+    }
 
     /// <summary>
     /// Specifies the color for the titles of the weekend days
@@ -497,7 +506,7 @@ public partial class Calendar : ContentView
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
       BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(Calendar), false, propertyChanged: UpdateTDaysTitleLabelFirstUpperRestLower);
-       private static void UpdateTDaysTitleLabelFirstUpperRestLower(BindableObject bindable, object oldValue, object newValue)
+    private static void UpdateTDaysTitleLabelFirstUpperRestLower(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Calendar vm && !Equals(oldValue, newValue))
         {
@@ -564,7 +573,16 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTitleDaysLabelStyle);
+      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultTitleDaysLabelStyle, propertyChanged: OnDaysTitleLabelStyleChanged);
+
+    private static void OnDaysTitleLabelStyleChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm && !Equals(oldValue, newValue))
+        {
+            vm.monthDaysView.DaysTitleLabelStyle = (Style)newValue;
+            vm.monthDaysView.UpdateDayTitles();
+        }
+    }
 
     /// <summary>
     /// Specifies the style of day title labels

@@ -333,41 +333,16 @@ public partial class MonthDaysView : ContentView
       BindableProperty.Create(nameof(EventIndicatorLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorLabelStyle, propertyChanged: DayStylePropertyChanges);
 
 
-   
+
 
     public bool DaysTitleLabelFirstUpperRestLower { get; set; }
-   
 
-    /// <summary>
-    /// Bindable property for DaysTitleLabelStyle
-    /// </summary>
-    public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), defaultValue: DefaultStyles.DefaultTitleDaysLabelStyle, propertyChanged: TitleStylePropertyChanges);
-
-
-    /// <summary>
-    /// ???
-    /// </summary>
-    public Style DaysTitleLabelStyle
-    {
-        get => (Style)GetValue(DaysTitleLabelStyleProperty);
-        set => SetValue(DaysTitleLabelStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DaysTitleWeekendColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: TitleStylePropertyChanges);
+    public Style DaysTitleLabelStyle { get; set; } = DefaultStyles.DefaultTitleDaysLabelStyle;
 
     /// <summary>
     /// Color of weekday titles
     /// </summary>
-    public Style DaysTitleWeekendStyle
-    {
-        get => (Style)GetValue(DaysTitleWeekendStyleProperty);
-        set => SetValue(DaysTitleWeekendStyleProperty, value);
-    }
+    public Style DaysTitleWeekendStyle { get; set; } = DefaultStyles.DefaultTitleDaysLabelStyle;
 
     /// <summary>
     /// Bindable property for DayTapped
@@ -563,7 +538,7 @@ public partial class MonthDaysView : ContentView
                 break;
 
 
-            case nameof(DaysTitleLabelStyle):            
+            case nameof(DaysTitleLabelStyle):
                 UpdateDayTitles();
                 break;
 
@@ -603,7 +578,7 @@ public partial class MonthDaysView : ContentView
             {
                 // It's a weekend day
                 // You can change the color of the label or do something else
-               dayLabel.Style = DaysTitleWeekendStyle;
+                dayLabel.Style = DaysTitleWeekendStyle;
             }
 
             dayNumber = (dayNumber + 1) % 7;
