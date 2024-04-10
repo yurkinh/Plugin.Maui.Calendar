@@ -45,7 +45,8 @@
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
         Padding="10,0"
-        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"        
+        DaysTitleWeekendStyle="{StaticResource DaysTitleLabelStyle}"
         DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
         Events="{Binding Events, Mode=OneWay}"
         SelectedDates="{Binding SelectedDates, Mode=OneWay}"

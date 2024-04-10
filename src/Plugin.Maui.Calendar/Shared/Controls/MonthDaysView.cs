@@ -220,20 +220,12 @@ public partial class MonthDaysView : ContentView
         set => SetValue(TodayDayViewBorderStyleProperty, value);
     }
 
-    /// <summary>
-    /// Bindable property for DaysTitleMaximumLength
-    /// </summary>
-    public static readonly BindableProperty DaysTitleMaximumLengthProperty =
-    BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(MonthDaysView), DaysTitleMaxLength.ThreeChars);
 
     /// <summary>
     /// Maximum character length of weekday titles
     /// </summary>
-    public DaysTitleMaxLength DaysTitleMaximumLength
-    {
-        get => (DaysTitleMaxLength)GetValue(DaysTitleMaximumLengthProperty);
-        set => SetValue(DaysTitleMaximumLengthProperty, value);
-    }
+    public DaysTitleMaxLength DaysTitleMaximumLength { get; set; } = DaysTitleMaxLength.ThreeChars;
+
 
     public Style DayLabelStyle
     {
@@ -341,51 +333,16 @@ public partial class MonthDaysView : ContentView
       BindableProperty.Create(nameof(EventIndicatorLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultEventIndicatorLabelStyle, propertyChanged: DayStylePropertyChanges);
 
 
-    /// <summary>
-    /// Bindable property for DaysTitleLabelFirstUpperRestLower
-    /// </summary>
-    public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(MonthDaysView), false);
-
-    /// <summary>
-    /// Makes DaysTitleLabel text FirstCase Upper and rest lower
-    /// </summary>
-    public bool DaysTitleLabelFirstUpperRestLower
-    {
-        get => (bool)GetValue(DaysTitleLabelFirstUpperRestLowerProperty);
-        set => SetValue(DaysTitleLabelFirstUpperRestLowerProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DaysTitleLabelStyle
-    /// </summary>
-    public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), defaultValue: DefaultStyles.DefaultTitleDaysLabelStyle, propertyChanged: TitleStylePropertyChanges);
 
 
-    /// <summary>
-    /// ???
-    /// </summary>
-    public Style DaysTitleLabelStyle
-    {
-        get => (Style)GetValue(DaysTitleLabelStyleProperty);
-        set => SetValue(DaysTitleLabelStyleProperty, value);
-    }
+    public bool DaysTitleLabelFirstUpperRestLower { get; set; }
 
-    /// <summary>
-    /// Bindable property for DaysTitleWeekendColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendStyle), typeof(Style), typeof(MonthDaysView), null, propertyChanged: TitleStylePropertyChanges);
+    public Style DaysTitleLabelStyle { get; set; } = DefaultStyles.DefaultTitleDaysLabelStyle;
 
     /// <summary>
     /// Color of weekday titles
     /// </summary>
-    public Style DaysTitleWeekendStyle
-    {
-        get => (Style)GetValue(DaysTitleWeekendStyleProperty);
-        set => SetValue(DaysTitleWeekendStyleProperty, value);
-    }
+    public Style DaysTitleWeekendStyle { get; set; } = DefaultStyles.DefaultTitleDaysLabelStyle;
 
     /// <summary>
     /// Bindable property for DayTapped
@@ -580,12 +537,6 @@ public partial class MonthDaysView : ContentView
                 await UpdateAndAnimateDays(AnimateCalendar);
                 break;
 
-            case nameof(DaysTitleMaximumLength):
-            case nameof(DaysTitleLabelStyle):
-            case nameof(DaysTitleLabelFirstUpperRestLower):
-                UpdateDayTitles();
-                break;
-
             case nameof(CalendarLayout):
                 RenderLayout();
                 break;
@@ -601,7 +552,7 @@ public partial class MonthDaysView : ContentView
         SelectedDates = CurrentSelectionEngine.PerformDateSelection(newSelected.Date);
     }
 
-    private void UpdateDayTitles()
+    internal void UpdateDayTitles()
     {
         var dayNumber = (int)Culture.DateTimeFormat.FirstDayOfWeek;
 
@@ -609,9 +560,14 @@ public partial class MonthDaysView : ContentView
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpperInvariant();
-            dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            var calculatedTitleText = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            if (dayLabel.Text != calculatedTitleText)
+            {
+                dayLabel.Text = calculatedTitleText;
+            }
 
             dayLabel.Style = DaysTitleLabelStyle;
+
             // Detect weekend days
             if (DaysTitleWeekendStyle != null && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
             {
