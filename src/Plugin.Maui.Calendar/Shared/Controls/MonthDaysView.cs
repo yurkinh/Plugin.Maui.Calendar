@@ -537,11 +537,6 @@ public partial class MonthDaysView : ContentView
                 await UpdateAndAnimateDays(AnimateCalendar);
                 break;
 
-
-            case nameof(DaysTitleLabelStyle):
-                UpdateDayTitles();
-                break;
-
             case nameof(CalendarLayout):
                 RenderLayout();
                 break;
