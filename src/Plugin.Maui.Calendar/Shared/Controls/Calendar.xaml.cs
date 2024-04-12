@@ -464,7 +464,15 @@ public partial class Calendar : ContentView
     /// Binding property for CalendarSectionShown
     /// </summary>
     public static readonly BindableProperty CalendarSectionShownProperty =
-      BindableProperty.Create(nameof(CalendarSectionShown), typeof(bool), typeof(Calendar), true);
+      BindableProperty.Create(nameof(CalendarSectionShown), typeof(bool), typeof(Calendar), true, propertyChanged: OnCalendarSectionShownChanged);
+
+    private static void OnCalendarSectionShownChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm && !Equals(oldValue, newValue))
+        {
+            vm.ShowHideCalendarSection();
+        }
+    }
 
     /// <summary>
     /// Specifies whether the calendar section is shown
@@ -1090,10 +1098,6 @@ public partial class Calendar : ContentView
                     UpdateLayoutUnitLabel();
 
                 UpdateSelectedDateLabel();
-                break;
-
-            case nameof(CalendarSectionShown):
-                ShowHideCalendarSection();
                 break;
         }
     }
