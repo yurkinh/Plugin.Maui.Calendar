@@ -1309,6 +1309,8 @@ public partial class Calendar : ContentView
                 WeekLayout.TwoWeek => new WeekViewEngine(calendar.Culture, 2),
                 _ => new MonthViewEngine(calendar.Culture),
             };
+
+            calendar.monthDaysView.UpdateAndAnimateDays(calendar.AnimateCalendar);
         }
     }
 
