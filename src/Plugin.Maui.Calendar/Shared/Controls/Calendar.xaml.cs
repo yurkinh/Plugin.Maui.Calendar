@@ -464,7 +464,15 @@ public partial class Calendar : ContentView
     /// Binding property for CalendarSectionShown
     /// </summary>
     public static readonly BindableProperty CalendarSectionShownProperty =
-      BindableProperty.Create(nameof(CalendarSectionShown), typeof(bool), typeof(Calendar), true);
+      BindableProperty.Create(nameof(CalendarSectionShown), typeof(bool), typeof(Calendar), true, propertyChanged: OnCalendarSectionShownChanged);
+
+    private static void OnCalendarSectionShownChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar vm && !Equals(oldValue, newValue))
+        {
+            vm.ShowHideCalendarSection();
+        }
+    }
 
     /// <summary>
     /// Specifies whether the calendar section is shown
@@ -1027,8 +1035,9 @@ public partial class Calendar : ContentView
 
     private static void OnDateChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is Calendar calendar && newValue is DateTime newDateTime)
+        if (bindable is Calendar calendar && !Equals(oldValue, newValue) && newValue is DateTime newDateTime)
         {
+            calendar.UpdateLayoutUnitLabel();
             if (calendar.Day != newDateTime.Day)
                 calendar.Day = newDateTime.Day;
 
@@ -1040,6 +1049,8 @@ public partial class Calendar : ContentView
 
             if (calendar.monthDaysView.ShownDate != calendar.ShownDate)
                 calendar.monthDaysView.ShownDate = calendar.ShownDate;
+
+
         }
     }
 
@@ -1076,9 +1087,6 @@ public partial class Calendar : ContentView
 
         switch (propertyName)
         {
-            case nameof(ShownDate):
-                UpdateLayoutUnitLabel();
-                break;
 
             case nameof(SelectedDates):
                 UpdateSelectedDateLabel();
@@ -1090,10 +1098,6 @@ public partial class Calendar : ContentView
                     UpdateLayoutUnitLabel();
 
                 UpdateSelectedDateLabel();
-                break;
-
-            case nameof(CalendarSectionShown):
-                ShowHideCalendarSection();
                 break;
         }
     }
