@@ -1035,8 +1035,9 @@ public partial class Calendar : ContentView
 
     private static void OnDateChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is Calendar calendar && newValue is DateTime newDateTime)
+        if (bindable is Calendar calendar && !Equals(oldValue, newValue) && newValue is DateTime newDateTime)
         {
+            calendar.UpdateLayoutUnitLabel();
             if (calendar.Day != newDateTime.Day)
                 calendar.Day = newDateTime.Day;
 
@@ -1048,6 +1049,8 @@ public partial class Calendar : ContentView
 
             if (calendar.monthDaysView.ShownDate != calendar.ShownDate)
                 calendar.monthDaysView.ShownDate = calendar.ShownDate;
+
+
         }
     }
 
@@ -1084,9 +1087,6 @@ public partial class Calendar : ContentView
 
         switch (propertyName)
         {
-            case nameof(ShownDate):
-                UpdateLayoutUnitLabel();
-                break;
 
             case nameof(SelectedDates):
                 UpdateSelectedDateLabel();
