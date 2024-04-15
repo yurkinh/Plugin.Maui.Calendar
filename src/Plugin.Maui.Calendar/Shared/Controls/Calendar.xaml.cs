@@ -13,6 +13,7 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView
 {
+
     #region Bindable properties
 
     /// <summary>
@@ -949,6 +950,7 @@ public partial class Calendar : ContentView
         _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
 
         calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
+        Unloaded += OnUnloaded;
     }
 
     private void InitializeViewLayoutEngine()
@@ -1228,12 +1230,15 @@ public partial class Calendar : ContentView
         calendarContainer.Opacity = currentValue * currentValue * currentValue;
     }
 
-    public void Dispose()
+    private void OnUnloaded(object sender, EventArgs e)
     {
         if (Events is EventCollection events)
+        {
             events.CollectionChanged -= OnEventsCollectionChanged;
+        }
 
         calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
+        Unloaded -= OnUnloaded;
     }
 
     #endregion
