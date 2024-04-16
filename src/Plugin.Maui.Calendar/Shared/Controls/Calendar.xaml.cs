@@ -887,11 +887,8 @@ public partial class Calendar : ContentView
         }
     }
 
-    /// <summary>
-    /// Bindable property for SelectedDates
-    /// </summary>
-    public static readonly BindableProperty SelectedDatesProperty =
-      BindableProperty.Create(nameof(SelectedDates), typeof(List<DateTime>), typeof(Calendar), null, BindingMode.TwoWay);
+
+
 
     private bool _isSelectingDates = false;
 
@@ -907,6 +904,19 @@ public partial class Calendar : ContentView
             _isSelectingDates = true;
             SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
         }
+    }
+
+    public static readonly BindableProperty SelectedDatesProperty =
+     BindableProperty.Create(nameof(SelectedDates), typeof(List<DateTime>), typeof(Calendar), null, BindingMode.TwoWay, propertyChanged: OnSelectedDatesChanged);
+
+    private static void OnSelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar calendar && !Equals(oldValue, newValue))
+        {
+            calendar.UpdateSelectedDateLabel();
+            calendar.UpdateEvents();
+        }
+
     }
     public static readonly BindableProperty DisabledDatesProperty =
         BindableProperty.Create(nameof(DisabledDates), typeof(List<DateTime>), typeof(Calendar), defaultValue: new List<DateTime>(), BindingMode.TwoWay);
@@ -1091,14 +1101,11 @@ public partial class Calendar : ContentView
         switch (propertyName)
         {
 
-            case nameof(SelectedDates):
-                UpdateSelectedDateLabel();
-                UpdateEvents();
-                break;
-
             case nameof(Culture):
                 if (ShownDate.Month > 0)
+                {
                     UpdateLayoutUnitLabel();
+                }
 
                 UpdateSelectedDateLabel();
                 break;
