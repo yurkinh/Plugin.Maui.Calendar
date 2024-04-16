@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.4</PackageVersion>
+		<PackageVersion>1.1.5</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,7 +37,10 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-							Fixed issue: EmptyTemplate not showing.
+							Fixed events unsubscription.
+							Update calendar view when change CalendarLayout dynamically.
+							Minor performance improvement.
+							Updated MAUI version to 8.0.20.
        </PackageReleaseNotes>
 	</PropertyGroup>	
 

@@ -1195,6 +1195,7 @@ public partial class Calendar : ContentView
         _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
 
         calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
+        Unloaded += OnUnloaded;
     }
 
     private void InitializeViewLayoutEngine()
@@ -1480,10 +1481,17 @@ public partial class Calendar : ContentView
         calendarContainer.Opacity = currentValue * currentValue * currentValue;
     }
 
-    public void Dispose()
+    private void OnUnloaded(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        if (Events is EventCollection events)
+        {
+            events.CollectionChanged -= OnEventsCollectionChanged;
+        }
+
+        calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
+        Unloaded -= OnUnloaded;
     }
+
 
     #endregion
 }
