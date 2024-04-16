@@ -110,7 +110,21 @@ public partial class Calendar : ContentView
     /// Bindable property for Culture
     /// </summary>
     public static readonly BindableProperty CultureProperty =
-      BindableProperty.Create(nameof(Culture), typeof(CultureInfo), typeof(Calendar), CultureInfo.InvariantCulture, BindingMode.TwoWay);
+      BindableProperty.Create(nameof(Culture), typeof(CultureInfo), typeof(Calendar), CultureInfo.InvariantCulture, BindingMode.TwoWay, propertyChanged: OnCultureChanged);
+
+    private static void OnCultureChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar calendar && !Equals(oldValue, newValue))
+        {
+            if (calendar.ShownDate.Month > 0)
+            {
+                calendar.UpdateLayoutUnitLabel();
+            }
+
+            calendar.UpdateSelectedDateLabel();
+
+        }
+    }
 
     /// <summary>
     /// Specifies the culture to be used
@@ -1011,7 +1025,7 @@ public partial class Calendar : ContentView
 
     private static async void OnEventsChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is Calendar view)
+        if (bindable is Calendar view && !Equals(oldValue, newValue))
         {
             if (oldValue is EventCollection oldEvents)
                 oldEvents.CollectionChanged -= view.OnEventsCollectionChanged;
@@ -1087,28 +1101,6 @@ public partial class Calendar : ContentView
         if (bindable is Calendar calendar && newValue is WeekViewUnit viewUnit)
         {
             calendar.WeekViewUnit = viewUnit;
-        }
-    }
-
-    /// <summary>
-    /// Method that is called when a bound property is changed.
-    /// </summary>
-    /// <param name="propertyName">The name of the bound property that changed.</param>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-
-        switch (propertyName)
-        {
-
-            case nameof(Culture):
-                if (ShownDate.Month > 0)
-                {
-                    UpdateLayoutUnitLabel();
-                }
-
-                UpdateSelectedDateLabel();
-                break;
         }
     }
 
