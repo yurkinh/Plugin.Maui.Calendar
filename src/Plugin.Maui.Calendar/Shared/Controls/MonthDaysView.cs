@@ -730,7 +730,7 @@ public partial class MonthDaysView : ContentView
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-            var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpper();
+            var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpperInvariant();
             dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
             // Detect weekend days
             if (DaysTitleColor != DaysTitleWeekendColor && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
@@ -739,7 +739,6 @@ public partial class MonthDaysView : ContentView
                 // You can change the color of the label or do something else
                 dayLabel.TextColor = DaysTitleWeekendColor;
             }
-
             dayNumber = (dayNumber + 1) % 7;
         }
     }
