@@ -1056,7 +1056,7 @@ public partial class Calendar : ContentView
         }
     }
 
-    private static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
+    private static async void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Calendar calendar && newValue is WeekLayout layout)
         {
@@ -1068,6 +1068,7 @@ public partial class Calendar : ContentView
                 WeekLayout.TwoWeek => new WeekViewEngine(calendar.Culture, 2),
                 _ => new MonthViewEngine(calendar.Culture),
             };
+            await calendar.monthDaysView.UpdateAndAnimateDays(calendar.AnimateCalendar);
         }
     }
 
