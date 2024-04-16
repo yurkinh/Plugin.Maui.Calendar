@@ -7,7 +7,7 @@ internal static class Extensions
         if (source.Length == 0)
             return source;
 
-        return char.ToUpper(source[0]) + source[1..];
+        return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
     internal static object CreateContent(this DataTemplate dataTemplate, object itemModel)
