@@ -21,16 +21,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
-         dotnet-version: 8.0.101
+         dotnet-version: 8.0.x
       - name: Install .NET MAUI
-        run: dotnet workload install maui
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        run: dotnet workload install maui      
       - name: Get version information from tag
         id: get_version
         uses: battila7/get-version-action@v2
+      - name: Build
+        run: dotnet build src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.sln -c Release
       - name: Pack
-        run: msbuild -t:pack -r src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.sln -property:Configuration=Release
+        run: dotnet pack src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.sln -c Release  --no-build --output .
       - name: Push
         run: dotnet nuget push src\Plugin.Maui.Calendar\bin\Release\*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
         env:
