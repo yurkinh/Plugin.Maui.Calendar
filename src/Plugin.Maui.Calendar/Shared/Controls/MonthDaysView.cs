@@ -710,6 +710,7 @@ public partial class MonthDaysView : ContentView
 
             case nameof(CalendarLayout):
                 RenderLayout();
+                UpdateAndAnimateDays(AnimateCalendar);
                 break;
         }
     }
@@ -755,11 +756,7 @@ public partial class MonthDaysView : ContentView
         }
         else
         {
-            Animate(() => _daysControl.FadeTo(animate ? 0 : 1, 50),
-                    () => _daysControl.FadeTo(1, 200),
-                    () => UpdateDays(),
-                    _lastAnimationTime = DateTime.UtcNow,
-                    () => UpdateAndAnimateDays(false));//send false to prevent flashing if several property bindings are changed
+            MainThread.InvokeOnMainThreadAsync(() => Animate(() => _daysControl.FadeTo(animate ? 0 : 1, 50), () => _daysControl.FadeTo(1, 200), () => UpdateDays(), _lastAnimationTime = DateTime.UtcNow, () => UpdateAndAnimateDays(false)));
         }
     }
 
@@ -832,6 +829,25 @@ public partial class MonthDaysView : ContentView
             nameof(DayViewSize),
             DayTappedCommand,
             OnDayModelPropertyChanged);
+
+        #region Remove row(s) of other month
+
+        var weeksInMonth = ShownDate.WeeksInMonth(Culture);
+        var rowCount = _daysControl.RowDefinitions.Count - 1;
+        if (rowCount > weeksInMonth)
+        {
+            for (var row = _daysControl.RowDefinitions.Count; row > weeksInMonth + 1; row--)
+            {
+                _daysControl.RowDefinitions.RemoveAt(_daysControl.RowDefinitions.Count - 1);
+                var daysToRemove = _dayViews.Where(x => Grid.GetRow(x) == row - 1).ToList();
+                foreach (var calendarDay in daysToRemove)
+                {
+                    _daysControl.Children.Remove(calendarDay);
+                }
+            }
+        }
+
+        #endregion
 
         UpdateDaysColors();
         UpdateDayTitles();

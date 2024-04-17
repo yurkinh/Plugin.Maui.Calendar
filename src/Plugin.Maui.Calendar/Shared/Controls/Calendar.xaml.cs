@@ -1311,7 +1311,7 @@ public partial class Calendar : ContentView
                 _ => new MonthViewEngine(calendar.Culture),
             };
 
-            calendar.monthDaysView.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            //calendar.monthDaysView.UpdateAndAnimateDays(calendar.AnimateCalendar);
         }
     }
 
