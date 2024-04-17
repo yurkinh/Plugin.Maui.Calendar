@@ -45,7 +45,7 @@
                 EventIndicatorSelectedTextColor="{Binding EventIndicatorSelectedTextColor, Source={x:Reference calendar}}"
                 EventIndicatorTextColor="{Binding EventIndicatorTextColor, Source={x:Reference calendar}}"
                 EventIndicatorType="{Binding EventIndicatorType, Source={x:Reference calendar}}"
-                Events="{Binding Events, Source={x:Reference calendar}}"
+                Events="{Binding Events, Source={x:Reference calendar},Mode=TwoWay}"
                 MaximumDate="{Binding MaximumDate, Source={x:Reference calendar}}"
                 MinimumDate="{Binding MinimumDate, Source={x:Reference calendar}}"
                 OtherMonthDayColor="{Binding OtherMonthDayColor, Source={x:Reference calendar}}"

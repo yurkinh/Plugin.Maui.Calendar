@@ -106,7 +106,7 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for Events
     /// </summary>
     public static readonly BindableProperty EventsProperty =
-      BindableProperty.Create(nameof(Events), typeof(EventCollection), typeof(MonthDaysView), new EventCollection());
+      BindableProperty.Create(nameof(Events), typeof(EventCollection), typeof(MonthDaysView), new EventCollection(), BindingMode.TwoWay);
 
     /// <summary>
     /// Collection of all the events on the calendar

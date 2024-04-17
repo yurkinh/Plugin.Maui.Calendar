@@ -124,7 +124,7 @@ public partial class Calendar : ContentView
     /// Bindable property for events
     /// </summary>
     public static readonly BindableProperty EventsProperty =
-      BindableProperty.Create(nameof(Events), typeof(EventCollection), typeof(Calendar), new EventCollection(), propertyChanged: OnEventsChanged);
+      BindableProperty.Create(nameof(Events), typeof(EventCollection), typeof(Calendar), new EventCollection(), BindingMode.TwoWay, propertyChanged: OnEventsChanged);
 
     /// <summary>
     /// Collection of all the events in the calendar
