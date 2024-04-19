@@ -153,7 +153,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 	}
 
 	[RelayCommand]
-	static async Task ExecuteEventSelected(object item)
+	static async Task EventSelected(object item)
 	{
 		if (item is AdvancedEventModel eventModel)
 		{
