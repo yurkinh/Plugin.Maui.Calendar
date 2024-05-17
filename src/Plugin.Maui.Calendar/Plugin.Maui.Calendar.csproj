@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.6</PackageVersion>
+		<PackageVersion>1.1.7</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,7 +37,7 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-							Fixed error when switching CalendarLayout at runtime.
+							Fixed **System.InvalidOperationException:** 'Handle is not initialized.'.
        </PackageReleaseNotes>
 	</PropertyGroup>	
 

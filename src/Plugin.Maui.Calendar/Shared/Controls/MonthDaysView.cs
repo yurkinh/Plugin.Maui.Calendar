@@ -614,8 +614,6 @@ public partial class MonthDaysView : ContentView
         RenderLayout();
     }
 
-    ~MonthDaysView() => DiposeDayViews();
-
 
     private void LoadedMethod(object sender, EventArgs e)
     {
@@ -647,7 +645,16 @@ public partial class MonthDaysView : ContentView
             rightSwipeGesture.Swiped -= OnSwiped;
             upSwipeGesture.Swiped -= OnSwiped;
             downSwipeGesture.Swiped -= OnSwiped;
+
+            leftSwipeGesture = null;
+            rightSwipeGesture = null;
+            upSwipeGesture = null;
+            downSwipeGesture = null;
         }
+        Loaded -= LoadedMethod;
+        Unloaded -= UnloadedMethod;
+
+        DiposeDayViews();
     }
 
     #region PropertyChanged
@@ -859,19 +866,14 @@ public partial class MonthDaysView : ContentView
     {
         foreach (var dayView in _daysControl.Children.OfType<DayView>())
         {
-            (dayView.BindingContext as DayModel).PropertyChanged -= OnDayModelPropertyChanged;
+            if (dayView.BindingContext is DayModel dayModel)
+            {
+                dayModel.PropertyChanged -= OnDayModelPropertyChanged;
 #if !WINDOWS
-            dayView.BindingContext = null;
+                dayView.BindingContext = null;
 #endif
+            }
         }
-
-        Loaded -= LoadedMethod;
-        Unloaded -= UnloadedMethod;
-
-        leftSwipeGesture = null;
-        rightSwipeGesture = null;
-        upSwipeGesture = null;
-        downSwipeGesture = null;
     }
 
     private void Animate(
