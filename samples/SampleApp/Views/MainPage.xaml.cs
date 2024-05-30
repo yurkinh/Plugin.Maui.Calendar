@@ -14,7 +14,10 @@ namespace SampleApp.Views
         {
             await Navigation.PushAsync(new SimplePage());
         }
-
+        async void WeekendCalendar(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new WeekendCalendarPage());
+        }
         private async void MultiSelectionCalendar(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new MultiSelectionPage());
