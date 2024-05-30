@@ -15,8 +15,8 @@
                 Clicked="SimpleCalendar"
                 Text="Simple Event Calendar" />
             <Button
+                Margin="5"
                 Clicked="WeekendCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Weekend Calendar" />
             <Button
                 Margin="5"
