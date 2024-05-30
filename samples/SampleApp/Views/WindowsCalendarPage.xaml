@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.WindowsCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    x:Name="windowsCalendarPage"
+    Title="Windows 11 Calendar"
+    x:DataType="vm:WindowsCalendarViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:AppThemeColor
+                x:Key="DayLabelColor"
+                Dark="white"
+                Light="Black" />
+            <toolkit:AppThemeColor
+                x:Key="TodayDayLabelTextColor"
+                Dark="Black"
+                Light="White" />
+            <toolkit:AppThemeColor
+                x:Key="WindowsThemeColor"
+                Dark="#04e762"
+                Light="#2b9348" />
+
+            <Style x:Key="DayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DayLabelColor}" />
+            </Style>
+            <Style
+                x:Key="TodayBorderStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}"
+                TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+                <Setter Property="Stroke" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+            <Style x:Key="TodayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="SelectedDayBorderStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}"
+                TargetType="Border">
+                <Setter Property="Stroke" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+            <Style x:Key="SelectedDayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <vm:WindowsCalendarViewModel />
+    </ContentPage.BindingContext>
+
+
+    <VerticalStackLayout>
+        <plugin:Calendar
+            DaysTitleLabelFirstUpperRestLower="True"
+            DaysTitleMaximumLength="TwoChars"
+            DisabledDayLabelStyle="{StaticResource DayLabelStyle}"
+            Month="{Binding Month, Mode=TwoWay}"
+            SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+            SelectedDayLabelStyle="{StaticResource SelectedDayLabelStyle}"
+            SelectedDayViewBorderStyle="{StaticResource SelectedDayBorderStyle}"
+            SwipeToChangeMonthEnabled="True"
+            TodayDayViewBorderStyle="{StaticResource TodayBorderStyle}"
+            TodayLabelStyle="{StaticResource TodayLabelStyle}"
+            Year="{Binding Year, Mode=TwoWay}" />
+    </VerticalStackLayout>
+</ContentPage>

@@ -92,6 +92,13 @@
                 Clicked="RangeCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar" />
+
+            <Label Style="{StaticResource LabelMainPageStyle}" Text="Calendars from Devices" />
+            <Button
+                Clicked="WindowsCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Windows Calendar" />
+
             <Label Style="{StaticResource LabelMainPageStyle}" Text="Picker Popup" />
             <Button
                 Clicked="PickerPopup"
