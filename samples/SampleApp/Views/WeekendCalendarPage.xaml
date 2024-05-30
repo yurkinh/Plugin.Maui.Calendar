@@ -9,7 +9,21 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     x:Name="weekendCalendarPage">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="daysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
+            </Style>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
@@ -19,6 +33,7 @@
     </ContentPage.BindingContext>
     <plugin:Calendar
         Padding="10,0"
+        DaysLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleWeekendColor="Red"
         Events="{Binding Events, Mode=OneWay}"
         FooterArrowVisible="False"
