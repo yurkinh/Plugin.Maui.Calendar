@@ -151,18 +151,18 @@ internal partial class DayModel : ObservableObject
         {
             if (!IsVisible) return OtherMonthColor;
 
-            return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
+            return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday) switch
             {
-                (true, _, _, _, _, _) => DisabledColor,
-                (false, true, false, true, true, _) => SelectedTodayTextColor == Colors.Transparent ? SelectedTextColor : SelectedTodayTextColor,
-                (false, true, false, true, false, _) => SelectedTextColor,
-                (false, true, true, true, _, _) => EventIndicatorSelectedTextColor,
-                (false, false, true, true, _, _) => EventIndicatorTextColor,
-                (false, false, _, false, _, _) => OtherMonthColor,
-                (false, false, false, true, true, _) => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
-                (false, _, _, _, _, true) => WeekendDayColor,
-                (false, false, false, true, false, _) => DeselectedTextColor,
-                (_, _, _, _, _, _) => Colors.Black
+                (true, _, _, _, _) => DisabledColor,
+                (false, true, false, true, true) => SelectedTodayTextColor == Colors.Transparent ? SelectedTextColor : SelectedTodayTextColor,
+                (false, true, false, true, false) => SelectedTextColor,
+                (false, true, false, false, _) => SelectedTextColor,
+                (false, true, true, true, _) => EventIndicatorSelectedTextColor,
+                (false, false, true, true, _) => EventIndicatorTextColor,
+                (false, false, _, false, _) => OtherMonthColor,
+                (false, false, false, true, true) => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
+                (false, false, false, true, false) => DeselectedTextColor,
+                (_, _, _, _, _) => Colors.Black
             };
         }
     }
