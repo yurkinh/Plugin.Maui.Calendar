@@ -677,7 +677,7 @@ public partial class MonthDaysView : ContentView
                 CurrentSelectionEngine.UpdateDateSelection(SelectedDates);
                 break;
             case nameof(Events):
-            case nameof(ShownDate):
+            
             case nameof(MinimumDate):
             case nameof(MaximumDate):
             case nameof(OtherMonthDayIsVisible):
@@ -715,6 +715,7 @@ public partial class MonthDaysView : ContentView
                 UpdateDayTitles();
                 break;
 
+            case nameof(ShownDate):
             case nameof(CalendarLayout):
                 RenderLayout();
                 UpdateAndAnimateDays(AnimateCalendar);
