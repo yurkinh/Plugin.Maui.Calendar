@@ -1,4 +1,5 @@
 ﻿using Mopups.Services;
+using SampleApp.Helpers;
 
 namespace SampleApp.Views
 {
@@ -9,7 +10,10 @@ namespace SampleApp.Views
         {
             InitializeComponent();
         }
-
+        async void SettingPage(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(ServiceHelper.GetService<UserSettingPage>());
+        }
         private async void SimpleCalendar(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new SimplePage());

@@ -1,13 +1,18 @@
-﻿using SampleApp.Views;
+﻿using SampleApp.Model;
+using SampleApp.Services;
+using SampleApp.Views;
 
 namespace SampleApp;
 
 public partial class App : Application
 {
+    readonly IThemeService themeService;
+
     public static new App Current => (App)Application.Current;
-    public App()
+    public App(IThemeService themeService)
 	{
-		InitializeComponent();
+        this.themeService = themeService;
+        InitializeComponent();
 
         MainPage = new NavigationPage(new MainPage());
     }
@@ -15,12 +20,12 @@ public partial class App : Application
 
     protected override void OnStart()
     {
-        AppTheme currentTheme = Application.Current.RequestedTheme;        
+        themeService.SetTheme((AppTheme)(Themes.System));
     }   
 
     protected override void OnResume()
     {
-        AppTheme currentTheme = Application.Current.RequestedTheme;        
+
     }
   
 }
