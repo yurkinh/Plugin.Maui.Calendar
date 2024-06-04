@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="SampleApp.Controls.Windows11CalendarHeader"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="Header"
+    x:DataType="controls:CalendarHeader">
+    <Grid
+        Padding="12,0,12,0"
+        ColumnDefinitions="*,Auto,Auto"
+        HorizontalOptions="Fill"
+        IsVisible="{Binding BindingContext.ShowMonthPicker, Source={x:Reference Header}}"
+        RowDefinitions="Auto"
+        VerticalOptions="Start">
+
+        <Label
+            Grid.Column="0"
+            FontAttributes="Bold"
+            FontSize="14"
+            HorizontalOptions="Start"
+            Style="{StaticResource HeaderLabelStyle}"
+            VerticalOptions="Center">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{Binding BindingContext.LayoutUnitText, Source={x:Reference Header}, Mode=TwoWay}" />
+                    <Span Text=" " />
+                    <Span Text="{Binding BindingContext.Year, Source={x:Reference Header}, Mode=TwoWay}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        <Button
+            Grid.Column="1"
+            Command="{Binding BindingContext.PrevLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay}"
+            Style="{StaticResource arrowButtonPrevStyle}" />
+        <Button
+            Grid.Column="2"
+            Command="{Binding BindingContext.NextLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay}"
+            Style="{StaticResource arrowButtonNextStyle}" />
+    </Grid>
+</ContentView>

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using SampleApp.Helpers;
 using SampleApp.Services;
-using SampleApp.ViewModels;
 using SampleApp.Views;
 
 namespace SampleApp;

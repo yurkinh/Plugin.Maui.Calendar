@@ -7,9 +7,7 @@
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="UserSettingPage"
     x:DataType="vm:UserSettingViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundMainPageColor}"
-    Shell.TitleColor="{toolkit:AppThemeResource DaysTitleMainLabelTextColor}">
+ >
     <ContentPage.Resources>
         <ControlTemplate x:Key="RadioButtonTemplate">
             <Grid Margin="4" WidthRequest="100">
@@ -20,10 +18,10 @@
                     VerticalOptions="Start"
                     WidthRequest="18">
                     <Ellipse
-                        Fill="{toolkit:AppThemeResource BackgroundColor}"
+                      
                         HeightRequest="16"
                         HorizontalOptions="Center"
-                        Stroke="{toolkit:AppThemeResource BackgroundMainPageColor}"
+                  
                         VerticalOptions="Center"
                         WidthRequest="16" />
                     <Ellipse
@@ -40,13 +38,13 @@
                         <VisualStateGroup x:Name="CheckedStates">
                             <VisualState x:Name="Checked">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource BackgroundColor}" />
+                                  
                                     <Setter TargetName="check" Property="Opacity" Value="1" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Unchecked">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource BackgroundColor}" />
+                                
                                     <Setter TargetName="check" Property="Opacity" Value="0" />
                                 </VisualState.Setters>
                             </VisualState>
@@ -78,16 +76,14 @@
 
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="{toolkit:AppThemeResource BackgroundMainPageColor}" StatusBarStyle="DarkContent" />
-    </ContentPage.Behaviors>
+  
     <VerticalStackLayout Margin="20,5">
         <Label
             Margin="0,10,0,10"
             FontSize="20"
             HorizontalOptions="Center"
             Text="Theme mode"
-            TextColor="{toolkit:AppThemeResource BackgroundMainPageColor}" />
+         />
         <Grid ColumnDefinitions="*,*,*">
 
             <RadioButton Grid.Column="0" IsChecked="{Binding IsCheckedLight, Mode=TwoWay}">
