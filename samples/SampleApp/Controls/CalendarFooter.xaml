@@ -2,28 +2,28 @@
 <ContentView
     x:Class="SampleApp.Controls.CalendarFooter"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:controls="clr-namespace:SampleApp.Controls"   
-    x:DataType="controls:CalendarFooter"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
     x:Name="Footer"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    x:DataType="controls:CalendarFooter">
     <Grid
         ColumnDefinitions="Auto,*"
-        HeightRequest="40"        
+        HeightRequest="40"
         HorizontalOptions="Fill"
         RowSpacing="6"
         VerticalOptions="Fill">
         <Label
             Grid.Column="0"
             Style="{StaticResource FooterLabelStyle}"
-            Text="{Binding BindingContext.SelectedDateText, Source={x:Reference Footer}}"/>
+            Text="{Binding BindingContext.SelectedDateText, Source={x:Reference Footer}}" />
         <Button
-            Grid.Column="1"           
-            Command="{Binding BindingContext.ShowHideCalendarCommand,Source={x:Reference Footer}, Mode=OneWay}"
+            Grid.Column="1"
+            Command="{Binding BindingContext.ShowHideCalendarCommand, Source={x:Reference Footer}, Mode=OneWay}"
             IsVisible="{Binding BindingContext.FooterArrowVisible, Source={x:Reference Footer}}"
             Style="{StaticResource ArrowFooterButtonUpStyle}">
             <Button.Triggers>
                 <DataTrigger
-                    Binding="{Binding BindingContext.CalendarSectionShown,Source={x:Reference Footer}}"
+                    Binding="{Binding BindingContext.CalendarSectionShown, Source={x:Reference Footer}}"
                     TargetType="Button"
                     Value="False">
                     <Setter Property="Text" Value="&#xf063;" />

@@ -20,7 +20,11 @@
         x:Key="DaysTitleLabelTextColor"
         Dark="#F7B548"
         Light="Black" />
-  
+    <toolkit:AppThemeColor
+        x:Key="DaysTitleLabelTextColorMinimalistic"
+        Dark="White"
+        Light="Black" />
+
     <toolkit:AppThemeColor
         x:Key="TodayDayLabelTextColor"
         Dark="ForestGreen"
