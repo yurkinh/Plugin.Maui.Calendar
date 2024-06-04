@@ -21,9 +21,10 @@
         Dark="#F7B548"
         Light="Black" />
     <toolkit:AppThemeColor
-        x:Key="DaysTitleMainLabelTextColor"
-        Dark="#B3FCF8"
-        Light="#B3FCF8" />
+        x:Key="DaysTitleLabelTextColorMinimalistic"
+        Dark="White"
+        Light="Black" />
+
     <toolkit:AppThemeColor
         x:Key="TodayDayLabelTextColor"
         Dark="ForestGreen"
@@ -44,18 +45,4 @@
         x:Key="BackgroundColor"
         Dark="#212121"
         Light="White" />
-    <toolkit:AppThemeColor
-        x:Key="BackgroundMainPageColor"
-        Dark="#404C5F"
-        Light="#404C5F" />
-    <toolkit:AppThemeColor
-        x:Key="LabelButtonMainPageColor"
-        Dark="#000"
-        Light="#000" />
-    <toolkit:AppThemeColor
-        x:Key="ButtonMainPageColor"
-        Dark="#B3FCF8"
-        Light="#B3FCF8" />
-
-
 </ResourceDictionary>

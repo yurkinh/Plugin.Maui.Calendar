@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.WindowsCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    x:Name="windowsCalendarPage"
+    Title="Windows 11 Calendar"
+    x:DataType="vm:WindowsCalendarViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:AppThemeColor
+                x:Key="WindowsThemeColor"
+                Dark="#04e762"
+                Light="#2b9348" />
+            <toolkit:AppThemeColor
+                x:Key="TodayDayLabelTextColor"
+                Dark="Black"
+                Light="White" />
+            <toolkit:AppThemeObject
+                x:Key="Walpaper"
+                Dark="windows_walpaper_dark.png"
+                Light="windows_walpaper_light.png" />
+
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DayLabelColor}" />
+            </Style>
+            <Style
+                x:Key="SelectedDayBorderStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}"
+                TargetType="Border">
+                <Setter Property="Stroke" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+            <Style x:Key="SelectedDayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+            <Style x:Key="SelectedTodayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+
+            <Style x:Key="DeselectedDayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+            </Style>
+
+            <Style
+                x:Key="TodayLabelStyle"
+                BasedOn="{StaticResource DeselectedDayLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="TodayBorderStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultTodayDayViewBorderStyle}"
+                TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+                <Setter Property="Stroke" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+
+            <Style
+                x:Key="OtherMonthDaysLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource OtherMonthDaysLabelTextColor}" />
+            </Style>
+
+            <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColorMinimalistic}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <vm:WindowsCalendarViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />
+        <Border
+            Margin="30"
+            BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+            HeightRequest="435"
+            HorizontalOptions="End"
+            Opacity="0.80"
+            Stroke="White"
+            StrokeShape="RoundRectangle 6"
+            StrokeThickness="0.3"
+            VerticalOptions="End"
+            WidthRequest="330">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.1"
+                    Radius="2"
+                    Offset="0,4" />
+            </Border.Shadow>
+            <plugin:Calendar
+                DaysTitleLabelFirstUpperRestLower="True"
+                DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
+                DaysTitleMaximumLength="TwoChars"
+                DaysTitleWeekendStyle="{StaticResource DaysTitleLabelStyle}"
+                DeselectedDayLabelStyle="{StaticResource DeselectedDayLabelStyle}"
+                DisabledDayLabelStyle="{StaticResource DaysLabelStyle}"
+                FooterSectionVisible="False"
+                Month="{Binding Month, Mode=TwoWay}"
+                OtherMonthDaysLabelStyle="{StaticResource OtherMonthDaysLabelStyle}"
+                SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+                SelectedDayLabelStyle="{StaticResource SelectedDayLabelStyle}"
+                SelectedDayViewBorderStyle="{StaticResource SelectedDayBorderStyle}"
+                SelectedTodayLabelStyle="{StaticResource SelectedTodayLabelStyle}"
+                TodayDayViewBorderStyle="{StaticResource TodayBorderStyle}"
+                TodayLabelStyle="{StaticResource TodayLabelStyle}"
+                Year="{Binding Year, Mode=TwoWay}">
+
+                <plugin:Calendar.HeaderSectionTemplate>
+                    <DataTemplate>
+                        <controls:WindowsCalendarHeader />
+                    </DataTemplate>
+                </plugin:Calendar.HeaderSectionTemplate>
+            </plugin:Calendar>
+        </Border>
+    </Grid>
+</ContentPage>
