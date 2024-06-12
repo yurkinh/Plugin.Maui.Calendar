@@ -59,9 +59,7 @@
 	  <None Remove="Shared\Converters\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Shared\" />
 	  <Folder Include="Shared\Models\" />
-	  <Folder Include="Shared\Controls\" />
 	  <Folder Include="Shared\Converters\" />
 	</ItemGroup>
 	<!-- Package additions -->

@@ -917,7 +917,10 @@ public partial class MonthDaysView : ContentView
         )
             return;
 
-        SelectedDates = CurrentSelectionEngine.PerformDateSelection(newSelected.Date);
+        SelectedDates = CurrentSelectionEngine.PerformDateSelection(
+            newSelected.Date,
+            DisabledDates
+        );
     }
 
     private void UpdateDayTitles()
