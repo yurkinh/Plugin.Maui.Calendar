@@ -19,7 +19,12 @@ public partial class MonthDaysView : ContentView
     SwipeGestureRecognizer downSwipeGesture;
 
     public static readonly BindableProperty SwipeDetectionDisabledProperty =
-      BindableProperty.Create(nameof(SwipeDetectionDisabled), typeof(bool), typeof(MonthDaysView), false);
+        BindableProperty.Create(
+            nameof(SwipeDetectionDisabled),
+            typeof(bool),
+            typeof(MonthDaysView),
+            false
+        );
 
     public bool SwipeDetectionDisabled
     {
@@ -34,8 +39,13 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for ShownDate
     /// </summary>
-    public static readonly BindableProperty ShownDateProperty =
-      BindableProperty.Create(nameof(ShownDate), typeof(DateTime), typeof(MonthDaysView), DateTime.Today, BindingMode.TwoWay);
+    public static readonly BindableProperty ShownDateProperty = BindableProperty.Create(
+        nameof(ShownDate),
+        typeof(DateTime),
+        typeof(MonthDaysView),
+        DateTime.Today,
+        BindingMode.TwoWay
+    );
 
     /// <summary>
     /// Currently displayed month of selected year
@@ -49,12 +59,26 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for SelectedDates
     /// </summary>
-    public static readonly BindableProperty SelectedDatesProperty =
-      BindableProperty.Create(nameof(SelectedDates), typeof(List<DateTime>), typeof(MonthDaysView), new List<DateTime>(), BindingMode.TwoWay, propertyChanged: SelectedDatesChanged);
+    public static readonly BindableProperty SelectedDatesProperty = BindableProperty.Create(
+        nameof(SelectedDates),
+        typeof(List<DateTime>),
+        typeof(MonthDaysView),
+        new List<DateTime>(),
+        BindingMode.TwoWay,
+        propertyChanged: SelectedDatesChanged
+    );
 
-    private static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void SelectedDatesChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
-        if (bindable is MonthDaysView control && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
+        if (
+            bindable is MonthDaysView control
+            && (newValue is List<DateTime> || newValue is null)
+            && !Equals(newValue, oldValue)
+        )
             control.UpdateDays();
     }
 
@@ -69,12 +93,26 @@ public partial class MonthDaysView : ContentView
 
     //////////////////////Disabled dates//////////////////////////////
 
-    public static readonly BindableProperty DisabledDatesProperty =
-      BindableProperty.Create(nameof(DisabledDates), typeof(List<DateTime>), typeof(MonthDaysView), new List<DateTime>(), BindingMode.TwoWay, propertyChanged: DisabledDatesChanged);
+    public static readonly BindableProperty DisabledDatesProperty = BindableProperty.Create(
+        nameof(DisabledDates),
+        typeof(List<DateTime>),
+        typeof(MonthDaysView),
+        new List<DateTime>(),
+        BindingMode.TwoWay,
+        propertyChanged: DisabledDatesChanged
+    );
 
-    private static void DisabledDatesChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void DisabledDatesChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
-        if (bindable is MonthDaysView control && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
+        if (
+            bindable is MonthDaysView control
+            && (newValue is List<DateTime> || newValue is null)
+            && !Equals(newValue, oldValue)
+        )
             control.UpdateDays();
     }
 
@@ -86,12 +124,18 @@ public partial class MonthDaysView : ContentView
         get => (List<DateTime>)GetValue(DisabledDatesProperty);
         set => SetValue(DisabledDatesProperty, value);
     }
+
     //////////////////////////////////////
     /// <summary>
     /// Bindable property for Culture
     /// </summary>
-    public static readonly BindableProperty CultureProperty =
-      BindableProperty.Create(nameof(Culture), typeof(CultureInfo), typeof(MonthDaysView), CultureInfo.InvariantCulture, BindingMode.TwoWay);
+    public static readonly BindableProperty CultureProperty = BindableProperty.Create(
+        nameof(Culture),
+        typeof(CultureInfo),
+        typeof(MonthDaysView),
+        CultureInfo.InvariantCulture,
+        BindingMode.TwoWay
+    );
 
     /// <summary>
     /// Culture info to properly format and name days
@@ -105,8 +149,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for Events
     /// </summary>
-    public static readonly BindableProperty EventsProperty =
-      BindableProperty.Create(nameof(Events), typeof(EventCollection), typeof(MonthDaysView), new EventCollection());
+    public static readonly BindableProperty EventsProperty = BindableProperty.Create(
+        nameof(Events),
+        typeof(EventCollection),
+        typeof(MonthDaysView),
+        new EventCollection()
+    );
 
     /// <summary>
     /// Collection of all the events on the calendar
@@ -120,8 +168,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DaysTitleColor
     /// </summary>
-    public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+    public static readonly BindableProperty DaysTitleColorProperty = BindableProperty.Create(
+        nameof(DaysTitleColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Black
+    );
 
     /// <summary>
     /// Color of weekday titles
@@ -135,8 +187,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DaysTitleColor
     /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendColorProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+    public static readonly BindableProperty DaysTitleWeekendColorProperty = BindableProperty.Create(
+        nameof(DaysTitleWeekendColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Black
+    );
 
     /// <summary>
     /// Color of weekday titles
@@ -150,8 +206,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for SelectedDayTextColor
     /// </summary>
-    public static readonly BindableProperty SelectedDayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedDayTextColor), typeof(Color), typeof(MonthDaysView), Colors.White);
+    public static readonly BindableProperty SelectedDayTextColorProperty = BindableProperty.Create(
+        nameof(SelectedDayTextColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.White
+    );
 
     /// <summary>
     /// Color of selected dayView text
@@ -166,7 +226,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DeselectedDayTextColor
     /// </summary>
     public static readonly BindableProperty DeselectedDayTextColorProperty =
-      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+        BindableProperty.Create(
+            nameof(DeselectedDayTextColor),
+            typeof(Color),
+            typeof(MonthDaysView),
+            Colors.Black
+        );
 
     /// <summary>
     /// Color of deselected day text
@@ -181,7 +246,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for SelectedTodayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedTodayTextColorProperty =
-        BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+        BindableProperty.Create(
+            nameof(SelectedTodayTextColor),
+            typeof(Color),
+            typeof(MonthDaysView),
+            Colors.Black
+        );
 
     /// <summary>
     /// Bindable property for SelectedTodayTextColor
@@ -195,8 +265,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for WeekendDayColor
     /// </summary>
-    public static readonly BindableProperty WeekendDayColorProperty =
-      BindableProperty.Create(nameof(WeekendDayColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+    public static readonly BindableProperty WeekendDayColorProperty = BindableProperty.Create(
+        nameof(WeekendDayColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Black
+    );
 
     /// <summary>
     /// Color of text for for days that are weekends
@@ -210,8 +284,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for OtherMonthDayColor
     /// </summary>
-    public static readonly BindableProperty OtherMonthDayColorProperty =
-      BindableProperty.Create(nameof(OtherMonthDayColor), typeof(Color), typeof(MonthDaysView), Colors.Silver);
+    public static readonly BindableProperty OtherMonthDayColorProperty = BindableProperty.Create(
+        nameof(OtherMonthDayColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Silver
+    );
 
     /// <summary>
     /// Color of text for for days not belonging to the current month
@@ -226,7 +304,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for OtherMonthDayIsVisible
     /// </summary>
     public static readonly BindableProperty OtherMonthDayIsVisibleProperty =
-      BindableProperty.Create(nameof(OtherMonthDayIsVisible), typeof(bool), typeof(MonthDaysView), true);
+        BindableProperty.Create(
+            nameof(OtherMonthDayIsVisible),
+            typeof(bool),
+            typeof(MonthDaysView),
+            true
+        );
 
     /// <summary>
     /// Specifying if days from other months are visible on the current month view
@@ -241,7 +324,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for SelectedDayBackgroundColor
     /// </summary>
     public static readonly BindableProperty SelectedDayBackgroundColorProperty =
-      BindableProperty.Create(nameof(SelectedDayBackgroundColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#2196F3"));
+        BindableProperty.Create(
+            nameof(SelectedDayBackgroundColor),
+            typeof(Color),
+            typeof(MonthDaysView),
+            Color.FromArgb("#2196F3")
+        );
 
     /// <summary>
     /// Background color of currently selected date
@@ -255,8 +343,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for EventIndicatorColor
     /// </summary>
-    public static readonly BindableProperty EventIndicatorTypeProperty =
-      BindableProperty.Create(nameof(EventIndicatorType), typeof(EventIndicatorType), typeof(MonthDaysView), EventIndicatorType.BottomDot);
+    public static readonly BindableProperty EventIndicatorTypeProperty = BindableProperty.Create(
+        nameof(EventIndicatorType),
+        typeof(EventIndicatorType),
+        typeof(MonthDaysView),
+        EventIndicatorType.BottomDot
+    );
 
     /// <summary>
     /// Enum value specifying the way events are indicated on dates
@@ -270,8 +362,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for EventIndicatorColor
     /// </summary>
-    public static readonly BindableProperty EventIndicatorColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty EventIndicatorColorProperty = BindableProperty.Create(
+        nameof(EventIndicatorColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Color.FromArgb("#FF4081")
+    );
 
     /// <summary>
     /// Color of event indicator on dates
@@ -286,7 +382,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorSelectedColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#FF4081"));
+        BindableProperty.Create(
+            nameof(EventIndicatorSelectedColor),
+            typeof(Color),
+            typeof(MonthDaysView),
+            Color.FromArgb("#FF4081")
+        );
 
     /// <summary>
     /// Color of event indicator on selected dates
@@ -301,7 +402,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorTextColorProperty =
-     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+        BindableProperty.Create(
+            nameof(EventIndicatorTextColor),
+            typeof(Color),
+            typeof(MonthDaysView),
+            Colors.Black
+        );
 
     /// <summary>
     /// Color of event indicator text
@@ -316,7 +422,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for EventIndicatorSelectedTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+        BindableProperty.Create(
+            nameof(EventIndicatorSelectedTextColor),
+            typeof(Color),
+            typeof(MonthDaysView),
+            Colors.Black
+        );
 
     /// <summary>
     /// Color of event indicator text on selected dates
@@ -330,8 +441,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for TodayOutlineColor
     /// </summary>
-    public static readonly BindableProperty TodayOutlineColorProperty =
-      BindableProperty.Create(nameof(TodayOutlineColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty TodayOutlineColorProperty = BindableProperty.Create(
+        nameof(TodayOutlineColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Color.FromArgb("#FF4081")
+    );
 
     /// <summary>
     /// Color of today date's outline
@@ -345,8 +460,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for TodayTextColor
     /// </summary>
-    public static readonly BindableProperty TodayTextColorProperty =
-        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+    public static readonly BindableProperty TodayTextColorProperty = BindableProperty.Create(
+        nameof(TodayTextColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Black
+    );
 
     /// <summary>
     /// Color of today date's text
@@ -360,8 +479,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for TodayFillColor
     /// </summary>
-    public static readonly BindableProperty TodayFillColorProperty =
-      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(MonthDaysView), Colors.Black);
+    public static readonly BindableProperty TodayFillColorProperty = BindableProperty.Create(
+        nameof(TodayFillColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Black
+    );
 
     /// <summary>
     /// Color of today date's fill
@@ -375,8 +498,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DayViewSize
     /// </summary>
-    public static readonly BindableProperty DayViewSizeProperty =
-      BindableProperty.Create(nameof(DayViewSize), typeof(double), typeof(MonthDaysView), 40.0);
+    public static readonly BindableProperty DayViewSizeProperty = BindableProperty.Create(
+        nameof(DayViewSize),
+        typeof(double),
+        typeof(MonthDaysView),
+        40.0
+    );
 
     /// <summary>
     /// Size of all individual dates
@@ -390,8 +517,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DayViewFontSizeProperty
     /// </summary>
-    public static readonly BindableProperty DayViewFontSizeProperty =
-      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(MonthDaysView), 14d);
+    public static readonly BindableProperty DayViewFontSizeProperty = BindableProperty.Create(
+        nameof(DayViewFontSize),
+        typeof(double),
+        typeof(MonthDaysView),
+        14d
+    );
 
     /// <summary>
     /// Specifies the FontSize of DayView label
@@ -406,8 +537,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DayViewCornerRadius
     /// </summary>
-    public static readonly BindableProperty DayViewCornerRadiusProperty =
-      BindableProperty.Create(nameof(DayViewCornerRadius), typeof(float), typeof(MonthDaysView), 20f);
+    public static readonly BindableProperty DayViewCornerRadiusProperty = BindableProperty.Create(
+        nameof(DayViewCornerRadius),
+        typeof(float),
+        typeof(MonthDaysView),
+        20f
+    );
 
     /// <summary>
     /// Corner radius of individual dates
@@ -421,8 +556,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DaysTitleHeight
     /// </summary>
-    public static readonly BindableProperty DaysTitleHeightProperty =
-      BindableProperty.Create(nameof(DaysTitleHeight), typeof(double), typeof(MonthDaysView), 30.0);
+    public static readonly BindableProperty DaysTitleHeightProperty = BindableProperty.Create(
+        nameof(DaysTitleHeight),
+        typeof(double),
+        typeof(MonthDaysView),
+        30.0
+    );
 
     /// <summary>
     /// Height of the weekday names container
@@ -437,7 +576,12 @@ public partial class MonthDaysView : ContentView
     /// Bindable property for DaysTitleMaximumLength
     /// </summary>
     public static readonly BindableProperty DaysTitleMaximumLengthProperty =
-    BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(MonthDaysView), DaysTitleMaxLength.ThreeChars);
+        BindableProperty.Create(
+            nameof(DaysTitleMaximumLength),
+            typeof(DaysTitleMaxLength),
+            typeof(MonthDaysView),
+            DaysTitleMaxLength.ThreeChars
+        );
 
     /// <summary>
     /// Maximum character length of weekday titles
@@ -451,15 +595,23 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DaysLabelStyle
     /// </summary>
-    public static readonly BindableProperty DaysLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(MonthDaysView), DefaultStyles.DefaultLabelStyle);
-
+    public static readonly BindableProperty DaysLabelStyleProperty = BindableProperty.Create(
+        nameof(DaysLabelStyle),
+        typeof(Style),
+        typeof(MonthDaysView),
+        DefaultStyles.DefaultLabelStyle
+    );
 
     /// <summary>
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(MonthDaysView), false);
+        BindableProperty.Create(
+            nameof(DaysTitleLabelFirstUpperRestLower),
+            typeof(bool),
+            typeof(MonthDaysView),
+            false
+        );
 
     /// <summary>
     /// Makes DaysTitleLabel text FirstCase Upper and rest lower
@@ -482,8 +634,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
-    public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(MonthDaysView), null);
+    public static readonly BindableProperty DaysTitleLabelStyleProperty = BindableProperty.Create(
+        nameof(DaysTitleLabelStyle),
+        typeof(Style),
+        typeof(MonthDaysView),
+        null
+    );
 
     /// <summary>
     /// ???
@@ -497,8 +653,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DayTapped
     /// </summary>
-    public static readonly BindableProperty DayTappedCommandProperty =
-        BindableProperty.Create(nameof(DayTappedCommand), typeof(ICommand), typeof(MonthDaysView), null);
+    public static readonly BindableProperty DayTappedCommandProperty = BindableProperty.Create(
+        nameof(DayTappedCommand),
+        typeof(ICommand),
+        typeof(MonthDaysView),
+        null
+    );
 
     /// <summary>
     /// Action to run after a day has been tapped.
@@ -512,8 +672,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for MinimumDate
     /// </summary>
-    public static readonly BindableProperty MinimumDateProperty =
-      BindableProperty.Create(nameof(MinimumDate), typeof(DateTime), typeof(MonthDaysView), DateTime.MinValue);
+    public static readonly BindableProperty MinimumDateProperty = BindableProperty.Create(
+        nameof(MinimumDate),
+        typeof(DateTime),
+        typeof(MonthDaysView),
+        DateTime.MinValue
+    );
 
     /// <summary>
     /// Minimum date which can be selected
@@ -527,8 +691,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for MaximumDate
     /// </summary>
-    public static readonly BindableProperty MaximumDateProperty =
-      BindableProperty.Create(nameof(MaximumDate), typeof(DateTime), typeof(MonthDaysView), DateTime.MaxValue);
+    public static readonly BindableProperty MaximumDateProperty = BindableProperty.Create(
+        nameof(MaximumDate),
+        typeof(DateTime),
+        typeof(MonthDaysView),
+        DateTime.MaxValue
+    );
 
     /// <summary>
     /// Maximum date which can be selected
@@ -542,8 +710,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for DisabledDayColor
     /// </summary>
-    public static readonly BindableProperty DisabledDayColorProperty =
-      BindableProperty.Create(nameof(DisabledDayColor), typeof(Color), typeof(MonthDaysView), Color.FromArgb("#ECECEC"));
+    public static readonly BindableProperty DisabledDayColorProperty = BindableProperty.Create(
+        nameof(DisabledDayColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Color.FromArgb("#ECECEC")
+    );
 
     /// <summary>
     /// Color for days which are out of MinimumDate - MaximumDate range
@@ -557,8 +729,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for AnimateCalendar
     /// </summary>
-    public static readonly BindableProperty AnimateCalendarProperty =
-        BindableProperty.Create(nameof(AnimateCalendar), typeof(bool), typeof(MonthDaysView), true);
+    public static readonly BindableProperty AnimateCalendarProperty = BindableProperty.Create(
+        nameof(AnimateCalendar),
+        typeof(bool),
+        typeof(MonthDaysView),
+        true
+    );
 
     /// <summary>
     /// Specifies if the calendar should animate or not
@@ -572,8 +748,12 @@ public partial class MonthDaysView : ContentView
     /// <summary>
     /// Bindable property for WeekLayout
     /// </summary>
-    public static readonly BindableProperty CalendarLayoutProperty =
-        BindableProperty.Create(nameof(CalendarLayout), typeof(WeekLayout), typeof(MonthDaysView), WeekLayout.Month);
+    public static readonly BindableProperty CalendarLayoutProperty = BindableProperty.Create(
+        nameof(CalendarLayout),
+        typeof(WeekLayout),
+        typeof(MonthDaysView),
+        WeekLayout.Month
+    );
 
     /// <summary>
     /// Sets the layout of the calendar
@@ -591,7 +771,8 @@ public partial class MonthDaysView : ContentView
     /// </summary>
     internal ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
 
-    internal IViewLayoutEngine CurrentViewLayoutEngine { get; set; } = new MonthViewEngine(CultureInfo.InvariantCulture);
+    internal IViewLayoutEngine CurrentViewLayoutEngine { get; set; } =
+        new MonthViewEngine(CultureInfo.InvariantCulture);
 
     private readonly Dictionary<string, bool> _propertyChangedNotificationSupressions = new();
     private readonly List<DayView> _dayViews = new();
@@ -614,7 +795,6 @@ public partial class MonthDaysView : ContentView
         RenderLayout();
     }
 
-
     private void LoadedMethod(object sender, EventArgs e)
     {
         if (!SwipeDetectionDisabled)
@@ -629,7 +809,6 @@ public partial class MonthDaysView : ContentView
             upSwipeGesture.Swiped += OnSwiped;
             downSwipeGesture.Swiped += OnSwiped;
         }
-
     }
 
     private void UnloadedMethod(object sender, EventArgs e)
@@ -667,8 +846,10 @@ public partial class MonthDaysView : ContentView
     {
         base.OnPropertyChanged(propertyName);
 
-        if (_propertyChangedNotificationSupressions.TryGetValue(propertyName, out bool isSuppressed)
-            && isSuppressed)
+        if (
+            _propertyChangedNotificationSupressions.TryGetValue(propertyName, out bool isSuppressed)
+            && isSuppressed
+        )
             return;
 
         switch (propertyName)
@@ -724,8 +905,16 @@ public partial class MonthDaysView : ContentView
 
     private void OnDayModelPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(DayModel.IsSelected) || sender is not DayModel newSelected ||
-            (_propertyChangedNotificationSupressions.TryGetValue(e.PropertyName, out bool isSuppressed) && isSuppressed))
+        if (
+            e.PropertyName != nameof(DayModel.IsSelected)
+            || sender is not DayModel newSelected
+            || (
+                _propertyChangedNotificationSupressions.TryGetValue(
+                    e.PropertyName,
+                    out bool isSuppressed
+                ) && isSuppressed
+            )
+        )
             return;
 
         SelectedDates = CurrentSelectionEngine.PerformDateSelection(newSelected.Date);
@@ -738,10 +927,22 @@ public partial class MonthDaysView : ContentView
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-            var titleText = DaysTitleLabelFirstUpperRestLower ? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant() : abberivatedDayName.ToUpperInvariant();
-            dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length ? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+            var titleText = DaysTitleLabelFirstUpperRestLower
+                ? abberivatedDayName[..1].ToUpperInvariant()
+                    + abberivatedDayName[1..].ToLowerInvariant()
+                : abberivatedDayName.ToUpperInvariant();
+            dayLabel.Text = titleText[
+                ..(
+                    (int)DaysTitleMaximumLength > abberivatedDayName.Length
+                        ? abberivatedDayName.Length
+                        : (int)DaysTitleMaximumLength
+                )
+            ];
             // Detect weekend days
-            if (DaysTitleColor != DaysTitleWeekendColor && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
+            if (
+                DaysTitleColor != DaysTitleWeekendColor
+                && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
+            )
             {
                 // It's a weekend day
                 // You can change the color of the label or do something else
@@ -763,7 +964,16 @@ public partial class MonthDaysView : ContentView
         }
         else
         {
-            MainThread.InvokeOnMainThreadAsync(() => Animate(() => _daysControl.FadeTo(animate ? 0 : 1, 50), () => _daysControl.FadeTo(1, 200), () => UpdateDays(), _lastAnimationTime = DateTime.UtcNow, () => UpdateAndAnimateDays(false)));
+            MainThread.InvokeOnMainThreadAsync(
+                () =>
+                    Animate(
+                        () => _daysControl.FadeTo(animate ? 0 : 1, 50),
+                        () => _daysControl.FadeTo(1, 200),
+                        () => UpdateDays(),
+                        _lastAnimationTime = DateTime.UtcNow,
+                        () => UpdateAndAnimateDays(false)
+                    )
+            );
         }
     }
 
@@ -784,12 +994,20 @@ public partial class MonthDaysView : ContentView
             dayModel.FontSize = DayViewFontSize;
             dayModel.DayViewCornerRadius = DayViewCornerRadius;
             dayModel.DaysLabelStyle = DaysLabelStyle;
-            dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
-            dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
+            dayModel.IsThisMonth =
+                (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
+            dayModel.OtherMonthIsVisible =
+                (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
             dayModel.HasEvents = Events.ContainsKey(currentDate);
-            dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || DisabledDates.Contains(currentDate.Date);
+            dayModel.IsDisabled =
+                currentDate < MinimumDate
+                || currentDate > MaximumDate
+                || (DisabledDates?.Contains(currentDate.Date) ?? false);
 
-            ChangePropertySilently(nameof(dayModel.IsSelected), () => dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date));
+            ChangePropertySilently(
+                nameof(dayModel.IsSelected),
+                () => dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date)
+            );
             AssignIndicatorColors(ref dayModel);
         }
     }
@@ -835,7 +1053,8 @@ public partial class MonthDaysView : ContentView
             nameof(DaysTitleLabelStyle),
             nameof(DayViewSize),
             DayTappedCommand,
-            OnDayModelPropertyChanged);
+            OnDayModelPropertyChanged
+        );
 
         UpdateDaysColors();
         UpdateDayTitles();
@@ -862,25 +1081,34 @@ public partial class MonthDaysView : ContentView
         Func<Task> animationOut,
         Action afterFirstAnimation,
         DateTime animationTime,
-        Action callAgain)
+        Action callAgain
+    )
     {
         if (_animating)
             return;
 
         _animating = true;
 
-        animationIn().ContinueWith(aIn =>
-        {
-            afterFirstAnimation();
+        animationIn()
+            .ContinueWith(
+                aIn =>
+                {
+                    afterFirstAnimation();
 
-            animationOut().ContinueWith(aOut =>
-            {
-                _animating = false;
+                    animationOut()
+                        .ContinueWith(
+                            aOut =>
+                            {
+                                _animating = false;
 
-                if (animationTime != _lastAnimationTime)
-                    callAgain();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }, TaskScheduler.FromCurrentSynchronizationContext());
+                                if (animationTime != _lastAnimationTime)
+                                    callAgain();
+                            },
+                            TaskScheduler.FromCurrentSynchronizationContext()
+                        );
+                },
+                TaskScheduler.FromCurrentSynchronizationContext()
+            );
     }
 
     internal void ChangePropertySilently(string propertyName, Action propertyChangeAction)
@@ -890,16 +1118,25 @@ public partial class MonthDaysView : ContentView
         _propertyChangedNotificationSupressions[propertyName] = false;
     }
 
-
-
     internal void AssignIndicatorColors(ref DayModel dayModel)
     {
-        if (Events.TryGetValue(dayModel.Date, out var dayEventCollection) && dayEventCollection is IPersonalizableDayEvent personalizableDay)
+        if (
+            Events.TryGetValue(dayModel.Date, out var dayEventCollection)
+            && dayEventCollection is IPersonalizableDayEvent personalizableDay
+        )
         {
-            dayModel.EventIndicatorColor = personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
-            dayModel.EventIndicatorSelectedColor = personalizableDay?.EventIndicatorSelectedColor ?? personalizableDay?.EventIndicatorColor ?? EventIndicatorSelectedColor;
-            dayModel.EventIndicatorTextColor = personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
-            dayModel.EventIndicatorSelectedTextColor = personalizableDay?.EventIndicatorSelectedTextColor ?? personalizableDay?.EventIndicatorTextColor ?? EventIndicatorSelectedTextColor;
+            dayModel.EventIndicatorColor =
+                personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
+            dayModel.EventIndicatorSelectedColor =
+                personalizableDay?.EventIndicatorSelectedColor
+                ?? personalizableDay?.EventIndicatorColor
+                ?? EventIndicatorSelectedColor;
+            dayModel.EventIndicatorTextColor =
+                personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
+            dayModel.EventIndicatorSelectedTextColor =
+                personalizableDay?.EventIndicatorSelectedTextColor
+                ?? personalizableDay?.EventIndicatorTextColor
+                ?? EventIndicatorSelectedTextColor;
         }
         else
         {
@@ -909,6 +1146,7 @@ public partial class MonthDaysView : ContentView
             dayModel.EventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
         }
     }
+
     void OnSwiped(object sender, SwipedEventArgs e)
     {
         switch (e.Direction)
@@ -934,7 +1172,10 @@ public partial class MonthDaysView : ContentView
     public event EventHandler SwipedDown;
 
     void OnSwipeLeft() => SwipedLeft?.Invoke(this, EventArgs.Empty);
+
     void OnSwipeRight() => SwipedRight?.Invoke(this, EventArgs.Empty);
+
     void OnSwipeUp() => SwipedUp?.Invoke(this, EventArgs.Empty);
+
     void OnSwipeDown() => SwipedDown?.Invoke(this, EventArgs.Empty);
 }
