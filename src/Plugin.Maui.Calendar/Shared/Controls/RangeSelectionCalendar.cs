@@ -64,7 +64,7 @@ public class RangeSelectionCalendar : Calendar
         base.OnPropertyChanged(propertyName);
         if (propertyName is nameof(SelectedDates) && !_isSelectionDatesChanging)
         {
-            var first = _selectionEngine.GetDateRange();
+            var first = _selectionEngine.GetDateRange(DisabledDates);
 
             if (first.Count > 0)
             {

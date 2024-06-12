@@ -1881,5 +1881,12 @@ public partial class Calendar : ContentView
         Unloaded -= OnUnloaded;
     }
 
+    public void ClearSelection()
+    {
+        _isSelectingDates = false;
+        this.SelectedDates = null;
+        this.SelectedDate = null;
+    }
+
     #endregion
 }
