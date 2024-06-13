@@ -11,7 +11,7 @@ using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
-public partial class MonthDaysView : ContentView
+public partial class MonthDaysView : ContentView, IDisposable
 {
     SwipeGestureRecognizer leftSwipeGesture;
     SwipeGestureRecognizer rightSwipeGesture;
@@ -791,7 +791,6 @@ public partial class MonthDaysView : ContentView
             Loaded += LoadedMethod;
             Unloaded += UnloadedMethod;
         }
-
         RenderLayout();
     }
 
@@ -824,16 +823,7 @@ public partial class MonthDaysView : ContentView
             rightSwipeGesture.Swiped -= OnSwiped;
             upSwipeGesture.Swiped -= OnSwiped;
             downSwipeGesture.Swiped -= OnSwiped;
-
-            leftSwipeGesture = null;
-            rightSwipeGesture = null;
-            upSwipeGesture = null;
-            downSwipeGesture = null;
         }
-        Loaded -= LoadedMethod;
-        Unloaded -= UnloadedMethod;
-
-        DiposeDayViews();
     }
 
     #region PropertyChanged
@@ -1067,6 +1057,11 @@ public partial class MonthDaysView : ContentView
 
     private void DiposeDayViews()
     {
+        leftSwipeGesture = null;
+        rightSwipeGesture = null;
+        upSwipeGesture = null;
+        downSwipeGesture = null;
+
         foreach (var dayView in _daysControl.Children.OfType<DayView>())
         {
             if (dayView.BindingContext is DayModel dayModel)
@@ -1181,4 +1176,27 @@ public partial class MonthDaysView : ContentView
     void OnSwipeUp() => SwipedUp?.Invoke(this, EventArgs.Empty);
 
     void OnSwipeDown() => SwipedDown?.Invoke(this, EventArgs.Empty);
+
+    private bool _disposed = false;
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Dispose managed resources.
+                Loaded -= LoadedMethod;
+                Unloaded -= UnloadedMethod;
+                DiposeDayViews();
+            }
+            _disposed = true;
+        }
+    }
 }
