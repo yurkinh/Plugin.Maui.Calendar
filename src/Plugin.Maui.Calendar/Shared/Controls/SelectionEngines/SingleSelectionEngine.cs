@@ -9,15 +9,17 @@ internal class SingleSelectionEngine : ISelectionEngine
 {
     private DateTime? _selectedDate;
 
-    internal SingleSelectionEngine()
-    { }
+    internal SingleSelectionEngine() { }
 
     string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
     {
         return _selectedDate?.ToString(selectedDateTextFormat, culture);
     }
 
-    bool ISelectionEngine.TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
+    bool ISelectionEngine.TryGetSelectedEvents(
+        EventCollection allEvents,
+        out ICollection selectedEvents
+    )
     {
         if (_selectedDate.HasValue)
             return allEvents.TryGetValue(_selectedDate.Value, out selectedEvents);
@@ -31,9 +33,17 @@ internal class SingleSelectionEngine : ISelectionEngine
         return Equals(dateToCheck, _selectedDate);
     }
 
-    List<DateTime> ISelectionEngine.PerformDateSelection(DateTime dateToSelect)
+    List<DateTime> ISelectionEngine.PerformDateSelection(
+        DateTime dateToSelect,
+        List<DateTime>? disabledDates = null
+    )
     {
         if (dateToSelect == _selectedDate)
+        {
+            _selectedDate = null;
+            return new List<DateTime>();
+        }
+        if (disabledDates is not null && disabledDates.Contains(dateToSelect))
         {
             _selectedDate = null;
             return new List<DateTime>();

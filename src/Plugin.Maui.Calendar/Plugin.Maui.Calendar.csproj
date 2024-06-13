@@ -45,7 +45,7 @@
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />		
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.60" />		
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
@@ -59,14 +59,15 @@
 	  <None Remove="Shared\Converters\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Shared\" />
 	  <Folder Include="Shared\Models\" />
-	  <Folder Include="Shared\Controls\" />
 	  <Folder Include="Shared\Converters\" />
 	</ItemGroup>
 	<!-- Package additions -->
 	<ItemGroup>
 		<None Include="..\..\nuget.png" PackagePath="nuget.png" Pack="true" />
 		<None Include="..\..\README.md" PackagePath="README.md" Pack="true" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
 	</ItemGroup>
 </Project>

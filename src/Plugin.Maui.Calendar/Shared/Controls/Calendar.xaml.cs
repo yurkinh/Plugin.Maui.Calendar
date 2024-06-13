@@ -1,13 +1,13 @@
-﻿using Plugin.Maui.Calendar.Controls.SelectionEngines;
-using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
-using Plugin.Maui.Calendar.Enums;
-using Plugin.Maui.Calendar.Interfaces;
-using Plugin.Maui.Calendar.Models;
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Plugin.Maui.Calendar.Controls.SelectionEngines;
+using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
+using Plugin.Maui.Calendar.Enums;
+using Plugin.Maui.Calendar.Interfaces;
+using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -18,8 +18,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for ShowMonthPicker
     /// </summary>
-    public static readonly BindableProperty ShowMonthPickerProperty =
-      BindableProperty.Create(nameof(ShowMonthPicker), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty ShowMonthPickerProperty = BindableProperty.Create(
+        nameof(ShowMonthPicker),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Determines whether the monthPicker should be shown
@@ -33,8 +37,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for ShowYearPicker
     /// </summary>
-    public static readonly BindableProperty ShowYearPickerProperty =
-      BindableProperty.Create(nameof(ShowYearPicker), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty ShowYearPickerProperty = BindableProperty.Create(
+        nameof(ShowYearPicker),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Determines whether the yearPicker should be shown
@@ -48,8 +56,14 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for Day
     /// </summary>
-    public static readonly BindableProperty DayProperty =
-      BindableProperty.Create(nameof(Day), typeof(int), typeof(Calendar), DateTime.Today.Day, BindingMode.TwoWay, propertyChanged: OnDayChanged);
+    public static readonly BindableProperty DayProperty = BindableProperty.Create(
+        nameof(Day),
+        typeof(int),
+        typeof(Calendar),
+        DateTime.Today.Day,
+        BindingMode.TwoWay,
+        propertyChanged: OnDayChanged
+    );
 
     /// <summary>
     /// Number signifying the day currently selected in the picker
@@ -63,8 +77,14 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for Month
     /// </summary>
-    public static readonly BindableProperty MonthProperty =
-      BindableProperty.Create(nameof(Month), typeof(int), typeof(Calendar), DateTime.Today.Month, BindingMode.TwoWay, propertyChanged: OnMonthChanged);
+    public static readonly BindableProperty MonthProperty = BindableProperty.Create(
+        nameof(Month),
+        typeof(int),
+        typeof(Calendar),
+        DateTime.Today.Month,
+        BindingMode.TwoWay,
+        propertyChanged: OnMonthChanged
+    );
 
     /// <summary>
     /// Number signifying the month currently selected in the picker
@@ -78,8 +98,14 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for YearProperty
     /// </summary>
-    public static readonly BindableProperty YearProperty =
-      BindableProperty.Create(nameof(Year), typeof(int), typeof(Calendar), DateTime.Today.Year, BindingMode.TwoWay, propertyChanged: OnYearChanged);
+    public static readonly BindableProperty YearProperty = BindableProperty.Create(
+        nameof(Year),
+        typeof(int),
+        typeof(Calendar),
+        DateTime.Today.Year,
+        BindingMode.TwoWay,
+        propertyChanged: OnYearChanged
+    );
 
     /// <summary>
     /// Number signifying the year currently selected in the picker
@@ -93,8 +119,14 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for InitalDate
     /// </summary>
-    public static readonly BindableProperty ShownDateProperty =
-      BindableProperty.Create(nameof(ShownDate), typeof(DateTime), typeof(Calendar), DateTime.Today, BindingMode.TwoWay, propertyChanged: OnDateChanged);
+    public static readonly BindableProperty ShownDateProperty = BindableProperty.Create(
+        nameof(ShownDate),
+        typeof(DateTime),
+        typeof(Calendar),
+        DateTime.Today,
+        BindingMode.TwoWay,
+        propertyChanged: OnDateChanged
+    );
 
     /// <summary>
     /// Specifies the Date that is initially shown
@@ -106,10 +138,35 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for InitalDate
+    /// </summary>
+    public static readonly BindableProperty OnShownDateChangedCommandProperty =
+        BindableProperty.Create(
+            nameof(OnShownDateChangedCommand),
+            typeof(ICommand),
+            typeof(Calendar),
+            null
+        );
+
+    /// <summary>
+    /// Specifies the Date that is initially shown
+    /// </summary>
+    public ICommand OnShownDateChangedCommand
+    {
+        get => (ICommand)GetValue(OnShownDateChangedCommandProperty);
+        set => SetValue(OnShownDateChangedCommandProperty, value);
+    }
+
+    /// <summary>
     /// Bindable property for Culture
     /// </summary>
-    public static readonly BindableProperty CultureProperty =
-      BindableProperty.Create(nameof(Culture), typeof(CultureInfo), typeof(Calendar), CultureInfo.InvariantCulture, BindingMode.TwoWay);
+    public static readonly BindableProperty CultureProperty = BindableProperty.Create(
+        nameof(Culture),
+        typeof(CultureInfo),
+        typeof(Calendar),
+        CultureInfo.InvariantCulture,
+        BindingMode.TwoWay
+    );
 
     /// <summary>
     /// Specifies the culture to be used
@@ -123,8 +180,13 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for events
     /// </summary>
-    public static readonly BindableProperty EventsProperty =
-      BindableProperty.Create(nameof(Events), typeof(EventCollection), typeof(Calendar), new EventCollection(), propertyChanged: OnEventsChanged);
+    public static readonly BindableProperty EventsProperty = BindableProperty.Create(
+        nameof(Events),
+        typeof(EventCollection),
+        typeof(Calendar),
+        new EventCollection(),
+        propertyChanged: OnEventsChanged
+    );
 
     /// <summary>
     /// Collection of all the events in the calendar
@@ -138,8 +200,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SelectedDayEvents
     /// </summary>
-    public static readonly BindableProperty SelectedDayEventsProperty =
-      BindableProperty.Create(nameof(SelectedDayEvents), typeof(ICollection), typeof(Calendar), new List<object>());
+    public static readonly BindableProperty SelectedDayEventsProperty = BindableProperty.Create(
+        nameof(SelectedDayEvents),
+        typeof(ICollection),
+        typeof(Calendar),
+        new List<object>()
+    );
 
     /// <summary>
     /// Collection of events on the selected date(s)
@@ -153,8 +219,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for EventTemplate
     /// </summary>
-    public static readonly BindableProperty EventTemplateProperty =
-      BindableProperty.Create(nameof(EventTemplate), typeof(DataTemplate), typeof(Calendar), null);
+    public static readonly BindableProperty EventTemplateProperty = BindableProperty.Create(
+        nameof(EventTemplate),
+        typeof(DataTemplate),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Specifies the template to be used for showing events
@@ -168,8 +238,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for EmptyTemplate
     /// </summary>
-    public static readonly BindableProperty EmptyTemplateProperty =
-        BindableProperty.Create(nameof(EmptyTemplate), typeof(DataTemplate), typeof(Calendar), null);
+    public static readonly BindableProperty EmptyTemplateProperty = BindableProperty.Create(
+        nameof(EmptyTemplate),
+        typeof(DataTemplate),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Specifies the data template to be shown when there are no events
@@ -183,8 +257,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for MonthLabelColor
     /// </summary>
-    public static readonly BindableProperty MonthLabelColorProperty =
-      BindableProperty.Create(nameof(MonthLabelColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
+    public static readonly BindableProperty MonthLabelColorProperty = BindableProperty.Create(
+        nameof(MonthLabelColor),
+        typeof(Color),
+        typeof(Calendar),
+        Color.FromArgb("#2196F3")
+    );
 
     /// <summary>
     /// Specifies the color of the month label
@@ -198,8 +276,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for YearLabelColor
     /// </summary>
-    public static readonly BindableProperty YearLabelColorProperty =
-      BindableProperty.Create(nameof(YearLabelColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
+    public static readonly BindableProperty YearLabelColorProperty = BindableProperty.Create(
+        nameof(YearLabelColor),
+        typeof(Color),
+        typeof(Calendar),
+        Color.FromArgb("#2196F3")
+    );
 
     /// <summary>
     /// Specifies the color of the year label
@@ -213,8 +295,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SelectedDateColor
     /// </summary>
-    public static readonly BindableProperty SelectedDateColorProperty =
-      BindableProperty.Create(nameof(SelectedDateColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
+    public static readonly BindableProperty SelectedDateColorProperty = BindableProperty.Create(
+        nameof(SelectedDateColor),
+        typeof(Color),
+        typeof(Calendar),
+        Color.FromArgb("#2196F3")
+    );
 
     /// <summary>
     /// Specifies the text color for the selected date
@@ -228,8 +314,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DaysTitleColor
     /// </summary>
-    public static readonly BindableProperty DaysTitleColorProperty =
-      BindableProperty.Create(nameof(DaysTitleColor), typeof(Color), typeof(Calendar), Colors.Black);
+    public static readonly BindableProperty DaysTitleColorProperty = BindableProperty.Create(
+        nameof(DaysTitleColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Black
+    );
 
     /// <summary>
     /// Specifies the color for the titles of days
@@ -243,8 +333,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DaysTitleWeekendColor
     /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendColorProperty =
-      BindableProperty.Create(nameof(DaysTitleWeekendColor), typeof(Color), typeof(Calendar), Colors.Black);
+    public static readonly BindableProperty DaysTitleWeekendColorProperty = BindableProperty.Create(
+        nameof(DaysTitleWeekendColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Black
+    );
 
     /// <summary>
     /// Specifies the color for the titles of the weekend days
@@ -258,8 +352,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SelectedDayTextColor
     /// </summary>
-    public static readonly BindableProperty SelectedDayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedDayTextColor), typeof(Color), typeof(Calendar), Colors.White);
+    public static readonly BindableProperty SelectedDayTextColorProperty = BindableProperty.Create(
+        nameof(SelectedDayTextColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.White
+    );
 
     /// <summary>
     /// Specifies the text color for the titles of days
@@ -274,7 +372,12 @@ public partial class Calendar : ContentView
     /// Bindable property for DeselectedDayTextColor
     /// </summary>
     public static readonly BindableProperty DeselectedDayTextColorProperty =
-      BindableProperty.Create(nameof(DeselectedDayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+        BindableProperty.Create(
+            nameof(DeselectedDayTextColor),
+            typeof(Color),
+            typeof(Calendar),
+            Colors.Black
+        );
 
     /// <summary>
     /// Specifies the text color for deselected days
@@ -289,7 +392,12 @@ public partial class Calendar : ContentView
     /// Bindable property for SelectedTodayTextColor
     /// </summary>
     public static readonly BindableProperty SelectedTodayTextColorProperty =
-      BindableProperty.Create(nameof(SelectedTodayTextColor), typeof(Color), typeof(Calendar), Colors.White);
+        BindableProperty.Create(
+            nameof(SelectedTodayTextColor),
+            typeof(Color),
+            typeof(Calendar),
+            Colors.White
+        );
 
     /// <summary>
     /// Specifies the text color of today's date when selected
@@ -303,8 +411,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for WeekendDayColor
     /// </summary>
-    public static readonly BindableProperty WeekendDayColorProperty =
-      BindableProperty.Create(nameof(WeekendDayColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+    public static readonly BindableProperty WeekendDayColorProperty = BindableProperty.Create(
+        nameof(WeekendDayColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Transparent
+    );
 
     /// <summary>
     /// Specifies the color of days belonging to a month other than the selected one
@@ -315,12 +427,15 @@ public partial class Calendar : ContentView
         set => SetValue(WeekendDayColorProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for OtherMonthDayColor
     /// </summary>
-    public static readonly BindableProperty OtherMonthDayColorProperty =
-      BindableProperty.Create(nameof(OtherMonthDayColor), typeof(Color), typeof(Calendar), Colors.Silver);
+    public static readonly BindableProperty OtherMonthDayColorProperty = BindableProperty.Create(
+        nameof(OtherMonthDayColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Silver
+    );
 
     /// <summary>
     /// Specifies the color of days belonging to a month other than the selected one
@@ -335,7 +450,12 @@ public partial class Calendar : ContentView
     /// Bindable property for OtherMonthDayIsVisible
     /// </summary>
     public static readonly BindableProperty OtherMonthDayIsVisibleProperty =
-      BindableProperty.Create(nameof(OtherMonthDayIsVisible), typeof(bool), typeof(Calendar), true);
+        BindableProperty.Create(
+            nameof(OtherMonthDayIsVisible),
+            typeof(bool),
+            typeof(Calendar),
+            true
+        );
 
     /// <summary>
     /// Specifies whether the days belonging to a month other than the selected one will be shown
@@ -350,7 +470,12 @@ public partial class Calendar : ContentView
     /// Bindable property for SelectedDayBackgroundColor
     /// </summary>
     public static readonly BindableProperty SelectedDayBackgroundColorProperty =
-      BindableProperty.Create(nameof(SelectedDayBackgroundColor), typeof(Color), typeof(Calendar), Color.FromArgb("#2196F3"));
+        BindableProperty.Create(
+            nameof(SelectedDayBackgroundColor),
+            typeof(Color),
+            typeof(Calendar),
+            Color.FromArgb("#2196F3")
+        );
 
     /// <summary>
     /// Specifies the background color of selected days
@@ -364,8 +489,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for EventIndicatorType
     /// </summary>
-    public static readonly BindableProperty EventIndicatorTypeProperty =
-      BindableProperty.Create(nameof(EventIndicatorType), typeof(EventIndicatorType), typeof(MonthDaysView), EventIndicatorType.BottomDot);
+    public static readonly BindableProperty EventIndicatorTypeProperty = BindableProperty.Create(
+        nameof(EventIndicatorType),
+        typeof(EventIndicatorType),
+        typeof(MonthDaysView),
+        EventIndicatorType.BottomDot
+    );
 
     /// <summary>
     /// Specifies the way in which events will be shown on dates
@@ -379,8 +508,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for EventIndicatorColor
     /// </summary>
-    public static readonly BindableProperty EventIndicatorColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty EventIndicatorColorProperty = BindableProperty.Create(
+        nameof(EventIndicatorColor),
+        typeof(Color),
+        typeof(Calendar),
+        Color.FromArgb("#FF4081")
+    );
 
     /// <summary>
     /// Specifies the color of the event indicators
@@ -395,7 +528,12 @@ public partial class Calendar : ContentView
     /// Bindable property for EventIndicatorSelectedColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+        BindableProperty.Create(
+            nameof(EventIndicatorSelectedColor),
+            typeof(Color),
+            typeof(Calendar),
+            Color.FromArgb("#FF4081")
+        );
 
     /// <summary>
     /// Specifies the color of the event indicators on selected dates
@@ -410,7 +548,12 @@ public partial class Calendar : ContentView
     /// Bindable property for EventIndicatorTextColor
     /// </summary>
     public static readonly BindableProperty EventIndicatorTextColorProperty =
-     BindableProperty.Create(nameof(EventIndicatorTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+        BindableProperty.Create(
+            nameof(EventIndicatorTextColor),
+            typeof(Color),
+            typeof(Calendar),
+            Colors.Black
+        );
 
     /// <summary>
     /// Specifies the color of the event indicator text
@@ -425,7 +568,12 @@ public partial class Calendar : ContentView
     /// Bindable property for EventIndicatorSelectedText
     /// </summary>
     public static readonly BindableProperty EventIndicatorSelectedTextColorProperty =
-      BindableProperty.Create(nameof(EventIndicatorSelectedTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+        BindableProperty.Create(
+            nameof(EventIndicatorSelectedTextColor),
+            typeof(Color),
+            typeof(Calendar),
+            Colors.Black
+        );
 
     /// <summary>
     /// Specifies the color of the event indicator text on selected dates
@@ -439,8 +587,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for ArrowsColor
     /// </summary>
-    public static readonly BindableProperty ArrowsColorProperty =
-      BindableProperty.Create(nameof(ArrowsColor), typeof(Color), typeof(Calendar), Colors.Black);
+    public static readonly BindableProperty ArrowsColorProperty = BindableProperty.Create(
+        nameof(ArrowsColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Black
+    );
 
     /// <summary>
     /// Specifies the color of month and year selection arrows
@@ -451,12 +603,15 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsColorProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for ArrowsFontSizeProperty
     /// </summary>
-    public static readonly BindableProperty ArrowsFontSizeProperty =
-      BindableProperty.Create(nameof(ArrowsFontSize), typeof(double), typeof(Calendar), 14d);
+    public static readonly BindableProperty ArrowsFontSizeProperty = BindableProperty.Create(
+        nameof(ArrowsFontSize),
+        typeof(double),
+        typeof(Calendar),
+        14d
+    );
 
     /// <summary>
     /// Specifies the FontSize of month and year selection arrows
@@ -471,8 +626,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for ArrowsFontFamily
     /// </summary>
-    public static readonly BindableProperty ArrowsFontFamilyProperty =
-      BindableProperty.Create(nameof(ArrowsFontFamily), typeof(string), typeof(Calendar), "OpenSansSemibold");
+    public static readonly BindableProperty ArrowsFontFamilyProperty = BindableProperty.Create(
+        nameof(ArrowsFontFamily),
+        typeof(string),
+        typeof(Calendar),
+        "OpenSansSemibold"
+    );
 
     /// <summary>
     /// Specifies symbol for arrow prev
@@ -486,8 +645,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for ArrowsSymbolPrev
     /// </summary>
-    public static readonly BindableProperty ArrowsSymbolPrevProperty =
-      BindableProperty.Create(nameof(ArrowsSymbolPrev), typeof(string), typeof(Calendar), "←");
+    public static readonly BindableProperty ArrowsSymbolPrevProperty = BindableProperty.Create(
+        nameof(ArrowsSymbolPrev),
+        typeof(string),
+        typeof(Calendar),
+        "←"
+    );
 
     /// <summary>
     /// Specifies symbol for arrow prev
@@ -501,8 +664,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for ArrowsSymbolNext
     /// </summary>
-    public static readonly BindableProperty ArrowsSymbolNextProperty =
-      BindableProperty.Create(nameof(ArrowsSymbolNext), typeof(string), typeof(Calendar), "→");
+    public static readonly BindableProperty ArrowsSymbolNextProperty = BindableProperty.Create(
+        nameof(ArrowsSymbolNext),
+        typeof(string),
+        typeof(Calendar),
+        "→"
+    );
 
     /// <summary>
     /// Specifies symbol for arrow next
@@ -513,12 +680,15 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsSymbolNextProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for ArrowsFontAttribute
     /// </summary>
-    public static readonly BindableProperty ArrowsFontAttributeProperty =
-      BindableProperty.Create(nameof(ArrowsFontAttribute), typeof(FontAttributes), typeof(Calendar), FontAttributes.Bold);
+    public static readonly BindableProperty ArrowsFontAttributeProperty = BindableProperty.Create(
+        nameof(ArrowsFontAttribute),
+        typeof(FontAttributes),
+        typeof(Calendar),
+        FontAttributes.Bold
+    );
 
     /// <summary>
     /// Specifies font attribute of the arrow
@@ -529,12 +699,15 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsFontAttributeProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for ArrowsBorderColor
     /// </summary>
-    public static readonly BindableProperty ArrowsBorderColorProperty =
-      BindableProperty.Create(nameof(ArrowsBorderColor), typeof(Color), typeof(Calendar), Colors.Black);
+    public static readonly BindableProperty ArrowsBorderColorProperty = BindableProperty.Create(
+        nameof(ArrowsBorderColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Black
+    );
 
     /// <summary>
     /// Specifies the color of arrows border
@@ -545,12 +718,15 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsBorderColorProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for ArrowsBackgroundColor
     /// </summary>
-    public static readonly BindableProperty ArrowsBackgroundColorProperty =
-      BindableProperty.Create(nameof(ArrowsBackgroundColor), typeof(Color), typeof(Calendar), Colors.White);
+    public static readonly BindableProperty ArrowsBackgroundColorProperty = BindableProperty.Create(
+        nameof(ArrowsBackgroundColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.White
+    );
 
     /// <summary>
     /// Specifies the color of arrows Background
@@ -561,12 +737,15 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsBackgroundColorProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for ArrowsBorderWidth
     /// </summary>
-    public static readonly BindableProperty ArrowsBorderWidthProperty =
-      BindableProperty.Create(nameof(ArrowsBorderWidth), typeof(double), typeof(Calendar), 1d);
+    public static readonly BindableProperty ArrowsBorderWidthProperty = BindableProperty.Create(
+        nameof(ArrowsBorderWidth),
+        typeof(double),
+        typeof(Calendar),
+        1d
+    );
 
     /// <summary>
     /// Specifies the ArrowsBorderWidth of month and year selection arrows
@@ -578,12 +757,15 @@ public partial class Calendar : ContentView
         set => SetValue(ArrowsBorderWidthProperty, value);
     }
 
-
     /// <summary>
     /// Bindable property for FooterArrowVisible
     /// </summary>
-    public static readonly BindableProperty FooterArrowVisibleProperty =
-        BindableProperty.Create(nameof(FooterArrowVisible), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty FooterArrowVisibleProperty = BindableProperty.Create(
+        nameof(FooterArrowVisible),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Specifies whether the footer expanding arrow is visible
@@ -597,8 +779,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for HeaderSectionVisible
     /// </summary>
-    public static readonly BindableProperty HeaderSectionVisibleProperty =
-        BindableProperty.Create(nameof(HeaderSectionVisible), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty HeaderSectionVisibleProperty = BindableProperty.Create(
+        nameof(HeaderSectionVisible),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Specifies whether the header section is visible
@@ -612,8 +798,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for FooterSectionVisible
     /// </summary>
-    public static readonly BindableProperty FooterSectionVisibleProperty =
-        BindableProperty.Create(nameof(FooterSectionVisible), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty FooterSectionVisibleProperty = BindableProperty.Create(
+        nameof(FooterSectionVisible),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Specifies whether the footer section is visible
@@ -628,7 +818,12 @@ public partial class Calendar : ContentView
     /// Bindable property for EventsScrollView
     /// </summary>
     public static readonly BindableProperty EventsScrollViewVisibleProperty =
-        BindableProperty.Create(nameof(EventsScrollViewVisible), typeof(bool), typeof(Calendar), false);
+        BindableProperty.Create(
+            nameof(EventsScrollViewVisible),
+            typeof(bool),
+            typeof(Calendar),
+            false
+        );
 
     /// <summary>
     /// Specifies whether the events section is visible
@@ -642,8 +837,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for TodayOutlineColor
     /// </summary>
-    public static readonly BindableProperty TodayOutlineColorProperty =
-      BindableProperty.Create(nameof(TodayOutlineColor), typeof(Color), typeof(Calendar), Color.FromArgb("#FF4081"));
+    public static readonly BindableProperty TodayOutlineColorProperty = BindableProperty.Create(
+        nameof(TodayOutlineColor),
+        typeof(Color),
+        typeof(Calendar),
+        Color.FromArgb("#FF4081")
+    );
 
     /// <summary>
     /// Specifies the color of outline for today's date
@@ -657,8 +856,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for
     /// </summary>
-    public static readonly BindableProperty TodayTextColorProperty =
-        BindableProperty.Create(nameof(TodayTextColor), typeof(Color), typeof(Calendar), Colors.Black);
+    public static readonly BindableProperty TodayTextColorProperty = BindableProperty.Create(
+        nameof(TodayTextColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Black
+    );
 
     /// <summary>
     /// Specifies the color of text for today's date
@@ -672,8 +875,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for TodayFillColor
     /// </summary>
-    public static readonly BindableProperty TodayFillColorProperty =
-      BindableProperty.Create(nameof(TodayFillColor), typeof(Color), typeof(Calendar), Colors.Transparent);
+    public static readonly BindableProperty TodayFillColorProperty = BindableProperty.Create(
+        nameof(TodayFillColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Transparent
+    );
 
     /// <summary>
     /// Specifies the fill for today's date
@@ -687,8 +894,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for HeaderSectionTemplate
     /// </summary>
-    public static readonly BindableProperty HeaderSectionTemplateProperty =
-      BindableProperty.Create(nameof(HeaderSectionTemplate), typeof(DataTemplate), typeof(Calendar), new DataTemplate(() => new DefaultHeaderSection()));
+    public static readonly BindableProperty HeaderSectionTemplateProperty = BindableProperty.Create(
+        nameof(HeaderSectionTemplate),
+        typeof(DataTemplate),
+        typeof(Calendar),
+        new DataTemplate(() => new DefaultHeaderSection())
+    );
 
     /// <summary>
     /// Data template for the header section
@@ -702,8 +913,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for FooterSectionTemplate
     /// </summary>
-    public static readonly BindableProperty FooterSectionTemplateProperty =
-      BindableProperty.Create(nameof(FooterSectionTemplate), typeof(DataTemplate), typeof(Calendar), new DataTemplate(() => new DefaultFooterSection()));
+    public static readonly BindableProperty FooterSectionTemplateProperty = BindableProperty.Create(
+        nameof(FooterSectionTemplate),
+        typeof(DataTemplate),
+        typeof(Calendar),
+        new DataTemplate(() => new DefaultFooterSection())
+    );
 
     /// <summary>
     /// Data template for the footer section
@@ -717,8 +932,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for MonthText
     /// </summary>
-    public static readonly BindableProperty MonthTextProperty =
-      BindableProperty.Create(nameof(LayoutUnitText), typeof(string), typeof(Calendar), null);
+    public static readonly BindableProperty MonthTextProperty = BindableProperty.Create(
+        nameof(LayoutUnitText),
+        typeof(string),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Culture specific text specifying the name of the month
@@ -732,8 +951,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SelectedDateText
     /// </summary>
-    public static readonly BindableProperty SelectedDateTextProperty =
-      BindableProperty.Create(nameof(SelectedDateText), typeof(string), typeof(Calendar), null);
+    public static readonly BindableProperty SelectedDateTextProperty = BindableProperty.Create(
+        nameof(SelectedDateText),
+        typeof(string),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Text showing which dates are currently selected
@@ -748,7 +971,12 @@ public partial class Calendar : ContentView
     /// Bindable property for SelectedDateTextFormat
     /// </summary>
     public static readonly BindableProperty SelectedDateTextFormatProperty =
-      BindableProperty.Create(nameof(SelectedDateTextFormat), typeof(string), typeof(Calendar), "d MMM yyyy");
+        BindableProperty.Create(
+            nameof(SelectedDateTextFormat),
+            typeof(string),
+            typeof(Calendar),
+            "d MMM yyyy"
+        );
 
     /// <summary>
     /// Specifies the format of selected date text
@@ -762,8 +990,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Binding property for CalendarSectionShown
     /// </summary>
-    public static readonly BindableProperty CalendarSectionShownProperty =
-      BindableProperty.Create(nameof(CalendarSectionShown), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty CalendarSectionShownProperty = BindableProperty.Create(
+        nameof(CalendarSectionShown),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Specifies whether the calendar section is shown
@@ -777,8 +1009,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DayViewSize
     /// </summary>
-    public static readonly BindableProperty DayViewSizeProperty =
-      BindableProperty.Create(nameof(DayViewSize), typeof(double), typeof(Calendar), 40.0);
+    public static readonly BindableProperty DayViewSizeProperty = BindableProperty.Create(
+        nameof(DayViewSize),
+        typeof(double),
+        typeof(Calendar),
+        40.0
+    );
 
     /// <summary>
     /// Specifies the size of individual dates
@@ -792,8 +1028,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DayViewFontSizeProperty
     /// </summary>
-    public static readonly BindableProperty DayViewFontSizeProperty =
-      BindableProperty.Create(nameof(DayViewFontSize), typeof(double), typeof(Calendar), 14d);
+    public static readonly BindableProperty DayViewFontSizeProperty = BindableProperty.Create(
+        nameof(DayViewFontSize),
+        typeof(double),
+        typeof(Calendar),
+        14d
+    );
 
     /// <summary>
     /// Specifies the FontSize of DayView label
@@ -805,13 +1045,15 @@ public partial class Calendar : ContentView
         set => SetValue(DayViewFontSizeProperty, value);
     }
 
-
-
     /// <summary>
     /// Bindable property for DayViewCornerRadius
     /// </summary>
-    public static readonly BindableProperty DayViewCornerRadiusProperty =
-      BindableProperty.Create(nameof(DayViewCornerRadius), typeof(float), typeof(Calendar), 20f);
+    public static readonly BindableProperty DayViewCornerRadiusProperty = BindableProperty.Create(
+        nameof(DayViewCornerRadius),
+        typeof(float),
+        typeof(Calendar),
+        20f
+    );
 
     /// <summary>
     /// Specifies the corner radius of individual dates
@@ -826,7 +1068,13 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleMaximumLength
     /// </summary>
     public static readonly BindableProperty DaysTitleMaximumLengthProperty =
-      BindableProperty.Create(nameof(DaysTitleMaximumLength), typeof(DaysTitleMaxLength), typeof(Calendar), DaysTitleMaxLength.ThreeChars, propertyChanged: T);
+        BindableProperty.Create(
+            nameof(DaysTitleMaximumLength),
+            typeof(DaysTitleMaxLength),
+            typeof(Calendar),
+            DaysTitleMaxLength.ThreeChars,
+            propertyChanged: T
+        );
 
     private static void T(BindableObject bindable, object oldValue, object newValue)
     {
@@ -846,8 +1094,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DaysTitleHeight
     /// </summary>
-    public static readonly BindableProperty DaysTitleHeightProperty =
-      BindableProperty.Create(nameof(DaysTitleHeight), typeof(double), typeof(Calendar), 30.0);
+    public static readonly BindableProperty DaysTitleHeightProperty = BindableProperty.Create(
+        nameof(DaysTitleHeight),
+        typeof(double),
+        typeof(Calendar),
+        30.0
+    );
 
     /// <summary>
     /// Specifies the height of weekday titles
@@ -862,7 +1114,12 @@ public partial class Calendar : ContentView
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelFirstUpperRestLower), typeof(bool), typeof(Calendar), false);
+        BindableProperty.Create(
+            nameof(DaysTitleLabelFirstUpperRestLower),
+            typeof(bool),
+            typeof(Calendar),
+            false
+        );
 
     /// <summary>
     /// Makes DaysTitleLabel text FirstCase Upper and rest lower
@@ -876,8 +1133,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DaysLabelStyle
     /// </summary>
-    public static readonly BindableProperty DaysLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysLabelStyle), typeof(Style), typeof(Calendar), DefaultStyles.DefaultLabelStyle);
+    public static readonly BindableProperty DaysLabelStyleProperty = BindableProperty.Create(
+        nameof(DaysLabelStyle),
+        typeof(Style),
+        typeof(Calendar),
+        DefaultStyles.DefaultLabelStyle
+    );
 
     /// <summary>
     /// Specifies the style of day labels
@@ -891,8 +1152,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DaysTitleLabelStyle
     /// </summary>
-    public static readonly BindableProperty DaysTitleLabelStyleProperty =
-      BindableProperty.Create(nameof(DaysTitleLabelStyle), typeof(Style), typeof(Calendar), null);
+    public static readonly BindableProperty DaysTitleLabelStyleProperty = BindableProperty.Create(
+        nameof(DaysTitleLabelStyle),
+        typeof(Style),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Specifies the style of day title labels
@@ -906,8 +1171,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DisableSwipeDetection
     /// </summary>
-    public static readonly BindableProperty DisableSwipeDetectionProperty =
-      BindableProperty.Create(nameof(DisableSwipeDetection), typeof(bool), typeof(Calendar), false);
+    public static readonly BindableProperty DisableSwipeDetectionProperty = BindableProperty.Create(
+        nameof(DisableSwipeDetection),
+        typeof(bool),
+        typeof(Calendar),
+        false
+    );
 
     /// <summary>
     /// <para> Disables the swipe detection (needs testing on iOS) </para>
@@ -923,8 +1192,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SwipeUpCommand
     /// </summary>
-    public static readonly BindableProperty SwipeUpCommandProperty =
-      BindableProperty.Create(nameof(SwipeUpCommand), typeof(ICommand), typeof(Calendar), null);
+    public static readonly BindableProperty SwipeUpCommandProperty = BindableProperty.Create(
+        nameof(SwipeUpCommand),
+        typeof(ICommand),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Activated when user swipes-up over days view
@@ -938,8 +1211,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SwipeUpToHideEnabled
     /// </summary>
-    public static readonly BindableProperty SwipeUpToHideEnabledProperty =
-      BindableProperty.Create(nameof(SwipeUpToHideEnabled), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty SwipeUpToHideEnabledProperty = BindableProperty.Create(
+        nameof(SwipeUpToHideEnabled),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Enable/disable default swipe-up action for showing/hiding calendar
@@ -953,8 +1230,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SwipeLeftCommand
     /// </summary>
-    public static readonly BindableProperty SwipeLeftCommandProperty =
-      BindableProperty.Create(nameof(SwipeLeftCommand), typeof(ICommand), typeof(Calendar), null);
+    public static readonly BindableProperty SwipeLeftCommandProperty = BindableProperty.Create(
+        nameof(SwipeLeftCommand),
+        typeof(ICommand),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Activated when user swipes-left over days view
@@ -968,8 +1249,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SwipeRightCommand
     /// </summary>
-    public static readonly BindableProperty SwipeRightCommandProperty =
-      BindableProperty.Create(nameof(SwipeRightCommand), typeof(ICommand), typeof(Calendar), null);
+    public static readonly BindableProperty SwipeRightCommandProperty = BindableProperty.Create(
+        nameof(SwipeRightCommand),
+        typeof(ICommand),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Activated when user swipes-right over days view
@@ -984,7 +1269,12 @@ public partial class Calendar : ContentView
     /// Bindable property for SwipeToChangeMonthEnabled
     /// </summary>
     public static readonly BindableProperty SwipeToChangeMonthEnabledProperty =
-      BindableProperty.Create(nameof(SwipeToChangeMonthEnabled), typeof(bool), typeof(Calendar), true);
+        BindableProperty.Create(
+            nameof(SwipeToChangeMonthEnabled),
+            typeof(bool),
+            typeof(Calendar),
+            true
+        );
 
     /// <summary>
     /// Enable/disable default swipe actions for changing months
@@ -998,8 +1288,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DayTapped
     /// </summary>
-    public static readonly BindableProperty DayTappedCommandProperty =
-        BindableProperty.Create(nameof(DayTappedCommand), typeof(ICommand), typeof(Calendar), null);
+    public static readonly BindableProperty DayTappedCommandProperty = BindableProperty.Create(
+        nameof(DayTappedCommand),
+        typeof(ICommand),
+        typeof(Calendar),
+        null
+    );
 
     /// <summary>
     /// Action to run after a day has been tapped.
@@ -1011,8 +1305,12 @@ public partial class Calendar : ContentView
     }
 
     /// <summary> Bindable property for MinimumDate </summary>
-    public static readonly BindableProperty MinimumDateProperty =
-      BindableProperty.Create(nameof(MinimumDate), typeof(DateTime), typeof(Calendar), DateTime.MinValue);
+    public static readonly BindableProperty MinimumDateProperty = BindableProperty.Create(
+        nameof(MinimumDate),
+        typeof(DateTime),
+        typeof(Calendar),
+        DateTime.MinValue
+    );
 
     /// <summary> Minimum date which can be selected </summary>
     public DateTime MinimumDate
@@ -1022,8 +1320,12 @@ public partial class Calendar : ContentView
     }
 
     /// <summary> Bindable property for MaximumDate </summary>
-    public static readonly BindableProperty MaximumDateProperty =
-      BindableProperty.Create(nameof(MaximumDate), typeof(DateTime), typeof(Calendar), DateTime.MaxValue);
+    public static readonly BindableProperty MaximumDateProperty = BindableProperty.Create(
+        nameof(MaximumDate),
+        typeof(DateTime),
+        typeof(Calendar),
+        DateTime.MaxValue
+    );
 
     /// <summary> Maximum date which can be selected </summary>
     public DateTime MaximumDate
@@ -1033,8 +1335,12 @@ public partial class Calendar : ContentView
     }
 
     /// <summary> Bindable property for DisabledDayColor </summary>
-    public static readonly BindableProperty DisabledDayColorProperty =
-      BindableProperty.Create(nameof(DisabledDayColor), typeof(Color), typeof(Calendar), Color.FromArgb("#ECECEC"));
+    public static readonly BindableProperty DisabledDayColorProperty = BindableProperty.Create(
+        nameof(DisabledDayColor),
+        typeof(Color),
+        typeof(Calendar),
+        Color.FromArgb("#ECECEC")
+    );
 
     /// <summary> Color for days which are out of MinimumDate - MaximumDate range </summary>
     public Color DisabledDayColor
@@ -1046,8 +1352,12 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for AnimateCalendar
     /// </summary>
-    public static readonly BindableProperty AnimateCalendarProperty =
-        BindableProperty.Create(nameof(AnimateCalendar), typeof(bool), typeof(Calendar), true);
+    public static readonly BindableProperty AnimateCalendarProperty = BindableProperty.Create(
+        nameof(AnimateCalendar),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
 
     /// <summary>
     /// Specifies whether the calendar is animated
@@ -1061,8 +1371,13 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for WeekLayout
     /// </summary>
-    public static readonly BindableProperty CalendarLayoutProperty =
-        BindableProperty.Create(nameof(CalendarLayout), typeof(WeekLayout), typeof(Calendar), WeekLayout.Month, propertyChanged: OnCalendarLayoutChanged);
+    public static readonly BindableProperty CalendarLayoutProperty = BindableProperty.Create(
+        nameof(CalendarLayout),
+        typeof(WeekLayout),
+        typeof(Calendar),
+        WeekLayout.Month,
+        propertyChanged: OnCalendarLayoutChanged
+    );
 
     /// <summary>
     /// Sets the layout of the calendar
@@ -1076,8 +1391,13 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for WeekViewUnit
     /// </summary>
-    public static readonly BindableProperty WeekViewUnitProperty =
-        BindableProperty.Create(nameof(WeekViewUnit), typeof(WeekViewUnit), typeof(Calendar), WeekViewUnit.MonthName, propertyChanged: OnWeekViewUnitChanged);
+    public static readonly BindableProperty WeekViewUnitProperty = BindableProperty.Create(
+        nameof(WeekViewUnit),
+        typeof(WeekViewUnit),
+        typeof(Calendar),
+        WeekViewUnit.MonthName,
+        propertyChanged: OnWeekViewUnitChanged
+    );
 
     /// <summary>
     /// Sets the display name of the calendar unit
@@ -1095,16 +1415,29 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SelectedDate
     /// </summary>
-    public static readonly BindableProperty SelectedDateProperty =
-      BindableProperty.Create(nameof(SelectedDate), typeof(DateTime?), typeof(Calendar), null, BindingMode.TwoWay, propertyChanged: OnSelectedDateChanged);
+    public static readonly BindableProperty SelectedDateProperty = BindableProperty.Create(
+        nameof(SelectedDate),
+        typeof(DateTime?),
+        typeof(Calendar),
+        null,
+        BindingMode.TwoWay,
+        propertyChanged: OnSelectedDateChanged
+    );
 
-    private static void OnSelectedDateChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void OnSelectedDateChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
         var control = (Calendar)bindable;
         var dateToSet = (DateTime?)newValue;
 
         control.SetValue(SelectedDateProperty, dateToSet);
-        if (!control._isSelectingDates || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine)
+        if (
+            !control._isSelectingDates
+            || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine
+        )
         {
             if (dateToSet.HasValue)
                 control.SetValue(SelectedDatesProperty, new List<DateTime> { dateToSet.Value });
@@ -1125,7 +1458,10 @@ public partial class Calendar : ContentView
         get => (DateTime?)GetValue(SelectedDateProperty);
         set
         {
-            SetValue(SelectedDatesProperty, value.HasValue ? new List<DateTime> { value.Value } : null);
+            SetValue(
+                SelectedDatesProperty,
+                value.HasValue ? new List<DateTime> { value.Value } : null
+            );
             SetValue(SelectedDateProperty, value);
         }
     }
@@ -1133,8 +1469,13 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for SelectedDates
     /// </summary>
-    public static readonly BindableProperty SelectedDatesProperty =
-      BindableProperty.Create(nameof(SelectedDates), typeof(List<DateTime>), typeof(Calendar), null, BindingMode.TwoWay);
+    public static readonly BindableProperty SelectedDatesProperty = BindableProperty.Create(
+        nameof(SelectedDates),
+        typeof(List<DateTime>),
+        typeof(Calendar),
+        null,
+        BindingMode.TwoWay
+    );
 
     private bool _isSelectingDates = false;
 
@@ -1152,8 +1493,13 @@ public partial class Calendar : ContentView
         }
     }
 
-    public static readonly BindableProperty DisabledDatesProperty =
-     BindableProperty.Create(nameof(DisabledDates), typeof(List<DateTime>), typeof(Calendar), defaultValue: new List<DateTime>(), BindingMode.TwoWay);
+    public static readonly BindableProperty DisabledDatesProperty = BindableProperty.Create(
+        nameof(DisabledDates),
+        typeof(List<DateTime>),
+        typeof(Calendar),
+        defaultValue: new List<DateTime>(),
+        BindingMode.TwoWay
+    );
 
     public List<DateTime> DisabledDates
     {
@@ -1271,12 +1617,20 @@ public partial class Calendar : ContentView
             throw new ArgumentException("Month must be between 1 and 12.");
 
         if (bindable is Calendar calendar && calendar.ShownDate.Month != newMonth)
-            calendar.ShownDate = new DateTime(calendar.Year, newMonth, Math.Min(DateTime.DaysInMonth(calendar.Year, newMonth), calendar.Day));
+            calendar.ShownDate = new DateTime(
+                calendar.Year,
+                newMonth,
+                Math.Min(DateTime.DaysInMonth(calendar.Year, newMonth), calendar.Day)
+            );
     }
 
     private static void OnDayChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is Calendar calendar && newValue is int newDay && calendar.ShownDate.Day != newDay)
+        if (
+            bindable is Calendar calendar
+            && newValue is int newDay
+            && calendar.ShownDate.Day != newDay
+        )
             calendar.ShownDate = new DateTime(calendar.Year, calendar.Month, newDay);
     }
 
@@ -1295,10 +1649,19 @@ public partial class Calendar : ContentView
 
             if (calendar.monthDaysView.ShownDate != calendar.ShownDate)
                 calendar.monthDaysView.ShownDate = calendar.ShownDate;
+
+            if (calendar.OnShownDateChangedCommand != null)
+            {
+                calendar.OnShownDateChangedCommand.Execute(calendar.ShownDate);
+            }
         }
     }
 
-    private static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void OnCalendarLayoutChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
         if (bindable is Calendar calendar && newValue is WeekLayout layout)
         {
@@ -1315,7 +1678,11 @@ public partial class Calendar : ContentView
         }
     }
 
-    private static void OnWeekViewUnitChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void OnWeekViewUnitChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
         if (bindable is Calendar calendar && newValue is WeekViewUnit viewUnit)
         {
@@ -1357,7 +1724,12 @@ public partial class Calendar : ContentView
 
     private void UpdateEvents()
     {
-        SelectedDayEvents = monthDaysView.CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents) ? selectedEvents : null;
+        SelectedDayEvents = monthDaysView.CurrentSelectionEngine.TryGetSelectedEvents(
+            Events,
+            out var selectedEvents
+        )
+            ? selectedEvents
+            : null;
 
         eventsScrollView.ScrollToAsync(0, 0, false);
     }
@@ -1375,7 +1747,10 @@ public partial class Calendar : ContentView
 
     private void UpdateSelectedDateLabel()
     {
-        SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
+        SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(
+            SelectedDateTextFormat,
+            Culture
+        );
     }
 
     private void ShowHideCalendarSection()
@@ -1385,16 +1760,24 @@ public partial class Calendar : ContentView
 
         _calendarSectionAnimating = true;
 
-        var animation = CalendarSectionShown ? _calendarSectionAnimateShow : _calendarSectionAnimateHide;
+        var animation = CalendarSectionShown
+            ? _calendarSectionAnimateShow
+            : _calendarSectionAnimateHide;
         var prevState = CalendarSectionShown;
 
-        animation.Commit(this, CalendarSectionAnimationId, CalendarSectionAnimationRate, CalendarSectionAnimationDuration, finished: (value, cancelled) =>
-        {
-            _calendarSectionAnimating = false;
+        animation.Commit(
+            this,
+            CalendarSectionAnimationId,
+            CalendarSectionAnimationRate,
+            CalendarSectionAnimationDuration,
+            finished: (value, cancelled) =>
+            {
+                _calendarSectionAnimating = false;
 
-            if (prevState != CalendarSectionShown)
-                ToggleCalendarSectionVisibility();
-        });
+                if (prevState != CalendarSectionShown)
+                    ToggleCalendarSectionVisibility();
+            }
+        );
     }
 
     private void UpdateCalendarSectionHeight()
@@ -1402,7 +1785,10 @@ public partial class Calendar : ContentView
         _calendarSectionHeight = calendarContainer.Height;
     }
 
-    private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
+    private void OnEventsCollectionChanged(
+        object sender,
+        EventCollection.EventCollectionChangedArgs e
+    )
     {
         UpdateEvents();
         monthDaysView.UpdateAndAnimateDays(AnimateCalendar);
@@ -1448,7 +1834,11 @@ public partial class Calendar : ContentView
 
     private int GetWeekNumber(DateTime date)
     {
-        return Culture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstFourDayWeek, Culture.DateTimeFormat.FirstDayOfWeek);
+        return Culture.Calendar.GetWeekOfYear(
+            date,
+            CalendarWeekRule.FirstFourDayWeek,
+            Culture.DateTimeFormat.FirstDayOfWeek
+        );
     }
 
     private void PrevUnit()
@@ -1471,8 +1861,7 @@ public partial class Calendar : ContentView
         ShownDate = ShownDate.AddYears(-1);
     }
 
-    private void ToggleCalendarSectionVisibility()
-        => CalendarSectionShown = !CalendarSectionShown;
+    private void ToggleCalendarSectionVisibility() => CalendarSectionShown = !CalendarSectionShown;
 
     private void AnimateMonths(double currentValue)
     {
@@ -1492,6 +1881,12 @@ public partial class Calendar : ContentView
         Unloaded -= OnUnloaded;
     }
 
+    public void ClearSelection()
+    {
+        _isSelectingDates = false;
+        this.SelectedDates = null;
+        this.SelectedDate = null;
+    }
 
     #endregion
 }
