@@ -7,6 +7,37 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="Header"
     x:DataType="controls:CalendarHeader">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="arrowButtonPrevStyle" TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="Text" Value="&#xf062;" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextColor" Value="DimGray" />
+            </Style>
+
+            <Style x:Key="arrowButtonNextStyle" TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="Text" Value="&#xf063;" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextColor" Value="DimGray" />
+            </Style>
+            <Style x:Key="ArrowFooterButtonUpStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="Text" Value="&#xf063;" />
+                <Setter Property="TextColor" Value="DimGray" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <Grid
         Padding="12,0,12,0"
         ColumnDefinitions="*,Auto,Auto"
@@ -14,13 +45,13 @@
         IsVisible="{Binding BindingContext.ShowMonthPicker, Source={x:Reference Header}}"
         RowDefinitions="Auto"
         VerticalOptions="Start">
-
         <Label
             Grid.Column="0"
             FontAttributes="Bold"
             FontSize="14"
             HorizontalOptions="Start"
             Style="{StaticResource HeaderLabelStyle}"
+            TextColor="{toolkit:AppThemeResource DaysTitleLabelTextColorMinimalistic}"
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>

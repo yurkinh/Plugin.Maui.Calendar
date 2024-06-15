@@ -11,15 +11,78 @@
     Title="Windows 11 Calendar"
     x:DataType="vm:Windows11CalendarViewModel">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:AppThemeColor
+                x:Key="WindowsThemeColor"
+                Dark="#04e762"
+                Light="#2b9348" />
+            <toolkit:AppThemeColor
+                x:Key="TodayDayLabelTextColor"
+                Dark="Black"
+                Light="White" />
+            <toolkit:AppThemeObject
+                x:Key="Walpaper"
+                Dark="windows_walpaper_dark.png"
+                Light="windows_walpaper_light.png" />
+
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DayLabelColor}" />
+            </Style>
+            <Style
+                x:Key="SelectedDayBorderStyle"
+             
+                TargetType="Border">
+                <Setter Property="Stroke" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+            <Style x:Key="SelectedDayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+            <Style x:Key="SelectedTodayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+
+            <Style x:Key="DeselectedDayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+            </Style>
+
+            <Style
+                x:Key="TodayLabelStyle"
+                BasedOn="{StaticResource DeselectedDayLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TodayDayLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="TodayBorderStyle"
+           
+                TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+                <Setter Property="Stroke" Value="{toolkit:AppThemeResource WindowsThemeColor}" />
+            </Style>
+
+            <Style
+                x:Key="OtherMonthDaysLabelStyle"
+                BasedOn="{StaticResource DaysLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource OtherMonthDaysLabelTextColor}" />
+            </Style>
+
+            <Style x:Key="DaysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColorMinimalistic}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <vm:Windows11CalendarViewModel />
     </ContentPage.BindingContext>
 
     <Grid>
-        <Image Aspect="AspectFill" />
+        <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />
         <Border
             Margin="30"
+            BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
             HeightRequest="435"
             HorizontalOptions="End"
             Opacity="0.80"
@@ -40,9 +103,15 @@
                 DaysTitleLabelStyle="{StaticResource DaysTitleLabelStyle}"
                 DaysTitleMaximumLength="TwoChars"
                 FooterSectionVisible="False"
-               >
+                Month="{Binding Month, Mode=TwoWay}"
+                SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+                Year="{Binding Year, Mode=TwoWay}">
 
-              
+                <plugin:Calendar.HeaderSectionTemplate>
+                    <DataTemplate>
+                        <controls:Windows11CalendarHeader />
+                    </DataTemplate>
+                </plugin:Calendar.HeaderSectionTemplate>
             </plugin:Calendar>
         </Border>
     </Grid>

@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SampleApp.ViewModels;
 
-namespace SampleApp.ViewModels
+public partial class Windows11CalendarViewModel : BasePageViewModel
 {
-    internal class Windows11CalendarViewModel
+    public Windows11CalendarViewModel()
     {
+
     }
+    [ObservableProperty]
+    int month = DateTime.Today.Month;
+
+    [ObservableProperty]
+    int year = DateTime.Today.Year;
+
+    [ObservableProperty]
+    DateTime? selectedDate = DateTime.Today;
 }

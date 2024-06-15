@@ -100,7 +100,7 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(new TwoWeekViewPage());
     }
 
-    async void WindowsCalendar(object sender, EventArgs e)
+    async void Windows11Calendar(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new Windows11CalendarPage());
     }
