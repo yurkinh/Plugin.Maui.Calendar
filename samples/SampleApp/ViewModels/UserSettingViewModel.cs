@@ -1,15 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SampleApp.Services;
-using SampleApp.Model;
+﻿using SampleApp.Services;
 
 namespace SampleApp.ViewModels;
-public partial class UserSettingViewModel : ObservableObject
+public partial class UserSettingViewModel(IThemeService themeService) : ObservableObject
 {
-    readonly IThemeService themeService;
-    public UserSettingViewModel(IThemeService themeService)
-    {
-        this.themeService = themeService;
-    }
+    readonly IThemeService themeService = themeService;
 
     [ObservableProperty]
     bool isCheckedLight;
