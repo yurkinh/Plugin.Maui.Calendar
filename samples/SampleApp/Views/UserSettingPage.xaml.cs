@@ -1,5 +1,3 @@
-using SampleApp.ViewModels;
-
 namespace SampleApp.Views;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]

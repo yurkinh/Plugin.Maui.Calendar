@@ -1,11 +1,10 @@
-﻿namespace SampleApp.Views
+﻿namespace SampleApp.Views;
+
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class RangeSelectionPage : ContentPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RangeSelectionPage : ContentPage
+    public RangeSelectionPage()
     {
-        public RangeSelectionPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

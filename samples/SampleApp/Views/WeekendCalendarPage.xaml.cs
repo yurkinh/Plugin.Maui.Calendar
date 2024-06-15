@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SampleApp.Views;
 
-namespace SampleApp.Views
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class WeekendCalendarPage : ContentPage
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class WeekendCalendarPage : ContentPage
+	public WeekendCalendarPage ()
 	{
-		public WeekendCalendarPage ()
-		{
-			InitializeComponent ();
-		}
+		InitializeComponent ();
 	}
 }
