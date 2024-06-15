@@ -3,60 +3,114 @@
     x:Class="SampleApp.Views.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Calendar Plugin for .NET MAUI">
+    xmlns:model="clr-namespace:SampleApp.Model"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    Title="Calendar Plugin for .NET MAUI"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
+    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
+    Shell.TitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="SettingPage">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="FontAwesomeSolid"
+                    Glyph="&#xf013;"
+                    Size="30"
+                    Color="{toolkit:AppThemeResource ButtonColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:AppThemeColor
+                x:Key="DaysTitleLabelTextColor"
+                Dark="#B3FCF8"
+                Light="#B3FCF8" />
+            <toolkit:AppThemeColor
+                x:Key="BackgroundPageColor"
+                Dark="#2F3E46"
+                Light="#47CAD2C5" />
+            <toolkit:AppThemeColor
+                x:Key="LabelColor"
+                Dark="#CAD2C5"
+                Light="#000000" />
+            <toolkit:AppThemeColor
+                x:Key="LabelButtonColor"
+                Dark="#000000"
+                Light="#000000" />
+            <toolkit:AppThemeColor
+                x:Key="ButtonColor"
+                Dark="#CAD2C5"
+                Light="#99AB9D" />
+            <Style x:Key="ButtonMainPageStyle" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
+                <Setter Property="FontSize" Value="22" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="FontFamily" Value="DarkerGrotesque" />
+                <Setter Property="Margin" Value="30,10" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelButtonColor}" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            <Style x:Key="LabelMainPageStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontFamily" Value="DarkerGrotesque" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelColor}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill" Spacing="6">
             <Label
                 Margin="0,30,0,0"
-                HorizontalOptions="Center"
+                Style="{StaticResource LabelMainPageStyle}"
                 Text="Event Calendar" />
             <Button
-                Margin="5"
                 Clicked="SimpleCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Simple Event Calendar" />
             <Button
-                Margin="5"
-                Clicked="WeekendCalendar"
-                Text="Weekend Calendar" />
-            <Button
-                Margin="5"
                 Clicked="MultiSelectionCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="MultiSelection Event Calendar" />
             <Button
-                Margin="5"
+                Clicked="WeekendCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Weekend Calendar" />
+            <Button
                 Clicked="AdvancedCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Advanced Event Calendar" />
             <Button
-                Margin="5"
                 Clicked="RangeCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar" />
-            <Label
-                Margin="0,30,0,0"
-                HorizontalOptions="Center"
-                Text="Picker Popup" />
+
+            <Label Style="{StaticResource LabelMainPageStyle}" Text="Picker Popup" />
             <Button
-                Margin="5"
                 Clicked="PickerPopup"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Single Select Calendar" />
             <Button
-                Margin="5"
                 Clicked="RangePickerPopup"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Selection Calendar" />
             <Button
-                Margin="5"
                 Clicked="RangeStartEndDatePickerPopup"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Start-End Selection Calendar" />
-            <Label
-                Margin="0,30,0,0"
-                HorizontalOptions="Center"
-                Text="Week View Calendars" />
+            <Label Style="{StaticResource LabelMainPageStyle}" Text="Week View Calendars" />
             <Button
-                Margin="5"
                 Clicked="WeekViewCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Single Week View Calendar" />
             <Button
-                Margin="5"
                 Clicked="TwoWeekViewCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
                 Text="Two Weeks View Calendar" />
         </VerticalStackLayout>
     </ScrollView>

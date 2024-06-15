@@ -1,5 +1,5 @@
 ﻿using Plugin.Maui.Calendar.Models;
-using SampleApp.Model;
+
 namespace SampleApp.ViewModels;
 public partial class WeekendCalendarPageViewModel : BasePageViewModel
 {
@@ -23,6 +23,22 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
         Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
     }
 
+    public EventCollection Events { get; }
+
+    [ObservableProperty]
+    int month = DateTime.Today.Month;
+
+    [ObservableProperty]
+    int year = DateTime.Today.Year;
+
+    [ObservableProperty]
+    DateTime? selectedDate = DateTime.Today;
+
+    [ObservableProperty]
+    DateTime minimumDate = new(2019, 4, 29);
+
+    [ObservableProperty]
+    DateTime maximumDate = DateTime.Today.AddMonths(5);
 
     static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
@@ -33,54 +49,30 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
         });
     }
 
-    public EventCollection Events { get; }
-
-    private int _month = DateTime.Today.Month;
-
-    public int Month
-    {
-        get => _month;
-        set => SetProperty(ref _month, value);
-    }
-
-    private int _year = DateTime.Today.Year;
-
-    public int Year
-    {
-        get => _year;
-        set => SetProperty(ref _year, value);
-    }
-
-    private DateTime? _selectedDate = DateTime.Today;
-
-    public DateTime? SelectedDate
-    {
-        get => _selectedDate;
-        set => SetProperty(ref _selectedDate, value);
-    }
-
-    private DateTime _minimumDate = new DateTime(2019, 4, 29);
-
-    public DateTime MinimumDate
-    {
-        get => _minimumDate;
-        set => SetProperty(ref _minimumDate, value);
-    }
-
-    private DateTime _maximumDate = DateTime.Today.AddMonths(5);
-
-    public DateTime MaximumDate
-    {
-        get => _maximumDate;
-        set => SetProperty(ref _maximumDate, value);
-    }
-
-
-    private async Task ExecuteEventSelectedCommand(object item)
+    [RelayCommand]
+    static async Task ExecuteEventSelected(object item)
     {
         if (item is EventModel eventModel)
         {
             await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
+        }
+    }
+
+    [RelayCommand]
+    void Today()
+    {
+        Year = DateTime.Today.Year;
+        Month = DateTime.Today.Month;
+    }
+
+    [RelayCommand]
+    static async Task EventSelected(object item)
+    {
+        if (item is AdvancedEventModel eventModel)
+        {
+            var title = $"Selected: {eventModel.Name}";
+            var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
+            await App.Current.MainPage.DisplayAlert(title, message, "Ok");
         }
     }
 }
