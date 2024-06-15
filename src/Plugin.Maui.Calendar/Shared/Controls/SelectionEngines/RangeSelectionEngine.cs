@@ -14,14 +14,23 @@ internal class RangedSelectionEngine : ISelectionEngine
     {
         if (_rangeSelectionStartDate.HasValue)
         {
-            var startDateText = _rangeSelectionStartDate.Value.ToString(selectedDateTextFormat, culture);
-            var endDateText = _rangeSelectionEndDate.Value.ToString(selectedDateTextFormat, culture);
+            var startDateText = _rangeSelectionStartDate.Value.ToString(
+                selectedDateTextFormat,
+                culture
+            );
+            var endDateText = _rangeSelectionEndDate.Value.ToString(
+                selectedDateTextFormat,
+                culture
+            );
             return $"{startDateText} - {endDateText}";
         }
         return string.Empty;
     }
 
-    bool ISelectionEngine.TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
+    bool ISelectionEngine.TryGetSelectedEvents(
+        EventCollection allEvents,
+        out ICollection selectedEvents
+    )
     {
         var listOfEvents = CreateRangeList();
         return allEvents.TryGetValues(listOfEvents, out selectedEvents);
@@ -32,13 +41,16 @@ internal class RangedSelectionEngine : ISelectionEngine
         if (!_rangeSelectionStartDate.HasValue)
             return false;
 
-        return DateTime.Compare(dateToCheck, _rangeSelectionEndDate.Value.Date) <= 0 &&
-               DateTime.Compare(dateToCheck, _rangeSelectionStartDate.Value.Date) >= 0;
+        return DateTime.Compare(dateToCheck, _rangeSelectionEndDate.Value.Date) <= 0
+            && DateTime.Compare(dateToCheck, _rangeSelectionStartDate.Value.Date) >= 0;
     }
 
-    List<DateTime> ISelectionEngine.PerformDateSelection(DateTime dateToSelect)
+    List<DateTime> ISelectionEngine.PerformDateSelection(
+        DateTime dateToSelect,
+        List<DateTime>? disabledDates = null
+    )
     {
-        return SelectDateRange(dateToSelect);
+        return SelectDateRange(dateToSelect, disabledDates);
     }
 
     void ISelectionEngine.UpdateDateSelection(List<DateTime> datesToSelect)
@@ -64,29 +76,41 @@ internal class RangedSelectionEngine : ISelectionEngine
         }
     }
 
-    internal List<DateTime> SelectDateRange(DateTime? newSelected)
+    internal List<DateTime> SelectDateRange(DateTime? newSelected, List<DateTime>? disabledDates)
     {
-        if (_rangeSelectionStartDate is null || !Equals(_rangeSelectionStartDate, _rangeSelectionEndDate) || newSelected is null)
+        if (
+            _rangeSelectionStartDate is null
+            || !Equals(_rangeSelectionStartDate, _rangeSelectionEndDate)
+            || newSelected is null
+        )
             SelectFirstIntervalBorder(newSelected);
         else
             SelectSecondIntervalBorder(newSelected);
 
-        return CreateRangeList();
+        return CreateRangeList(disabledDates);
     }
 
-    private List<DateTime> CreateRangeList()
+    private List<DateTime> CreateRangeList(List<DateTime>? disabledDates = null)
     {
         var rangeList = new List<DateTime>();
         if (_rangeSelectionStartDate.HasValue && _rangeSelectionEndDate.HasValue)
         {
-            for (var currentDate = _rangeSelectionStartDate; DateTime.Compare(currentDate.Value, _rangeSelectionEndDate.Value) <= 0; currentDate = currentDate.Value.AddDays(1))
-                rangeList.Add(currentDate.Value);
+            for (
+                var currentDate = _rangeSelectionStartDate;
+                DateTime.Compare(currentDate.Value, _rangeSelectionEndDate.Value) <= 0;
+                currentDate = currentDate.Value.AddDays(1)
+            )
+                if (disabledDates is null || !disabledDates.Contains(currentDate.Value))
+                {
+                    rangeList.Add(currentDate.Value);
+                }
         }
 
         return rangeList;
     }
 
-    internal List<DateTime> GetDateRange() => CreateRangeList();
+    internal List<DateTime> GetDateRange(List<DateTime>? disabledDates = null) =>
+        CreateRangeList(disabledDates);
 
     private void SelectFirstIntervalBorder(DateTime? newSelected)
     {

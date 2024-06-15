@@ -274,6 +274,11 @@ Sample properties:
 ```xml
 AnimateCalendar="False"
 ```
+Enable/Disable the visibility of the Events scrollview panel at the bottom
+Sample properties:
+```xml
+EventsScrollViewVisible="True"
+```
 
 #### Section templates
 There are several templates that can be used to customize the calendar. You can find an example for each one in the AdvancedPage.xaml.

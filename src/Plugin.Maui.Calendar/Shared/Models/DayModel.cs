@@ -30,7 +30,11 @@ internal partial class DayModel : ObservableObject
     ICommand dayTappedCommand;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(
+        nameof(IsEventDotVisible),
+        nameof(BackgroundEventIndicator),
+        nameof(BackgroundFullEventColor)
+    )]
     bool hasEvents;
 
     [ObservableProperty]
@@ -38,7 +42,13 @@ internal partial class DayModel : ObservableObject
     bool isThisMonth;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TextColor), nameof(BackgroundColor), nameof(OutlineColor), nameof(EventColor), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(
+        nameof(TextColor),
+        nameof(BackgroundColor),
+        nameof(OutlineColor),
+        nameof(EventColor),
+        nameof(BackgroundFullEventColor)
+    )]
     bool isSelected;
 
     [ObservableProperty]
@@ -78,15 +88,27 @@ internal partial class DayModel : ObservableObject
     Color deselectedBackgroundColor = Colors.Transparent;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsEventDotVisible), nameof(BackgroundEventIndicator), nameof(BackgroundColor))]
+    [NotifyPropertyChangedFor(
+        nameof(IsEventDotVisible),
+        nameof(BackgroundEventIndicator),
+        nameof(BackgroundColor)
+    )]
     EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(
+        nameof(EventColor),
+        nameof(BackgroundColor),
+        nameof(BackgroundFullEventColor)
+    )]
     Color eventIndicatorColor = Color.FromArgb("#FF4081");
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(EventColor), nameof(BackgroundColor), nameof(BackgroundFullEventColor))]
+    [NotifyPropertyChangedFor(
+        nameof(EventColor),
+        nameof(BackgroundColor),
+        nameof(BackgroundFullEventColor)
+    )]
     Color eventIndicatorSelectedColor;
 
     [ObservableProperty]
@@ -110,29 +132,36 @@ internal partial class DayModel : ObservableObject
     [ObservableProperty]
     Color disabledColor = Color.FromArgb("#ECECEC");
 
-    public bool IsEventDotVisible => HasEvents && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
+    public bool IsEventDotVisible =>
+        HasEvents
+        && (
+            EventIndicatorType == EventIndicatorType.BottomDot
+            || EventIndicatorType == EventIndicatorType.TopDot
+        );
 
-    public FlexDirection EventLayoutDirection => (HasEvents && EventIndicatorType == EventIndicatorType.TopDot) ? FlexDirection.ColumnReverse : FlexDirection.Column;
+    public FlexDirection EventLayoutDirection =>
+        (HasEvents && EventIndicatorType == EventIndicatorType.TopDot)
+            ? FlexDirection.ColumnReverse
+            : FlexDirection.Column;
 
-    public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
+    public bool BackgroundEventIndicator =>
+        HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
-    public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
-                                           ? EventColor
-                                           : Colors.Transparent;
+    public Color BackgroundFullEventColor =>
+        HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
+            ? EventColor
+            : Colors.Transparent;
 
-    public Color EventColor => IsSelected
-                             ? EventIndicatorSelectedColor
-                             : EventIndicatorColor;
+    public Color EventColor => IsSelected ? EventIndicatorSelectedColor : EventIndicatorColor;
 
-    public Color OutlineColor => IsToday && !IsSelected
-                               ? TodayOutlineColor
-                               : Colors.Transparent;
+    public Color OutlineColor => IsToday && !IsSelected ? TodayOutlineColor : Colors.Transparent;
 
     public Color BackgroundColor
     {
         get
         {
-            if (!IsVisible) return DeselectedBackgroundColor;
+            if (!IsVisible || IsDisabled)
+                return DeselectedBackgroundColor;
 
             return (BackgroundEventIndicator, IsSelected, IsToday) switch
             {
@@ -149,17 +178,22 @@ internal partial class DayModel : ObservableObject
     {
         get
         {
-            if (!IsVisible) return OtherMonthColor;
+            if (!IsVisible)
+                return OtherMonthColor;
 
             return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
             {
                 (true, _, _, _, _, _) => DisabledColor,
-                (false, true, false, true, true, _) => SelectedTodayTextColor == Colors.Transparent ? SelectedTextColor : SelectedTodayTextColor,
+                (false, true, false, true, true, _)
+                    => SelectedTodayTextColor == Colors.Transparent
+                        ? SelectedTextColor
+                        : SelectedTodayTextColor,
                 (false, true, false, true, false, _) => SelectedTextColor,
                 (false, true, true, true, _, _) => EventIndicatorSelectedTextColor,
                 (false, false, true, true, _, _) => EventIndicatorTextColor,
                 (false, false, _, false, _, _) => OtherMonthColor,
-                (false, false, false, true, true, _) => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
+                (false, false, false, true, true, _)
+                    => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
                 (false, _, _, _, _, true) => WeekendDayColor,
                 (false, false, false, true, false, _) => DeselectedTextColor,
                 (_, _, _, _, _, _) => Colors.Black
@@ -171,5 +205,7 @@ internal partial class DayModel : ObservableObject
 
     private bool IsToday => Date.Date == DateTime.Today;
 
-    public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;
+    public bool IsWeekend =>
+        (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday)
+        && WeekendDayColor != Colors.Transparent;
 }

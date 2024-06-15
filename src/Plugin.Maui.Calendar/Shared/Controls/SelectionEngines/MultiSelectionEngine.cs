@@ -3,7 +3,7 @@ using System.Globalization;
 using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Models;
 
-namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
+namespace Plugin.Maui.Calendar.Shared.Controls.SelectionEngines;
 
 public class MultiSelectionEngine : ISelectionEngine
 {
@@ -38,10 +38,18 @@ public class MultiSelectionEngine : ISelectionEngine
         return _selectedDates.Contains(dateToCheck);
     }
 
-    public List<DateTime> PerformDateSelection(DateTime dateToSelect)
+    public List<DateTime> PerformDateSelection(
+        DateTime dateToSelect,
+        List<DateTime> disabledDates = null
+    )
     {
         if (!_selectedDates.Remove(dateToSelect))
-            _selectedDates.Add(dateToSelect);
+        {
+            if (disabledDates is null || !disabledDates.Contains(dateToSelect))
+            {
+                _selectedDates.Add(dateToSelect);
+            }
+        }
 
         return [.. _selectedDates];
     }
@@ -51,4 +59,3 @@ public class MultiSelectionEngine : ISelectionEngine
         datesToSelect.ForEach(date => _selectedDates.Add(date));
     }
 }
-
