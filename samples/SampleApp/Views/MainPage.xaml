@@ -93,7 +93,7 @@
             <Button
                 Clicked="Windows11Calendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Windows Calendar" />
+                Text="Windows 11 Calendar" />
             <Label Style="{StaticResource LabelMainPageStyle}" Text="Picker Popup" />
             <Button
                 Clicked="PickerPopup"
