@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"    
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     x:Name="simpleCalendarPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,7 +17,7 @@
                 <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />                
+                <Setter Property="FontSize" Value="18" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -29,26 +29,27 @@
     </ContentPage.BindingContext>
 
     <plugin:Calendar
+        Padding="10,0"
+        ArrowsFontSize="Medium"
+        DayViewFontSize="Medium"
+        DaysLabelStyle="{StaticResource daysLabelStyle}"
+        DaysTitleColor="{AppThemeBinding Light={StaticResource Black},
+                                         Dark={StaticResource Yellow100Accent}}"
+        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         Events="{Binding Events}"
+        HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
-        Month="{Binding Month}"        
+        Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
-        DayViewFontSize="Medium"
-        DaysLabelStyle="{StaticResource daysLabelStyle}"       
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        ArrowsFontSize="Medium"
-        DaysTitleColor = "{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Yellow100Accent}}"
-        Year="{Binding Year}"       
-        Padding="10,0"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
+        VerticalOptions="Fill"
+        Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>
             <DataTemplate>
                 <VerticalStackLayout
-                    Spacing="6"
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
+                    Spacing="6"
                     VerticalOptions="Fill">
                     <Label
                         FontAttributes="Bold"

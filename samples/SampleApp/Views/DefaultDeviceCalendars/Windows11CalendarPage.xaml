@@ -65,9 +65,12 @@
                 DaysTitleWeekendColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 FooterSectionVisible="False"
                 Month="{Binding Month, Mode=TwoWay}"
-                SelectedDate="{Binding SelectedDate, Mode=OneWay}"
-                SelectedDayBackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-                SelectedDayTextColor="{toolkit:AppThemeResource WindowsThemeColor}"
+                SelectedDayBackgroundColor="{toolkit:AppThemeResource WindowsThemeColor}"
+                SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
+                TodayOutlineColor="Transparent"
+                TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
                 Year="{Binding Year, Mode=TwoWay}">
 
                 <plugin:Calendar.HeaderSectionTemplate>
