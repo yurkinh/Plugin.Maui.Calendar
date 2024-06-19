@@ -6,4 +6,9 @@ public partial class MultiSelectionPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    void UnloadedHandler(object sender, EventArgs e)
+    {
+        calendar.Dispose();
+    }
 }

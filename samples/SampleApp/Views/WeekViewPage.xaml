@@ -4,6 +4,7 @@
              xmlns:controls="clr-namespace:SampleApp.Controls"
              xmlns:local="clr-namespace:SampleApp.ViewModels" xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"             
              x:Class="SampleApp.Views.WeekViewPage"
+             Unloaded="UnloadedHandler"
              x:Name="weekViewCalendarPage">
 
     <ContentPage.ToolbarItems>
@@ -14,6 +15,7 @@
     </ContentPage.BindingContext>
 
     <plugin:Calendar
+        x:Name="calendar"
         CalendarLayout="{Binding CalendarLayout}"
         ShownDate="{Binding ShownDate}"
         Events="{Binding Events}"

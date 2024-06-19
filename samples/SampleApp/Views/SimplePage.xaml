@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    Unloaded="simpleCalendarPage_Unloaded"   
+    Unloaded="UnloadedHandler"   
     x:Name="simpleCalendarPage">
     <ContentPage.Resources>
         <ResourceDictionary>

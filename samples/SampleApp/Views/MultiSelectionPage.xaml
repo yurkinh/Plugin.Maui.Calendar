@@ -4,7 +4,8 @@
              x:Class="SampleApp.Views.MultiSelectionPage"
              Title="MultiSelectionPage"
              xmlns:local="clr-namespace:SampleApp.ViewModels"
-             xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"  
+             xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+             Unloaded="UnloadedHandler"
              x:Name="multiCalendarPage">
    <ContentPage.Resources>
         <ResourceDictionary>
@@ -29,6 +30,7 @@
     </ContentPage.BindingContext>
 
     <plugin:MultiSelectionCalendar
+        x:Name="calendar"
         Events="{Binding Events}"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
