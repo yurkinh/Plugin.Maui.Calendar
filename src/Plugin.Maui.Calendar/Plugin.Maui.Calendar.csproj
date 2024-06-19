@@ -43,6 +43,8 @@
                             RangeSelection not considering disabled dates.
                             Allow to programmatically clear selected day(s).
 							Fixed Calendar view is empty if we use it in a Shell Tab #63
+							Added Dispose method to force handler disconnect call;
+							Updated samples
        </PackageReleaseNotes>
 	</PropertyGroup>	
 
