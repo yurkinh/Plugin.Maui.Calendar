@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
-    x:Name="calendar"
+    x:Name="calendar"    
+   
     x:DataType="controls:Calendar">
     <Grid
         Padding="0,15,0,0"
@@ -22,7 +23,7 @@
                 ItemTemplate="{Binding HeaderSectionTemplate}" />
             <controls:MonthDaysView
                 x:Name="monthDaysView"
-                x:FieldModifier="internal"
+                x:FieldModifier="internal"                
                 AnimateCalendar="{Binding AnimateCalendar, Source={x:Reference calendar}}"
                 CalendarLayout="{Binding CalendarLayout, Source={x:Reference calendar}}"
                 Culture="{Binding Culture, Source={x:Reference calendar}}"

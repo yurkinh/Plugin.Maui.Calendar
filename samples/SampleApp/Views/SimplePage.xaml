@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"    
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    Unloaded="simpleCalendarPage_Unloaded"   
     x:Name="simpleCalendarPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -29,6 +30,7 @@
     </ContentPage.BindingContext>
 
     <plugin:Calendar
+        x:Name="calendar"
         Events="{Binding Events}"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
@@ -42,27 +44,6 @@
         Year="{Binding Year}"       
         Padding="10,0"
         HorizontalOptions="Fill"
-        VerticalOptions="Fill">
-        <plugin:Calendar.EventTemplate>
-            <DataTemplate>
-                <VerticalStackLayout
-                    Spacing="6"
-                    Padding="15,0,0,0"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Fill">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="Medium"
-                        Text="{Binding Name}" />
-                    <Label
-                        FontSize="Small"
-                        LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference simpleCalendarPage}}" CommandParameter="{Binding .}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-            </DataTemplate>
-        </plugin:Calendar.EventTemplate>
+        VerticalOptions="Fill">       
     </plugin:Calendar>
 </ContentPage>

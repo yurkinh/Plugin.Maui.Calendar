@@ -7,5 +7,11 @@
         {
             InitializeComponent();
         }
+
+
+        void simpleCalendarPage_Unloaded(System.Object sender, System.EventArgs e)
+        {
+            calendar.Dispose();
+        }
     }
 }

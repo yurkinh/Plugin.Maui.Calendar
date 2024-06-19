@@ -11,7 +11,7 @@ using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
-public partial class MonthDaysView : ContentView, IDisposable
+public partial class MonthDaysView : ContentView
 {
     SwipeGestureRecognizer leftSwipeGesture;
     SwipeGestureRecognizer rightSwipeGesture;
@@ -1072,6 +1072,7 @@ public partial class MonthDaysView : ContentView, IDisposable
 #endif
             }
         }
+        Handler.DisconnectHandler();
     }
 
     private void Animate(
@@ -1177,26 +1178,10 @@ public partial class MonthDaysView : ContentView, IDisposable
 
     void OnSwipeDown() => SwipedDown?.Invoke(this, EventArgs.Empty);
 
-    private bool _disposed = false;
-
     public void Dispose()
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                // Dispose managed resources.
-                Loaded -= LoadedMethod;
-                Unloaded -= UnloadedMethod;
-                DiposeDayViews();
-            }
-            _disposed = true;
-        }
+        Loaded -= LoadedMethod;
+        Unloaded -= UnloadedMethod;
+        DiposeDayViews();
     }
 }
