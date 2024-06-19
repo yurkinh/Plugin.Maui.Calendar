@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.8</PackageVersion>
+		<PackageVersion>1.1.9</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,7 +37,12 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-							Fixed issue #57 - Certain months are being cropped.
+							Add OnShownDateChangedCommand so we can take action when date is changed.
+                            Update Maui packages.
+                            Move MultiSelectionEngine to SelectionEnginesFolder.
+                            RangeSelection not considering disabled dates.
+                            Allow to programmatically clear selected day(s).
+							Fixed Calendar view is empty if we use it in a Shell Tab #63
        </PackageReleaseNotes>
 	</PropertyGroup>	
 
@@ -66,8 +71,5 @@
 	<ItemGroup>
 		<None Include="..\..\nuget.png" PackagePath="nuget.png" Pack="true" />
 		<None Include="..\..\README.md" PackagePath="README.md" Pack="true" />
-	</ItemGroup>
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
-	</ItemGroup>
+	</ItemGroup>	
 </Project>
