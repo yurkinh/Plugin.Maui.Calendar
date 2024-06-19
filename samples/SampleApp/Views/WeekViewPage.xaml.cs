@@ -7,4 +7,9 @@ public partial class WeekViewPage : ContentPage
     {
         InitializeComponent();
     }
+
+    void UnloadedHandler(object sender, EventArgs e)
+    {
+        calendar.Dispose();
+    }
 }

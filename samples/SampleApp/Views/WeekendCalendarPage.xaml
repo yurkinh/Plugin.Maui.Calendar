@@ -32,6 +32,7 @@
         <vm:WeekendCalendarPageViewModel />
     </ContentPage.BindingContext>
     <plugin:Calendar
+        x:Name="calendar"
         Padding="10,0"
         DaysLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleWeekendColor="Red"

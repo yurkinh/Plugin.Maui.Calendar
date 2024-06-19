@@ -1539,9 +1539,7 @@ public partial class Calendar : ContentView
 
         _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
         _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
-
         calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
-        Unloaded += OnUnloaded;
     }
 
     private void InitializeViewLayoutEngine()
@@ -1870,22 +1868,24 @@ public partial class Calendar : ContentView
         calendarContainer.Opacity = currentValue * currentValue * currentValue;
     }
 
-    private void OnUnloaded(object sender, EventArgs e)
+    public void ClearSelection()
     {
+        _isSelectingDates = false;
+        SelectedDates = null;
+        SelectedDate = null;
+    }
+
+    public void Dispose()
+    {
+        monthDaysView.Dispose();
+        calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
         if (Events is EventCollection events)
         {
             events.CollectionChanged -= OnEventsCollectionChanged;
         }
 
         calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
-        Unloaded -= OnUnloaded;
-    }
-
-    public void ClearSelection()
-    {
-        _isSelectingDates = false;
-        this.SelectedDates = null;
-        this.SelectedDate = null;
+        Handler.DisconnectHandler();
     }
 
     #endregion

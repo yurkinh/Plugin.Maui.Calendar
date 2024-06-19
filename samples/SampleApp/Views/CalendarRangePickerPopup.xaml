@@ -6,7 +6,8 @@
     xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:controls="clr-namespace:SampleApp.Controls"
-    xmlns:local="clr-namespace:SampleApp.ViewModels"    
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    Unloaded="UnloadedHandler"
     CloseWhenBackgroundIsClicked="False">
 
     <rg:PopupPage.BindingContext>
@@ -29,6 +30,7 @@
                     Text="Choose Date Range"
                     VerticalOptions="Center" />
                 <plugin:RangeSelectionCalendar
+                     x:Name="calendar"
                     Padding="10,0"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"

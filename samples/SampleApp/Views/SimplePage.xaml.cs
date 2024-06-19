@@ -7,4 +7,10 @@ public partial class SimplePage : ContentPage
     {
         InitializeComponent();
     }
+
+
+    void UnloadedHandler(object sender, EventArgs e)
+    {
+        calendar.Dispose();
+    }
 }

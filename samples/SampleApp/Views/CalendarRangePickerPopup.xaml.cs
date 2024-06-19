@@ -1,5 +1,4 @@
 ﻿using Mopups.Pages;
-
 namespace SampleApp.Views;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -27,5 +26,10 @@ public partial class CalendarRangePickerPopup : PopupPage
             vm.Closed -= _onClosedPopup;
 
         base.OnDisappearing();
+    }
+
+    void UnloadedHandler(object sender, EventArgs e)
+    {
+        calendar.Dispose();
     }
 }

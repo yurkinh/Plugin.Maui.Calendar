@@ -57,6 +57,7 @@
                     Offset="0,4" />
             </Border.Shadow>
             <plugin:Calendar
+                x:Name="calendar"
                 BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
                 DaysLabelStyle="{StaticResource DaysLabelStyle}"
                 DaysTitleColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"

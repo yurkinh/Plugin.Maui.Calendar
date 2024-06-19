@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:local="clr-namespace:SampleApp.ViewModels"    
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    Unloaded="UnloadedHandler"
     CloseWhenBackgroundIsClicked="False">
     <rg:PopupPage.BindingContext>
         <local:CalendarPickerPopupViewModel />
@@ -27,6 +28,7 @@
                     Text="Choose Date"
                     VerticalOptions="Center" />
                 <plugin:Calendar
+                    x:Name="calendar"
                     Padding="10,0"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
