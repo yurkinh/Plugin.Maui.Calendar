@@ -343,6 +343,7 @@ Customize what to show in case the selected date has no events. Example from Adv
 ###### Dispose
 Due to issues with maui controls disposing (memory leaks) it is recomended to call Dispose() method on page Unload event (or similiar)
 ```xml
+-Page Xaml-
 Unloaded="UnloadedHandler"
 -Code behind-
 void UnloadedHandler(object sender, EventArgs e)
