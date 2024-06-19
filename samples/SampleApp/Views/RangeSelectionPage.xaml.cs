@@ -7,5 +7,10 @@
         {
             InitializeComponent();
         }
+
+        void UnloadedHandler(object sender, EventArgs e)
+        {
+            rangedCalendar.Dispose();
+        }
     }
 }
