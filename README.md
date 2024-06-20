@@ -32,6 +32,7 @@ Simple cross platform plugin for Calendar control featuring:
 * Updated to .NET 8 
 * Added OnShownDateChangedCommand so we can take action when date is changed.
 * Added Dispose method to force handlers disconnect call.
+* Added new property **OtherMonthSelectedDayColor**
 
 
 ### Usage
@@ -190,6 +191,7 @@ SelectedTodayTextColor="Green"
 TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
+OtherMonthSelectedDayColor="HotPink"
 ```
 
 #### Available customization properties
