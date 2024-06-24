@@ -73,6 +73,11 @@ internal partial class DayModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(TextColor))]
+    Color otherMonthSelectedColor = Colors.Gray;
+
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(TextColor))]
     Color weekendDayColor = Colors.Transparent;
 
     [ObservableProperty]
@@ -192,11 +197,11 @@ internal partial class DayModel : ObservableObject
                 (false, true, true, true, _, _) => EventIndicatorSelectedTextColor,
                 (false, false, true, true, _, _) => EventIndicatorTextColor,
                 (false, false, _, false, _, _) => OtherMonthColor,
+                (false, true, _, false, _, _) => OtherMonthSelectedColor,
                 (false, false, false, true, true, _)
                     => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
                 (false, _, _, _, _, true) => WeekendDayColor,
                 (false, false, false, true, false, _) => DeselectedTextColor,
-                (_, _, _, _, _, _) => Colors.Black
             };
         }
     }

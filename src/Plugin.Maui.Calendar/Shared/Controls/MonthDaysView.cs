@@ -292,12 +292,31 @@ public partial class MonthDaysView : ContentView
     );
 
     /// <summary>
-    /// Color of text for for days not belonging to the current month
+    /// Color of text for (days not belonging to the current month
     /// </summary>
     public Color OtherMonthDayColor
     {
         get => (Color)GetValue(OtherMonthDayColorProperty);
         set => SetValue(OtherMonthDayColorProperty, value);
+    }
+
+    /// <summary>
+    /// Bindable property for OtherMonthSelectedDayColor
+    /// </summary>
+    public static readonly BindableProperty OtherMonthSelectedDayColorProperty = BindableProperty.Create(
+        nameof(OtherMonthSelectedDayColor),
+        typeof(Color),
+        typeof(MonthDaysView),
+        Colors.Silver
+    );
+
+    /// <summary>
+    /// Color of text for selected days not belonging to the current month
+    /// </summary>
+    public Color OtherMonthSelectedDayColor
+    {
+        get => (Color)GetValue(OtherMonthSelectedDayColorProperty);
+        set => SetValue(OtherMonthSelectedDayColorProperty, value);
     }
 
     /// <summary>
@@ -859,6 +878,7 @@ public partial class MonthDaysView : ContentView
             case nameof(SelectedDayTextColor):
             case nameof(SelectedTodayTextColor):
             case nameof(OtherMonthDayColor):
+            case nameof(OtherMonthSelectedDayColor):
             case nameof(WeekendDayColor):
             case nameof(DeselectedDayTextColor):
             case nameof(SelectedDayBackgroundColor):
@@ -1016,6 +1036,7 @@ public partial class MonthDaysView : ContentView
             dayModel.SelectedTextColor = SelectedDayTextColor;
             dayModel.SelectedTodayTextColor = SelectedTodayTextColor;
             dayModel.OtherMonthColor = OtherMonthDayColor;
+            dayModel.OtherMonthSelectedColor = OtherMonthSelectedDayColor;
             dayModel.WeekendDayColor = WeekendDayColor;
             dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
             dayModel.TodayOutlineColor = TodayOutlineColor;
