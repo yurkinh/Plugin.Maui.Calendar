@@ -447,6 +447,26 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
+    /// Bindable property for OtherMonthSelectedDayColor
+    /// </summary>
+    public static readonly BindableProperty OtherMonthSelectedDayColorProperty = BindableProperty.Create(
+        nameof(OtherMonthSelectedDayColor),
+        typeof(Color),
+        typeof(Calendar),
+        Colors.Silver
+    );
+
+    /// <summary>
+    /// Specifies the color of selected days belonging to a month other than the selected one
+    /// </summary>
+    public Color OtherMonthSelectedDayColor
+    {
+        get => (Color)GetValue(OtherMonthSelectedDayColorProperty);
+        set => SetValue(OtherMonthSelectedDayColorProperty, value);
+    }
+
+
+    /// <summary>
     /// Bindable property for OtherMonthDayIsVisible
     /// </summary>
     public static readonly BindableProperty OtherMonthDayIsVisibleProperty =
