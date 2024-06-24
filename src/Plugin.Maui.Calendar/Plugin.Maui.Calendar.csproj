@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.9</PackageVersion>
+		<PackageVersion>1.2.0</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,14 +37,9 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-							Add OnShownDateChangedCommand so we can take action when date is changed.
-                            Update Maui packages.
-                            Move MultiSelectionEngine to SelectionEnginesFolder.
-                            RangeSelection not considering disabled dates.
-                            Allow to programmatically clear selected day(s).
-							Fixed Calendar view is empty if we use it in a Shell Tab #63
-							Added Dispose method to force handler disconnect call;
-							Updated samples
+							Add OtherMonthSelectedDayColor property.
+                            Downgraded Maui packages to 8.0.40.
+                            Updated README
        </PackageReleaseNotes>
 	</PropertyGroup>	
 
