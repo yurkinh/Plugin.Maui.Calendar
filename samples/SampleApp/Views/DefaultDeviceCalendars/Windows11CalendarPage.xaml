@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.Windows11CalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    x:Name="windowsCalendarPage"
+    Title="Windows 11 Calendar"
+    x:DataType="vm:Windows11CalendarViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:AppThemeColor
+                x:Key="WindowsThemeColor"
+                Dark="#04e762"
+                Light="#2b9348" />
+            <toolkit:AppThemeColor
+                x:Key="TodayDayLabelTextColor"
+                Dark="Black"
+                Light="White" />
+            <toolkit:AppThemeObject
+                x:Key="Walpaper"
+                Dark="windows_walpaper_dark.png"
+                Light="windows_walpaper_light.png" />
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <ContentPage.BindingContext>
+        <vm:Windows11CalendarViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />
+        <Border
+            Margin="30"
+            BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+            HeightRequest="435"
+            HorizontalOptions="End"
+            Opacity="0.80"
+            Stroke="White"
+            StrokeShape="RoundRectangle 6"
+            StrokeThickness="0.3"
+            VerticalOptions="End"
+            WidthRequest="330">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.1"
+                    Radius="2"
+                    Offset="0,4" />
+            </Border.Shadow>
+            <plugin:Calendar
+                x:Name="calendar"
+                BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+                DaysLabelStyle="{StaticResource DaysLabelStyle}"
+                DaysTitleColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                DaysTitleLabelFirstUpperRestLower="True"
+                DaysTitleMaximumLength="TwoChars"
+                DaysTitleWeekendColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                FooterSectionVisible="False"
+                Month="{Binding Month, Mode=TwoWay}"
+                SelectedDayBackgroundColor="{toolkit:AppThemeResource WindowsThemeColor}"
+                SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
+                TodayOutlineColor="Transparent"
+                TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
+                Year="{Binding Year, Mode=TwoWay}">
+
+                <plugin:Calendar.HeaderSectionTemplate>
+                    <DataTemplate>
+                        <controls:Windows11CalendarHeader />
+                    </DataTemplate>
+                </plugin:Calendar.HeaderSectionTemplate>
+            </plugin:Calendar>
+        </Border>
+    </Grid>
+</ContentPage>

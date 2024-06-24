@@ -1,11 +1,10 @@
-﻿namespace SampleApp.Controls
+﻿namespace SampleApp.Controls;
+
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class CalendarHeader : DataTemplate
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CalendarHeader : DataTemplate
+    public CalendarHeader()
     {
-        public CalendarHeader()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

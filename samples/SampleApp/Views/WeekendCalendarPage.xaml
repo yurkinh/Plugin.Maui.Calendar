@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.WeekendCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    x:Name="weekendCalendarPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="daysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
+            </Style>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <vm:WeekendCalendarPageViewModel />
+    </ContentPage.BindingContext>
+    <plugin:Calendar
+        x:Name="calendar"
+        Padding="10,0"
+        DaysLabelStyle="{StaticResource daysLabelStyle}"
+        DaysTitleWeekendColor="Red"
+        Events="{Binding Events, Mode=OneWay}"
+        FooterArrowVisible="False"
+        HeaderSectionVisible="true"
+        HorizontalOptions="Fill"
+        MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+        MinimumDate="{Binding MinimumDate, Mode=OneWay}"
+        Month="{Binding Month}"
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+        VerticalOptions="Fill"
+        WeekendDayColor="Red"
+        Year="{Binding Year}">
+
+        <plugin:Calendar.EventTemplate>
+            <DataTemplate>
+                <VerticalStackLayout
+                    Padding="15,0,0,0"
+                    HorizontalOptions="Fill"
+                    Spacing="6"
+                    VerticalOptions="Fill">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="Medium"
+                        Text="{Binding Name, Mode=OneWay}" />
+                    <Label
+                        FontSize="Small"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding Description, Mode=OneWay}" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference weekendCalendarPage}}" CommandParameter="{Binding .}" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+            </DataTemplate>
+        </plugin:Calendar.EventTemplate>
+    </plugin:Calendar>
+</ContentPage>

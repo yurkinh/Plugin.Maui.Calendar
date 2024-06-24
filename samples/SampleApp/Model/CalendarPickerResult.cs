@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace SampleApp.Model;
 
-namespace SampleApp.Model
+public class CalendarPickerResult
 {
-    public class CalendarPickerResult
-    {
-        public bool IsSuccess { get; set; }
+    public bool IsSuccess { get; set; }
 
-        public DateTime? SelectedDate { get; set; }
-    }
+    public DateTime? SelectedDate { get; set; }
 }

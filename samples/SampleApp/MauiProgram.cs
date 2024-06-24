@@ -1,5 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
+using SampleApp.Helpers;
+using SampleApp.Services;
+using SampleApp.Views;
 
 namespace SampleApp;
 
@@ -11,19 +15,39 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.ConfigureMopups()
-			.ConfigureFonts(fonts =>
+            .UseMauiCommunityToolkit()
+            .InjectServices()
+            .InjectViewsAndViewModels()
+            .ConfigureFonts(fonts =>
 			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                fonts.AddFont("font-awesome-5-free-solid.otf", "FontAwesomeSolid");
-                fonts.AddFont("font-awesome-5-free-regular.otf", "FontAwesomeRegular");
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("font-awesome-6-free-solid.otf", "FontAwesomeSolid");
+                fonts.AddFont("font-awesome-6-free-regular.otf", "FontAwesomeRegular");
+                fonts.AddFont("DarkerGrotesque-VariableFont_wght.ttf", "DarkerGrotesque");
             });
 
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
-	}
+        var app = builder.Build();
+
+        //we must initialize our service helper before using it
+        ServiceHelper.Initialize(app.Services);
+
+        return app;
+    }
+    static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
+    {
+        builder.Services.AddTransient<UserSettingPage>();
+        builder.Services.AddTransient<UserSettingViewModel>();
+        return builder;
+    }
+    static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<IThemeService, ThemeService>();
+        return builder;
+    }
 }
 

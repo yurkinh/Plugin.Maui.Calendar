@@ -1,14 +1,13 @@
 ﻿namespace SampleApp.Views;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class SimplePage : ContentPage
+public partial class WeekendCalendarPage : ContentPage
 {
-    public SimplePage()
-    {
-        InitializeComponent();
-    }
+	public WeekendCalendarPage ()
+	{
+		InitializeComponent ();
 
-
+	}
     void UnloadedHandler(object sender, EventArgs e)
     {
         calendar.Dispose();
