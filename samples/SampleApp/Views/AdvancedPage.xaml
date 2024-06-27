@@ -6,6 +6,7 @@
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"    
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    Unloaded="UnloadedHandler"
     x:Name="advancedCalendarPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -30,6 +31,7 @@
 
 
     <plugin:Calendar
+        x:Name="calendar"
         Padding="10,0"
         AnimateCalendar="True"
         CalendarLayout="{Binding CalendarLayout}"

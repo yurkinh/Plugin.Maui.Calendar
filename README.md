@@ -29,7 +29,10 @@ Simple cross platform plugin for Calendar control featuring:
 * Added Multiselection support (Latest PR that was not merged previously)
 * Exposed a few more properties for Arrow buttons customization
 * Refactored and revamped code
-* Updated to .NET 8
+* Updated to .NET 8 
+* Added OnShownDateChangedCommand so we can take action when date is changed.
+* Added Dispose method to force handlers disconnect call.
+* Added new property **OtherMonthSelectedDayColor**
 
 
 ### Usage
@@ -188,6 +191,7 @@ SelectedTodayTextColor="Green"
 TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
+OtherMonthSelectedDayColor="HotPink"
 ```
 
 #### Available customization properties
@@ -336,4 +340,16 @@ Customize what to show in case the selected date has no events. Example from Adv
         </StackLayout>
     </DataTemplate>
 </plugin:Calendar.EmptyTemplate>
+```
+
+###### Dispose
+Due to issues with maui controls disposing (memory leaks) it is recomended to call Dispose() method on page Unload event (or similiar)
+```xml
+-Page Xaml-
+Unloaded="UnloadedHandler"
+-Code behind-
+void UnloadedHandler(object sender, EventArgs e)
+{
+  calendar.Dispose();
+}
 ```

@@ -9,7 +9,7 @@
         }
 
 
-        void simpleCalendarPage_Unloaded(System.Object sender, System.EventArgs e)
+        void UnloadedHandler(object sender, EventArgs e)
         {
             calendar.Dispose();
         }

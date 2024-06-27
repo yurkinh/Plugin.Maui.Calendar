@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.8</PackageVersion>
+		<PackageVersion>1.2.0</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,7 +37,9 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-							Fixed issue #57 - Certain months are being cropped.
+							Add OtherMonthSelectedDayColor property.
+                            Downgraded Maui packages to 8.0.40.
+                            Updated README
        </PackageReleaseNotes>
 	</PropertyGroup>	
 
@@ -45,7 +47,7 @@
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.60" />		
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />		
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
@@ -66,8 +68,5 @@
 	<ItemGroup>
 		<None Include="..\..\nuget.png" PackagePath="nuget.png" Pack="true" />
 		<None Include="..\..\README.md" PackagePath="README.md" Pack="true" />
-	</ItemGroup>
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
-	</ItemGroup>
+	</ItemGroup>	
 </Project>

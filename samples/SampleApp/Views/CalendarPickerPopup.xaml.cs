@@ -30,5 +30,10 @@ namespace SampleApp.Views
 
             base.OnDisappearing();
         }
+
+        void UnloadedHandler(object sender, EventArgs e)
+        {
+            calendar.Dispose();
+        }
     }
 }
