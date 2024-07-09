@@ -204,8 +204,13 @@ public partial class Calendar : ContentView
         nameof(SelectedDayEvents),
         typeof(ICollection),
         typeof(Calendar),
-        new List<object>()
+        new List<object>(),propertyChanged: OnSelectedDayEventsChanged
     );
+
+    private static void OnSelectedDayEventsChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// Collection of events on the selected date(s)
