@@ -3,21 +3,22 @@
     x:Class="Plugin.Maui.Calendar.Controls.DayView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
+    xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     x:Name="dayView"
     x:DataType="models:DayModel"
     BackgroundColor="{Binding BackgroundFullEventColor}">
     <ContentView.Resources>
-        <ResourceDictionary>            
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>            
+        <ResourceDictionary>
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter" />
         </ResourceDictionary>
     </ContentView.Resources>
     <Border
         Padding="0"
         BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
-        HeightRequest="{Binding DayViewSize, Mode=OneWay}"        
+        HeightRequest="{Binding DayViewSize, Mode=OneWay}"
         HorizontalOptions="Center"
+        IsVisible="{Binding IsVisible, Mode=OneWay}"
         Stroke="{Binding OutlineColor, Mode=OneWay}"
         StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
         WidthRequest="{Binding DayViewSize, Mode=OneWay}">
@@ -26,17 +27,17 @@
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
             <Label
-                FontSize="{Binding FontSize,Mode=OneWay}"
-                HorizontalTextAlignment="Center"               
-                Style="{Binding DaysLabelStyle,Mode=OneWay}"
-                Text="{Binding Date.Day,Mode=OneWay}"
-                TextColor="{Binding TextColor, Mode=OneWay }" />
+                FontSize="{Binding FontSize, Mode=OneWay}"
+                HorizontalTextAlignment="Center"
+                Style="{Binding DaysLabelStyle, Mode=OneWay}"
+                Text="{Binding Date.Day, Mode=OneWay}"
+                TextColor="{Binding TextColor, Mode=OneWay}" />
             <Border
                 Padding="0"
-                BackgroundColor="{Binding EventColor,Mode=OneWay}"
-                StrokeShape="RoundRectangle 4"               
+                BackgroundColor="{Binding EventColor, Mode=OneWay}"
                 HeightRequest="8"
-                IsVisible="{Binding IsEventDotVisible,Mode=OneWay}"
+                IsVisible="{Binding IsEventDotVisible, Mode=OneWay}"
+                StrokeShape="RoundRectangle 4"
                 WidthRequest="8" />
         </FlexLayout>
         <Border.GestureRecognizers>
