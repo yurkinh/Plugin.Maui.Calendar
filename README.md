@@ -24,19 +24,19 @@ Simple cross platform plugin for Calendar control featuring:
 Theme support
 | Ligth | Dark | Setting |
 | ------- | ------ | ------ |
-| ![Light theme Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Setting Page Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
+| ![Light theme Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/DarkTheme.png) | ![Setting Page Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/ThemeSettingPage.png) |
 
 # New Samples**
 
 Windows 11 calendar
 | Win     | Mac    |
 | ------- | ------ |
-| ![Windiws 11 Calendar Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/W11Calendar_andriod.png) | ![Windiws 11 Calendar Mac Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/W11Calendar_ios.png) |
+| ![Windiws 11 android Calendar Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/W11Calendar_andriod.png) | ![Windiws 11 Calendar IOS Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/W11Calendar_ios.png) |
 
 Weekend calendar
 | Android     | IOS    |
 | ------- | ------ |
-| ![Weekend calendar Android Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_Android.png) | ![Weekend calendar IOS Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
+| ![Weekend calendar Android Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/WeekendCalendar_Android.png) | ![Weekend calendar IOS Screenshot](https://github.com/MykhailoDav/Plugin.Maui.Calendar/blob/refactoring_view_models_and_adding_samples/res/WeekendCalendar_ios.png) |
 
 
 
