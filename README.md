@@ -21,6 +21,24 @@ Simple cross platform plugin for Calendar control featuring:
 | ------- | ------ |
 | ![Windiws Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png) | ![Mac Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png) |
 
+Theme support
+| Ligth | Dark | Setting |
+| ------- | ------ | ------ |
+| ![Light theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Setting Page Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
+
+Samples
+
+Windows 11 calendar
+| Win     | Mac    |
+| ------- | ------ |
+| ![Windiws 11 Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11Calendar_mac.png) | ![Windiws 11 Calendar Mac Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11Calendar_mac.png) |
+
+Weekend calendar
+| Android     | IOS    |
+| ------- | ------ |
+| ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_Android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
+
+
 
 
 
@@ -33,6 +51,10 @@ Simple cross platform plugin for Calendar control featuring:
 * Added OnShownDateChangedCommand so we can take action when date is changed.
 * Added Dispose method to force handlers disconnect call.
 * Added new property **OtherMonthSelectedDayColor**
+* Fixed bug with **OtherMonthDayIsVisibleProperty**
+* Added a weekend calendar sample
+* Added a windows 11 calendar sample
+* Added theme support
 
 
 ### Usage
