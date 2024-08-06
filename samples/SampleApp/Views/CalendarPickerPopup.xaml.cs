@@ -1,39 +1,35 @@
 ﻿using Mopups.Pages;
-using SampleApp.Model;
-using SampleApp.ViewModels;
+namespace SampleApp.Views;
 
-namespace SampleApp.Views
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class CalendarPickerPopup : PopupPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CalendarPickerPopup : PopupPage
+    private readonly Action<CalendarPickerResult> _onClosedPopup;
+
+    public CalendarPickerPopup(Action<CalendarPickerResult> onClosedPopup)
     {
-        private readonly Action<CalendarPickerResult> _onClosedPopup;
+        _onClosedPopup = onClosedPopup;
+        InitializeComponent();            
+    }
 
-        public CalendarPickerPopup(Action<CalendarPickerResult> onClosedPopup)
-        {
-            _onClosedPopup = onClosedPopup;
-            InitializeComponent();            
-        }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
+        if (BindingContext is CalendarPickerPopupViewModel vm)
+            vm.Closed += _onClosedPopup;
+    }
 
-            if (BindingContext is CalendarPickerPopupViewModel vm)
-                vm.Closed += _onClosedPopup;
-        }
+    protected override void OnDisappearing()
+    {
+        if (BindingContext is CalendarPickerPopupViewModel vm)
+            vm.Closed -= _onClosedPopup;
 
-        protected override void OnDisappearing()
-        {
-            if (BindingContext is CalendarPickerPopupViewModel vm)
-                vm.Closed -= _onClosedPopup;
+        base.OnDisappearing();
+    }
 
-            base.OnDisappearing();
-        }
-
-        void UnloadedHandler(object sender, EventArgs e)
-        {
-            calendar.Dispose();
-        }
+    void UnloadedHandler(object sender, EventArgs e)
+    {
+        calendar.Dispose();
     }
 }
