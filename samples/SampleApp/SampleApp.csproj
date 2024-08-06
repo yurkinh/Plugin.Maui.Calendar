@@ -53,28 +53,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />		
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.61" />		
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Mopups" Version="1.3.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\Fonts\font-awesome-6-free-regular.otf" />
-	  <None Remove="Resources\Fonts\font-awesome-6-free-solid.otf" />
-	</ItemGroup>
-	<ItemGroup>
-	  <BundleResource Include="Resources\Fonts\font-awesome-6-free-regular.otf" />
-	  <BundleResource Include="Resources\Fonts\font-awesome-6-free-solid.otf" />
-	</ItemGroup>
+	</ItemGroup>		
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.60" />
-	</ItemGroup>
+	</ItemGroup>	
 	
 	<ItemGroup>
-	 <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
-	<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
+	 <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.61" />
+	<PackageReference Include="CommunityToolkit.Maui" Version="9.0.2" />
 	</ItemGroup>
 </Project>

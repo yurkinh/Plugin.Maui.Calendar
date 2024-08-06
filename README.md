@@ -51,7 +51,7 @@ Weekend calendar
 * Added OnShownDateChangedCommand so we can take action when date is changed.
 * Added Dispose method to force handlers disconnect call.
 * Added new property **OtherMonthSelectedDayColor**
-* Fixed bug with **OtherMonthDayIsVisibleProperty**
+* Fixed bug with **OtherMonthDayIsVisible** property
 * Added a weekend calendar sample
 * Added a windows 11 calendar sample
 * Added theme support
