@@ -1,23 +1,22 @@
-﻿namespace Plugin.Maui.Calendar.Enums
+﻿namespace Plugin.Maui.Calendar.Enums;
+
+/// <summary>
+/// Set layout of the calendar
+/// </summary>
+public enum WeekLayout
 {
     /// <summary>
-    /// Set layout of the calendar
+    /// Set layout to one week view
     /// </summary>
-    public enum WeekLayout
-    {
-        /// <summary>
-        /// Set layout to one week view
-        /// </summary>
-        Week,
+    Week,
 
-        /// <summary>
-        /// Set layout to two weeks view
-        /// </summary>
-        TwoWeek,
+    /// <summary>
+    /// Set layout to two weeks view
+    /// </summary>
+    TwoWeek,
 
-        /// <summary>
-        /// Set layout to month view
-        /// </summary>
-        Month,
-    }
+    /// <summary>
+    /// Set layout to month view
+    /// </summary>
+    Month,
 }

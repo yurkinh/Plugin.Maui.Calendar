@@ -1,18 +1,17 @@
-﻿namespace Plugin.Maui.Calendar.Enums
+﻿namespace Plugin.Maui.Calendar.Enums;
+
+/// <summary>
+/// Set naming scheme of the calendar unit
+/// </summary>
+public enum WeekViewUnit
 {
     /// <summary>
-    /// Set naming scheme of the calendar unit
+    /// Set naming scheme to month name
     /// </summary>
-    public enum WeekViewUnit
-    {
-        /// <summary>
-        /// Set naming scheme to month name
-        /// </summary>
-        MonthName,
+    MonthName,
 
-        /// <summary>
-        /// Set naming scheme to week number
-        /// </summary>
-        WeekNumber,
-    }
+    /// <summary>
+    /// Set naming scheme to week number
+    /// </summary>
+    WeekNumber,
 }
