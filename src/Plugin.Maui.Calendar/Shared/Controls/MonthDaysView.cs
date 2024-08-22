@@ -783,6 +783,24 @@ public partial class MonthDaysView : ContentView
         set => SetValue(CalendarLayoutProperty, value);
     }
 
+    /// <summary>
+    /// Bindable property for FirstDayOfWeek
+    /// </summary>
+    public static readonly BindableProperty FirstDayOfWeekProperty = BindableProperty.Create(
+        nameof(FirstDayOfWeek),
+        typeof(DayOfWeek),
+        typeof(MonthDaysView));
+
+    /// <summary>
+    /// Sets the first day of the week in the calendar
+    /// </summary>
+    public DayOfWeek FirstDayOfWeek
+    {
+        get => (DayOfWeek)GetValue(FirstDayOfWeekProperty);
+        set => SetValue(FirstDayOfWeekProperty, value);
+    }
+
+
     #endregion
 
     /// <summary>
@@ -790,11 +808,14 @@ public partial class MonthDaysView : ContentView
     /// </summary>
     internal ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
 
-    internal IViewLayoutEngine CurrentViewLayoutEngine { get; set; } =
-        new MonthViewEngine(CultureInfo.InvariantCulture);
+    internal IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
+    public void InitializeViewLayoutEngine()
+    {
+        CurrentViewLayoutEngine = new MonthViewEngine(CultureInfo.InvariantCulture, FirstDayOfWeek);
+    }
 
-    private readonly Dictionary<string, bool> _propertyChangedNotificationSupressions = new();
-    private readonly List<DayView> _dayViews = new();
+    private readonly Dictionary<string, bool> _propertyChangedNotificationSupressions = [];
+    private readonly List<DayView> _dayViews = [];
     private DateTime _lastAnimationTime;
     private bool _animating;
 
@@ -935,7 +956,7 @@ public partial class MonthDaysView : ContentView
 
     private void UpdateDayTitles()
     {
-        var dayNumber = (int)Culture.DateTimeFormat.FirstDayOfWeek;
+        var dayNumber = (int)FirstDayOfWeek;
 
         foreach (var dayLabel in _daysControl.Children.OfType<Label>())
         {
@@ -1054,9 +1075,9 @@ public partial class MonthDaysView : ContentView
     {
         CurrentViewLayoutEngine = CalendarLayout switch
         {
-            WeekLayout.Week => new WeekViewEngine(Culture, 1),
-            WeekLayout.TwoWeek => new WeekViewEngine(Culture, 2),
-            _ => new MonthViewEngine(Culture),
+            WeekLayout.Week => new WeekViewEngine(Culture, 1, FirstDayOfWeek),
+            WeekLayout.TwoWeek => new WeekViewEngine(Culture, 2, FirstDayOfWeek),
+            _ => new MonthViewEngine(Culture, FirstDayOfWeek),
         };
 
         _daysControl = CurrentViewLayoutEngine.GenerateLayout(

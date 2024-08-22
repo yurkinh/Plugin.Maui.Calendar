@@ -1428,6 +1428,24 @@ public partial class Calendar : ContentView
         set => SetValue(WeekViewUnitProperty, value);
     }
 
+    /// <summary>
+    /// Bindable property for FirstDayOfWeek
+    /// </summary>
+    public static readonly BindableProperty FirstDayOfWeekProperty = BindableProperty.Create(
+        nameof(FirstDayOfWeek),
+        typeof(DayOfWeek),
+        typeof(Calendar),
+        DayOfWeek.Sunday);
+
+    /// <summary>
+    /// Sets the first day of the week in the calendar
+    /// </summary>
+
+    public DayOfWeek FirstDayOfWeek
+    {
+        get => (DayOfWeek)GetValue(FirstDayOfWeekProperty);
+        set => SetValue(FirstDayOfWeekProperty, value);
+    }
     #endregion
 
     #region SelectedDates
@@ -1564,7 +1582,7 @@ public partial class Calendar : ContentView
 
     private void InitializeViewLayoutEngine()
     {
-        _viewLayoutEngine = new MonthViewEngine(Culture);
+        _viewLayoutEngine = new MonthViewEngine(Culture, FirstDayOfWeek);
     }
 
     private void InitializeSelectionType()
@@ -1675,11 +1693,7 @@ public partial class Calendar : ContentView
         }
     }
 
-    private static void OnCalendarLayoutChanged(
-        BindableObject bindable,
-        object oldValue,
-        object newValue
-    )
+    private static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Calendar calendar && newValue is WeekLayout layout)
         {
@@ -1687,9 +1701,9 @@ public partial class Calendar : ContentView
 
             calendar._viewLayoutEngine = layout switch
             {
-                WeekLayout.Week => new WeekViewEngine(calendar.Culture, 1),
-                WeekLayout.TwoWeek => new WeekViewEngine(calendar.Culture, 2),
-                _ => new MonthViewEngine(calendar.Culture),
+                WeekLayout.Week => new WeekViewEngine(calendar.Culture, 1, calendar.FirstDayOfWeek),
+                WeekLayout.TwoWeek => new WeekViewEngine(calendar.Culture, 2, calendar.FirstDayOfWeek),
+                _ => new MonthViewEngine(calendar.Culture, calendar.FirstDayOfWeek),
             };
 
             //calendar.monthDaysView.UpdateAndAnimateDays(calendar.AnimateCalendar);
@@ -1803,10 +1817,7 @@ public partial class Calendar : ContentView
         _calendarSectionHeight = calendarContainer.Height;
     }
 
-    private void OnEventsCollectionChanged(
-        object sender,
-        EventCollection.EventCollectionChangedArgs e
-    )
+    private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
     {
         UpdateEvents();
         monthDaysView.UpdateAndAnimateDays(AnimateCalendar);

@@ -4,8 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
-    x:Name="calendar"    
-   
+    x:Name="calendar"
     x:DataType="controls:Calendar">
     <Grid
         Padding="0,15,0,0"
@@ -23,7 +22,7 @@
                 ItemTemplate="{Binding HeaderSectionTemplate}" />
             <controls:MonthDaysView
                 x:Name="monthDaysView"
-                x:FieldModifier="internal"                
+                x:FieldModifier="internal"
                 AnimateCalendar="{Binding AnimateCalendar, Source={x:Reference calendar}}"
                 CalendarLayout="{Binding CalendarLayout, Source={x:Reference calendar}}"
                 Culture="{Binding Culture, Source={x:Reference calendar}}"
@@ -47,11 +46,12 @@
                 EventIndicatorTextColor="{Binding EventIndicatorTextColor, Source={x:Reference calendar}}"
                 EventIndicatorType="{Binding EventIndicatorType, Source={x:Reference calendar}}"
                 Events="{Binding Events, Source={x:Reference calendar}}"
+                FirstDayOfWeek="{Binding FirstDayOfWeek, Source={x:Reference calendar}}"
                 MaximumDate="{Binding MaximumDate, Source={x:Reference calendar}}"
                 MinimumDate="{Binding MinimumDate, Source={x:Reference calendar}}"
                 OtherMonthDayColor="{Binding OtherMonthDayColor, Source={x:Reference calendar}}"
-                OtherMonthSelectedDayColor="{Binding OtherMonthSelectedDayColor, Source={x:Reference calendar}}"
                 OtherMonthDayIsVisible="{Binding OtherMonthDayIsVisible, Source={x:Reference calendar}}"
+                OtherMonthSelectedDayColor="{Binding OtherMonthSelectedDayColor, Source={x:Reference calendar}}"
                 SelectedDates="{Binding SelectedDates, Source={x:Reference calendar}, Mode=TwoWay}"
                 SelectedDayBackgroundColor="{Binding SelectedDayBackgroundColor, Source={x:Reference calendar}}"
                 SelectedDayTextColor="{Binding SelectedDayTextColor, Source={x:Reference calendar}}"
