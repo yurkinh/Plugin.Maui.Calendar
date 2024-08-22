@@ -39,6 +39,7 @@
                                          Dark={StaticResource Yellow100Accent}}"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         Events="{Binding Events}"
+        FirstDayOfWeek="Monday"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"

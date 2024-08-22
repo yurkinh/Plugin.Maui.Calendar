@@ -1435,7 +1435,8 @@ public partial class Calendar : ContentView
         nameof(FirstDayOfWeek),
         typeof(DayOfWeek),
         typeof(Calendar),
-        DayOfWeek.Sunday);
+        DayOfWeek.Sunday
+    );
 
     /// <summary>
     /// Sets the first day of the week in the calendar
