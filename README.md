@@ -55,6 +55,7 @@ Weekend calendar
 * Added a weekend calendar sample
 * Added a windows 11 calendar sample
 * Added theme support
+* Added new property **FirstDayOfWeek**
 
 
 ### Usage
@@ -214,6 +215,7 @@ TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
 OtherMonthSelectedDayColor="HotPink"
+FirstDayOfWeek="Monday"
 ```
 
 #### Available customization properties
