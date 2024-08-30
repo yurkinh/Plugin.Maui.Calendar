@@ -893,22 +893,18 @@ public partial class MonthDaysView : ContentView
             case nameof(DayViewFontSize):
                 UpdateDaysColors();
                 break;
+            case nameof(FirstDayOfWeek):
             case nameof(Culture):
+            case nameof(CalendarLayout):
                 RenderLayout();
                 UpdateAndAnimateDays(AnimateCalendar);
                 break;
-
             case nameof(DaysTitleMaximumLength):
             case nameof(DaysTitleColor):
             case nameof(DaysTitleHeight):
             case nameof(DaysTitleWeekendColor):
             case nameof(DaysTitleLabelFirstUpperRestLower):
                 UpdateDayTitles();
-                break;
-
-            case nameof(CalendarLayout):
-                RenderLayout();
-                UpdateAndAnimateDays(AnimateCalendar);
                 break;
         }
     }
