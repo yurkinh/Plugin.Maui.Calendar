@@ -5,7 +5,7 @@ using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal class MonthViewEngine(CultureInfo culture) : ViewLayoutBase(culture), IViewLayoutEngine
+internal class MonthViewEngine(CultureInfo culture, DayOfWeek firstDayOfWeek) : ViewLayoutBase(culture, firstDayOfWeek), IViewLayoutEngine
 {
     private const int _monthNumberOfWeeks = 6;
 

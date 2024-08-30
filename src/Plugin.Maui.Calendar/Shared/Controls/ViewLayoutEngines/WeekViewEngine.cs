@@ -5,16 +5,10 @@ using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal class WeekViewEngine : ViewLayoutBase, IViewLayoutEngine
+internal class WeekViewEngine(CultureInfo culture, int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBase(culture, firstDayOfWeek), IViewLayoutEngine
 {
-    private readonly int _numberOfWeeks;
-    private readonly int _unitSizeinDays;
-
-    public WeekViewEngine(CultureInfo culture, int numberOfWeeks) : base(culture)
-    {
-        _numberOfWeeks = numberOfWeeks;
-        _unitSizeinDays = 7 * numberOfWeeks;
-    }
+    private readonly int _numberOfWeeks = numberOfWeeks;
+    private readonly int _unitSizeinDays = 7 * numberOfWeeks;
 
     public Grid GenerateLayout(
         List<DayView> dayViews,
@@ -44,7 +38,7 @@ internal class WeekViewEngine : ViewLayoutBase, IViewLayoutEngine
 
     public DateTime GetFirstDate(DateTime dateToShow)
     {
-        return GetFirstDateOfWeek(dateToShow);        
+        return GetFirstDateOfWeek(dateToShow);
     }
 
     public DateTime GetNextUnit(DateTime forDate)
