@@ -22,9 +22,9 @@ Simple cross platform plugin for Calendar control featuring:
 | ![Windiws Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png) | ![Mac Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png) |
 
 Theme support
-| Ligth | Dark | Setting |
+| Ligth | Dark | Settings |
 | ------- | ------ | ------ |
-| ![Light theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Setting Page Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
+| ![Light theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Settings Page Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
 
 # New Samples
 
