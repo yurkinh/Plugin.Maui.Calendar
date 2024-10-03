@@ -67,6 +67,9 @@ public partial class SimplePageViewModel : BasePageViewModel
     public EventCollection Events { get; }
 
     [ObservableProperty]
+    int day = DateTime.Today.Day;
+
+    [ObservableProperty]
     int month = DateTime.Today.Month;
 
     [ObservableProperty]

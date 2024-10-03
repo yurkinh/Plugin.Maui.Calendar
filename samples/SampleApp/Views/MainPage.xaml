@@ -3,10 +3,12 @@
     x:Class="SampleApp.Views.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:android="clr-namespace:CommunityToolkit.Maui.PlatformConfiguration.AndroidSpecific;assembly=CommunityToolkit.Maui"
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="Calendar Plugin for .NET MAUI"
+    android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundPageColor}"
     BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
     Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
     Shell.TitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}">
@@ -44,22 +46,24 @@
                 x:Key="ButtonColor"
                 Dark="#CAD2C5"
                 Light="#99AB9D" />
+            <Style x:Key="LabelMainPageStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontFamily" Value="DarkerGrotesque" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelColor}" />
+            </Style>
             <Style x:Key="ButtonMainPageStyle" TargetType="Button">
                 <Setter Property="HorizontalOptions" Value="Fill" />
                 <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
                 <Setter Property="FontSize" Value="22" />
+                <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="CornerRadius" Value="10" />
                 <Setter Property="FontFamily" Value="DarkerGrotesque" />
                 <Setter Property="Margin" Value="30,10" />
                 <Setter Property="Padding" Value="10" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelButtonColor}" />
                 <Setter Property="VerticalOptions" Value="Center" />
-            </Style>
-            <Style x:Key="LabelMainPageStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="30" />
-                <Setter Property="FontFamily" Value="DarkerGrotesque" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelColor}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
