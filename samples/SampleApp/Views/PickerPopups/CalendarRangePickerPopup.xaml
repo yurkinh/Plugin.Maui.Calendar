@@ -47,7 +47,7 @@
                     Padding="10,0"
                     ArrowsFontFamily="FontAwesomeSolid"
                     DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
-                    DaysTitleWeekendColor="{StaticResource daysTitleLabelStyle}"
+                    DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
                     DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
