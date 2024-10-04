@@ -48,6 +48,17 @@
     <toolkit:AppThemeColor
         x:Key="BackgroundPageColor"
         Dark="#2F3E46"
-        Light="#47CAD2C5" />
-    
+        Light="#edf2f4" />
+    <toolkit:AppThemeColor
+        x:Key="ButtonColor"
+        Dark="#CAD2C5"
+        Light="#a4ac86" />
+    <toolkit:AppThemeColor
+        x:Key="PopupBackgroundColor"
+        Dark="#212121"
+        Light="#edf2f4" />
+    <toolkit:AppThemeColor
+        x:Key="BackgroundColorfullPageColor"
+        Dark="#2F3E46"
+        Light="#c2c5aa" />
 </ResourceDictionary>

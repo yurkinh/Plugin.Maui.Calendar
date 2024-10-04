@@ -8,9 +8,9 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="Calendar Plugin for .NET MAUI"
-    android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundPageColor}"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
-    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
+    android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
+    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     Shell.TitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Clicked="SettingPage">
@@ -30,10 +30,7 @@
                 x:Key="DaysTitleLabelTextColor"
                 Dark="#B3FCF8"
                 Light="#B3FCF8" />
-            <toolkit:AppThemeColor
-                x:Key="BackgroundPageColor"
-                Dark="#2F3E46"
-                Light="#47CAD2C5" />
+
             <toolkit:AppThemeColor
                 x:Key="LabelColor"
                 Dark="#CAD2C5"
@@ -42,10 +39,7 @@
                 x:Key="LabelButtonColor"
                 Dark="#000000"
                 Light="#000000" />
-            <toolkit:AppThemeColor
-                x:Key="ButtonColor"
-                Dark="#CAD2C5"
-                Light="#99AB9D" />
+
             <Style x:Key="LabelMainPageStyle" TargetType="Label">
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="FontSize" Value="30" />

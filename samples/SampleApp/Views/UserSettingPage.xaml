@@ -8,8 +8,8 @@
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="UserSettingPage"
     x:DataType="vm:UserSettingViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundPageColor}"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
+    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     Shell.TitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}">
     <ContentPage.Resources>
         <ResourceDictionary>

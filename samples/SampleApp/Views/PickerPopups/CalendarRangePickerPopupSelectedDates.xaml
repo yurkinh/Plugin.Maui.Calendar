@@ -1,14 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <rg:PopupPage
     x:Class="SampleApp.Views.CalendarRangePickerPopupSelectedDates"
-     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    Unloaded="UnloadedHandler"
-    CloseWhenBackgroundIsClicked="False">
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    BackgroundColor="Transparent"
+    CloseWhenBackgroundIsClicked="False"
+    Unloaded="UnloadedHandler">
+
+    <rg:PopupPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
+            </Style>
+        </ResourceDictionary>
+    </rg:PopupPage.Resources>
+
 
     <rg:PopupPage.BindingContext>
         <local:CalendarRangePickerPopupSelectedDatesViewModel />
@@ -16,12 +29,12 @@
 
     <rg:PopupPage.Content>
         <Border
-            BackgroundColor="White"
+            Margin="20"
+            BackgroundColor="{toolkit:AppThemeResource PopupBackgroundColor}"
             HorizontalOptions="Center"
+            StrokeShape="RoundRectangle 6"
             VerticalOptions="Center">
-            <VerticalStackLayout
-                IsClippedToBounds="True"               
-                Spacing="3">
+            <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
                 <Label
                     FontAttributes="Bold"
                     FontSize="Large"
@@ -32,13 +45,16 @@
                 <plugin:RangeSelectionCalendar
                     x:Name="calendar"
                     Padding="10,0"
+                    ArrowsFontFamily="FontAwesomeSolid"
+                    DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+                    DaysTitleWeekendColor="{StaticResource daysTitleLabelStyle}"
+                    DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
                     MaximumDate="{Binding MaximumDate}"
                     MinimumDate="{Binding MinimumDate}"
-                    ShownDate="{Binding ShownDate}"
-                    ArrowsFontFamily="FontAwesomeSolid"
                     SelectedDates="{Binding SelectedDates}"
+                    ShownDate="{Binding ShownDate}"
                     VerticalOptions="Center"
                     WidthRequest="320">
                     <plugin:Calendar.HeaderSectionTemplate>
@@ -46,17 +62,23 @@
                     </plugin:Calendar.HeaderSectionTemplate>
                 </plugin:RangeSelectionCalendar>
 
-                <FlexLayout JustifyContent="SpaceBetween">
+                <Grid
+                    Margin="5"
+                    ColumnDefinitions="*,*,*"
+                    ColumnSpacing="10">
                     <Button
+                        Grid.Column="0"
                         Command="{Binding ClearCommand}"
-                        HorizontalOptions="End"
                         Text="Clear" />
                     <Button
+                        Grid.Column="1"
                         Command="{Binding SuccessCommand}"
-                        HorizontalOptions="End"
                         Text="Select" />
-                    <Button Command="{Binding CancelCommand}" Text="Cancel" />
-                </FlexLayout>
+                    <Button
+                        Grid.Column="2"
+                        Command="{Binding CancelCommand}"
+                        Text="Cancel" />
+                </Grid>
             </VerticalStackLayout>
         </Border>
     </rg:PopupPage.Content>
