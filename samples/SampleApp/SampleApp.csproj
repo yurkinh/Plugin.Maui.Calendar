@@ -64,5 +64,11 @@
 	<ItemGroup>
 	 <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.72" />
 	<PackageReference Include="CommunityToolkit.Maui" Version="9.0.3" />
+	</ItemGroup>	
+	
+	<ItemGroup>
+	  <MauiXaml Update="Controls\ThemeButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

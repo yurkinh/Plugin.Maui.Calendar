@@ -45,4 +45,9 @@
         x:Key="BackgroundColor"
         Dark="#212121"
         Light="White" />
+    <toolkit:AppThemeColor
+        x:Key="BackgroundPageColor"
+        Dark="#2F3E46"
+        Light="#47CAD2C5" />
+    
 </ResourceDictionary>

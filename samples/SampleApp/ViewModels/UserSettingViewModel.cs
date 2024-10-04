@@ -12,27 +12,35 @@ public partial class UserSettingViewModel(IThemeService themeService) : Observab
     bool isCheckedDark;
 
     [ObservableProperty]
-    bool isCheckedSystem;
+    bool isCheckedSystem = true;
     partial void OnIsCheckedLightChanged(bool value)
     {
+        var a = themeService.UserAppTheme;
+
         if (value)
         {
-            themeService.SetTheme((AppTheme)(Themes.Light));
+            themeService.SetTheme(AppTheme.Light);
         }
+        var b = themeService.UserAppTheme;
     }
     partial void OnIsCheckedDarkChanged(bool value)
     {
+        var a = themeService.UserAppTheme;
+
         if (value)
         {
-            themeService.SetTheme((AppTheme)(Themes.Dark));
+            themeService.SetTheme(AppTheme.Dark);
         }
+        var b = themeService.UserAppTheme;
     }
     partial void OnIsCheckedSystemChanged(bool value)
     {
+        var a = themeService.UserAppTheme;
+
         if (value)
         {
-            themeService.SetTheme((AppTheme)(Themes.System));
+            themeService.SetTheme(AppTheme.Unspecified);
         }
+        var b = themeService.UserAppTheme;
     }
-
 }

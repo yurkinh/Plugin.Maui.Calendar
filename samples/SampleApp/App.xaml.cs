@@ -20,7 +20,7 @@ public partial class App : Application
 
     protected override void OnStart()
     {
-        themeService.SetTheme((AppTheme)(Themes.System));
+        themeService.SetTheme(AppTheme.Unspecified);
     }   
 
     protected override void OnResume()
