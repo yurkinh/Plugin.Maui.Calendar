@@ -91,7 +91,7 @@ __Remark: You can use `ShownDate` as an alternative to `Year`, `Month` and `Day`
 <controls:Calendar
         ShownDate="2019-05-14"
         VerticalOptions="Fill"
-        HorizontalOptions="Fill">
+        HorizontalOptions="Fill"/>
 ```
 
 #### Binding events:
@@ -192,7 +192,7 @@ public CultureInfo Culture => new CultureInfo("hr-HR")
 In XAML add Culture binding
 ```xml
 <controls:Calendar
-    Culture="{Binding Culture}">
+    Culture="{Binding Culture}"/>
 </controls:Calendar>
 ```
 
