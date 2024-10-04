@@ -68,8 +68,6 @@
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
         ShownDate="{Binding ShownDate}"
-        SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
-        SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeToChangeMonthEnabled="False"
         SwipeUpToHideEnabled="False"
         TodayFillColor="Silver"
