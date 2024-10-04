@@ -65,6 +65,13 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
         }
     }
 
+    [RelayCommand]
+    static async Task DayTapped(object item)
+    { 
+
+    }
+        
+
     private static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name, DateTime timeOfEvent)
     {
         return Enumerable.Range(1, count).Select(x => new AdvancedEventModel

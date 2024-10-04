@@ -84,6 +84,12 @@ public partial class SimplePageViewModel : BasePageViewModel
     [ObservableProperty]
     DateTime maximumDate = DateTime.Today.AddMonths(5);
 
+    [ObservableProperty]
+    string name;
+
+    [ObservableProperty]
+    string description;
+
     [RelayCommand]
     void Today()
     {

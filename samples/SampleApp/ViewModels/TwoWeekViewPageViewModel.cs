@@ -65,6 +65,11 @@ public partial class TwoWeekViewPageViewModel : BasePageViewModel
     [ObservableProperty]
     DateTime maximumDate = DateTime.Today.AddMonths(5);
 
+    [ObservableProperty]
+    string name;
+
+    [ObservableProperty]
+    string description;
     private static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new EventModel

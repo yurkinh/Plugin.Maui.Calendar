@@ -6,7 +6,6 @@
     xmlns:android="clr-namespace:CommunityToolkit.Maui.PlatformConfiguration.AndroidSpecific;assembly=CommunityToolkit.Maui"
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="Calendar Plugin for .NET MAUI"
     android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"

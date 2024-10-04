@@ -4,12 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:vm="clr-namespace:SampleApp.ViewModels"
     x:Name="windowsCalendarPage"
     Title="Windows 11 Calendar"
-    x:DataType="vm:Windows11CalendarViewModel">
+    x:DataType="local:Windows11CalendarViewModel">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -33,7 +33,7 @@
 
 
     <ContentPage.BindingContext>
-        <vm:Windows11CalendarViewModel />
+        <local:Windows11CalendarViewModel />
     </ContentPage.BindingContext>
 
     <Grid>
