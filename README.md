@@ -74,7 +74,7 @@ Basic control usage:
         Month="5"
         Year="2019"
         VerticalOptions="Fill"
-        HorizontalOptions="Fill">
+        HorizontalOptions="Fill"/>
 ```
 
 Bindable properties:
@@ -91,7 +91,7 @@ __Remark: You can use `ShownDate` as an alternative to `Year`, `Month` and `Day`
 <controls:Calendar
         ShownDate="2019-05-14"
         VerticalOptions="Fill"
-        HorizontalOptions="Fill">
+        HorizontalOptions="Fill"/>
 ```
 
 #### Binding events:
@@ -129,30 +129,30 @@ public EventCollection Events { get; set; }
 
 Initialize Events with your data:
 ```csharp
-Events = new EventCollection
-{
+ Events = new EventCollection
+ {
     [DateTime.Now] = new List<EventModel>
     {
-        new EventModel { Name = "Cool event1", Description = "This is Cool event1's description!" },
-        new EventModel { Name = "Cool event2", Description = "This is Cool event2's description!" }
+        new() { Name = "Cool event1", Description = "This is Cool event1's description!" },
+        new() { Name = "Cool event2", Description = "This is Cool event2's description!" }
     },
     // 5 days from today
     [DateTime.Now.AddDays(5)] = new List<EventModel>
     {
-        new EventModel { Name = "Cool event3", Description = "This is Cool event3's description!" },
-        new EventModel { Name = "Cool event4", Description = "This is Cool event4's description!" }
+        new() { Name = "Cool event3", Description = "This is Cool event3's description!" },
+        new() { Name = "Cool event4", Description = "This is Cool event4's description!" }
     },
     // 3 days ago
     [DateTime.Now.AddDays(-3)] = new List<EventModel>
     {
-        new EventModel { Name = "Cool event5", Description = "This is Cool event5's description!" }
+        new() { Name = "Cool event5", Description = "This is Cool event5's description!" }
     },
     // custom date
-    [new DateTime(2020, 3, 16))] = new List<EventModel>
+    [new DateTime(2024, 3, 16)] = new List<EventModel>
     {
-        new EventModel { Name = "Cool event6", Description = "This is Cool event6's description!" }
+        new() { Name = "Cool event6", Description = "This is Cool event6's description!" }
     }
-};
+ };
 ```
 
 Initialize Events with your data and a different dot color per day:
@@ -160,20 +160,20 @@ Initialize Events with your data and a different dot color per day:
 Events = new EventCollection
 {
     //2 days ago
-    [DateTime.Now.AddDays(-2)] = new DayEventCollection<EventModel>( Color.Purple, Color.Purple)
+    [DateTime.Now.AddDays(-2)] = new DayEventCollection<EventModel>(Colors.Purple, Colors.Purple)
     {
-        new EventModel { Name = "Cool event1", Description = "This is Cool event1's description!" },
-        new EventModel { Name = "Cool event2", Description = "This is Cool event2's description!" }
+        new() { Name = "Cool event1", Description = "This is Cool event1's description!" },
+        new() { Name = "Cool event2", Description = "This is Cool event2's description!" }
     },
     // 5 days ago
-    [DateTime.Now.AddDays(-5)] = new DayEventCollection<EventModel>(Color.Blue, Color.Blue)
+    [DateTime.Now.AddDays(-5)] = new DayEventCollection<EventModel>(Colors.Blue, Colors.Blue)
     {
-        new EventModel { Name = "Cool event3", Description = "This is Cool event3's description!" },
-        new EventModel { Name = "Cool event4", Description = "This is Cool event4's description!" }
+        new() { Name = "Cool event3", Description = "This is Cool event3's description!" },
+        new() { Name = "Cool event4", Description = "This is Cool event4's description!" }
     },
 };
 //4 days ago
-Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<EventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Color.Green, EventIndicatorSelectedColor = Color.Green });
+Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<EventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.Green });
 ```
 
 Where `EventModel` is just an example, it can be replaced by any data model you desire.
@@ -192,7 +192,7 @@ public CultureInfo Culture => new CultureInfo("hr-HR")
 In XAML add Culture binding
 ```xml
 <controls:Calendar
-    Culture="{Binding Culture}">
+    Culture="{Binding Culture}"/>
 </controls:Calendar>
 ```
 

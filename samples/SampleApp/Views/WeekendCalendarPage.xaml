@@ -4,11 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:vm="clr-namespace:SampleApp.ViewModels"
-    x:Name="weekendCalendarPage">
+    x:Name="weekendCalendarPage"
+    x:DataType="local:WeekendCalendarPageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -29,7 +31,7 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.BindingContext>
-        <vm:WeekendCalendarPageViewModel />
+        <local:WeekendCalendarPageViewModel />
     </ContentPage.BindingContext>
     <plugin:Calendar
         x:Name="calendar"
@@ -46,28 +48,5 @@
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
         VerticalOptions="Fill"
         WeekendDayColor="Red"
-        Year="{Binding Year}">
-
-        <plugin:Calendar.EventTemplate>
-            <DataTemplate>
-                <VerticalStackLayout
-                    Padding="15,0,0,0"
-                    HorizontalOptions="Fill"
-                    Spacing="6"
-                    VerticalOptions="Fill">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="Medium"
-                        Text="{Binding Name, Mode=OneWay}" />
-                    <Label
-                        FontSize="Small"
-                        LineBreakMode="WordWrap"
-                        Text="{Binding Description, Mode=OneWay}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Mode=OneWay, Source={x:Reference weekendCalendarPage}}" CommandParameter="{Binding .}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-            </DataTemplate>
-        </plugin:Calendar.EventTemplate>
-    </plugin:Calendar>
+        Year="{Binding Year}" />
 </ContentPage>

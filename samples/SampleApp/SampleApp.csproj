@@ -13,7 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>SampleApp</ApplicationTitle>
+		<ApplicationTitle>SampleCalendarApp</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.sampleapp</ApplicationId>
@@ -36,10 +36,10 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#e5e5e5" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\AppIcon\appicon.svg" Color="#a3b18a" BaseSize="220,220" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -64,5 +64,11 @@
 	<ItemGroup>
 	 <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.72" />
 	<PackageReference Include="CommunityToolkit.Maui" Version="9.0.3" />
+	</ItemGroup>	
+	
+	<ItemGroup>
+	  <MauiXaml Update="Controls\ThemeButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:SampleApp.Controls"
-             xmlns:local="clr-namespace:SampleApp.ViewModels" xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"             
-             x:Class="SampleApp.Views.WeekViewPage"
-             Unloaded="UnloadedHandler"
-             x:Name="weekViewCalendarPage">
+<ContentPage
+    x:Class="SampleApp.Views.WeekViewPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="weekViewCalendarPage"
+    x:DataType="local:WeekViewPageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Unloaded="UnloadedHandler">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
@@ -16,19 +21,23 @@
 
     <plugin:Calendar
         x:Name="calendar"
+        Padding="10,0"
+        ArrowsFontFamily="FontAwesomeSolid"
         CalendarLayout="{Binding CalendarLayout}"
-        ShownDate="{Binding ShownDate}"
+        Day="{Binding Day}"
+        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+        DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
+        HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
-        SelectedDate="{Binding SelectedDate}"
-        ArrowsFontFamily="FontAwesomeSolid"
-        Day="{Binding Day}"
         Month="{Binding Month}"
-        Year="{Binding Year}"
-        Padding="10,0"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
+        SelectedDate="{Binding SelectedDate}"
+        ShownDate="{Binding ShownDate}"
+        VerticalOptions="Fill"
+        Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
             <controls:CalendarHeader />
@@ -36,9 +45,10 @@
 
         <plugin:Calendar.EventTemplate>
             <DataTemplate>
-                <VerticalStackLayout Spacing="6"
+                <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
+                    Spacing="6"
                     VerticalOptions="Fill">
                     <Label
                         FontAttributes="Bold"

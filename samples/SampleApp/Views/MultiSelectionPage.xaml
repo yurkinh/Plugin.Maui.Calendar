@@ -1,13 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SampleApp.Views.MultiSelectionPage"
-             Title="MultiSelectionPage"
-             xmlns:local="clr-namespace:SampleApp.ViewModels"
-             xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-             Unloaded="UnloadedHandler"
-             x:Name="multiCalendarPage">
-   <ContentPage.Resources>
+<ContentPage
+    x:Class="SampleApp.Views.MultiSelectionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="multiCalendarPage"
+    Title="MultiSelectionPage"
+    x:DataType="local:SimplePageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Unloaded="UnloadedHandler">
+    <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -18,7 +22,7 @@
                 <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />                
+                <Setter Property="FontSize" Value="18" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -31,24 +35,27 @@
 
     <plugin:MultiSelectionCalendar
         x:Name="calendar"
+        Padding="10,0"
+        ArrowsFontSize="Medium"
+        DaysLabelStyle="{StaticResource daysLabelStyle}"
+        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+        DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
+        HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
-        Month="{Binding Month}"        
+        Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
-        DaysLabelStyle="{StaticResource daysLabelStyle}"       
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        ArrowsFontSize="Medium"
-        Year="{Binding Year}"       
-        Padding="10,0"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
+        VerticalOptions="Fill"
+        Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>
             <DataTemplate>
                 <VerticalStackLayout
-                    Spacing="6"
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
+                    Spacing="6"
                     VerticalOptions="Fill">
                     <Label
                         FontAttributes="Bold"

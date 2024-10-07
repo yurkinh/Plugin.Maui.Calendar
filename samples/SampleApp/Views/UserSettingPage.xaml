@@ -3,132 +3,38 @@
     x:Class="SampleApp.Views.UserSettingPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="UserSettingPage"
     x:DataType="vm:UserSettingViewModel"
- >
-    <ContentPage.Resources>
-        <ControlTemplate x:Key="RadioButtonTemplate">
-            <Grid Margin="4" WidthRequest="100">
-                <Grid
-                    Margin="5"
-                    HeightRequest="18"
-                    HorizontalOptions="End"
-                    VerticalOptions="Start"
-                    WidthRequest="18">
-                    <Ellipse
-                      
-                        HeightRequest="16"
-                        HorizontalOptions="Center"
-                  
-                        VerticalOptions="Center"
-                        WidthRequest="16" />
-                    <Ellipse
-                        x:Name="check"
-                        Fill="{StaticResource RadioButtonColor}"
-                        HeightRequest="8"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        WidthRequest="8" />
-                </Grid>
-                <ContentPresenter />
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CheckedStates">
-                            <VisualState x:Name="Checked">
-                                <VisualState.Setters>
-                                  
-                                    <Setter TargetName="check" Property="Opacity" Value="1" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Unchecked">
-                                <VisualState.Setters>
-                                
-                                    <Setter TargetName="check" Property="Opacity" Value="0" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </VisualStateManager.VisualStateGroups>
-            </Grid>
-        </ControlTemplate>
-
-        <Style TargetType="RadioButton">
-            <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}" />
-            <Setter Property="BackgroundColor" Value="White" />
-        </Style>
-        <ResourceDictionary>
-            <Style x:Key="RadioButtonLabelImageStyle" TargetType="Label">
-                <Setter Property="Padding" Value="10" />
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-                <Setter Property="TextColor" Value="Turquoise" />
-                <Setter Property="FontSize" Value="30" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-            </Style>
-
-            <Style x:Key="RadioButtonLabeStyle" TargetType="Label">
-                <Setter Property="Padding" Value="10,2,10,10" />
-                <Setter Property="TextColor" Value="Turquoise" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-            </Style>
-
-        </ResourceDictionary>
-    </ContentPage.Resources>
-  
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}">
     <VerticalStackLayout Margin="20,5">
         <Label
             Margin="0,10,0,10"
             FontSize="20"
             HorizontalOptions="Center"
             Text="Theme mode"
-         />
+            TextColor="{toolkit:AppThemeResource TextColor}" />
         <Grid ColumnDefinitions="*,*,*">
-
-            <RadioButton Grid.Column="0" IsChecked="{Binding IsCheckedLight, Mode=TwoWay}">
-                <RadioButton.Content>
-                    <Border Stroke="Turquoise" StrokeThickness="2">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
-                        </Border.StrokeShape>
-                        <VerticalStackLayout Spacing="3">
-                            <Label Style="{StaticResource RadioButtonLabelImageStyle}" Text="&#xf185;" />
-                            <Label Style="{StaticResource RadioButtonLabeStyle}" Text="Light" />
-                        </VerticalStackLayout>
-
-                    </Border>
-                </RadioButton.Content>
-            </RadioButton>
-
-            <RadioButton Grid.Column="1" IsChecked="{Binding IsCheckedDark, Mode=TwoWay}">
-                <RadioButton.Content>
-                    <Border Stroke="Turquoise" StrokeThickness="2">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
-                        </Border.StrokeShape>
-                        <VerticalStackLayout Spacing="3">
-                            <Label Style="{StaticResource RadioButtonLabelImageStyle}" Text="&#xf186;" />
-                            <Label Style="{StaticResource RadioButtonLabeStyle}" Text="Dark" />
-                        </VerticalStackLayout>
-                    </Border>
-                </RadioButton.Content>
-            </RadioButton>
-
-            <RadioButton Grid.Column="2" IsChecked="{Binding IsCheckedSystem, Mode=TwoWay}">
-                <RadioButton.Content>
-                    <Border Stroke="Turquoise" StrokeThickness="2">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="10" />
-                        </Border.StrokeShape>
-                        <VerticalStackLayout Spacing="3">
-                            <Label Style="{StaticResource RadioButtonLabelImageStyle}" Text="&#xf390;" />
-                            <Label Style="{StaticResource RadioButtonLabeStyle}" Text="System" />
-                        </VerticalStackLayout>
-                    </Border>
-                </RadioButton.Content>
-            </RadioButton>
-
+            <controls:ThemeButton
+                Title="Light"
+                Grid.Column="0"
+                GroupName="ThemeButtons"
+                Icon="&#xf185;"
+                IsChecked="{Binding IsCheckedLight, Mode=TwoWay}" />
+            <controls:ThemeButton
+                Title="Dark"
+                Grid.Column="1"
+                GroupName="ThemeButtons"
+                Icon="&#xf186;"
+                IsChecked="{Binding IsCheckedDark, Mode=TwoWay}" />
+            <controls:ThemeButton
+                Title="System"
+                Grid.Column="2"
+                GroupName="ThemeButtons"
+                Icon="&#xf390;"
+                IsChecked="{Binding IsCheckedSystem, Mode=TwoWay}" />
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

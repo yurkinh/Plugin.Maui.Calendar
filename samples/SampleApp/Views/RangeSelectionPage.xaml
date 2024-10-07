@@ -2,12 +2,15 @@
 <ContentPage
     x:Class="SampleApp.Views.RangeSelectionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"   
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    Unloaded="UnloadedHandler"
-    x:Name="advancedRangeSelectionCalendarPage">
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="advancedRangeSelectionCalendarPage"
+    x:DataType="local:RangeSelectionPageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Unloaded="UnloadedHandler">
 
     <ContentPage.BindingContext>
         <local:RangeSelectionPageViewModel />
@@ -16,13 +19,13 @@
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
         Padding="10,0"
+        ArrowsFontFamily="FontAwesomeSolid"
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
-        ShownDate="{Binding ShownDate}"
-        ArrowsFontFamily="FontAwesomeSolid"
         SelectedDates="{Binding SelectedDates}"
         SelectedEndDate="{Binding SelectedEndDate}"
-        SelectedStartDate="{Binding SelectedStartDate}">
+        SelectedStartDate="{Binding SelectedStartDate}"
+        ShownDate="{Binding ShownDate}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
             <controls:CalendarHeader />

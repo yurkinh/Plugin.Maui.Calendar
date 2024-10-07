@@ -67,6 +67,9 @@ public partial class SimplePageViewModel : BasePageViewModel
     public EventCollection Events { get; }
 
     [ObservableProperty]
+    int day = DateTime.Today.Day;
+
+    [ObservableProperty]
     int month = DateTime.Today.Month;
 
     [ObservableProperty]
@@ -80,6 +83,12 @@ public partial class SimplePageViewModel : BasePageViewModel
 
     [ObservableProperty]
     DateTime maximumDate = DateTime.Today.AddMonths(5);
+
+    [ObservableProperty]
+    string name;
+
+    [ObservableProperty]
+    string description;
 
     [RelayCommand]
     void Today()

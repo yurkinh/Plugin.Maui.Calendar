@@ -5,7 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="simpleCalendarPage"
+    x:DataType="local:SimplePageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Unloaded="UnloadedHandler">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -33,11 +36,13 @@
         x:Name="calendar"
         Padding="10,0"
         ArrowsFontSize="Medium"
+        Day="{Binding Day}"
         DayViewFontSize="Medium"
         DaysLabelStyle="{StaticResource daysLabelStyle}"
-        DaysTitleColor="{AppThemeBinding Light={StaticResource Black},
-                                         Dark={StaticResource Yellow100Accent}}"
+        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+        DaysTitleWeekendColor="Red"
+        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         FirstDayOfWeek="Monday"
         HorizontalOptions="Fill"

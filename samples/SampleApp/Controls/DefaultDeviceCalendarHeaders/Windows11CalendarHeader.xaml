@@ -50,7 +50,6 @@
             FontAttributes="Bold"
             FontSize="14"
             HorizontalOptions="Start"
-            Style="{StaticResource HeaderLabelStyle}"
             TextColor="{toolkit:AppThemeResource DaysTitleLabelTextColorMinimalistic}"
             VerticalOptions="Center">
             <Label.FormattedText>

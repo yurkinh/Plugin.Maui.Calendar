@@ -6,8 +6,11 @@
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    Unloaded="UnloadedHandler"
-    x:Name="advancedCalendarPage">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="advancedCalendarPage"
+    x:DataType="local:AdvancedPageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Unloaded="UnloadedHandler">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle" TargetType="Label">
@@ -65,8 +68,6 @@
         SelectedDayTextColor="Cyan"
         SelectedTodayTextColor="Green"
         ShownDate="{Binding ShownDate}"
-        SwipeLeftCommand="{Binding PrevLayoutUnitCommand, Source={x:Reference MyCalendar}}"
-        SwipeRightCommand="{Binding NextLayoutUnitCommand, Source={x:Reference MyCalendar}}"
         SwipeToChangeMonthEnabled="False"
         SwipeUpToHideEnabled="False"
         TodayFillColor="Silver"

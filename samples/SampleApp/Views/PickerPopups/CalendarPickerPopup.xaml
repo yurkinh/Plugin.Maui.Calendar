@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rg:PopupPage
+    x:Class="SampleApp.Views.CalendarPickerPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:rg="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="local:CalendarPickerPopupViewModel"
+    BackgroundColor="Transparent"
+    CloseWhenBackgroundIsClicked="False"
+    Unloaded="UnloadedHandler">
+
+    <rg:PopupPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
+            </Style>
+        </ResourceDictionary>
+    </rg:PopupPage.Resources>
+
+    <rg:PopupPage.BindingContext>
+        <local:CalendarPickerPopupViewModel />
+    </rg:PopupPage.BindingContext>
+
+    <rg:PopupPage.Content>
+        <Border
+            Margin="20"
+            BackgroundColor="{toolkit:AppThemeResource PopupBackgroundColor}"
+            HorizontalOptions="Center"
+            StrokeShape="RoundRectangle 6"
+            VerticalOptions="Center">
+            <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Fill"
+                    HorizontalTextAlignment="Center"
+                    Text="Choose Date"
+                    VerticalOptions="Center" />
+                <plugin:Calendar
+                    x:Name="calendar"
+                    Padding="10,0"
+                    ArrowsFontFamily="FontAwesomeSolid"
+                    DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+                    DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+                    DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                    DisabledDayColor="Gray"
+                    FooterSectionVisible="False"
+                    HorizontalOptions="Center"
+                    MaximumDate="{Binding MaximumDate}"
+                    MinimumDate="{Binding MinimumDate}"
+                    SelectedDate="{Binding SelectedDate}"
+                    VerticalOptions="Center"
+                    WidthRequest="320" />
+                <Grid
+                    Margin="5"
+                    ColumnDefinitions="*,*,*"
+                    ColumnSpacing="10">
+                    <Button
+                        Grid.Column="0"
+                        Command="{Binding ClearCommand}"
+                        Text="Clear" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding SuccessCommand}"
+                        Text="Select" />
+                    <Button
+                        Grid.Column="2"
+                        Command="{Binding CancelCommand}"
+                        Text="Cancel" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </rg:PopupPage.Content>
+
+</rg:PopupPage>
