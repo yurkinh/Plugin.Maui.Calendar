@@ -42,7 +42,7 @@
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
                 TextColor="{Binding TextColor, Mode=OneWay}" />
-            <StackLayout Orientation="Horizontal" HeightRequest="8">
+            <HorizontalStackLayout HeightRequest="8">
                 <Border
                     Padding="0"
                     BackgroundColor="{Binding EventColor, Mode=OneWay}"
@@ -78,7 +78,7 @@
                     IsVisible="{Binding IsFifthEventDotVisible, Mode=OneWay}"
                     StrokeShape="RoundRectangle 4"
                     WidthRequest="8" />
-            </StackLayout>
+            </HorizontalStackLayout>
         </FlexLayout>
     </Grid>
 </ContentView>
