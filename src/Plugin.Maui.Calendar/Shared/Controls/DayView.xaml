@@ -27,14 +27,14 @@
         Stroke="{Binding OutlineColor, Mode=OneWay}"
         StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
         WidthRequest="{Binding DayViewSize, Mode=OneWay}">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnTapped" />
-            </Border.GestureRecognizers>
         </Border>
         <FlexLayout
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
+            <FlexLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnTapped" />
+            </FlexLayout.GestureRecognizers>
             <Grid HeightRequest="4"/>
             <Label
                 FontSize="{Binding FontSize, Mode=OneWay}"
