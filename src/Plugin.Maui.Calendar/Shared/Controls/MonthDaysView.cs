@@ -1157,30 +1157,41 @@ public partial class MonthDaysView : ContentView
 
     internal void AssignIndicatorColors(ref DayModel dayModel)
     {
+        dayModel.EventIndicatorColor = EventIndicatorColor;
+        dayModel.EventIndicatorSelectedColor = EventIndicatorSelectedColor;
+        dayModel.EventIndicatorTextColor = EventIndicatorTextColor;
+        dayModel.EventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
         if (
             Events.TryGetValue(dayModel.Date, out var dayEventCollection)
-            && dayEventCollection is IPersonalizableDayEvent personalizableDay
         )
         {
-            dayModel.EventIndicatorColor =
-                personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
-            dayModel.EventIndicatorSelectedColor =
-                personalizableDay?.EventIndicatorSelectedColor
-                ?? personalizableDay?.EventIndicatorColor
-                ?? EventIndicatorSelectedColor;
-            dayModel.EventIndicatorTextColor =
-                personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
-            dayModel.EventIndicatorSelectedTextColor =
-                personalizableDay?.EventIndicatorSelectedTextColor
-                ?? personalizableDay?.EventIndicatorTextColor
-                ?? EventIndicatorSelectedTextColor;
+            if (dayEventCollection is IPersonalizableDayEvent personalizableDay)
+            {
+                dayModel.EventIndicatorColor =
+                    personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
+                dayModel.EventIndicatorSelectedColor =
+                    personalizableDay?.EventIndicatorSelectedColor
+                 ?? personalizableDay?.EventIndicatorColor
+                 ?? EventIndicatorSelectedColor;
+                dayModel.EventIndicatorTextColor =
+                    personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
+                dayModel.EventIndicatorSelectedTextColor =
+                    personalizableDay?.EventIndicatorSelectedTextColor
+                 ?? personalizableDay?.EventIndicatorTextColor
+                 ?? EventIndicatorSelectedTextColor;
+            }
+            if (dayEventCollection is IMultiEventDay multiEventDay)
+            {
+                dayModel.EventColors = multiEventDay.Colors?.ToArray() ?? new Color[0];
+            }
+            else
+            {
+                dayModel.EventColors = new Color[0];
+            }
         }
         else
         {
-            dayModel.EventIndicatorColor = EventIndicatorColor;
-            dayModel.EventIndicatorSelectedColor = EventIndicatorSelectedColor;
-            dayModel.EventIndicatorTextColor = EventIndicatorTextColor;
-            dayModel.EventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
+            dayModel.EventColors = new Color[0];
         }
     }
 

@@ -95,6 +95,10 @@ internal partial class DayModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(
         nameof(IsEventDotVisible),
+        nameof(IsSecondEventDotVisible),
+        nameof(IsThirdEventDotVisible),
+        nameof(IsFourthEventDotVisible),
+        nameof(IsFifthEventDotVisible),
         nameof(BackgroundEventIndicator),
         nameof(BackgroundColor)
     )]
@@ -107,6 +111,19 @@ internal partial class DayModel : ObservableObject
         nameof(BackgroundFullEventColor)
     )]
     Color eventIndicatorColor = Color.FromArgb("#FF4081");
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(
+        nameof(IsSecondEventDotVisible),
+        nameof(IsThirdEventDotVisible),
+        nameof(IsFourthEventDotVisible),
+        nameof(IsFifthEventDotVisible),
+        nameof(SecondEventColor),
+        nameof(ThirdEventColor),
+        nameof(FourthEventColor),
+        nameof(FifthEventColor)
+    )]
+    private IReadOnlyList<Color> eventColors;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(
@@ -144,6 +161,11 @@ internal partial class DayModel : ObservableObject
             || EventIndicatorType == EventIndicatorType.TopDot
         );
 
+    public bool IsSecondEventDotVisible => EventColors?.Count>=2 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
+    public bool IsThirdEventDotVisible => EventColors?.Count>=3 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
+    public bool IsFourthEventDotVisible => EventColors?.Count>=4 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
+    public bool IsFifthEventDotVisible => EventColors?.Count>=5 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
+
     public FlexDirection EventLayoutDirection =>
         (HasEvents && EventIndicatorType == EventIndicatorType.TopDot)
             ? FlexDirection.ColumnReverse
@@ -158,6 +180,11 @@ internal partial class DayModel : ObservableObject
             : Colors.Transparent;
 
     public Color EventColor => IsSelected ? EventIndicatorSelectedColor : EventIndicatorColor;
+
+    public Color SecondEventColor => EventColors != null && EventColors.Count >= 2 ? EventColors[ 1 ] : Colors.Transparent;
+    public Color ThirdEventColor => EventColors != null && EventColors.Count >= 3 ? EventColors[ 2 ] : Colors.Transparent;
+    public Color FourthEventColor => EventColors != null && EventColors.Count >= 4 ? EventColors[ 3 ] : Colors.Transparent;
+    public Color FifthEventColor => EventColors != null && EventColors.Count >= 5 ? EventColors[ 4 ] : Colors.Transparent;
 
     public Color OutlineColor => IsToday && !IsSelected ? TodayOutlineColor : Colors.Transparent;
 
