@@ -13,6 +13,16 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView
 {
+    #region Events
+
+    /// <summary>
+    /// Event that is triggered when the month changes.
+    /// </summary>
+    public event EventHandler<MonthChangedEventArgs> MonthChanged;
+
+    #endregion
+
+
     #region Bindable properties
 
     /// <summary>
@@ -1447,6 +1457,25 @@ public partial class Calendar : ContentView
         get => (DayOfWeek)GetValue(FirstDayOfWeekProperty);
         set => SetValue(FirstDayOfWeekProperty, value);
     }
+
+    /// <summary>
+    /// Bindable property for MonthChangedCommand
+    /// </summary>
+    public static readonly BindableProperty MonthChangedCommandProperty = BindableProperty.Create(
+        nameof(MonthChangedCommand),
+        typeof(ICommand),
+        typeof(Calendar),
+        null
+    );
+
+    /// <summary>
+    /// Command that is executed when the month changes.
+    /// </summary>
+    public ICommand MonthChangedCommand
+    {
+        get => (ICommand)GetValue(MonthChangedCommandProperty);
+        set => SetValue(MonthChangedCommandProperty, value);
+    }
     #endregion
 
     #region SelectedDates
@@ -1654,11 +1683,20 @@ public partial class Calendar : ContentView
             throw new ArgumentException("Month must be between 1 and 12.");
 
         if (bindable is Calendar calendar && calendar.ShownDate.Month != newMonth)
+        {
+            int oldMonth = calendar.ShownDate.Month;
             calendar.ShownDate = new DateTime(
                 calendar.Year,
                 newMonth,
                 Math.Min(DateTime.DaysInMonth(calendar.Year, newMonth), calendar.Day)
             );
+            calendar.MonthChanged?.Invoke(calendar, new MonthChangedEventArgs(oldMonth, newMonth));
+
+            if (calendar.MonthChangedCommand?.CanExecute(null) == true)
+            {
+                calendar.MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+            }
+        }
     }
 
     private static void OnDayChanged(BindableObject bindable, object oldValue, object newValue)
