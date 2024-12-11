@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 namespace SampleApp.ViewModels;
 
 public partial class SimplePageViewModel : BasePageViewModel
-{ 
+{
     public SimplePageViewModel() : base()
     {
         MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
@@ -104,6 +104,19 @@ public partial class SimplePageViewModel : BasePageViewModel
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
             await App.Current.MainPage.DisplayAlert(title, message, "Ok");
+        }
+    }
+
+    [RelayCommand]
+    void OnMonthChanged()
+    {
+        if (args != null)
+        {
+            Console.WriteLine($"The month changed from {args.OldMonth} to {args.NewMonth}");
+        }
+        else
+        {
+            Console.WriteLine("Parameter was not provided.");
         }
     }
 }
