@@ -1684,18 +1684,11 @@ public partial class Calendar : ContentView
 
         if (bindable is Calendar calendar && calendar.ShownDate.Month != newMonth)
         {
-            int oldMonth = calendar.ShownDate.Month;
             calendar.ShownDate = new DateTime(
                 calendar.Year,
                 newMonth,
                 Math.Min(DateTime.DaysInMonth(calendar.Year, newMonth), calendar.Day)
             );
-            calendar.MonthChanged?.Invoke(calendar, new MonthChangedEventArgs(oldMonth, newMonth));
-
-            if (calendar.MonthChangedCommand?.CanExecute(null) == true)
-            {
-                calendar.MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
-            }
         }
     }
 
@@ -1912,11 +1905,31 @@ public partial class Calendar : ContentView
     private void PrevUnit()
     {
         ShownDate = _viewLayoutEngine.GetPreviousUnit(ShownDate);
+        
+        var oldMonth = ShownDate.Month;
+        var newMonth = ShownDate.Month;
+
+        MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
+
+        if (MonthChangedCommand?.CanExecute(null) == true)
+        {
+            MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+        }
     }
 
     private void NextUnit()
     {
         ShownDate = _viewLayoutEngine.GetNextUnit(ShownDate);
+        
+        var oldMonth = ShownDate.Month;
+        var newMonth = ShownDate.Month;
+
+        MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
+
+        if (MonthChangedCommand?.CanExecute(null) == true)
+        {
+            MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+        }
     }
 
     private void NextYear(object obj)
