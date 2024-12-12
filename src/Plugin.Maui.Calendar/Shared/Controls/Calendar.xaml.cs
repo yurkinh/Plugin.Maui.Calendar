@@ -1904,9 +1904,8 @@ public partial class Calendar : ContentView
 
     private void PrevUnit()
     {
-        ShownDate = _viewLayoutEngine.GetPreviousUnit(ShownDate);
-        
         var oldMonth = ShownDate.Month;
+        ShownDate = _viewLayoutEngine.GetPreviousUnit(ShownDate);
         var newMonth = ShownDate.Month;
 
         MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
@@ -1919,9 +1918,8 @@ public partial class Calendar : ContentView
 
     private void NextUnit()
     {
-        ShownDate = _viewLayoutEngine.GetNextUnit(ShownDate);
-        
         var oldMonth = ShownDate.Month;
+        ShownDate = _viewLayoutEngine.GetNextUnit(ShownDate);
         var newMonth = ShownDate.Month;
 
         MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));

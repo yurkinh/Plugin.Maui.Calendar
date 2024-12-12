@@ -1,13 +1,7 @@
 namespace Plugin.Maui.Calendar.Models;
 
-public class MonthChangedEventArgs : EventArgs
+public class MonthChangedEventArgs(int oldMonth, int newMonth) : EventArgs
 {
-    public int OldMonth { get; }
-    public int NewMonth { get; }
-
-    public MonthChangedEventArgs(int oldMonth, int newMonth)
-    {
-        OldMonth = oldMonth;
-        NewMonth = newMonth;
-    }
+    public int OldMonth { get; } = oldMonth;
+    public int NewMonth { get; } = newMonth;
 }
