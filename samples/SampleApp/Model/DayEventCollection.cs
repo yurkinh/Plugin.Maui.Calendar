@@ -5,7 +5,7 @@ namespace SampleApp.Model;
 /// <summary>
 /// Wrapper to allow change the dot color
 /// </summary>
-public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
+public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent, IMultiEventDay
 {
     /// <summary>
     /// Empty contructor extends from base()
@@ -29,7 +29,8 @@ public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
     /// </summary>
     /// <param name="collection"></param>
     public DayEventCollection(IEnumerable<T> collection) : base(collection)
-    { }
+    { 
+    }
 
     /// <summary>
     /// Capacity contructor extends from base(int capacity)
@@ -44,5 +45,9 @@ public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
     public Color? EventIndicatorTextColor { get; set; }
     public Color? EventIndicatorSelectedTextColor { get; set; }
 
+    #endregion
+
+    #region IMultiEventDay
+    public IReadOnlyList<Color> Colors { get; set; }
     #endregion
 }

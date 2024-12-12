@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.2.2</PackageVersion>
+		<PackageVersion>1.2.3</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,8 +37,8 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-		                    Added new property FirstDayOfWeek.							
-                            Upgaraded Maui packages to 8.0.72.														
+		                    Multiple events support added (up to 5).							
+                            Upgaraded Maui packages to the 8.0.100.														
        </PackageReleaseNotes>
 	</PropertyGroup>	
 
@@ -46,13 +46,13 @@
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.72" />		
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />		
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.0" />
-	  <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.72" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+	  <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.100" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Shared\" />
