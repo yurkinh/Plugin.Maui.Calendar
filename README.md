@@ -56,8 +56,9 @@ Weekend calendar
 * Added a windows 11 calendar sample
 * Added theme support
 * Added new property **FirstDayOfWeek**
-* Add support for multiple event dots (multidots) in calendar 
+* Added support for multiple event dots (multidots) in calendar 
 * Added **MonthChanged** Event and **MonthChangedCommand**
+* Updated samples
 
 
 ### Usage
