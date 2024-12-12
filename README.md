@@ -13,7 +13,7 @@ Simple cross platform plugin for Calendar control featuring:
 
 
 ## Screenshots
-| Android | iPhone |
+| Android | iOS |
 | ------- | ------ |
 | ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png) | ![iPhone Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png) |
 
