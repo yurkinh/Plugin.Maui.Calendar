@@ -108,15 +108,9 @@ public partial class SimplePageViewModel : BasePageViewModel
     }
 
     [RelayCommand]
-    void OnMonthChanged()
+    void MonthChanged(MonthChangedEventArgs month)
     {
-        if (args != null)
-        {
-            Console.WriteLine($"The month changed from {args.OldMonth} to {args.NewMonth}");
-        }
-        else
-        {
-            Console.WriteLine("Parameter was not provided.");
-        }
+        string message = $"The month changed from {month.OldMonth} to {month.NewMonth}";
+        Console.WriteLine(message);
     }
 }
