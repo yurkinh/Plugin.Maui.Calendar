@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 namespace SampleApp.ViewModels;
 
 public partial class SimplePageViewModel : BasePageViewModel
-{ 
+{
     public SimplePageViewModel() : base()
     {
         MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
@@ -107,5 +107,15 @@ public partial class SimplePageViewModel : BasePageViewModel
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
             await App.Current.MainPage.DisplayAlert(title, message, "Ok");
         }
+    }
+
+    [RelayCommand]
+    async Task MonthChanged(MonthChangedEventArgs args)
+    {
+        string oldMonthName = new DateTime(1, args.OldMonth.Month, 1).ToString("MMMM");
+        string newMonthName = new DateTime(1, args.NewMonth.Month, 1).ToString("MMMM");
+
+        string message = $"From {oldMonthName} to {newMonthName}";
+        await App.Current.MainPage.DisplayAlert("Month Changed", message, "OK");
     }
 }

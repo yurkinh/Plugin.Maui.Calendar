@@ -9,17 +9,17 @@ namespace SampleApp;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.ConfigureMopups()
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureMopups()
             .UseMauiCommunityToolkit()
             .InjectServices()
             .InjectViewsAndViewModels()
             .ConfigureFonts(fonts =>
-			{
+            {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("font-awesome-6-free-solid.otf", "FontAwesomeSolid");
@@ -42,6 +42,10 @@ public static class MauiProgram
     {
         builder.Services.AddTransient<UserSettingPage>();
         builder.Services.AddTransient<UserSettingViewModel>();
+
+        builder.Services.AddTransient<SimplePage>();
+        builder.Services.AddTransient<SimplePageViewModel>();
+
         return builder;
     }
     static MauiAppBuilder InjectServices(this MauiAppBuilder builder)

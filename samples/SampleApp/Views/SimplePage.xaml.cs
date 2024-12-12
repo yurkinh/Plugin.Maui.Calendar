@@ -3,9 +3,10 @@
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class SimplePage : ContentPage
 {
-    public SimplePage()
+    public SimplePage(SimplePageViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 
 

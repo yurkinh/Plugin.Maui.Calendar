@@ -13,7 +13,7 @@ Simple cross platform plugin for Calendar control featuring:
 
 
 ## Screenshots
-| Android | iPhone |
+| Android | iOS |
 | ------- | ------ |
 | ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png) | ![iPhone Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png) |
 
@@ -56,6 +56,9 @@ Weekend calendar
 * Added a windows 11 calendar sample
 * Added theme support
 * Added new property **FirstDayOfWeek**
+* Added support for multiple event dots (multidots) in calendar 
+* Added **MonthChanged** Event and **MonthChangedCommand**
+* Updated samples
 
 
 ### Usage
