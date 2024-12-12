@@ -108,9 +108,12 @@ public partial class SimplePageViewModel : BasePageViewModel
     }
 
     [RelayCommand]
-    void MonthChanged(MonthChangedEventArgs month)
+    async Task MonthChanged(MonthChangedEventArgs args)
     {
-        string message = $"The month changed from {month.OldMonth} to {month.NewMonth}";
-        Console.WriteLine(message);
+        string oldMonthName = new DateTime(1, args.OldMonth.Month, 1).ToString("MMMM");
+        string newMonthName = new DateTime(1, args.NewMonth.Month, 1).ToString("MMMM");
+
+        string message = $"From {oldMonthName} to {newMonthName}";
+        await App.Current.MainPage.DisplayAlert("Month Changed", message, "OK");
     }
 }
