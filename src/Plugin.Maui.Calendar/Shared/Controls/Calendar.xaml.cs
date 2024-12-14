@@ -1476,6 +1476,26 @@ public partial class Calendar : ContentView
         get => (ICommand)GetValue(MonthChangedCommandProperty);
         set => SetValue(MonthChangedCommandProperty, value);
     }
+
+    /// <summary>
+    /// Bindable property for AllowDeselect
+    /// </summary>
+    public static readonly BindableProperty AllowDeselectProperty = BindableProperty.Create(
+        nameof(AllowDeselect),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
+
+    /// <summary>
+    /// Indicates whether the date selection can be deselected (deselected)
+    /// </summary>
+    public bool AllowDeselect
+    {
+        get => (bool)GetValue(AllowDeselectProperty);
+        set => SetValue(AllowDeselectProperty, value);
+    }
+
     #endregion
 
     #region SelectedDates
@@ -1492,31 +1512,32 @@ public partial class Calendar : ContentView
         propertyChanged: OnSelectedDateChanged
     );
 
-    private static void OnSelectedDateChanged(
-        BindableObject bindable,
-        object oldValue,
-        object newValue
-    )
+    private static void OnSelectedDateChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var control = (Calendar)bindable;
         var dateToSet = (DateTime?)newValue;
 
-        control.SetValue(SelectedDateProperty, dateToSet);
-        if (
-            !control._isSelectingDates
-            || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine
-        )
+        if (!control.AllowDeselect && !dateToSet.HasValue)
         {
-            if (dateToSet.HasValue)
-                control.SetValue(SelectedDatesProperty, new List<DateTime> { dateToSet.Value });
-            else
-                control.SetValue(SelectedDatesProperty, new List<DateTime>());
+            dateToSet = (DateTime?)oldValue ?? DateTime.Today;
+        }
+
+        control.SetValue(SelectedDateProperty, dateToSet);
+
+        if (!control._isSelectingDates || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine)
+        {
+            control.SetValue(SelectedDatesProperty, dateToSet.HasValue ? new List<DateTime> { dateToSet.Value } : null);
         }
         else
         {
             control._isSelectingDates = false;
         }
+
+        // Оновлюємо текст для відображення вибраної дати
+        control.UpdateSelectedDateLabel();
     }
+
+
 
     /// <summary>
     /// Selected date in single date selection mode
@@ -1809,13 +1830,9 @@ public partial class Calendar : ContentView
         LayoutUnitText = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
     }
 
-    private void UpdateSelectedDateLabel()
-    {
-        SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(
-            SelectedDateTextFormat,
-            Culture
-        );
-    }
+    private void UpdateSelectedDateLabel() =>
+         SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
+
 
     private void ShowHideCalendarSection()
     {
