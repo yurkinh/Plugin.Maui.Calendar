@@ -19,6 +19,10 @@ public partial class MainPage : ContentPage
     {
         await Navigation.PushAsync(ServiceHelper.GetService<SimplePage>());
     }
+    private async void ToDoCalendar(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(ServiceHelper.GetService<ToDoPage>());
+    }
     async void WeekendCalendar(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new WeekendCalendarPage());

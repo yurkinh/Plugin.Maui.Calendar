@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:SampleApp.ViewModels"
+             x:DataType="vm:ToDoPageViewModel"
+             BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+             x:Class="SampleApp.Views.ToDoPage">
+        <VerticalStackLayout>
+                <plugin:Calendar
+                        x:Name="Calendar"
+                        DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+                        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+                        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                        Day="{Binding Day}"
+                        Month="{Binding Month}"
+                        Year="{Binding Year}"/>
+        </VerticalStackLayout>
+</ContentPage>
