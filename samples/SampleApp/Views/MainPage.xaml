@@ -32,12 +32,12 @@
 
             <toolkit:AppThemeColor
                 x:Key="LabelColor"
-                Dark="#CAD2C5"
-                Light="#000000"/>
+                Dark="{StaticResource Tasman}"
+                Light="{StaticResource Black}"/>
             <toolkit:AppThemeColor
                 x:Key="LabelButtonColor"
-                Dark="#000000"
-                Light="#000000"/>
+                Dark="{StaticResource Black}"
+                Light="{StaticResource Black}"/>
 
             <Style x:Key="LabelMainPageStyle"
                    TargetType="Label">
@@ -63,7 +63,7 @@
                 <Setter Property="FontAttributes"
                         Value="Bold"/>
                 <Setter Property="CornerRadius"
-                        Value="10"/>
+                        Value="20"/>
                 <Setter Property="FontFamily"
                         Value="DarkerGrotesque"/>
                 <Setter Property="Margin"
