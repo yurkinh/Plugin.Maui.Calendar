@@ -63,6 +63,6 @@
         Light="#c2c5aa" />
     <toolkit:AppThemeColor
         x:Key="TextColor"
-        Dark="#B3FCF8"
+        Dark="#a3b18a"
         Light="#2F3E46" />
 </ResourceDictionary>
