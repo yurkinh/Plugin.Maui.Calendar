@@ -1512,31 +1512,31 @@ public partial class Calendar : ContentView
         propertyChanged: OnSelectedDateChanged
     );
 
-    private static void OnSelectedDateChanged(BindableObject bindable, object oldValue, object newValue)
+     private static void OnSelectedDateChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
         var control = (Calendar)bindable;
         var dateToSet = (DateTime?)newValue;
 
-        if (!control.AllowDeselect && !dateToSet.HasValue)
-        {
-            dateToSet = (DateTime?)oldValue ?? DateTime.Today;
-        }
-
         control.SetValue(SelectedDateProperty, dateToSet);
-
-        if (!control._isSelectingDates || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine)
+        if (
+            !control._isSelectingDates
+            || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine
+        )
         {
-            control.SetValue(SelectedDatesProperty, dateToSet.HasValue ? new List<DateTime> { dateToSet.Value } : null);
+            if (dateToSet.HasValue)
+                control.SetValue(SelectedDatesProperty, new List<DateTime> { dateToSet.Value });
+            else
+                control.SetValue(SelectedDatesProperty, new List<DateTime>());
         }
         else
         {
             control._isSelectingDates = false;
         }
-
-        // Оновлюємо текст для відображення вибраної дати
-        control.UpdateSelectedDateLabel();
     }
-
 
 
     /// <summary>
