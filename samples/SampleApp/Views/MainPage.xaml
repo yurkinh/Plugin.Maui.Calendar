@@ -10,109 +10,113 @@
     android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
-    Shell.TitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="SettingPage">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource
-                    FontFamily="FontAwesomeSolid"
-                    Glyph="&#xf013;"
-                    Size="30"
-                    Color="{toolkit:AppThemeResource ButtonColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
-
+    Shell.TitleColor="{toolkit:AppThemeResource TextColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:AppThemeColor
-                x:Key="DaysTitleLabelTextColor"
-                Dark="#B3FCF8"
-                Light="#B3FCF8" />
-
-            <toolkit:AppThemeColor
                 x:Key="LabelColor"
                 Dark="#CAD2C5"
-                Light="#000000" />
+                Light="#000000"/>
             <toolkit:AppThemeColor
                 x:Key="LabelButtonColor"
                 Dark="#000000"
-                Light="#000000" />
+                Light="#000000"/>
 
-            <Style x:Key="LabelMainPageStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="30" />
-                <Setter Property="FontFamily" Value="DarkerGrotesque" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelColor}" />
+            <Style x:Key="LabelMainPageStyle"
+                    TargetType="Label">
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="FontSize"
+                        Value="30"/>
+                <Setter Property="FontFamily"
+                        Value="DarkerGrotesque"/>
+                <Setter Property="HorizontalOptions"
+                        Value="Center"/>
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource LabelColor}"/>
             </Style>
-            <Style x:Key="ButtonMainPageStyle" TargetType="Button">
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
-                <Setter Property="FontSize" Value="22" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="FontFamily" Value="DarkerGrotesque" />
-                <Setter Property="Margin" Value="30,10" />
-                <Setter Property="Padding" Value="10" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelButtonColor}" />
-                <Setter Property="VerticalOptions" Value="Center" />
+            <Style x:Key="ButtonMainPageStyle"
+                    TargetType="Button">
+                <Setter Property="HorizontalOptions"
+                        Value="Fill"/>
+                <Setter Property="BackgroundColor"
+                        Value="{toolkit:AppThemeResource ButtonColor}"/>
+                <Setter Property="FontSize"
+                        Value="22"/>
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="CornerRadius"
+                        Value="10"/>
+                <Setter Property="FontFamily"
+                        Value="DarkerGrotesque"/>
+                <Setter Property="Margin"
+                        Value="30,10"/>
+                <Setter Property="Padding"
+                        Value="10"/>
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource LabelButtonColor}"/>
+                <Setter Property="VerticalOptions"
+                        Value="Center"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
-        <VerticalStackLayout HorizontalOptions="Fill" Spacing="6">
+        <VerticalStackLayout HorizontalOptions="Fill"
+                Spacing="6">
             <Label
                 Margin="0,30,0,0"
                 Style="{StaticResource LabelMainPageStyle}"
-                Text="Event Calendar" />
+                Text="Event Calendar"/>
             <Button
                 Clicked="SimpleCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Simple Event Calendar" />
+                Text="Simple Event Calendar"/>
             <Button
                 Clicked="MultiSelectionCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="MultiSelection Event Calendar" />
+                Text="MultiSelection Event Calendar"/>
             <Button
                 Clicked="WeekendCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Weekend Calendar" />
+                Text="Weekend Calendar"/>
             <Button
                 Clicked="AdvancedCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Advanced Event Calendar" />
+                Text="Advanced Event Calendar"/>
             <Button
                 Clicked="RangeCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Range Event Calendar" />
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Calendars from Devices" />
+                Text="Range Event Calendar"/>
+            <Label Style="{StaticResource LabelMainPageStyle}"
+                    Text="Calendars from Devices"/>
             <Button
                 Clicked="Windows11Calendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Windows 11 Calendar" />
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Picker Popup" />
+                Text="Windows 11 Calendar"/>
+            <Label Style="{StaticResource LabelMainPageStyle}"
+                    Text="Picker Popup"/>
             <Button
                 Clicked="PickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Single Select Calendar" />
+                Text="Single Select Calendar"/>
             <Button
                 Clicked="RangePickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Range Selection Calendar" />
+                Text="Range Selection Calendar"/>
             <Button
                 Clicked="RangeStartEndDatePickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Range Start-End Selection Calendar" />
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Week View Calendars" />
+                Text="Range Start-End Selection Calendar"/>
+            <Label Style="{StaticResource LabelMainPageStyle}"
+                    Text="Week View Calendars"/>
             <Button
                 Clicked="WeekViewCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Single Week View Calendar" />
+                Text="Single Week View Calendar"/>
             <Button
                 Clicked="TwoWeekViewCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Two Weeks View Calendar" />
+                Text="Two Weeks View Calendar"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
