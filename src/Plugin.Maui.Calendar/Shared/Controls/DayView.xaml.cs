@@ -13,6 +13,11 @@ public partial class DayView : ContentView
     {
         if (BindingContext is DayModel dayModel && !dayModel.IsDisabled && dayModel.IsVisible)
         {
+            if (!dayModel.AllowDeselect && dayModel.IsSelected)
+            {
+                return;
+            }
+
             dayModel.IsSelected = !dayModel.IsSelected;
             dayModel.DayTappedCommand?.Execute(dayModel.Date);
         }

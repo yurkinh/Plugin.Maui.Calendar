@@ -52,6 +52,7 @@
                 DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 Events="{Binding Events}"
                 FirstDayOfWeek="Monday"
+                AllowDeselect="False"
                 HorizontalOptions="Fill"
                 MaximumDate="{Binding MaximumDate}"
                 MinimumDate="{Binding MinimumDate}"

@@ -52,6 +52,9 @@ internal partial class DayModel : ObservableObject
     bool isSelected;
 
     [ObservableProperty]
+    bool allowDeselect;
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsVisible))]
     bool otherMonthIsVisible;
 

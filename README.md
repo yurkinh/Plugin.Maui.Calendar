@@ -58,6 +58,7 @@ Weekend calendar
 * Added new property **FirstDayOfWeek**
 * Added support for multiple event dots (multidots) in calendar 
 * Added **MonthChanged** Event and **MonthChangedCommand**
+* Added **AllowDeselecting** property
 * Updated samples
 
 
