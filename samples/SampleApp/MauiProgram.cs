@@ -49,6 +49,9 @@ public static class MauiProgram
         builder.Services.AddTransient<ToDoPage>();
         builder.Services.AddTransient<ToDoPageViewModel>();
 
+        builder.Services.AddTransient<EditEventPage>();
+        builder.Services.AddTransient<EditEventPageViewModel>();
+
         return builder;
     }
     static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
