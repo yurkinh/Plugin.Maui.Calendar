@@ -800,6 +800,25 @@ public partial class MonthDaysView : ContentView
         set => SetValue(FirstDayOfWeekProperty, value);
     }
 
+    /// <summary>
+    /// Bindable property for AllowDeselect
+    /// </summary>
+    public static readonly BindableProperty AllowDeselectProperty = BindableProperty.Create(
+        nameof(AllowDeselect),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
+
+    /// <summary>
+    /// Indicates whether the date selection can be deselected
+    /// </summary>
+    public bool AllowDeselect
+    {
+        get => (bool)GetValue(AllowDeselectProperty);
+        set => SetValue(AllowDeselectProperty, value);
+    }
+
 
     #endregion
 
@@ -1033,6 +1052,7 @@ public partial class MonthDaysView : ContentView
                 currentDate < MinimumDate
                 || currentDate > MaximumDate
                 || (DisabledDates?.Contains(currentDate.Date) ?? false);
+            dayModel.AllowDeselect = AllowDeselect;
 
             ChangePropertySilently(
                 nameof(dayModel.IsSelected),

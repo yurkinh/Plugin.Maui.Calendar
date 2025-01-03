@@ -1488,7 +1488,7 @@ public partial class Calendar : ContentView
     );
 
     /// <summary>
-    /// Indicates whether the date selection can be deselected (deselected)
+    /// Indicates whether the date selection can be deselected
     /// </summary>
     public bool AllowDeselect
     {
