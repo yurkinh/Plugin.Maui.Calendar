@@ -5,73 +5,64 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
-    <Color x:Key="Black">#000000</Color>
     <Color x:Key="EmGreen">#33A78F</Color>
     <Color x:Key="Transparent">Transparent</Color>
     <Color x:Key="RadioButtonColor">#33A78F</Color>
-    <Color x:Key="FrenchPass">#B3FCF8</Color>
-    <Color x:Key="LimedSpruce">#2F3E46</Color>
-    <Color x:Key="Casablanca">#F7B548</Color>
-    <Color x:Key="MineShaft">#212121</Color>
-    <Color x:Key="Mystic">#edf2f4</Color>
-    <Color x:Key="Tasman">#CAD2C5</Color>
-    <Color x:Key="Locust">#a4ac86</Color>
-    <Color x:Key="FoggyGray">#c2c5aa</Color>
-
     <toolkit:AppThemeColor
         x:Key="DaysLabelTextColor"
         Dark="Orange"
-        Light="Red"/>
+        Light="Red" />
     <toolkit:AppThemeColor
         x:Key="DeselectedDayLabelTextColor"
         Dark="White"
-        Light="Black"/>
+        Light="Black" />
     <toolkit:AppThemeColor
         x:Key="DaysTitleLabelTextColor"
-        Dark="{StaticResource Casablanca}"
-        Light="Black"/>
+        Dark="#F7B548"
+        Light="Black" />
     <toolkit:AppThemeColor
         x:Key="DaysTitleLabelTextColorMinimalistic"
         Dark="White"
-        Light="Black"/>
+        Light="Black" />
+
     <toolkit:AppThemeColor
         x:Key="TodayDayLabelTextColor"
         Dark="ForestGreen"
-        Light="Black"/>
+        Light="Black" />
     <toolkit:AppThemeColor
         x:Key="OtherMonthDaysLabelTextColor"
         Dark="DimGray"
-        Light="Silver"/>
+        Light="Silver" />
     <toolkit:AppThemeColor
         x:Key="EventIndicatorColor"
         Dark="Green"
-        Light="Red"/>
+        Light="Red" />
     <toolkit:AppThemeColor
         x:Key="WeekendDaysLabelTextColor"
         Dark="Red"
-        Light="Red"/>
+        Light="Red" />
     <toolkit:AppThemeColor
         x:Key="BackgroundColor"
-        Dark="{StaticResource MineShaft}"
-        Light="White"/>
+        Dark="#212121"
+        Light="White" />
     <toolkit:AppThemeColor
         x:Key="BackgroundPageColor"
-        Dark="{StaticResource LimedSpruce}"
-        Light="{StaticResource Mystic}"/>
+        Dark="#2F3E46"
+        Light="#edf2f4" />
     <toolkit:AppThemeColor
         x:Key="ButtonColor"
-        Dark="{StaticResource Tasman}"
-        Light="{StaticResource Locust}"/>
+        Dark="#CAD2C5"
+        Light="#a4ac86" />
     <toolkit:AppThemeColor
         x:Key="PopupBackgroundColor"
-        Dark="{StaticResource MineShaft}"
-        Light="{StaticResource Mystic}"/>
+        Dark="#212121"
+        Light="#edf2f4" />
     <toolkit:AppThemeColor
         x:Key="BackgroundColorfullPageColor"
-        Dark="{StaticResource LimedSpruce}"
-        Light="{StaticResource FoggyGray}"/>
+        Dark="#2F3E46"
+        Light="#c2c5aa" />
     <toolkit:AppThemeColor
         x:Key="TextColor"
-        Dark="{StaticResource FrenchPass}"
-        Light="{StaticResource LimedSpruce}"/>
+        Dark="#a3b18a"
+        Light="#2F3E46" />
 </ResourceDictionary>

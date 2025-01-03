@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.2.3</PackageVersion>
+		<PackageVersion>1.2.4</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,8 +37,8 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-		                    Multiple events support added (up to 5).							
-                            Upgaraded Maui packages to the 8.0.100.														
+		                    Added MonthChanged Event and MonthChanged Command;					
+                            														
        </PackageReleaseNotes>
 	</PropertyGroup>	
 

@@ -1,5 +1,4 @@
 ﻿using Mopups.Services;
-using SampleApp.Helpers;
 
 namespace SampleApp.Views;
 
@@ -11,34 +10,29 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    async void SettingPage(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(ServiceHelper.GetService<UserSettingPage>());
-    }
     private async void SimpleCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(ServiceHelper.GetService<SimplePage>());
+        await Shell.Current.GoToAsync(nameof(SimplePage));
     }
-    private async void ToDoCalendar(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(ServiceHelper.GetService<ToDoPage>());
-    }
+
     async void WeekendCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new WeekendCalendarPage());
+        await Shell.Current.GoToAsync(nameof(WeekendCalendarPage));
     }
+
     private async void MultiSelectionCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new MultiSelectionPage());
+        await Shell.Current.GoToAsync(nameof(MultiSelectionPage));
     }
+
     private async void AdvancedCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new AdvancedPage());
+        await Shell.Current.GoToAsync(nameof(AdvancedPage));
     }
 
     private async void RangeCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new RangeSelectionPage());
+        await Shell.Current.GoToAsync(nameof(RangeSelectionPage));
     }
 
     private async void PickerPopup(object sender, EventArgs e)
@@ -96,16 +90,16 @@ public partial class MainPage : ContentPage
 
     private async void WeekViewCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new WeekViewPage());
+        await Shell.Current.GoToAsync(nameof(WeekViewPage));
     }
 
     private async void TwoWeekViewCalendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new TwoWeekViewPage());
+        await Shell.Current.GoToAsync(nameof(TwoWeekViewPage));
     }
 
     async void Windows11Calendar(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Windows11CalendarPage());
+        await Shell.Current.GoToAsync(nameof(Windows11CalendarPage));
     }
 }

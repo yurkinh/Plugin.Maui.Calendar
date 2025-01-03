@@ -10,37 +10,20 @@
     android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
-    Shell.TitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="SettingPage">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource
-                    FontFamily="FontAwesomeSolid"
-                    Glyph="&#xf013;"
-                    Size="30"
-                    Color="{toolkit:AppThemeResource ButtonColor}"/>
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
-
+    Shell.TitleColor="{toolkit:AppThemeResource TextColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:AppThemeColor
-                x:Key="DaysTitleLabelTextColor"
-                Dark="#B3FCF8"
-                Light="#B3FCF8"/>
-
-            <toolkit:AppThemeColor
                 x:Key="LabelColor"
-                Dark="{StaticResource Tasman}"
-                Light="{StaticResource Black}"/>
+                Dark="#CAD2C5"
+                Light="#000000"/>
             <toolkit:AppThemeColor
                 x:Key="LabelButtonColor"
-                Dark="{StaticResource Black}"
-                Light="{StaticResource Black}"/>
+                Dark="#000000"
+                Light="#000000"/>
 
             <Style x:Key="LabelMainPageStyle"
-                   TargetType="Label">
+                    TargetType="Label">
                 <Setter Property="FontAttributes"
                         Value="Bold"/>
                 <Setter Property="FontSize"
@@ -53,7 +36,7 @@
                         Value="{toolkit:AppThemeResource LabelColor}"/>
             </Style>
             <Style x:Key="ButtonMainPageStyle"
-                   TargetType="Button">
+                    TargetType="Button">
                 <Setter Property="HorizontalOptions"
                         Value="Fill"/>
                 <Setter Property="BackgroundColor"
@@ -63,7 +46,7 @@
                 <Setter Property="FontAttributes"
                         Value="Bold"/>
                 <Setter Property="CornerRadius"
-                        Value="20"/>
+                        Value="10"/>
                 <Setter Property="FontFamily"
                         Value="DarkerGrotesque"/>
                 <Setter Property="Margin"
@@ -79,7 +62,7 @@
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill"
-                             Spacing="6">
+                Spacing="6">
             <Label
                 Margin="0,30,0,0"
                 Style="{StaticResource LabelMainPageStyle}"
@@ -88,10 +71,6 @@
                 Clicked="SimpleCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Simple Event Calendar"/>
-            <Button
-                Clicked="ToDoCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="ToDo Calendar"/>
             <Button
                 Clicked="MultiSelectionCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -109,13 +88,13 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                   Text="Calendars from Devices"/>
+                    Text="Calendars from Devices"/>
             <Button
                 Clicked="Windows11Calendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Windows 11 Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                   Text="Picker Popup"/>
+                    Text="Picker Popup"/>
             <Button
                 Clicked="PickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -129,7 +108,7 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Start-End Selection Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                   Text="Week View Calendars"/>
+                    Text="Week View Calendars"/>
             <Button
                 Clicked="WeekViewCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
