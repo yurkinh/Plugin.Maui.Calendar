@@ -9,11 +9,12 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="advancedRangeSelectionCalendarPage"
     x:DataType="local:RangeSelectionPageViewModel"
+    Shell.TabBarIsVisible="False"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Unloaded="UnloadedHandler">
 
     <ContentPage.BindingContext>
-        <local:RangeSelectionPageViewModel />
+        <local:RangeSelectionPageViewModel/>
     </ContentPage.BindingContext>
 
     <plugin:RangeSelectionCalendar
@@ -28,18 +29,18 @@
         ShownDate="{Binding ShownDate}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
-            <controls:CalendarHeader />
+            <controls:CalendarHeader/>
         </plugin:RangeSelectionCalendar.HeaderSectionTemplate>
 
         <plugin:RangeSelectionCalendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter />
+                <controls:CalendarFooter/>
             </DataTemplate>
         </plugin:RangeSelectionCalendar.FooterSectionTemplate>
 
         <plugin:RangeSelectionCalendar.EventTemplate>
             <DataTemplate>
-                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
+                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}"/>
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EventTemplate>
         <plugin:RangeSelectionCalendar.EmptyTemplate>
@@ -48,7 +49,7 @@
                     <Label
                         Margin="0,5,0,5"
                         HorizontalTextAlignment="Center"
-                        Text="NO EVENTS FOR THE SELECTED DATE" />
+                        Text="NO EVENTS FOR THE SELECTED DATE"/>
                 </VerticalStackLayout>
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EmptyTemplate>
@@ -56,9 +57,12 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="20" />
+            <Style x:Key="daysTitleLabelStyle"
+                   TargetType="Label">
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="FontSize"
+                        Value="20"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>

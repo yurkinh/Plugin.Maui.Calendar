@@ -10,23 +10,23 @@ public partial class App : Application
 
     public static new App Current => (App)Application.Current;
     public App(IThemeService themeService)
-	{
+    {
         this.themeService = themeService;
         InitializeComponent();
 
-        MainPage = new NavigationPage(new MainPage());
+        MainPage = new AppShell();
     }
-   
+
 
     protected override void OnStart()
     {
         themeService.SetTheme(AppTheme.Unspecified);
-    }   
+    }
 
     protected override void OnResume()
     {
 
     }
-  
+
 }
 

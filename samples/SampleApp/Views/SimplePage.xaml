@@ -8,6 +8,7 @@
         xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
         x:Name="simpleCalendarPage"
         x:DataType="local:SimplePageViewModel"
+        Shell.TabBarIsVisible="False"
         BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
         Unloaded="UnloadedHandler">
         <ContentPage.Resources>

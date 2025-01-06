@@ -8,15 +8,17 @@
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="weekViewCalendarPage"
+    Shell.TabBarIsVisible="False"
     x:DataType="local:WeekViewPageViewModel"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Unloaded="UnloadedHandler">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <ToolbarItem Command="{Binding TodayCommand}"
+                     Text="Today"/>
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
-        <local:WeekViewPageViewModel />
+        <local:WeekViewPageViewModel/>
     </ContentPage.BindingContext>
 
     <plugin:Calendar
@@ -40,7 +42,7 @@
         Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarHeader />
+            <controls:CalendarHeader/>
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
@@ -53,13 +55,14 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name}"/>
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                        Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}" CommandParameter="{Binding .}" />
+                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
+                                              CommandParameter="{Binding .}"/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

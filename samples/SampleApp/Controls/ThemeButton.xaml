@@ -19,11 +19,11 @@
         <toolkit:AppThemeColor
             x:Key="CheeckedColor"
             Dark="#B3FCF8"
-            Light="#B3FCF8" />
+            Light="#2F3E46" />
         <toolkit:AppThemeColor
             x:Key="UncheckedColor"
             Dark="#2F3E46"
-            Light="#2F3E46" />
+            Light="#c2c5aa" />
     </ContentView.Resources>
 
     <RadioButton GroupName="{Binding GroupName, Source={x:Reference This}}" IsChecked="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}">

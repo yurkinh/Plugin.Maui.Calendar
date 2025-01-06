@@ -8,28 +8,39 @@
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="advancedCalendarPage"
+    Shell.TabBarIsVisible="False"
     x:DataType="local:AdvancedPageViewModel"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Unloaded="UnloadedHandler">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysLabelStyle" TargetType="Label">
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="Medium" />
-                <Setter Property="LineBreakMode" Value="WordWrap" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Margin" Value="5,2" />
+            <Style x:Key="daysLabelStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="TextColor"
+                        Value="Black"/>
+                <Setter Property="FontSize"
+                        Value="Medium"/>
+                <Setter Property="LineBreakMode"
+                        Value="WordWrap"/>
+                <Setter Property="VerticalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="Margin"
+                        Value="5,2"/>
             </Style>
-            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Style x:Key="daysTitleLabelStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18"/>
+                <Setter Property="FontFamily"
+                        Value="OpenSansSemibold"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
-        <local:AdvancedPageViewModel />
+        <local:AdvancedPageViewModel/>
     </ContentPage.BindingContext>
 
 
@@ -77,18 +88,18 @@
         YearLabelColor="Blue">
 
         <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarHeader />
+            <controls:CalendarHeader/>
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter />
+                <controls:CalendarFooter/>
             </DataTemplate>
         </plugin:Calendar.FooterSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
             <DataTemplate>
-                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedCalendarPage}}" />
+                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedCalendarPage}}"/>
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
         <plugin:Calendar.EmptyTemplate>
@@ -97,7 +108,7 @@
                     <Label
                         Margin="0,5,0,5"
                         HorizontalTextAlignment="Center"
-                        Text="NO EVENTS FOR THE SELECTED DATE" />
+                        Text="NO EVENTS FOR THE SELECTED DATE"/>
                 </VerticalStackLayout>
             </DataTemplate>
         </plugin:Calendar.EmptyTemplate>
