@@ -1476,6 +1476,26 @@ public partial class Calendar : ContentView
         get => (ICommand)GetValue(MonthChangedCommandProperty);
         set => SetValue(MonthChangedCommandProperty, value);
     }
+
+    /// <summary>
+    /// Bindable property for AllowDeselect
+    /// </summary>
+    public static readonly BindableProperty AllowDeselectProperty = BindableProperty.Create(
+        nameof(AllowDeselect),
+        typeof(bool),
+        typeof(Calendar),
+        true
+    );
+
+    /// <summary>
+    /// Indicates whether the date selection can be deselected
+    /// </summary>
+    public bool AllowDeselect
+    {
+        get => (bool)GetValue(AllowDeselectProperty);
+        set => SetValue(AllowDeselectProperty, value);
+    }
+
     #endregion
 
     #region SelectedDates
@@ -1492,7 +1512,7 @@ public partial class Calendar : ContentView
         propertyChanged: OnSelectedDateChanged
     );
 
-    private static void OnSelectedDateChanged(
+     private static void OnSelectedDateChanged(
         BindableObject bindable,
         object oldValue,
         object newValue
@@ -1517,6 +1537,7 @@ public partial class Calendar : ContentView
             control._isSelectingDates = false;
         }
     }
+
 
     /// <summary>
     /// Selected date in single date selection mode
@@ -1809,13 +1830,9 @@ public partial class Calendar : ContentView
         LayoutUnitText = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
     }
 
-    private void UpdateSelectedDateLabel()
-    {
-        SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(
-            SelectedDateTextFormat,
-            Culture
-        );
-    }
+    private void UpdateSelectedDateLabel() =>
+         SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
+
 
     private void ShowHideCalendarSection()
     {

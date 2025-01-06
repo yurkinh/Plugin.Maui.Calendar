@@ -21,6 +21,7 @@
                 IsVisible="{Binding HeaderSectionVisible}"
                 ItemTemplate="{Binding HeaderSectionTemplate}" />
             <controls:MonthDaysView
+                AllowDeselect="{Binding  AllowDeselect, Source={x:Reference calendar}}"
                 x:Name="monthDaysView"
                 x:FieldModifier="internal"
                 AnimateCalendar="{Binding AnimateCalendar, Source={x:Reference calendar}}"
