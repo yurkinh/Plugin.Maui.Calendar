@@ -1,6 +1,4 @@
-﻿using SampleApp.Model;
-using SampleApp.Services;
-using SampleApp.Views;
+﻿using SampleApp.Services;
 
 namespace SampleApp;
 
@@ -13,9 +11,10 @@ public partial class App : Application
     {
         this.themeService = themeService;
         InitializeComponent();
-
-        MainPage = new AppShell();
     }
+
+    protected override Window CreateWindow(IActivationState activationState) => new(new AppShell());
+
 
 
     protected override void OnStart()

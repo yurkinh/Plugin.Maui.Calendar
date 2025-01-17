@@ -23,7 +23,7 @@
                 Light="#000000"/>
 
             <Style x:Key="LabelMainPageStyle"
-                    TargetType="Label">
+                   TargetType="Label">
                 <Setter Property="FontAttributes"
                         Value="Bold"/>
                 <Setter Property="FontSize"
@@ -36,7 +36,7 @@
                         Value="{toolkit:AppThemeResource LabelColor}"/>
             </Style>
             <Style x:Key="ButtonMainPageStyle"
-                    TargetType="Button">
+                   TargetType="Button">
                 <Setter Property="HorizontalOptions"
                         Value="Fill"/>
                 <Setter Property="BackgroundColor"
@@ -62,7 +62,7 @@
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill"
-                Spacing="6">
+                             Spacing="6">
             <Label
                 Margin="0,30,0,0"
                 Style="{StaticResource LabelMainPageStyle}"
@@ -88,13 +88,13 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Calendars from Devices"/>
+                   Text="Calendars from Devices"/>
             <Button
                 Clicked="Windows11Calendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Windows 11 Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Picker Popup"/>
+                   Text="Picker Popup"/>
             <Button
                 Clicked="PickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -108,7 +108,7 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Start-End Selection Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Week View Calendars"/>
+                   Text="Week View Calendars"/>
             <Button
                 Clicked="WeekViewCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
