@@ -41,7 +41,7 @@ public partial class MainPage : ContentPage
         {
             string message = calendarPickerResult.IsSuccess ? $"Received date from popup: {calendarPickerResult.SelectedDate:dd/MM/yy}" : "Calendar Picker Canceled!";
 
-            await App.Current.MainPage.DisplayAlert("Popup result", message, "Ok");
+            await AppShell.Current.DisplayAlert("Popup result", message, "Ok");
         }));
     }
     private async void RangePickerPopup(object sender, EventArgs e)
@@ -66,7 +66,7 @@ public partial class MainPage : ContentPage
             else if (calendarPickerResult.IsSuccess)
                 message = "Nothing is selected!";
 
-            await App.Current.MainPage.DisplayAlert("Popup result", message, "Ok");
+            await AppShell.Current.DisplayAlert("Popup result", message, "Ok");
         }));
     }
     private async void RangeStartEndDatePickerPopup(object sender, EventArgs e)
@@ -84,7 +84,7 @@ public partial class MainPage : ContentPage
             else if (calendarPickerResult.IsSuccess)
                 message = "Nothing is selected!";
 
-            await App.Current.MainPage.DisplayAlert("Popup result", message, "Ok");
+            await AppShell.Current.DisplayAlert("Popup result", message, "Ok");
         }));
     }
 

@@ -2,13 +2,15 @@
 <ContentView
     x:Class="SampleApp.Controls.CalendarFooter"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:SampleApp.Controls"
+    x:DataType="model:CalendarFooter">
     <Grid
         HeightRequest="40"
         RowSpacing="6"
         HorizontalOptions="Fill"
         VerticalOptions="Fill"
-        ColumnDefinitions="Auto,*">        
+        ColumnDefinitions="Auto,*">
         <Label
             Grid.Column="0"
             FontAttributes="Bold"
@@ -16,7 +18,7 @@
             Text="{Binding SelectedDateText}"
             TextColor="{Binding SelectedDateColor}"
             VerticalOptions="Center"
-            VerticalTextAlignment="Center" />
+            VerticalTextAlignment="Center"/>
 
         <Label
             x:Name="showHideLabel"
@@ -37,12 +39,13 @@
                     Binding="{Binding CalendarSectionShown}"
                     TargetType="Label"
                     Value="False">
-                    <Setter Property="Text" Value="&#xf063;" />
+                    <Setter Property="Text"
+                            Value="&#xf063;"/>
                 </DataTrigger>
             </Label.Triggers>
         </Label>
         <Grid.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
+            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}"/>
         </Grid.GestureRecognizers>
     </Grid>
 </ContentView>
