@@ -49,7 +49,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
            Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
 
            // add later
-           Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(   GenerateEvents(10, "Cool")));
+           Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
            Task.Delay(3000).ContinueWith(t =>
            {
@@ -95,7 +95,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
     static async Task DayTapped(DateTime date)
     {
         var message = $"Received tap event from date: {date}";
-        await App.Current.MainPage.DisplayAlert("DayTapped", message, "Ok");
+        await AppShell.Current.DisplayAlert("DayTapped", message, "Ok");
     }
 
     [RelayCommand]
@@ -105,7 +105,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         {
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
-            await App.Current.MainPage.DisplayAlert(title, message, "Ok");
+            await AppShell.Current.DisplayAlert(title, message, "Ok");
         }
     }
 }

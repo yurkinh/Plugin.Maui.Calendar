@@ -2,7 +2,6 @@
 
 namespace SampleApp.Controls;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class CalenderEvent : ContentView
 {
     public static BindableProperty CalenderEventCommandProperty =

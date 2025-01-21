@@ -10,7 +10,7 @@
     BackgroundColor="{Binding BackgroundFullEventColor}">
     <ContentView.Resources>
         <ResourceDictionary>
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter" />
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>
         </ResourceDictionary>
     </ContentView.Resources>
     <Grid
@@ -20,20 +20,20 @@
         WidthRequest="{Binding DayViewSize, Mode=OneWay}"
         IsVisible="{Binding IsVisible, Mode=OneWay}">
         <Border
-        Padding="0"
-        BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
-        HeightRequest="{Binding DayViewSize, Mode=OneWay}"
-        HorizontalOptions="Center"
-        Stroke="{Binding OutlineColor, Mode=OneWay}"
-        StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
-        WidthRequest="{Binding DayViewSize, Mode=OneWay}">
+            Padding="0"
+            BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
+            HeightRequest="{Binding DayViewSize, Mode=OneWay}"
+            HorizontalOptions="Center"
+            Stroke="{Binding OutlineColor, Mode=OneWay}"
+            StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
+            WidthRequest="{Binding DayViewSize, Mode=OneWay}">
         </Border>
         <FlexLayout
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
             <FlexLayout.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnTapped" />
+                <TapGestureRecognizer Tapped="OnTapped"/>
             </FlexLayout.GestureRecognizers>
             <Grid HeightRequest="4"/>
             <Label
@@ -41,7 +41,7 @@
                 HorizontalTextAlignment="Center"
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
-                TextColor="{Binding TextColor, Mode=OneWay}" />
+                TextColor="{Binding TextColor, Mode=OneWay}"/>
             <HorizontalStackLayout HeightRequest="8">
                 <Border
                     Padding="0"
@@ -49,35 +49,35 @@
                     HeightRequest="8"
                     IsVisible="{Binding IsEventDotVisible, Mode=OneWay}"
                     StrokeShape="RoundRectangle 4"
-                    WidthRequest="8" />
+                    WidthRequest="8"/>
                 <Border
                     Padding="0"
                     BackgroundColor="{Binding SecondEventColor, Mode=OneWay}"
                     HeightRequest="8"
                     IsVisible="{Binding IsSecondEventDotVisible, Mode=OneWay}"
                     StrokeShape="RoundRectangle 4"
-                    WidthRequest="8" />
+                    WidthRequest="8"/>
                 <Border
                     Padding="0"
                     BackgroundColor="{Binding ThirdEventColor, Mode=OneWay}"
                     HeightRequest="8"
                     IsVisible="{Binding IsThirdEventDotVisible, Mode=OneWay}"
                     StrokeShape="RoundRectangle 4"
-                    WidthRequest="8" />
+                    WidthRequest="8"/>
                 <Border
                     Padding="0"
                     BackgroundColor="{Binding FourthEventColor, Mode=OneWay}"
                     HeightRequest="8"
                     IsVisible="{Binding IsFourthEventDotVisible, Mode=OneWay}"
                     StrokeShape="RoundRectangle 4"
-                    WidthRequest="8" />
+                    WidthRequest="8"/>
                 <Border
                     Padding="0"
                     BackgroundColor="{Binding FifthEventColor, Mode=OneWay}"
                     HeightRequest="8"
                     IsVisible="{Binding IsFifthEventDotVisible, Mode=OneWay}"
                     StrokeShape="RoundRectangle 4"
-                    WidthRequest="8" />
+                    WidthRequest="8"/>
             </HorizontalStackLayout>
         </FlexLayout>
     </Grid>

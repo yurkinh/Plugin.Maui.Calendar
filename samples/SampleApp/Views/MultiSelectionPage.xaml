@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="multiCalendarPage"
@@ -62,7 +63,7 @@
         VerticalOptions="Fill"
         Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="models:EventModel">
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
@@ -77,8 +78,9 @@
                         LineBreakMode="WordWrap"
                         Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
-                                              CommandParameter="{Binding .}"/>
+                        <TapGestureRecognizer Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
+                                              CommandParameter="{Binding .}"
+                                x:DataType='local:SimplePageViewModel'/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

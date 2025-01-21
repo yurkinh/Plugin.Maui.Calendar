@@ -98,8 +98,8 @@
         </plugin:Calendar.FooterSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
-                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedCalendarPage}}"/>
+            <DataTemplate x:DataType="local:AdvancedPageViewModel">
+                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedCalendarPage}}"/>
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
         <plugin:Calendar.EmptyTemplate>
