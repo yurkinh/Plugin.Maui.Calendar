@@ -39,8 +39,8 @@
         </plugin:RangeSelectionCalendar.FooterSectionTemplate>
 
         <plugin:RangeSelectionCalendar.EventTemplate>
-            <DataTemplate>
-                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}"/>
+            <DataTemplate x:DataType="local:RangeSelectionPageViewModel">
+                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}"/>
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EventTemplate>
         <plugin:RangeSelectionCalendar.EmptyTemplate>
