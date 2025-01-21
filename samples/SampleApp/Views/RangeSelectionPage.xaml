@@ -24,6 +24,7 @@
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
         SelectedDates="{Binding SelectedDates}"
+        EventsScrollViewVisible="True"
         SelectedEndDate="{Binding SelectedEndDate}"
         SelectedStartDate="{Binding SelectedStartDate}"
         ShownDate="{Binding ShownDate}">
