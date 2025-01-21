@@ -2,7 +2,7 @@
 
 namespace SampleApp.Views;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+
 public partial class MainPage : ContentPage
 {
     public MainPage()

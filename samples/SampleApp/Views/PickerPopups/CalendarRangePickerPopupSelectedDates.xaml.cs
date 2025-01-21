@@ -1,7 +1,7 @@
 ﻿using Mopups.Pages;
 namespace SampleApp.Views;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+
 public partial class CalendarRangePickerPopupSelectedDates : PopupPage
 {
     private readonly Action<CalendarRangePickerResult> _onClosedPopup;

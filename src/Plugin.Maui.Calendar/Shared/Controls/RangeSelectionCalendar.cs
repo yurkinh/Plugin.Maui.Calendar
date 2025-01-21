@@ -3,7 +3,7 @@ using Plugin.Maui.Calendar.Controls.SelectionEngines;
 
 namespace Plugin.Maui.Calendar.Controls;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+
 public class RangeSelectionCalendar : Calendar
 {
     /// <summary> Bindable property for StartDate </summary>
