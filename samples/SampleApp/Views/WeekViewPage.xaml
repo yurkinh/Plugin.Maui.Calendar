@@ -62,8 +62,9 @@
                         LineBreakMode="WordWrap"
                         Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
-                                              CommandParameter="{Binding .}"/>
+                        <TapGestureRecognizer Command="{Binding EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
+                                              CommandParameter="{Binding .}"
+                                x:DataType='local:WeekViewPageViewModel'/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>
