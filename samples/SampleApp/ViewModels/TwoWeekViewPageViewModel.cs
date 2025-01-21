@@ -83,7 +83,7 @@ public partial class TwoWeekViewPageViewModel : BasePageViewModel
     {
         if (item is EventModel eventModel)
         {
-            await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
+            await Shell.Current.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
         }
     }
 

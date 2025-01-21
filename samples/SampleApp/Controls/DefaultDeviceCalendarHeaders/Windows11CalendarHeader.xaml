@@ -3,38 +3,60 @@
     x:Class="SampleApp.Controls.Windows11CalendarHeader"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:SampleApp.Controls"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:Name="Header"
-    x:DataType="controls:CalendarHeader">
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    x:DataType="plugin:Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <ContentView.Resources>
         <ResourceDictionary>
-            <Style x:Key="arrowButtonPrevStyle" TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-                <Setter Property="BorderColor" Value="Transparent" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="Text" Value="&#xf062;" />
-                <Setter Property="FontSize" Value="15" />
-                <Setter Property="TextColor" Value="DimGray" />
+            <Style x:Key="arrowButtonPrevStyle"
+                   TargetType="Button">
+                <Setter Property="FontFamily"
+                        Value="FontAwesomeSolid"/>
+                <Setter Property="BorderColor"
+                        Value="Transparent"/>
+                <Setter Property="BackgroundColor"
+                        Value="Transparent"/>
+                <Setter Property="Text"
+                        Value="&#xf062;"/>
+                <Setter Property="FontSize"
+                        Value="15"/>
+                <Setter Property="TextColor"
+                        Value="DimGray"/>
             </Style>
 
-            <Style x:Key="arrowButtonNextStyle" TargetType="Button">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-                <Setter Property="Text" Value="&#xf063;" />
-                <Setter Property="BorderColor" Value="Transparent" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="FontSize" Value="15" />
-                <Setter Property="TextColor" Value="DimGray" />
+            <Style x:Key="arrowButtonNextStyle"
+                   TargetType="Button">
+                <Setter Property="FontFamily"
+                        Value="FontAwesomeSolid"/>
+                <Setter Property="Text"
+                        Value="&#xf063;"/>
+                <Setter Property="BorderColor"
+                        Value="Transparent"/>
+                <Setter Property="BackgroundColor"
+                        Value="Transparent"/>
+                <Setter Property="FontSize"
+                        Value="15"/>
+                <Setter Property="TextColor"
+                        Value="DimGray"/>
             </Style>
-            <Style x:Key="ArrowFooterButtonUpStyle" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="15" />
-                <Setter Property="HorizontalOptions" Value="End" />
-                <Setter Property="Text" Value="&#xf063;" />
-                <Setter Property="TextColor" Value="DimGray" />
-                <Setter Property="VerticalOptions" Value="Center" />
+            <Style x:Key="ArrowFooterButtonUpStyle"
+                   TargetType="Button">
+                <Setter Property="BackgroundColor"
+                        Value="Transparent"/>
+                <Setter Property="FontFamily"
+                        Value="FontAwesomeSolid"/>
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="FontSize"
+                        Value="15"/>
+                <Setter Property="HorizontalOptions"
+                        Value="End"/>
+                <Setter Property="Text"
+                        Value="&#xf063;"/>
+                <Setter Property="TextColor"
+                        Value="DimGray"/>
+                <Setter Property="VerticalOptions"
+                        Value="Center"/>
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
@@ -42,7 +64,7 @@
         Padding="12,0,12,0"
         ColumnDefinitions="*,Auto,Auto"
         HorizontalOptions="Fill"
-        IsVisible="{Binding BindingContext.ShowMonthPicker, Source={x:Reference Header}}"
+        IsVisible="{Binding ShowMonthPicker}"
         RowDefinitions="Auto"
         VerticalOptions="Start">
         <Label
@@ -54,19 +76,19 @@
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding BindingContext.LayoutUnitText, Source={x:Reference Header}, Mode=TwoWay}" />
-                    <Span Text=" " />
-                    <Span Text="{Binding BindingContext.Year, Source={x:Reference Header}, Mode=TwoWay}" />
+                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}"/>
+                    <Span Text=" "/>
+                    <Span Text="{Binding Year, Mode=TwoWay}"/>
                 </FormattedString>
             </Label.FormattedText>
         </Label>
         <Button
             Grid.Column="1"
-            Command="{Binding BindingContext.PrevLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay}"
-            Style="{StaticResource arrowButtonPrevStyle}" />
+            Command="{Binding PrevLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay, x:DataType=plugin:Calendar}"
+            Style="{StaticResource arrowButtonPrevStyle}"/>
         <Button
             Grid.Column="2"
-            Command="{Binding BindingContext.NextLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay}"
-            Style="{StaticResource arrowButtonNextStyle}" />
+            Command="{Binding NextLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay, x:DataType=plugin:Calendar}"
+            Style="{StaticResource arrowButtonNextStyle}"/>
     </Grid>
 </ContentView>
