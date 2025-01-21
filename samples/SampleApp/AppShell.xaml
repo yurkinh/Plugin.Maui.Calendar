@@ -21,6 +21,9 @@
     <TabBar>
         <Tab Icon="calendar"
              Title="MainPage">
+            <!-- <ShellContent
+                ContentTemplate="{DataTemplate local:XiaomiCalendarPage}"
+                Route="MainPage"/> -->
             <ShellContent
                 ContentTemplate="{DataTemplate local:MainPage}"
                 Route="MainPage"/>

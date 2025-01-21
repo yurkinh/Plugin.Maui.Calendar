@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SampleApp.Views;
 
-public partial class EditEventPage : ContentPage
+public partial class XiaomiCalendarPage : ContentPage
 {
-    public EditEventPage(EditEventPageViewModel vm)
+    public XiaomiCalendarPage(XiaomiCalendarViewModel vm)
     {
         InitializeComponent();
         BindingContext = vm;
