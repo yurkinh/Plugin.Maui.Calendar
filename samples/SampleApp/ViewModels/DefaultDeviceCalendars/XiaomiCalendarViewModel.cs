@@ -10,7 +10,7 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
     {
         Events = new EventCollection
         {
-            [DateTime.Now.AddDays(3)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green)
+            [DateTime.Now.AddDays(1)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green)
             {
                 new() { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
                 new() { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
@@ -39,40 +39,33 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
         {
             if (query.TryGetValue("UpdatedEvent", out var evt) && evt is AdvancedEventModel updatedEvent)
             {
-                ICollection currentEvents = null;
-
-                if (Events.ContainsKey(updatedEvent.Starting))
+                if (Events.TryGetValue(updatedEvent.Starting, out var existingCollection))
                 {
-                    currentEvents = Events[updatedEvent.Starting];
-                    Events.Remove(updatedEvent.Starting);
-                }
+                    var newEventCollection = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green);
 
-                var newEventCollection = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green);
-
-                if (currentEvents != null)
-                {
-                    foreach (var item in currentEvents)
+                    foreach (var item in existingCollection)
                     {
-                        if (item is AdvancedEventModel eventModel)
+                        if (item is AdvancedEventModel eventModel && eventModel.Name != updatedEvent.Name)
                         {
                             newEventCollection.Add(eventModel);
                         }
                     }
+
+                    newEventCollection.Add(updatedEvent); 
+                    Events[updatedEvent.Starting] = newEventCollection;
                 }
-
-                newEventCollection.Add(updatedEvent);
-
-                Events.Add(updatedEvent.Starting, newEventCollection);
+                else
+                {
+                    Events[updatedEvent.Starting] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green) { updatedEvent };
+                }
             }
         }
     }
 
+
     [RelayCommand]
     public async Task EventTapped(AdvancedEventModel tappedEvent)
     {
-        /*  if (tappedEvent == null)
-             return; */
-
         var navigationParameter = new Dictionary<string, object>
         {
             { "SelectedEvent", tappedEvent },
