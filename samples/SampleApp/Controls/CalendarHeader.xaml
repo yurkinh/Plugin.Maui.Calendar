@@ -2,7 +2,9 @@
 <DataTemplate
     x:Class="SampleApp.Controls.CalendarHeader"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    x:DataType="plugin:Calendar">
     <Grid
         Margin="0,2"
         Padding="0"
@@ -16,7 +18,7 @@
             Padding="0"
             BackgroundColor="White"
             Stroke="Orange"
-            StrokeShape="RoundRectangle 18"           
+            StrokeShape="RoundRectangle 18"
             HeightRequest="36"
             HorizontalOptions="Center"
             VerticalOptions="Center"
@@ -31,9 +33,9 @@
                 Text="&#xf060;"
                 TextColor="{Binding ArrowsColor}"
                 VerticalOptions="Center"
-                VerticalTextAlignment="Center" />
+                VerticalTextAlignment="Center"/>
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
+                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}"/>
             </Border.GestureRecognizers>
         </Border>
 
@@ -46,9 +48,9 @@
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}" />
-                    <Span Text=", " />
-                    <Span Text="{Binding Year, Mode=TwoWay}" />
+                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}"/>
+                    <Span Text=", "/>
+                    <Span Text="{Binding Year, Mode=TwoWay}"/>
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -58,7 +60,7 @@
             Padding="0"
             BackgroundColor="White"
             Stroke="Orange"
-            StrokeShape="RoundRectangle 18"            
+            StrokeShape="RoundRectangle 18"
             HeightRequest="36"
             HorizontalOptions="Center"
             VerticalOptions="Center"
@@ -73,9 +75,9 @@
                 Text="&#xf061;"
                 TextColor="{Binding ArrowsColor}"
                 VerticalOptions="Center"
-                VerticalTextAlignment="Center" />
+                VerticalTextAlignment="Center"/>
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
+                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}"/>
             </Border.GestureRecognizers>
         </Border>
     </Grid>

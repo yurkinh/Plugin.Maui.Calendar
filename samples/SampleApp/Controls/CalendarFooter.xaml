@@ -3,8 +3,8 @@
     x:Class="SampleApp.Controls.CalendarFooter"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:model="clr-namespace:SampleApp.Controls"
-    x:DataType="model:CalendarFooter">
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    x:DataType="plugin:Calendar">
     <Grid
         HeightRequest="40"
         RowSpacing="6"
