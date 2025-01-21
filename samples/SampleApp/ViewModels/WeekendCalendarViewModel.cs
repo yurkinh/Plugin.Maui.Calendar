@@ -5,7 +5,7 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 {
     public WeekendCalendarPageViewModel() : base()
     {
-        MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
+        MainThread.BeginInvokeOnMainThread(async () => await AppShell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
         // testing all kinds of adding events
         // when initializing collection
