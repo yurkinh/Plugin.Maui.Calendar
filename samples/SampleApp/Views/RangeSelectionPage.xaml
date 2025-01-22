@@ -29,6 +29,8 @@
         SelectedDatesRangeBackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
         SelectedDayBackgroundColor="{toolkit:AppThemeResource ButtonColor}"
         SelectedDates="{Binding SelectedDates}"
+        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         SelectedEndDate="{Binding SelectedEndDate}"
         SelectedStartDate="{Binding SelectedStartDate}"
         ShownDate="{Binding ShownDate}">

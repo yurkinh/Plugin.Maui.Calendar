@@ -1064,7 +1064,7 @@ public partial class MonthDaysView : ContentView
         }
     }
 
-    public void UpdateDaysColors()
+    private void UpdateDaysColors()
     {
         foreach (var dayView in _dayViews)
         {
