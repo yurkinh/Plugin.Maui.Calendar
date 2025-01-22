@@ -23,6 +23,8 @@
         ArrowsFontFamily="FontAwesomeSolid"
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
+        SelectedDatesRangeBackgroundColor="LightGray"
+        SelectedDayBackgroundColor="Red"
         SelectedDates="{Binding SelectedDates}"
         SelectedEndDate="{Binding SelectedEndDate}"
         SelectedStartDate="{Binding SelectedStartDate}"

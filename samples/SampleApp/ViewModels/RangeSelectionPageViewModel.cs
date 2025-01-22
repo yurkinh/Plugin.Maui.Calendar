@@ -33,8 +33,6 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
             [DateTime.Now.AddDays(46)] = new List<AdvancedEventModel>(GenerateEvents(12, "Cool ZZ", DateTime.Now.AddDays(46))),
             [DateTime.Now.AddDays(51)] = new List<AdvancedEventModel>(GenerateEvents(3, "Cool Y", DateTime.Now.AddDays(51))),
         };
-
-        ShownDate = ShownDate.AddMonths(1);
     }
 
     [ObservableProperty]
@@ -66,11 +64,11 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
     }
 
     [RelayCommand]
-    static async Task DayTapped(object item)
-    { 
+    static void DayTapped(object item)
+    {
 
     }
-        
+
 
     private static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name, DateTime timeOfEvent)
     {

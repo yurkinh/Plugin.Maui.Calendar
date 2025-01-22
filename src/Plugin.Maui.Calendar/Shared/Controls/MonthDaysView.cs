@@ -13,6 +13,8 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class MonthDaysView : ContentView
 {
+    public IEnumerable<DayView> DayViews => _dayViews;
+
     SwipeGestureRecognizer leftSwipeGesture;
     SwipeGestureRecognizer rightSwipeGesture;
     SwipeGestureRecognizer upSwipeGesture;
@@ -1062,7 +1064,7 @@ public partial class MonthDaysView : ContentView
         }
     }
 
-    private void UpdateDaysColors()
+    public void UpdateDaysColors()
     {
         foreach (var dayView in _dayViews)
         {
