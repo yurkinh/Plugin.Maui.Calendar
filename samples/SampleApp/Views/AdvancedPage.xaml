@@ -53,6 +53,7 @@
         Culture="{Binding Culture}"
         DayTappedCommand="{Binding DayTappedCommand}"
         DayViewCornerRadius="3"
+        EventsScrollViewVisible="True"
         DayViewSize="40"
         DaysLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleColor="Orange"

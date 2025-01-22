@@ -9,7 +9,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 {
     public AdvancedPageViewModel() : base()
     {
-        MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
+        MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
         Culture = CultureInfo.CreateSpecificCulture("en-GB");
         // testing all kinds of adding events
@@ -37,32 +37,32 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 
         ShownDate = ShownDate.AddMonths(1);
 
-        Task.Delay(5000).ContinueWith(_ =>
-       {
-           // indexer - update later
-           Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
+       /*  Task.Delay(5000).ContinueWith(_ =>
+        {
+            // indexer - update later
+            Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
 
-           // add later
-           Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
+            // add later
+            Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
-           // indexer later
-           Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
+            // indexer later
+            Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
 
-           // add later
-           Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
+            // add later
+            Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
-           Task.Delay(3000).ContinueWith(t =>
-           {
-               ShownDate = ShownDate.AddMonths(-2);
+            Task.Delay(3000).ContinueWith(t =>
+            {
+                ShownDate = ShownDate.AddMonths(-2);
 
-               // get observable collection later
-               var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
+                // get observable collection later
+                var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
 
-               // insert/add items to observable collection
-               todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
-               todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
-           }, TaskScheduler.FromCurrentSynchronizationContext());
-       }, TaskScheduler.FromCurrentSynchronizationContext());
+                // insert/add items to observable collection
+                todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
+                todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }, TaskScheduler.FromCurrentSynchronizationContext()); */
 
         SelectedDate = DateTime.Today.AddDays(10);
     }

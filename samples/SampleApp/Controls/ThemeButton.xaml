@@ -3,30 +3,35 @@
     x:Class="SampleApp.Controls.ThemeButton"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.Controls"
+    x:DataType="local:ThemeButton"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="This">
     <ContentView.Resources>
         <ControlTemplate x:Key="RadioButtonTemplate">
-            <Grid Margin="4" WidthRequest="100">
-                <ContentPresenter />
+            <Grid Margin="4"
+                  WidthRequest="100">
+                <ContentPresenter/>
             </Grid>
         </ControlTemplate>
 
         <Style TargetType="RadioButton">
-            <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}" />
+            <Setter Property="ControlTemplate"
+                    Value="{StaticResource RadioButtonTemplate}"/>
         </Style>
 
         <toolkit:AppThemeColor
             x:Key="CheeckedColor"
             Dark="#B3FCF8"
-            Light="#2F3E46" />
+            Light="#2F3E46"/>
         <toolkit:AppThemeColor
             x:Key="UncheckedColor"
             Dark="#2F3E46"
-            Light="#c2c5aa" />
+            Light="#c2c5aa"/>
     </ContentView.Resources>
 
-    <RadioButton GroupName="{Binding GroupName, Source={x:Reference This}}" IsChecked="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}">
+    <RadioButton GroupName="{Binding GroupName, Source={x:Reference This}}"
+                 IsChecked="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}">
         <RadioButton.Content>
             <Border
                 HeightRequest="100"
@@ -44,13 +49,15 @@
                                 Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
                                 TargetType="Label"
                                 Value="True">
-                                <Setter Property="TextColor" Value="{toolkit:AppThemeResource UncheckedColor}" />
+                                <Setter Property="TextColor"
+                                        Value="{toolkit:AppThemeResource UncheckedColor}"/>
                             </DataTrigger>
                             <DataTrigger
                                 Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
                                 TargetType="Label"
                                 Value="False">
-                                <Setter Property="TextColor" Value="{toolkit:AppThemeResource CheeckedColor}" />
+                                <Setter Property="TextColor"
+                                        Value="{toolkit:AppThemeResource CheeckedColor}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -64,13 +71,15 @@
                                 Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
                                 TargetType="Label"
                                 Value="True">
-                                <Setter Property="TextColor" Value="{toolkit:AppThemeResource UncheckedColor}" />
+                                <Setter Property="TextColor"
+                                        Value="{toolkit:AppThemeResource UncheckedColor}"/>
                             </DataTrigger>
                             <DataTrigger
                                 Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
                                 TargetType="Label"
                                 Value="False">
-                                <Setter Property="TextColor" Value="{toolkit:AppThemeResource CheeckedColor}" />
+                                <Setter Property="TextColor"
+                                        Value="{toolkit:AppThemeResource CheeckedColor}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -80,15 +89,19 @@
                         Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
                         TargetType="Border"
                         Value="True">
-                        <Setter Property="Stroke" Value="{toolkit:AppThemeResource CheeckedColor}" />
-                        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource CheeckedColor}" />
+                        <Setter Property="Stroke"
+                                Value="{toolkit:AppThemeResource CheeckedColor}"/>
+                        <Setter Property="BackgroundColor"
+                                Value="{toolkit:AppThemeResource CheeckedColor}"/>
                     </DataTrigger>
                     <DataTrigger
                         Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
                         TargetType="Border"
                         Value="False">
-                        <Setter Property="Stroke" Value="{toolkit:AppThemeResource CheeckedColor}" />
-                        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource UncheckedColor}" />
+                        <Setter Property="Stroke"
+                                Value="{toolkit:AppThemeResource CheeckedColor}"/>
+                        <Setter Property="BackgroundColor"
+                                Value="{toolkit:AppThemeResource UncheckedColor}"/>
                     </DataTrigger>
                 </Border.Triggers>
             </Border>

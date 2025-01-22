@@ -25,7 +25,7 @@ public partial class SimplePageViewModel : BasePageViewModel
         // with indexer
         Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
 
-        Task.Delay(5000).ContinueWith(_ =>
+       /*  Task.Delay(5000).ContinueWith(_ =>
         {
             // indexer - update later
             Events[DateTime.Now] = new ObservableCollection<EventModel>(GenerateEvents(10, "Cool"));
@@ -52,7 +52,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 
                 Month += 1;
             }, TaskScheduler.FromCurrentSynchronizationContext());
-        }, TaskScheduler.FromCurrentSynchronizationContext());
+        }, TaskScheduler.FromCurrentSynchronizationContext()); */
     }
 
     private static IEnumerable<EventModel> GenerateEvents(int count, string name)
@@ -104,7 +104,7 @@ public partial class SimplePageViewModel : BasePageViewModel
         {
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
-            await App.Current.MainPage.DisplayAlert(title, message, "Ok");
+            await Shell.Current.DisplayAlert(title, message, "Ok");
         }
     }
 
@@ -115,6 +115,6 @@ public partial class SimplePageViewModel : BasePageViewModel
         string newMonthName = new DateTime(1, args.NewMonth.Month, 1).ToString("MMMM");
 
         string message = $"From {oldMonthName} to {newMonthName}";
-        await App.Current.MainPage.DisplayAlert("Month Changed", message, "OK");
+        await Shell.Current.DisplayAlert("Month Changed", message, "OK");
     }
 }
