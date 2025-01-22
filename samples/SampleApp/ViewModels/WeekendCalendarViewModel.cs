@@ -18,9 +18,6 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
         };
         // with add method
         Events.Add(DateTime.Now.AddDays(-1), new List<EventModel>(GenerateEvents(5, "Cool")));
-
-        // with indexer
-        Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
     }
 
     public EventCollection Events { get; }
