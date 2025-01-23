@@ -8,61 +8,68 @@
     <Color x:Key="EmGreen">#33A78F</Color>
     <Color x:Key="Transparent">Transparent</Color>
     <Color x:Key="RadioButtonColor">#33A78F</Color>
+    <Color x:Key="Locust">#FF829169</Color>
+    <Color x:Key="LimedSpruce">#2F3E46</Color>
+    <Color x:Key="FoggyGray">#FFCDD1B3</Color>
+    <Color x:Key="Casablanca">#F7B548</Color>
+    <Color x:Key="MineShaft">#212121</Color>
+    <Color x:Key="Mystic">#edf2f4</Color>
+    <Color x:Key="Tasman">#CAD2C5</Color>
+
     <toolkit:AppThemeColor
         x:Key="DaysLabelTextColor"
         Dark="Orange"
-        Light="Red" />
+        Light="Red"/>
     <toolkit:AppThemeColor
         x:Key="DeselectedDayLabelTextColor"
         Dark="White"
-        Light="Black" />
+        Light="Black"/>
     <toolkit:AppThemeColor
         x:Key="DaysTitleLabelTextColor"
-        Dark="#F7B548"
-        Light="Black" />
+        Dark="{StaticResource Casablanca}"
+        Light="Black"/>
     <toolkit:AppThemeColor
         x:Key="DaysTitleLabelTextColorMinimalistic"
         Dark="White"
-        Light="Black" />
-
+        Light="Black"/>
     <toolkit:AppThemeColor
         x:Key="TodayDayLabelTextColor"
         Dark="ForestGreen"
-        Light="Black" />
+        Light="Black"/>
     <toolkit:AppThemeColor
         x:Key="OtherMonthDaysLabelTextColor"
         Dark="DimGray"
-        Light="Silver" />
+        Light="Silver"/>
     <toolkit:AppThemeColor
         x:Key="EventIndicatorColor"
         Dark="Green"
-        Light="Red" />
+        Light="Red"/>
     <toolkit:AppThemeColor
         x:Key="WeekendDaysLabelTextColor"
         Dark="Red"
-        Light="Red" />
+        Light="Red"/>
     <toolkit:AppThemeColor
         x:Key="BackgroundColor"
-        Dark="#212121"
-        Light="White" />
+        Dark="{StaticResource MineShaft}"
+        Light="White"/>
     <toolkit:AppThemeColor
         x:Key="BackgroundPageColor"
-        Dark="#2F3E46"
-        Light="#edf2f4" />
+        Dark="{StaticResource LimedSpruce}"
+        Light="{StaticResource Mystic}"/>
     <toolkit:AppThemeColor
         x:Key="ButtonColor"
-        Dark="#CAD2C5"
-        Light="#a4ac86" />
+        Dark="{StaticResource Tasman}"
+        Light="{StaticResource Locust}"/>
     <toolkit:AppThemeColor
         x:Key="PopupBackgroundColor"
-        Dark="#212121"
-        Light="#edf2f4" />
+        Dark="{StaticResource MineShaft}"
+        Light="{StaticResource Mystic}"/>
     <toolkit:AppThemeColor
         x:Key="BackgroundColorfullPageColor"
-        Dark="#2F3E46"
-        Light="#c2c5aa" />
+        Dark="{StaticResource LimedSpruce}"
+        Light="{StaticResource FoggyGray}"/>
     <toolkit:AppThemeColor
         x:Key="TextColor"
-        Dark="#a3b18a"
-        Light="#2F3E46" />
+        Dark="{StaticResource Locust}"
+        Light="{StaticResource LimedSpruce}"/>
 </ResourceDictionary>

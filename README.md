@@ -59,6 +59,7 @@ Weekend calendar
 * Added support for multiple event dots (multidots) in calendar 
 * Added **MonthChanged** Event and **MonthChangedCommand**
 * Added **AllowDeselecting** property
+* Added **SelectedDatesRangeBackgroundColor** property
 * Updated samples
 
 
