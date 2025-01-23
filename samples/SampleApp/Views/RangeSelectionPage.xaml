@@ -25,6 +25,8 @@
         DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
+        SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         SelectedDatesRangeBackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
         SelectedDayBackgroundColor="{toolkit:AppThemeResource ButtonColor}"
