@@ -31,6 +31,8 @@ internal partial class DayModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(
+        nameof(TextColor),
+        nameof(BackgroundColor),
         nameof(IsEventDotVisible),
         nameof(BackgroundEventIndicator),
         nameof(BackgroundFullEventColor)
