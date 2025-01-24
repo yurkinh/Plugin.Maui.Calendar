@@ -35,7 +35,6 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         // with indexer
         Events[DateTime.Now] = new List<AdvancedEventModel>(GenerateEvents(2, "Boring"));
 
-        ShownDate = ShownDate.AddMonths(1);
 
         Task.Delay(5000).ContinueWith(_ =>
        {
@@ -53,7 +52,6 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 
            Task.Delay(3000).ContinueWith(t =>
            {
-               ShownDate = ShownDate.AddMonths(-2);
 
                // get observable collection later
                var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
@@ -64,7 +62,6 @@ public partial class AdvancedPageViewModel : BasePageViewModel
            }, TaskScheduler.FromCurrentSynchronizationContext());
        }, TaskScheduler.FromCurrentSynchronizationContext());
 
-        SelectedDate = DateTime.Today.AddDays(10);
     }
 
     private static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
