@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Plugin.Maui.Calendar.Controls.CalendarNeo"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
+    x:Name="calendar"
+    x:DataType="controls:CalendarNeo">
+  
+    <Grid
+        Padding="0,15,0,0"
+        IsClippedToBounds="True"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="6">
+        <VerticalStackLayout
+            x:Name="calendarContainer"
+            Grid.Row="0"
+            HorizontalOptions="Fill"
+            Spacing="6">
+            <controls:DataTemplateView
+                BindingContext="{x:Reference calendar}"
+                IsVisible="{Binding HeaderSectionVisible}"
+                ItemTemplate="{Binding HeaderSectionTemplate}"/>
+
+            <!-- Calendar -->
+
+            <Grid
+                x:Name="DaysGrid"
+                ColumnDefinitions="*,*,*,*,*,*,*"
+                RowDefinitions="*,*,*,*,*,*,*,*"/>
+
+            <!-- End Calendar -->
+        </VerticalStackLayout>
+        <controls:DataTemplateView
+            Grid.Row="1"
+            BindingContext="{x:Reference calendar}"
+            IsVisible="{Binding FooterSectionVisible, Source={x:Reference calendar}}"
+            ItemTemplate="{Binding FooterSectionTemplate}"/>
+        <ScrollView
+            x:Name="eventsScrollView"
+            Grid.Row="2"
+            IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}}">
+            <VerticalStackLayout
+                BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
+                BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
+                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"/>
+        </ScrollView>
+    </Grid>
+</ContentView>
+
