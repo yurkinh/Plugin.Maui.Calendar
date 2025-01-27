@@ -30,6 +30,78 @@ public partial class Calendar : ContentView
 
     #endregion
 
+    /// <summary>
+    /// Calendar plugin for .NET MAUI
+    /// </summary>
+    public Calendar()
+    {
+        PrevLayoutUnitCommand = new Command(PrevUnit);
+        NextLayoutUnitCommand = new Command(NextUnit);
+        PrevYearCommand = new Command(PrevYear);
+        NextYearCommand = new Command(NextYear);
+        ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
+
+        InitializeComponent();
+
+        InitializeViewLayoutEngine();
+        InitializeSelectionType();
+        UpdateSelectedDateLabel();
+        UpdateLayoutUnitLabel();
+        UpdateEvents();
+
+        _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
+        _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
+
+    }
+
+    protected override void OnHandlerChanged()
+    {
+        //subscribe
+        base.OnHandlerChanged();
+        calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
+        if (!SwipeDetectionDisabled)
+        {
+            leftSwipeGesture = new() { Direction = SwipeDirection.Left };
+            rightSwipeGesture = new() { Direction = SwipeDirection.Right };
+            upSwipeGesture = new() { Direction = SwipeDirection.Up };
+            downSwipeGesture = new() { Direction = SwipeDirection.Down };
+
+            leftSwipeGesture.Swiped += OnSwiped;
+            rightSwipeGesture.Swiped += OnSwiped;
+            upSwipeGesture.Swiped += OnSwiped;
+            downSwipeGesture.Swiped += OnSwiped;
+
+            GestureRecognizers.Add(leftSwipeGesture);
+            GestureRecognizers.Add(rightSwipeGesture);
+            GestureRecognizers.Add(upSwipeGesture);
+            GestureRecognizers.Add(downSwipeGesture);
+        }
+    }
+
+    protected override void OnHandlerChanging(HandlerChangingEventArgs args)
+    {
+        //unsunscribe
+        base.OnHandlerChanging(args);
+
+        if (args.OldHandler != null)
+        {
+            calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
+
+            if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
+            {
+                leftSwipeGesture.Swiped -= OnSwiped;
+                rightSwipeGesture.Swiped -= OnSwiped;
+                upSwipeGesture.Swiped -= OnSwiped;
+                downSwipeGesture.Swiped -= OnSwiped;
+
+                GestureRecognizers.Remove(leftSwipeGesture);
+                GestureRecognizers.Remove(rightSwipeGesture);
+                GestureRecognizers.Remove(upSwipeGesture);
+                GestureRecognizers.Remove(downSwipeGesture);
+            }
+        }
+    }
+
 
     #region Bindable properties
 
@@ -1611,78 +1683,7 @@ public partial class Calendar : ContentView
     private double _calendarSectionHeight;
     private IViewLayoutEngine _viewLayoutEngine;
 
-    /// <summary>
-    /// Calendar plugin for .NET MAUI
-    /// </summary>
-    public Calendar()
-    {
-        PrevLayoutUnitCommand = new Command(PrevUnit);
-        NextLayoutUnitCommand = new Command(NextUnit);
-        PrevYearCommand = new Command(PrevYear);
-        NextYearCommand = new Command(NextYear);
-        ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
 
-        InitializeComponent();
-
-        InitializeViewLayoutEngine();
-        InitializeSelectionType();
-        UpdateSelectedDateLabel();
-        UpdateLayoutUnitLabel();
-        UpdateEvents();
-
-        _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
-        _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
-
-    }
-
-    protected override void OnHandlerChanged()
-    {
-        base.OnHandlerChanged();
-        calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
-        if (!SwipeDetectionDisabled)
-        {
-            leftSwipeGesture = new() { Direction = SwipeDirection.Left };
-            rightSwipeGesture = new() { Direction = SwipeDirection.Right };
-            upSwipeGesture = new() { Direction = SwipeDirection.Up };
-            downSwipeGesture = new() { Direction = SwipeDirection.Down };
-
-            leftSwipeGesture.Swiped += OnSwiped;
-            rightSwipeGesture.Swiped += OnSwiped;
-            upSwipeGesture.Swiped += OnSwiped;
-            downSwipeGesture.Swiped += OnSwiped;
-
-            GestureRecognizers.Add(leftSwipeGesture);
-            GestureRecognizers.Add(rightSwipeGesture);
-            GestureRecognizers.Add(upSwipeGesture);
-            GestureRecognizers.Add(downSwipeGesture);
-
-
-        }
-
-    }
-
-    protected override void OnHandlerChanging(HandlerChangingEventArgs args)
-    {
-        base.OnHandlerChanging(args);
-
-        if (args.OldHandler != null)
-        {
-            calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
-
-            if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
-            {
-                leftSwipeGesture.Swiped -= OnSwiped;
-                rightSwipeGesture.Swiped -= OnSwiped;
-                upSwipeGesture.Swiped -= OnSwiped;
-                downSwipeGesture.Swiped -= OnSwiped;
-
-                GestureRecognizers.Remove(leftSwipeGesture);
-                GestureRecognizers.Remove(rightSwipeGesture);
-                GestureRecognizers.Remove(upSwipeGesture);
-                GestureRecognizers.Remove(downSwipeGesture);
-            }
-        }
-    }
 
     private void InitializeViewLayoutEngine()
     {
