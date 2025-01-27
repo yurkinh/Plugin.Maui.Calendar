@@ -1,11 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
-using Plugin.Maui.Calendar.Enums;
-using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -13,9 +9,9 @@ namespace Plugin.Maui.Calendar.Controls;
 public partial class CalendarNeo : ContentView
 {
     private readonly DateTime today = DateTime.Today;
-    private readonly List<DayCell> dayCells = [];
+    private readonly List<DayView> dayViews = [];
     private readonly Dictionary<DayOfWeek, string> dayDictionary = weekNames;
-    
+
     /// <summary>
     /// Calendar plugin for .NET MAUI
     /// </summary>
@@ -23,14 +19,235 @@ public partial class CalendarNeo : ContentView
     {
         PrevLayoutUnitCommand = new Command(PrevUnit);
         NextLayoutUnitCommand = new Command(NextUnit);
-        PrevYearCommand = new Command(PrevYear);
-        NextYearCommand = new Command(NextYear);
 
         InitializeComponent();
         CreateCalendarDayCells();
         InitDaysHeader();
 
     }
+
+    #region NeoCalendar
+
+    private readonly Color TextColor = Color.FromArgb("444444");
+    private readonly Color DisabledDayTextColor = Color.FromArgb("8F8F8F");
+    private readonly Color DaysTitleColor = Colors.Black;
+    private readonly Color DaysTitleWeekendColor = Color.FromArgb("8F8F8F");
+    private readonly Color SelectedDayTextColor = Colors.White;
+    private readonly Color SelectedDayColor = Colors.LightBlue;
+    private readonly Color TodayDayStrokeColor = Color.FromArgb("444444");
+
+    public static readonly BindableProperty MonthProperty = BindableProperty.Create(
+        nameof(Month),
+        typeof(string),
+        typeof(CalendarNeo),
+        DateTime.Now.Month.ToString(),
+        BindingMode.TwoWay
+        );
+    public string Month
+    {
+        get => (string)GetValue(MonthProperty);
+        set => SetValue(MonthProperty, value);
+    }
+
+    public static readonly BindableProperty MonthIndexProperty = BindableProperty.Create(
+        nameof(MonthIndex),
+        typeof(int),
+        typeof(CalendarNeo),
+        DateTime.Now.Month,
+        BindingMode.TwoWay
+        );
+    public int MonthIndex
+    {
+        get => (int)GetValue(MonthIndexProperty);
+        set => SetValue(MonthIndexProperty, value);
+    }
+
+    public static readonly BindableProperty YearProperty = BindableProperty.Create(
+        nameof(Year),
+        typeof(int),
+        typeof(CalendarNeo),
+        DateTime.Now.Year,
+        BindingMode.TwoWay
+        );
+    public int Year
+    {
+        get => (int)GetValue(YearProperty);
+        set => SetValue(YearProperty, value);
+    }
+
+    public static readonly BindableProperty DayTappedCommandProperty = BindableProperty.Create(
+        nameof(DayTappedCommand),
+        typeof(ICommand),
+        typeof(CalendarNeo));
+    public ICommand DayTappedCommand
+    {
+        get => (ICommand)GetValue(DayTappedCommandProperty);
+        set => SetValue(DayTappedCommandProperty, value);
+    }
+
+    public static readonly BindableProperty DisabledDatesProperty = BindableProperty.Create(
+        nameof(DisabledDates),
+        typeof(HashSet<DateTime>),
+        typeof(CalendarNeo),
+        defaultBindingMode: BindingMode.OneWay,
+        defaultValueCreator: _ => new HashSet<DateTime>(42)
+        );
+    public HashSet<DateTime> DisabledDates
+    {
+        get => (HashSet<DateTime>)GetValue(DisabledDatesProperty);
+        set => SetValue(DisabledDatesProperty, value);
+    }
+
+    public static readonly BindableProperty SelectedDatesProperty = BindableProperty.Create(
+        nameof(SelectedDates),
+        typeof(HashSet<DateTime>),
+        typeof(CalendarNeo),
+        defaultBindingMode: BindingMode.OneWay,
+        defaultValueCreator: _ => new HashSet<DateTime>(42)
+        );
+    public HashSet<DateTime> SelectedDates
+    {
+        get => (HashSet<DateTime>)GetValue(SelectedDatesProperty);
+        set => SetValue(SelectedDatesProperty, value);
+    }
+
+    private void CreateCalendarDayCells()
+    {
+        for (var row = 2; row < DaysGrid.RowDefinitions.Count; ++row)
+        {
+            for (var column = 0; column < DaysGrid.ColumnDefinitions.Count; ++column)
+            {
+                var dayCell = new DayView
+                {
+                    BindingContext = new DayModel()
+                };
+                DaysGrid.SetColumn(dayCell, column);
+                DaysGrid.SetRow(dayCell, row);
+                DaysGrid.Children.Add(dayCell);
+                dayViews.Add(dayCell);
+            }
+        }
+    }
+
+    private void InitDaysHeader()
+    {
+        var dayHeaderStyle = Resources["DaysTitleLabelStyle"] as Style;
+
+        for (var i = 0; i < dayDictionary.Count; i++)
+        {
+            var dayName = dayDictionary.ElementAtOrDefault(i).Value;
+            var dayOfWeek = dayDictionary.ElementAt(i).Key;
+            var textColor = (dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday) ? DaysTitleWeekendColor : DaysTitleColor;
+
+            var label = new Label
+            {
+                Style = dayHeaderStyle,
+                Text = dayName,
+                TextColor = textColor,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.End,
+                HeightRequest = 30,
+                WidthRequest = 30
+            };
+            DaysGrid.SetColumn(label, i);
+            DaysGrid.SetRow(label, 1);
+            DaysGrid.Children.Add(label);
+        }
+    }
+
+    private void UpdateDays()
+    {
+        var daysInMonth = DateTime.DaysInMonth(Year, MonthIndex);
+        var firstDayOfMonth = new DateTime(Year, MonthIndex, 1).DayOfWeek;
+        var firstDateInMonthColumn = (int)firstDayOfMonth;
+
+
+        // Days of the previous month
+        var previousMonthDays = DateTime.DaysInMonth(Year, MonthIndex == 1 ? 12 : MonthIndex - 1);
+        for (var i = 0; i < firstDateInMonthColumn; ++i)
+        {
+            var dayView = dayViews[i];
+            var day = previousMonthDays - firstDateInMonthColumn + i + 1;
+            var previousMonth = MonthIndex == 1 ? 12 : MonthIndex - 1;
+            var previousYear = MonthIndex == 1 ? Year - 1 : Year;
+
+            if (dayView.BindingContext is DayModel dayModel)
+            {
+                dayModel.Date = new DateTime(previousYear, previousMonth, day);
+                dayModel.DeselectedTextColor = DisabledDayTextColor;
+                dayModel.DeselectedBackgroundColor = Colors.Transparent;
+            }
+        }
+
+        // Days of the current month
+        for (var i = 1; i <= daysInMonth; ++i)
+        {
+            var index = i + firstDateInMonthColumn - 1;
+            var dayView = dayViews[index];
+            if (dayView.BindingContext is DayModel dayModel)
+            {
+                dayModel.Date = new DateTime(Year, MonthIndex, i);
+                dayModel.TodayOutlineColor = (dayModel.Date == today) ? TodayDayStrokeColor : Colors.Transparent;
+
+                if (DisabledDates.Contains(dayModel.Date))
+                {
+                    dayModel.DeselectedTextColor = DisabledDayTextColor;
+                    dayModel.DeselectedBackgroundColor = Colors.Transparent;
+                }
+                else
+                {
+                    if (SelectedDates.Contains(dayModel.Date))
+                    {
+                        dayModel.DeselectedTextColor = SelectedDayTextColor;
+                        dayModel.DeselectedBackgroundColor = SelectedDayColor;
+                    }
+                    else
+                    {
+                        dayModel.DeselectedTextColor = TextColor;
+                        dayModel.DeselectedBackgroundColor = Colors.Transparent;
+                    }
+                }
+            }
+        }
+
+        // Days of the next month
+        var nextMonthStartIndex = daysInMonth + firstDateInMonthColumn;
+        var nextMonth = MonthIndex == 12 ? 1 : MonthIndex + 1;
+        var nextYear = MonthIndex == 12 ? Year + 1 : Year;
+
+        for (var i = nextMonthStartIndex; i < dayViews.Count; ++i)
+        {
+            var day = i - nextMonthStartIndex + 1;
+
+            var dayView = dayViews[i];
+            if (dayView.BindingContext is DayModel dayModel)
+            {
+                dayModel.Date = new DateTime(nextYear, nextMonth, day);
+                dayModel.DeselectedTextColor = DisabledDayTextColor;
+                dayModel.DeselectedBackgroundColor = Colors.Transparent;
+            }
+        }
+    }
+
+    private static Dictionary<DayOfWeek, string> GetWeekNames() =>
+         new()
+         {
+                { DayOfWeek.Sunday, "Su" },
+                { DayOfWeek.Monday, "Mo" },
+                { DayOfWeek.Tuesday, "Tu" },
+                { DayOfWeek.Wednesday, "We" },
+                { DayOfWeek.Thursday, "Th" },
+                { DayOfWeek.Friday, "Fr" },
+                { DayOfWeek.Saturday, "Sa" }
+        };
+    private static readonly Dictionary<DayOfWeek, string> weekNames = GetWeekNames();
+
+    private void LoadedHandler(object sender, EventArgs e) => UpdateDays();
+
+
+
+
+    #endregion
 
     #region Bindable properties
 
@@ -70,90 +287,6 @@ public partial class CalendarNeo : ContentView
     {
         get => (bool)GetValue(ShowYearPickerProperty);
         set => SetValue(ShowYearPickerProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for Day
-    /// </summary>
-    public static readonly BindableProperty DayProperty = BindableProperty.Create(
-        nameof(Day),
-        typeof(int),
-        typeof(CalendarNeo),
-        DateTime.Today.Day,
-        BindingMode.TwoWay,
-        propertyChanged: OnDayChanged
-    );
-
-    /// <summary>
-    /// Number signifying the day currently selected in the picker
-    /// </summary>
-    public int Day
-    {
-        get => (int)GetValue(DayProperty);
-        set => SetValue(DayProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for Month
-    /// </summary>
-    public static readonly BindableProperty MonthProperty = BindableProperty.Create(
-        nameof(Month),
-        typeof(int),
-        typeof(CalendarNeo),
-        DateTime.Today.Month,
-        BindingMode.TwoWay,
-        propertyChanged: OnMonthChanged
-    );
-
-    /// <summary>
-    /// Number signifying the month currently selected in the picker
-    /// </summary>
-    public int Month
-    {
-        get => (int)GetValue(MonthProperty);
-        set => SetValue(MonthProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for YearProperty
-    /// </summary>
-    public static readonly BindableProperty YearProperty = BindableProperty.Create(
-        nameof(Year),
-        typeof(int),
-        typeof(CalendarNeo),
-        DateTime.Today.Year,
-        BindingMode.TwoWay,
-        propertyChanged: OnYearChanged
-    );
-
-    /// <summary>
-    /// Number signifying the year currently selected in the picker
-    /// </summary>
-    public int Year
-    {
-        get => (int)GetValue(YearProperty);
-        set => SetValue(YearProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for InitalDate
-    /// </summary>
-    public static readonly BindableProperty ShownDateProperty = BindableProperty.Create(
-        nameof(ShownDate),
-        typeof(DateTime),
-        typeof(CalendarNeo),
-        DateTime.Today,
-        BindingMode.TwoWay,
-        propertyChanged: OnDateChanged
-    );
-
-    /// <summary>
-    /// Specifies the Date that is initially shown
-    /// </summary>
-    public DateTime ShownDate
-    {
-        get => (DateTime)GetValue(ShownDateProperty);
-        set => SetValue(ShownDateProperty, value);
     }
 
     /// <summary>
@@ -270,44 +403,6 @@ public partial class CalendarNeo : ContentView
     {
         get => (Color)GetValue(YearLabelColorProperty);
         set => SetValue(YearLabelColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DaysTitleColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleColorProperty = BindableProperty.Create(
-        nameof(DaysTitleColor),
-        typeof(Color),
-        typeof(CalendarNeo),
-        Colors.Black
-    );
-
-    /// <summary>
-    /// Specifies the color for the titles of days
-    /// </summary>
-    public Color DaysTitleColor
-    {
-        get => (Color)GetValue(DaysTitleColorProperty);
-        set => SetValue(DaysTitleColorProperty, value);
-    }
-
-    /// <summary>
-    /// Bindable property for DaysTitleWeekendColor
-    /// </summary>
-    public static readonly BindableProperty DaysTitleWeekendColorProperty = BindableProperty.Create(
-        nameof(DaysTitleWeekendColor),
-        typeof(Color),
-        typeof(CalendarNeo),
-        Colors.Black
-    );
-
-    /// <summary>
-    /// Specifies the color for the titles of the weekend days
-    /// </summary>
-    public Color DaysTitleWeekendColor
-    {
-        get => (Color)GetValue(DaysTitleWeekendColorProperty);
-        set => SetValue(DaysTitleWeekendColorProperty, value);
     }
 
     #endregion
@@ -734,17 +829,6 @@ public partial class CalendarNeo : ContentView
     {
 
     }
-
-    private void NextYear(object obj)
-    {
-        ShownDate = ShownDate.AddYears(1);
-    }
-
-    private void PrevYear(object obj)
-    {
-        ShownDate = ShownDate.AddYears(-1);
-    }
-
 
     #endregion
 }

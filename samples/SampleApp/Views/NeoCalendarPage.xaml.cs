@@ -6,9 +6,4 @@ public partial class NeoCalendarPage : ContentPage
 	{
 		InitializeComponent();
 	}
-
-	void UnloadedHandler(object sender, EventArgs e)
-	{
-		calendar.Dispose();
-	}
 }

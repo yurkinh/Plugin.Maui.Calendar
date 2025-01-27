@@ -5,8 +5,36 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
     x:Name="calendar"
+    Loaded="LoadedHandler"
     x:DataType="controls:CalendarNeo">
-  
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DaysTitleLabelStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="FontFamily"
+                        Value="SFPBold"/>
+                <Setter Property="TextTransform"
+                        Value="Default"/>
+                <Setter Property="TextColor"
+                        Value="#444444"/>
+            </Style>
+            <Style x:Key="MonthTitleTextStyle"
+                   TargetType="Span">
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="FontFamily"
+                        Value="SFPBold"/>
+                <Setter Property="TextColor"
+                        Value="#444444"/>
+                <Setter Property="TextTransform"
+                        Value="Uppercase"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <Grid
         Padding="0,15,0,0"
         IsClippedToBounds="True"
@@ -41,7 +69,6 @@
             Grid.Row="2"
             IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}}">
             <VerticalStackLayout
-                BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
                 BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
                 BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"/>
         </ScrollView>

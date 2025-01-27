@@ -38,7 +38,7 @@
                 FontAttributes="Bold"
                 FontSize="Medium"
                 HorizontalOptions="Center"
-                Text="{Binding LayoutUnitText}"
+                Text="{Binding Month}"
                 TextColor="{Binding MonthLabelColor}"
                 VerticalOptions="Center" />
             <Button
