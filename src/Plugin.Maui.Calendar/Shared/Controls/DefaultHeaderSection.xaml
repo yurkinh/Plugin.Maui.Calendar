@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Plugin.Maui.Calendar.Controls.DefaultHeaderSection"
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
-             x:DataType="controls:Calendar">
+             x:DataType="controls:CalendarNeo">
     <VerticalStackLayout
         Spacing="6"
         Grid.Row="0"       

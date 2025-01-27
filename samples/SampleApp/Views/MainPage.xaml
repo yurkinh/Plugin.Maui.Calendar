@@ -63,8 +63,12 @@
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill"
                              Spacing="6">
+            <Button
+                Margin="30,30,30,10"
+                Clicked="NeoCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Neo Calendar"/>
             <Label
-                Margin="0,30,0,0"
                 Style="{StaticResource LabelMainPageStyle}"
                 Text="Event Calendar"/>
             <Button

@@ -10,42 +10,39 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private async void SimpleCalendar(object sender, EventArgs e)
-    {
+    private async void NeoCalendar(object sender, EventArgs e) =>
+        await Shell.Current.GoToAsync(nameof(NeoCalendarPage));
+
+
+    private async void SimpleCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(SimplePage));
-    }
 
-    async void WeekendCalendar(object sender, EventArgs e)
-    {
+
+    async void WeekendCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(WeekendCalendarPage));
-    }
 
-    private async void MultiSelectionCalendar(object sender, EventArgs e)
-    {
+
+    private async void MultiSelectionCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(MultiSelectionPage));
-    }
 
-    private async void AdvancedCalendar(object sender, EventArgs e)
-    {
+
+    private async void AdvancedCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(AdvancedPage));
-    }
 
-    private async void RangeCalendar(object sender, EventArgs e)
-    {
+
+    private async void RangeCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(RangeSelectionPage));
-    }
 
-    private async void PickerPopup(object sender, EventArgs e)
-    {
+
+    private async void PickerPopup(object sender, EventArgs e) =>
         await MopupService.Instance.PushAsync(new CalendarPickerPopup(async (calendarPickerResult) =>
         {
             string message = calendarPickerResult.IsSuccess ? $"Received date from popup: {calendarPickerResult.SelectedDate:dd/MM/yy}" : "Calendar Picker Canceled!";
 
             await AppShell.Current.DisplayAlert("Popup result", message, "Ok");
         }));
-    }
-    private async void RangePickerPopup(object sender, EventArgs e)
-    {
+
+    private async void RangePickerPopup(object sender, EventArgs e) =>
         await MopupService.Instance.PushAsync(new CalendarRangePickerPopupSelectedDates(async (calendarPickerResult) =>
         {
             var message = "Calendar Range Piceker Canceled!";
@@ -68,9 +65,8 @@ public partial class MainPage : ContentPage
 
             await AppShell.Current.DisplayAlert("Popup result", message, "Ok");
         }));
-    }
-    private async void RangeStartEndDatePickerPopup(object sender, EventArgs e)
-    {
+
+    private async void RangeStartEndDatePickerPopup(object sender, EventArgs e) =>
         await MopupService.Instance.PushAsync(new CalendarRangePickerPopup(async (calendarPickerResult) =>
         {
             var message = "Calendar Range Piceker Canceled!";
@@ -86,20 +82,13 @@ public partial class MainPage : ContentPage
 
             await AppShell.Current.DisplayAlert("Popup result", message, "Ok");
         }));
-    }
 
-    private async void WeekViewCalendar(object sender, EventArgs e)
-    {
+    private async void WeekViewCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(WeekViewPage));
-    }
 
-    private async void TwoWeekViewCalendar(object sender, EventArgs e)
-    {
+    private async void TwoWeekViewCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(TwoWeekViewPage));
-    }
 
-    async void Windows11Calendar(object sender, EventArgs e)
-    {
+    async void Windows11Calendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(Windows11CalendarPage));
-    }
 }
