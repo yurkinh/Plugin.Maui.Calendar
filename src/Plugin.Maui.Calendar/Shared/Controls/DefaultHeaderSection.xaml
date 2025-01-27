@@ -2,17 +2,17 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Plugin.Maui.Calendar.Controls.DefaultHeaderSection"
-             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
+             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
              x:DataType="controls:Calendar">
     <VerticalStackLayout
         Spacing="6"
-        Grid.Row="0"       
+        Grid.Row="0"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         <Grid
             RowSpacing="6"
             HorizontalOptions="Fill"
-            IsVisible="{Binding ShowMonthPicker}"            
+            IsVisible="{Binding ShowMonthPicker}"
             VerticalOptions="Start"
             RowDefinitions="Auto"
             ColumnDefinitions="*,Auto,*">
@@ -40,7 +40,7 @@
                 HorizontalOptions="Center"
                 Text="{Binding LayoutUnitText}"
                 TextColor="{Binding MonthLabelColor}"
-                VerticalOptions="Center" />
+                VerticalOptions="Center"/>
             <Button
                 Grid.Column="2"
                 Padding="0"
@@ -90,7 +90,7 @@
                 HorizontalOptions="Center"
                 Text="{Binding Year}"
                 TextColor="{Binding YearLabelColor}"
-                VerticalOptions="Center" />
+                VerticalOptions="Center"/>
             <Button
                 Grid.Column="2"
                 Padding="0"

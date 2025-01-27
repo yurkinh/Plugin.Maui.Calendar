@@ -61,7 +61,7 @@
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
         DeselectedDayTextColor="Blue"
-        DisableSwipeDetection="False"
+        SwipeDetectionDisabled="False"
         EventIndicatorColor="Red"
         EventIndicatorSelectedColor="IndianRed"
         EventIndicatorSelectedTextColor="AliceBlue"

@@ -46,6 +46,7 @@
                 Day="{Binding Day}"
                 EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 DayViewFontSize="Medium"
+                SwipeDetectionDisabled="False"
                 DaysLabelStyle="{StaticResource daysLabelStyle}"
                 DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
                 DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"

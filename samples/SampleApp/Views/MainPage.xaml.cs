@@ -10,9 +10,6 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private async void NeoCalendar(object sender, EventArgs e) =>
-        await Shell.Current.GoToAsync(nameof(NeoCalendarPage));
-
 
     private async void SimpleCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(SimplePage));

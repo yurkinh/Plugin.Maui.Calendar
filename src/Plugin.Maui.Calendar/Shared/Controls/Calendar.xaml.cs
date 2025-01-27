@@ -13,12 +13,20 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView
 {
+    SwipeGestureRecognizer leftSwipeGesture;
+    SwipeGestureRecognizer rightSwipeGesture;
+    SwipeGestureRecognizer upSwipeGesture;
+    SwipeGestureRecognizer downSwipeGesture;
     #region Events
 
     /// <summary>
     /// Event that is triggered when the month changes.
     /// </summary>
     public event EventHandler<MonthChangedEventArgs> MonthChanged;
+    public event EventHandler SwipedLeft;
+    public event EventHandler SwipedRight;
+    public event EventHandler SwipedUp;
+    public event EventHandler SwipedDown;
 
     #endregion
 
@@ -1201,22 +1209,18 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for DisableSwipeDetection
     /// </summary>
-    public static readonly BindableProperty DisableSwipeDetectionProperty = BindableProperty.Create(
-        nameof(DisableSwipeDetection),
-        typeof(bool),
-        typeof(Calendar),
-        false
-    );
+    public static readonly BindableProperty SwipeDetectionDisabledProperty =
+         BindableProperty.Create(
+             nameof(SwipeDetectionDisabled),
+             typeof(bool),
+             typeof(Calendar),
+             false
+         );
 
-    /// <summary>
-    /// <para> Disables the swipe detection (needs testing on iOS) </para>
-    /// Could be useful if your superview has its own swipe-detection logic.
-    /// Also see if <seealso cref="SwipeUpCommand"/>, <seealso cref="SwipeUpToHideEnabled"/>, <seealso cref="SwipeLeftCommand"/>, <seealso cref="SwipeRightCommand"/> or <seealso cref="SwipeToChangeMonthEnabled"/> is useful to you.
-    /// </summary>
-    public bool DisableSwipeDetection
+    public bool SwipeDetectionDisabled
     {
-        get => (bool)GetValue(DisableSwipeDetectionProperty);
-        set => SetValue(DisableSwipeDetectionProperty, value);
+        get => (bool)GetValue(SwipeDetectionDisabledProperty);
+        set => SetValue(SwipeDetectionDisabledProperty, value);
     }
 
     /// <summary>
@@ -1512,11 +1516,11 @@ public partial class Calendar : ContentView
         propertyChanged: OnSelectedDateChanged
     );
 
-     private static void OnSelectedDateChanged(
-        BindableObject bindable,
-        object oldValue,
-        object newValue
-    )
+    private static void OnSelectedDateChanged(
+       BindableObject bindable,
+       object oldValue,
+       object newValue
+   )
     {
         var control = (Calendar)bindable;
         var dateToSet = (DateTime?)newValue;
@@ -1628,7 +1632,56 @@ public partial class Calendar : ContentView
 
         _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
         _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
+
+    }
+
+    protected override void OnHandlerChanged()
+    {
+        base.OnHandlerChanged();
         calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
+        if (!SwipeDetectionDisabled)
+        {
+            leftSwipeGesture = new() { Direction = SwipeDirection.Left };
+            rightSwipeGesture = new() { Direction = SwipeDirection.Right };
+            upSwipeGesture = new() { Direction = SwipeDirection.Up };
+            downSwipeGesture = new() { Direction = SwipeDirection.Down };
+
+            leftSwipeGesture.Swiped += OnSwiped;
+            rightSwipeGesture.Swiped += OnSwiped;
+            upSwipeGesture.Swiped += OnSwiped;
+            downSwipeGesture.Swiped += OnSwiped;
+
+            GestureRecognizers.Add(leftSwipeGesture);
+            GestureRecognizers.Add(rightSwipeGesture);
+            GestureRecognizers.Add(upSwipeGesture);
+            GestureRecognizers.Add(downSwipeGesture);
+
+
+        }
+
+    }
+
+    protected override void OnHandlerChanging(HandlerChangingEventArgs args)
+    {
+        base.OnHandlerChanging(args);
+
+        if (args.OldHandler != null)
+        {
+            calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
+
+            if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
+            {
+                leftSwipeGesture.Swiped -= OnSwiped;
+                rightSwipeGesture.Swiped -= OnSwiped;
+                upSwipeGesture.Swiped -= OnSwiped;
+                downSwipeGesture.Swiped -= OnSwiped;
+
+                GestureRecognizers.Remove(leftSwipeGesture);
+                GestureRecognizers.Remove(rightSwipeGesture);
+                GestureRecognizers.Remove(upSwipeGesture);
+                GestureRecognizers.Remove(downSwipeGesture);
+            }
+        }
     }
 
     private void InitializeViewLayoutEngine()
@@ -1972,6 +2025,33 @@ public partial class Calendar : ContentView
         SelectedDates = null;
         SelectedDate = null;
     }
+
+    void OnSwiped(object sender, SwipedEventArgs e)
+    {
+        switch (e.Direction)
+        {
+            case SwipeDirection.Left:
+                OnSwipeLeft();
+                break;
+            case SwipeDirection.Right:
+                OnSwipeRight();
+                break;
+            case SwipeDirection.Up:
+                OnSwipeUp();
+                break;
+            case SwipeDirection.Down:
+                OnSwipeDown();
+                break;
+        }
+    }
+
+    void OnSwipeLeft() => SwipedLeft?.Invoke(this, EventArgs.Empty);
+
+    void OnSwipeRight() => SwipedRight?.Invoke(this, EventArgs.Empty);
+
+    void OnSwipeUp() => SwipedUp?.Invoke(this, EventArgs.Empty);
+
+    void OnSwipeDown() => SwipedDown?.Invoke(this, EventArgs.Empty);
 
     public void Dispose()
     {

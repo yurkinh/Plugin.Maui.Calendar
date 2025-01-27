@@ -5,6 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
     x:Name="calendar"
+    SwipedLeft="OnSwipedLeft"
+    SwipedRight="OnSwipedRight"
+    SwipedUp="OnSwipedUp"
     x:DataType="controls:Calendar">
     <Grid
         Padding="0,15,0,0"
@@ -19,7 +22,7 @@
             <controls:DataTemplateView
                 BindingContext="{x:Reference calendar}"
                 IsVisible="{Binding HeaderSectionVisible}"
-                ItemTemplate="{Binding HeaderSectionTemplate}" />
+                ItemTemplate="{Binding HeaderSectionTemplate}"/>
             <controls:MonthDaysView
                 AllowDeselect="{Binding  AllowDeselect, Source={x:Reference calendar}}"
                 x:Name="monthDaysView"
@@ -58,20 +61,16 @@
                 SelectedDayTextColor="{Binding SelectedDayTextColor, Source={x:Reference calendar}}"
                 SelectedTodayTextColor="{Binding SelectedTodayTextColor, Source={x:Reference calendar}}"
                 ShownDate="{Binding ShownDate, Source={x:Reference calendar}}"
-                SwipeDetectionDisabled="{Binding DisableSwipeDetection, Source={x:Reference calendar}}"
-                SwipedLeft="OnSwipedLeft"
-                SwipedRight="OnSwipedRight"
-                SwipedUp="OnSwipedUp"
                 TodayFillColor="{Binding TodayFillColor, Source={x:Reference calendar}}"
                 TodayOutlineColor="{Binding TodayOutlineColor, Source={x:Reference calendar}}"
                 TodayTextColor="{Binding TodayTextColor, Source={x:Reference calendar}}"
-                WeekendDayColor="{Binding WeekendDayColor, Source={x:Reference calendar}}" />
+                WeekendDayColor="{Binding WeekendDayColor, Source={x:Reference calendar}}"/>
         </VerticalStackLayout>
         <controls:DataTemplateView
             Grid.Row="1"
             BindingContext="{x:Reference calendar}"
             IsVisible="{Binding FooterSectionVisible, Source={x:Reference calendar}}"
-            ItemTemplate="{Binding FooterSectionTemplate}" />
+            ItemTemplate="{Binding FooterSectionTemplate}"/>
         <ScrollView
             x:Name="eventsScrollView"
             Grid.Row="2"
@@ -79,7 +78,7 @@
             <VerticalStackLayout
                 BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
                 BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
-                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}" />
+                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"/>
         </ScrollView>
     </Grid>
 </ContentView>
