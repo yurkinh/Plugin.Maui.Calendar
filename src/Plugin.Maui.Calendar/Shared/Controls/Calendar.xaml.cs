@@ -1986,7 +1986,7 @@ public partial class Calendar : ContentView
     {
         var dayNumber = (int)FirstDayOfWeek;
 
-        foreach (var dayLabel in _daysControl.Children.OfType<Label>())
+        foreach (var dayLabel in daysControl.Children.OfType<Label>())
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower
@@ -2029,8 +2029,8 @@ public partial class Calendar : ContentView
             MainThread.InvokeOnMainThreadAsync(
                 () =>
                     Animate(
-                        () => _daysControl.FadeTo(animate ? 0 : 1, 50),
-                        () => _daysControl.FadeTo(1, 200),
+                        () => daysControl.FadeTo(animate ? 0 : 1, 50),
+                        () => daysControl.FadeTo(1, 200),
                         () => UpdateDays(),
                         _lastAnimationTime = DateTime.UtcNow,
                         () => UpdateAndAnimateDays(false)
@@ -2258,7 +2258,7 @@ public partial class Calendar : ContentView
             _ => new MonthViewEngine(Culture, FirstDayOfWeek),
         };
 
-        _daysControl = CurrentViewLayoutEngine.GenerateLayout(
+        daysControl = CurrentViewLayoutEngine.GenerateLayout(
             _dayViews,
             this,
             nameof(DaysTitleHeight),
@@ -2272,13 +2272,14 @@ public partial class Calendar : ContentView
         UpdateDaysColors();
         UpdateDayTitles();
 
-        calendarContainer.Add(_daysControl);
+        calendarContainer.SetRow(daysControl,1);
+        calendarContainer.Children.Add(daysControl);
     }
 
 /*     private void DiposeDayViews()
     {
 
-        foreach (var dayView in _daysControl.Children.OfType<DayView>())
+        foreach (var dayView in daysControl.Children.OfType<DayView>())
         {
             if (dayView.BindingContext is DayModel dayModel)
             {

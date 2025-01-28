@@ -12,31 +12,28 @@
     <Grid
         Padding="0,15,0,0"
         IsClippedToBounds="True"
-        RowDefinitions="Auto,Auto,*"
+        RowDefinitions="Auto,Auto,Auto,*"
+        x:Name="calendarContainer"
         RowSpacing="6">
-        <VerticalStackLayout
-            x:Name="calendarContainer"
+        <controls:DataTemplateView
             Grid.Row="0"
             HorizontalOptions="Fill"
-            Spacing="6">
-            <controls:DataTemplateView
-                BindingContext="{x:Reference calendar}"
-                IsVisible="{Binding HeaderSectionVisible}"
-                ItemTemplate="{Binding HeaderSectionTemplate}"/>
-            <Grid
-                x:Name="_daysControl"
-                HorizontalOptions="Fill"
-                VerticalOptions="Fill"/>
-        </VerticalStackLayout>
-
-        <controls:DataTemplateView
+            BindingContext="{x:Reference calendar}"
+            IsVisible="{Binding HeaderSectionVisible}"
+            ItemTemplate="{Binding HeaderSectionTemplate}"/>
+        <Grid
             Grid.Row="1"
+            x:Name="daysControl"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"/>
+        <controls:DataTemplateView
+            Grid.Row="2"
             BindingContext="{x:Reference calendar}"
             IsVisible="{Binding FooterSectionVisible, Source={x:Reference calendar}}"
             ItemTemplate="{Binding FooterSectionTemplate}"/>
         <ScrollView
             x:Name="eventsScrollView"
-            Grid.Row="2"
+            Grid.Row="3"
             IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}}">
             <VerticalStackLayout
                 BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
