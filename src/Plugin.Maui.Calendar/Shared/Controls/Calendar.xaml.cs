@@ -2280,18 +2280,15 @@ public partial class Calendar : ContentView
 
         foreach (var dayView in daysControl.Children.OfType<DayView>())
         {
-
-            foreach (var dayView in daysControl.Children.OfType<DayView>())
+            if (dayView.BindingContext is DayModel dayModel)
             {
-                if (dayView.BindingContext is DayModel dayModel)
-                {
-                    dayModel.PropertyChanged -= OnDayModelPropertyChanged;
+                dayModel.PropertyChanged -= OnDayModelPropertyChanged;
 #if !WINDOWS
-                    dayView.BindingContext = null;
+                dayView.BindingContext = null;
 #endif
-                }
             }
         }
+
     }
 
     private void Animate(Func<Task> animationIn, Func<Task> animationOut, Action afterFirstAnimation, DateTime animationTime, Action callAgain)
