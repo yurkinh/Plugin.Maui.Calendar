@@ -118,6 +118,9 @@ public partial class Calendar : ContentView
                 GestureRecognizers.Remove(upSwipeGesture);
                 GestureRecognizers.Remove(downSwipeGesture);
             }
+            //Todo remove later/when all event and properties will be refactored
+            //all this should be done automaticall or not needed
+            Dispose();
         }
     }
 
@@ -2230,17 +2233,12 @@ public partial class Calendar : ContentView
 
     public void Dispose()
     {
-
-        calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
         if (Events is EventCollection events)
         {
             events.CollectionChanged -= OnEventsCollectionChanged;
         }
 
-        calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
-        Handler.DisconnectHandler();
-
-        // DiposeDayViews();
+        DiposeDayViews();
     }
 
     #endregion
@@ -2278,20 +2276,20 @@ public partial class Calendar : ContentView
         calendarContainer.Children.Add(daysControl);
     }
 
-    /*     private void DiposeDayViews()
-        {
+    private void DiposeDayViews()
+    {
 
-            foreach (var dayView in daysControl.Children.OfType<DayView>())
+        foreach (var dayView in daysControl.Children.OfType<DayView>())
+        {
+            if (dayView.BindingContext is DayModel dayModel)
             {
-                if (dayView.BindingContext is DayModel dayModel)
-                {
-                    dayModel.PropertyChanged -= OnDayModelPropertyChanged;
-    #if !WINDOWS
-                    dayView.BindingContext = null;
-    #endif
-                }
+                dayModel.PropertyChanged -= OnDayModelPropertyChanged;
+#if !WINDOWS
+                dayView.BindingContext = null;
+#endif
             }
-        } */
+        }
+    }
 
     private void Animate(Func<Task> animationIn, Func<Task> animationOut, Action afterFirstAnimation, DateTime animationTime, Action callAgain)
     {
