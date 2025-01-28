@@ -35,7 +35,7 @@ internal class SingleSelectionEngine : ISelectionEngine
 
     List<DateTime> ISelectionEngine.PerformDateSelection(
         DateTime dateToSelect,
-        List<DateTime>? disabledDates = null
+        List<DateTime> disabledDates
     )
     {
         if (dateToSelect == _selectedDate)

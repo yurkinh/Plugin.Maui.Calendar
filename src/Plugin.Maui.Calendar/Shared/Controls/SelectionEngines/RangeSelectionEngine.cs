@@ -47,10 +47,10 @@ internal class RangedSelectionEngine : ISelectionEngine
 
     List<DateTime> ISelectionEngine.PerformDateSelection(
         DateTime dateToSelect,
-        List<DateTime>? disabledDates = null
+        List<DateTime> disabledDates
     )
     {
-        return SelectDateRange(dateToSelect, disabledDates);
+        return SelectDateRange(dateToSelect, disabledDates ?? new List<DateTime>());
     }
 
     void ISelectionEngine.UpdateDateSelection(List<DateTime> datesToSelect)
@@ -76,7 +76,7 @@ internal class RangedSelectionEngine : ISelectionEngine
         }
     }
 
-    internal List<DateTime> SelectDateRange(DateTime? newSelected, List<DateTime>? disabledDates)
+    internal List<DateTime> SelectDateRange(DateTime? newSelected, List<DateTime> disabledDates)
     {
         if (
             _rangeSelectionStartDate is null
@@ -90,7 +90,7 @@ internal class RangedSelectionEngine : ISelectionEngine
         return CreateRangeList(disabledDates);
     }
 
-    private List<DateTime> CreateRangeList(List<DateTime>? disabledDates = null)
+    private List<DateTime> CreateRangeList(List<DateTime> disabledDates = null)
     {
         var rangeList = new List<DateTime>();
         if (_rangeSelectionStartDate.HasValue && _rangeSelectionEndDate.HasValue)
@@ -109,7 +109,7 @@ internal class RangedSelectionEngine : ISelectionEngine
         return rangeList;
     }
 
-    internal List<DateTime> GetDateRange(List<DateTime>? disabledDates = null) =>
+    internal List<DateTime> GetDateRange(List<DateTime> disabledDates = null) =>
         CreateRangeList(disabledDates);
 
     private void SelectFirstIntervalBorder(DateTime? newSelected)
