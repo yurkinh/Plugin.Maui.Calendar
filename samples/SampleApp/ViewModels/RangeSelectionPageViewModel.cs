@@ -33,8 +33,6 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
             [DateTime.Now.AddDays(46)] = new List<AdvancedEventModel>(GenerateEvents(12, "Cool ZZ", DateTime.Now.AddDays(46))),
             [DateTime.Now.AddDays(51)] = new List<AdvancedEventModel>(GenerateEvents(3, "Cool Y", DateTime.Now.AddDays(51))),
         };
-
-        ShownDate = ShownDate.AddMonths(1);
     }
 
     [ObservableProperty]
@@ -61,6 +59,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
         {
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
+
             await Shell.Current.DisplayAlert(title, message, "Ok");
         }
     }
