@@ -1792,7 +1792,7 @@ public partial class Calendar : ContentView
             if (calendar.Year != newDateTime.Year)
                 calendar.Year = newDateTime.Year;
 
-           
+
             calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
         }
     }
@@ -1912,7 +1912,9 @@ public partial class Calendar : ContentView
             case nameof(Events):
             case nameof(ShownDate):
                 UpdateLayoutUnitLabel();
+                UpdateAndAnimateDays(AnimateCalendar);
                 break;
+
             case nameof(MinimumDate):
             case nameof(MaximumDate):
             case nameof(OtherMonthDayIsVisible):
@@ -2238,7 +2240,7 @@ public partial class Calendar : ContentView
         calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
         Handler.DisconnectHandler();
 
-       // DiposeDayViews();
+        // DiposeDayViews();
     }
 
     #endregion
@@ -2272,24 +2274,24 @@ public partial class Calendar : ContentView
         UpdateDaysColors();
         UpdateDayTitles();
 
-        calendarContainer.SetRow(daysControl,1);
+        calendarContainer.SetRow(daysControl, 1);
         calendarContainer.Children.Add(daysControl);
     }
 
-/*     private void DiposeDayViews()
-    {
-
-        foreach (var dayView in daysControl.Children.OfType<DayView>())
+    /*     private void DiposeDayViews()
         {
-            if (dayView.BindingContext is DayModel dayModel)
+
+            foreach (var dayView in daysControl.Children.OfType<DayView>())
             {
-                dayModel.PropertyChanged -= OnDayModelPropertyChanged;
-#if !WINDOWS
-                dayView.BindingContext = null;
-#endif
+                if (dayView.BindingContext is DayModel dayModel)
+                {
+                    dayModel.PropertyChanged -= OnDayModelPropertyChanged;
+    #if !WINDOWS
+                    dayView.BindingContext = null;
+    #endif
+                }
             }
-        }
-    } */
+        } */
 
     private void Animate(Func<Task> animationIn, Func<Task> animationOut, Action afterFirstAnimation, DateTime animationTime, Action callAgain)
     {
