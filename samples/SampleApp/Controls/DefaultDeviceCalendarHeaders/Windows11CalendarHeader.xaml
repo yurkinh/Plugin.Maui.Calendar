@@ -84,11 +84,11 @@
         </Label>
         <Button
             Grid.Column="1"
-            Command="{Binding PrevLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay, x:DataType=plugin:Calendar}"
+            Command="{Binding PrevLayoutUnitCommand, Mode=OneTime}"
             Style="{StaticResource arrowButtonPrevStyle}"/>
         <Button
             Grid.Column="2"
-            Command="{Binding NextLayoutUnitCommand, Source={x:Reference Header}, Mode=OneWay, x:DataType=plugin:Calendar}"
+            Command="{Binding NextLayoutUnitCommand, Mode=OneTime}"
             Style="{StaticResource arrowButtonNextStyle}"/>
     </Grid>
 </ContentView>
