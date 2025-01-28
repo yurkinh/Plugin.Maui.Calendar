@@ -10,14 +10,6 @@
     xmlns:local="clr-namespace:SampleApp.Views;assembly=SampleApp"
     Shell.TitleColor="{toolkit:AppThemeResource TextColor}"
     Shell.FlyoutBehavior="Disabled">
-    <Shell.Resources>
-        <ResourceDictionary>
-            <toolkit:AppThemeColor
-                x:Key="ShellColor"
-                Dark="#FF243138"
-                Light="#FFE2E3D4"/>
-        </ResourceDictionary>
-    </Shell.Resources>
     <TabBar>
         <Tab Icon="calendar"
              Title="MainPage">

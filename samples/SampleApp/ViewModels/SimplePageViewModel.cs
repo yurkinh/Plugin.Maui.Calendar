@@ -25,7 +25,8 @@ public partial class SimplePageViewModel : BasePageViewModel
         // with indexer
         Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
 
-       /*  Task.Delay(5000).ContinueWith(_ =>
+
+        /* Task.Delay(5000).ContinueWith(_ =>
         {
             // indexer - update later
             Events[DateTime.Now] = new ObservableCollection<EventModel>(GenerateEvents(10, "Cool"));

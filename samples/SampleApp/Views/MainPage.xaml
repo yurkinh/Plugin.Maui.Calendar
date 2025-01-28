@@ -7,10 +7,13 @@
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     Title="Calendar Plugin for .NET MAUI"
-    android:NavigationBar.Color="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
+    android:NavigationBar.Color="{toolkit:AppThemeResource ShellColor}"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
     Shell.TitleColor="{toolkit:AppThemeResource TextColor}">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"/>
+    </ContentPage.Behaviors>
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:AppThemeColor
@@ -23,7 +26,7 @@
                 Light="#000000"/>
 
             <Style x:Key="LabelMainPageStyle"
-                    TargetType="Label">
+                   TargetType="Label">
                 <Setter Property="FontAttributes"
                         Value="Bold"/>
                 <Setter Property="FontSize"
@@ -36,7 +39,7 @@
                         Value="{toolkit:AppThemeResource LabelColor}"/>
             </Style>
             <Style x:Key="ButtonMainPageStyle"
-                    TargetType="Button">
+                   TargetType="Button">
                 <Setter Property="HorizontalOptions"
                         Value="Fill"/>
                 <Setter Property="BackgroundColor"
@@ -62,9 +65,11 @@
     </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill"
-                Spacing="6">
-            <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Event Calendar"/>
+                             Spacing="6">
+            <Label
+                Margin="0,20,0,0"
+                Style="{StaticResource LabelMainPageStyle}"
+                Text="Event Calendar"/>
             <Button
                 Clicked="SimpleCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -86,13 +91,13 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Calendars from Devices"/>
+                   Text="Calendars from Devices"/>
             <Button
                 Clicked="Windows11Calendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Windows 11 Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Picker Popup"/>
+                   Text="Picker Popup"/>
             <Button
                 Clicked="PickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -106,7 +111,7 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Start-End Selection Calendar"/>
             <Label Style="{StaticResource LabelMainPageStyle}"
-                    Text="Week View Calendars"/>
+                   Text="Week View Calendars"/>
             <Button
                 Clicked="WeekViewCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"

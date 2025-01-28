@@ -30,7 +30,7 @@ public partial class Calendar : ContentView
     IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
     public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
     readonly Dictionary<string, bool> propertyChangedNotificationSupressions = [];
-    readonly List<DayView> dayViews = [];
+    protected readonly List<DayView> dayViews = [];
     DateTime lastAnimationTime;
     bool animating;
 
@@ -2237,7 +2237,6 @@ public partial class Calendar : ContentView
         {
             events.CollectionChanged -= OnEventsCollectionChanged;
         }
-
         DiposeDayViews();
     }
 
@@ -2281,12 +2280,16 @@ public partial class Calendar : ContentView
 
         foreach (var dayView in daysControl.Children.OfType<DayView>())
         {
-            if (dayView.BindingContext is DayModel dayModel)
+
+            foreach (var dayView in daysControl.Children.OfType<DayView>())
             {
-                dayModel.PropertyChanged -= OnDayModelPropertyChanged;
+                if (dayView.BindingContext is DayModel dayModel)
+                {
+                    dayModel.PropertyChanged -= OnDayModelPropertyChanged;
 #if !WINDOWS
-                dayView.BindingContext = null;
+                    dayView.BindingContext = null;
 #endif
+                }
             }
         }
     }

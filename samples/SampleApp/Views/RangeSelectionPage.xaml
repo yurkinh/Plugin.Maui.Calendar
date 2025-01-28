@@ -19,12 +19,21 @@
 
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
+        DaysTitleWeekendColor="Red"
         Padding="10,0"
         ArrowsFontFamily="FontAwesomeSolid"
+        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"
+        SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        SelectedDatesRangeBackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
+        SelectedDayBackgroundColor="{toolkit:AppThemeResource ButtonColor}"
         SelectedDates="{Binding SelectedDates}"
         EventsScrollViewVisible="True"
+        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         SelectedEndDate="{Binding SelectedEndDate}"
         SelectedStartDate="{Binding SelectedStartDate}"
         ShownDate="{Binding ShownDate}">
