@@ -51,8 +51,8 @@ public class RangeSelectionCalendar : Calendar
     public RangeSelectionCalendar()
         : base()
     {
-        monthDaysView.CurrentSelectionEngine = new RangedSelectionEngine();
-        _selectionEngine = monthDaysView.CurrentSelectionEngine as RangedSelectionEngine;
+        CurrentSelectionEngine = new RangedSelectionEngine();
+        _selectionEngine = CurrentSelectionEngine as RangedSelectionEngine;
     }
 
     /// <summary>
@@ -75,11 +75,7 @@ public class RangeSelectionCalendar : Calendar
         }
     }
 
-    private static void OnSelectedStartDateChanged(
-        BindableObject bindable,
-        object oldValue,
-        object newValue
-    )
+    private static void OnSelectedStartDateChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var rangeSelectionCalendar = (RangeSelectionCalendar)bindable;
         if (!rangeSelectionCalendar._isSelectionDatesChanging)
@@ -97,11 +93,7 @@ public class RangeSelectionCalendar : Calendar
         }
     }
 
-    private static void OnSelectedEndDateChanged(
-        BindableObject bindable,
-        object oldValue,
-        object newValue
-    )
+    private static void OnSelectedEndDateChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var rangeSelectionCalendar = (RangeSelectionCalendar)bindable;
         if (!rangeSelectionCalendar._isSelectionDatesChanging)
