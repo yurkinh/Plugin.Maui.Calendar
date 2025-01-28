@@ -133,13 +133,13 @@ public class RangeSelectionCalendar : Calendar
 
     private void UpdateDateColors()
     {
-        foreach (var dayView in monthDaysView.DayViews)
+        foreach (var dayView in dayViews)
         {
             if (dayView.BindingContext is DayModel dayModel)
             {
                 if (dayModel.Date == SelectedStartDate || dayModel.Date == SelectedEndDate)
                 {
-                    dayModel.SelectedBackgroundColor = monthDaysView.SelectedDayBackgroundColor;
+                    dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
                 }
                 else if (SelectedStartDate.HasValue && SelectedEndDate.HasValue &&
                 dayModel.Date > SelectedStartDate.Value && dayModel.Date < SelectedEndDate.Value)
