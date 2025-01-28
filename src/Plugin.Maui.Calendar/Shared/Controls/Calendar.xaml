@@ -23,49 +23,12 @@
                 BindingContext="{x:Reference calendar}"
                 IsVisible="{Binding HeaderSectionVisible}"
                 ItemTemplate="{Binding HeaderSectionTemplate}"/>
-            <controls:MonthDaysView
-                AllowDeselect="{Binding  AllowDeselect, Source={x:Reference calendar}}"
-                x:Name="monthDaysView"
-                x:FieldModifier="internal"
-                AnimateCalendar="{Binding AnimateCalendar, Source={x:Reference calendar}}"
-                CalendarLayout="{Binding CalendarLayout, Source={x:Reference calendar}}"
-                Culture="{Binding Culture, Source={x:Reference calendar}}"
-                DayTappedCommand="{Binding DayTappedCommand, Source={x:Reference calendar}}"
-                DayViewCornerRadius="{Binding DayViewCornerRadius, Source={x:Reference calendar}}"
-                DayViewFontSize="{Binding DayViewFontSize, Source={x:Reference calendar}}"
-                DayViewSize="{Binding DayViewSize, Source={x:Reference calendar}}"
-                DaysLabelStyle="{Binding DaysLabelStyle, Source={x:Reference calendar}}"
-                DaysTitleColor="{Binding DaysTitleColor, Source={x:Reference calendar}}"
-                DaysTitleHeight="{Binding DaysTitleHeight, Source={x:Reference calendar}}"
-                DaysTitleLabelFirstUpperRestLower="{Binding DaysTitleLabelFirstUpperRestLower, Source={x:Reference calendar}}"
-                DaysTitleLabelStyle="{Binding DaysTitleLabelStyle, Source={x:Reference calendar}}"
-                DaysTitleMaximumLength="{Binding DaysTitleMaximumLength, Source={x:Reference calendar}}"
-                DaysTitleWeekendColor="{Binding DaysTitleWeekendColor, Source={x:Reference calendar}}"
-                DeselectedDayTextColor="{Binding DeselectedDayTextColor, Source={x:Reference calendar}}"
-                DisabledDates="{Binding DisabledDates, Source={x:Reference calendar}, Mode=TwoWay}"
-                DisabledDayColor="{Binding DisabledDayColor, Source={x:Reference calendar}}"
-                EventIndicatorColor="{Binding EventIndicatorColor, Source={x:Reference calendar}}"
-                EventIndicatorSelectedColor="{Binding EventIndicatorSelectedColor, Source={x:Reference calendar}}"
-                EventIndicatorSelectedTextColor="{Binding EventIndicatorSelectedTextColor, Source={x:Reference calendar}}"
-                EventIndicatorTextColor="{Binding EventIndicatorTextColor, Source={x:Reference calendar}}"
-                EventIndicatorType="{Binding EventIndicatorType, Source={x:Reference calendar}}"
-                Events="{Binding Events, Source={x:Reference calendar}}"
-                FirstDayOfWeek="{Binding FirstDayOfWeek, Source={x:Reference calendar}}"
-                MaximumDate="{Binding MaximumDate, Source={x:Reference calendar}}"
-                MinimumDate="{Binding MinimumDate, Source={x:Reference calendar}}"
-                OtherMonthDayColor="{Binding OtherMonthDayColor, Source={x:Reference calendar}}"
-                OtherMonthDayIsVisible="{Binding OtherMonthDayIsVisible, Source={x:Reference calendar}}"
-                OtherMonthSelectedDayColor="{Binding OtherMonthSelectedDayColor, Source={x:Reference calendar}}"
-                SelectedDates="{Binding SelectedDates, Source={x:Reference calendar}, Mode=TwoWay}"
-                SelectedDayBackgroundColor="{Binding SelectedDayBackgroundColor, Source={x:Reference calendar}}"
-                SelectedDayTextColor="{Binding SelectedDayTextColor, Source={x:Reference calendar}}"
-                SelectedTodayTextColor="{Binding SelectedTodayTextColor, Source={x:Reference calendar}}"
-                ShownDate="{Binding ShownDate, Source={x:Reference calendar}}"
-                TodayFillColor="{Binding TodayFillColor, Source={x:Reference calendar}}"
-                TodayOutlineColor="{Binding TodayOutlineColor, Source={x:Reference calendar}}"
-                TodayTextColor="{Binding TodayTextColor, Source={x:Reference calendar}}"
-                WeekendDayColor="{Binding WeekendDayColor, Source={x:Reference calendar}}"/>
+            <Grid
+                x:Name="_daysControl"
+                HorizontalOptions="Fill"
+                VerticalOptions="Fill"/>
         </VerticalStackLayout>
+
         <controls:DataTemplateView
             Grid.Row="1"
             BindingContext="{x:Reference calendar}"
@@ -82,4 +45,3 @@
         </ScrollView>
     </Grid>
 </ContentView>
-

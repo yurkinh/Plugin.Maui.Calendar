@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
@@ -26,7 +27,14 @@ public partial class Calendar : ContentView
     readonly Animation _calendarSectionAnimateShow;
     bool _calendarSectionAnimating;
     double _calendarSectionHeight;
-    IViewLayoutEngine _viewLayoutEngine;
+    IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
+    public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
+    readonly Dictionary<string, bool> _propertyChangedNotificationSupressions = [];
+    readonly List<DayView> _dayViews = [];
+    DateTime _lastAnimationTime;
+    bool _animating;
+
+    #endregion
 
     #region Events
 
@@ -59,6 +67,7 @@ public partial class Calendar : ContentView
         UpdateSelectedDateLabel();
         UpdateLayoutUnitLabel();
         UpdateEvents();
+        RenderLayout();
 
         _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
         _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
@@ -496,7 +505,7 @@ public partial class Calendar : ContentView
             nameof(SelectedTodayTextColor),
             typeof(Color),
             typeof(Calendar),
-            Colors.White
+            Colors.Black
         );
 
     /// <summary>
@@ -515,7 +524,7 @@ public partial class Calendar : ContentView
         nameof(WeekendDayColor),
         typeof(Color),
         typeof(Calendar),
-        Colors.Transparent
+        Colors.Black
     );
 
     /// <summary>
@@ -612,7 +621,7 @@ public partial class Calendar : ContentView
     public static readonly BindableProperty EventIndicatorTypeProperty = BindableProperty.Create(
         nameof(EventIndicatorType),
         typeof(EventIndicatorType),
-        typeof(MonthDaysView),
+        typeof(Calendar),
         EventIndicatorType.BottomDot
     );
 
@@ -1192,15 +1201,9 @@ public partial class Calendar : ContentView
             nameof(DaysTitleMaximumLength),
             typeof(DaysTitleMaxLength),
             typeof(Calendar),
-            DaysTitleMaxLength.ThreeChars,
-            propertyChanged: T
+            DaysTitleMaxLength.ThreeChars
         );
 
-    private static void T(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is Calendar vm)
-            vm.monthDaysView.DaysTitleMaximumLength = (DaysTitleMaxLength)newValue;
-    }
 
     /// <summary>
     /// Specifies the maximum length of weekday titles
@@ -1566,8 +1569,8 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Bindable property for AllowDeselect
     /// </summary>
-    public static readonly BindableProperty AllowDeselectProperty = BindableProperty.Create(
-        nameof(AllowDeselect),
+    public static readonly BindableProperty AllowDeselectingProperty = BindableProperty.Create(
+        nameof(AllowDeselecting),
         typeof(bool),
         typeof(Calendar),
         true
@@ -1576,10 +1579,10 @@ public partial class Calendar : ContentView
     /// <summary>
     /// Indicates whether the date selection can be deselected
     /// </summary>
-    public bool AllowDeselect
+    public bool AllowDeselecting
     {
-        get => (bool)GetValue(AllowDeselectProperty);
-        set => SetValue(AllowDeselectProperty, value);
+        get => (bool)GetValue(AllowDeselectingProperty);
+        set => SetValue(AllowDeselectingProperty, value);
     }
 
     #endregion
@@ -1598,11 +1601,7 @@ public partial class Calendar : ContentView
         propertyChanged: OnSelectedDateChanged
     );
 
-    private static void OnSelectedDateChanged(
-       BindableObject bindable,
-       object oldValue,
-       object newValue
-   )
+    private static void OnSelectedDateChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var control = (Calendar)bindable;
         var dateToSet = (DateTime?)newValue;
@@ -1610,7 +1609,7 @@ public partial class Calendar : ContentView
         control.SetValue(SelectedDateProperty, dateToSet);
         if (
             !control._isSelectingDates
-            || control.monthDaysView.CurrentSelectionEngine is SingleSelectionEngine
+            || control.CurrentSelectionEngine is SingleSelectionEngine
         )
         {
             if (dateToSet.HasValue)
@@ -1622,6 +1621,8 @@ public partial class Calendar : ContentView
         {
             control._isSelectingDates = false;
         }
+        control.UpdateDays();
+
     }
 
 
@@ -1641,6 +1642,8 @@ public partial class Calendar : ContentView
         }
     }
 
+    private bool _isSelectingDates = false;
+
     /// <summary>
     /// Bindable property for SelectedDates
     /// </summary>
@@ -1648,11 +1651,16 @@ public partial class Calendar : ContentView
         nameof(SelectedDates),
         typeof(List<DateTime>),
         typeof(Calendar),
-        null,
-        BindingMode.TwoWay
+        new List<DateTime>(),
+        BindingMode.TwoWay,
+        propertyChanged: SelectedDatesChanged
     );
 
-    private bool _isSelectingDates = false;
+    private static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Calendar calendar && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
+            calendar.UpdateDays();
+    }
 
     /// <summary>
     /// Selected date in single date selection mode
@@ -1684,14 +1692,9 @@ public partial class Calendar : ContentView
 
     #endregion
 
-    private void InitializeViewLayoutEngine()
-    {
-        _viewLayoutEngine = new MonthViewEngine(Culture, FirstDayOfWeek);
-    }
-
     private void InitializeSelectionType()
     {
-        monthDaysView.CurrentSelectionEngine = new SingleSelectionEngine();
+        CurrentSelectionEngine = new SingleSelectionEngine();
     }
 
     #region Properties
@@ -1741,7 +1744,7 @@ public partial class Calendar : ContentView
                 newEvents.CollectionChanged += view.OnEventsCollectionChanged;
 
             view.UpdateEvents();
-            view.monthDaysView.UpdateAndAnimateDays(view.AnimateCalendar);
+            view.UpdateAndAnimateDays(view.AnimateCalendar);
         }
     }
 
@@ -1789,13 +1792,8 @@ public partial class Calendar : ContentView
             if (calendar.Year != newDateTime.Year)
                 calendar.Year = newDateTime.Year;
 
-            if (calendar.monthDaysView.ShownDate != calendar.ShownDate)
-                calendar.monthDaysView.ShownDate = calendar.ShownDate;
-
-            if (calendar.OnShownDateChangedCommand != null)
-            {
-                calendar.OnShownDateChangedCommand.Execute(calendar.ShownDate);
-            }
+           
+            calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
         }
     }
 
@@ -1803,9 +1801,9 @@ public partial class Calendar : ContentView
     {
         if (bindable is Calendar calendar && newValue is WeekLayout layout)
         {
-            calendar.monthDaysView.CalendarLayout = layout;
+            calendar.CalendarLayout = layout;
 
-            calendar._viewLayoutEngine = layout switch
+            calendar.CurrentViewLayoutEngine = layout switch
             {
                 WeekLayout.Week => new WeekViewEngine(calendar.Culture, 1, calendar.FirstDayOfWeek),
                 WeekLayout.TwoWeek => new WeekViewEngine(calendar.Culture, 2, calendar.FirstDayOfWeek),
@@ -1828,41 +1826,9 @@ public partial class Calendar : ContentView
         }
     }
 
-    /// <summary>
-    /// Method that is called when a bound property is changed.
-    /// </summary>
-    /// <param name="propertyName">The name of the bound property that changed.</param>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-
-        switch (propertyName)
-        {
-            case nameof(ShownDate):
-                UpdateLayoutUnitLabel();
-                break;
-
-            case nameof(SelectedDates):
-                UpdateSelectedDateLabel();
-                UpdateEvents();
-                break;
-
-            case nameof(Culture):
-                if (ShownDate.Month > 0)
-                    UpdateLayoutUnitLabel();
-
-                UpdateSelectedDateLabel();
-                break;
-
-            case nameof(CalendarSectionShown):
-                ShowHideCalendarSection();
-                break;
-        }
-    }
-
     private void UpdateEvents()
     {
-        SelectedDayEvents = monthDaysView.CurrentSelectionEngine.TryGetSelectedEvents(
+        SelectedDayEvents = CurrentSelectionEngine.TryGetSelectedEvents(
             Events,
             out var selectedEvents
         )
@@ -1884,7 +1850,7 @@ public partial class Calendar : ContentView
     }
 
     private void UpdateSelectedDateLabel() =>
-         SelectedDateText = monthDaysView.CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
+         SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
 
 
     private void ShowHideCalendarSection()
@@ -1922,7 +1888,214 @@ public partial class Calendar : ContentView
     private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
     {
         UpdateEvents();
-        monthDaysView.UpdateAndAnimateDays(AnimateCalendar);
+        UpdateAndAnimateDays(AnimateCalendar);
+    }
+
+    /// <summary>
+    /// Method that is called when a bound property is changed.
+    /// </summary>
+    /// <param name="propertyName">The name of the bound property that changed.</param>
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        if (_propertyChangedNotificationSupressions.TryGetValue(propertyName, out bool isSuppressed) && isSuppressed)
+            return;
+
+        switch (propertyName)
+        {
+            case nameof(SelectedDates):
+                CurrentSelectionEngine.UpdateDateSelection(SelectedDates);
+                UpdateSelectedDateLabel();
+                UpdateEvents();
+                break;
+            case nameof(Events):
+            case nameof(ShownDate):
+                UpdateLayoutUnitLabel();
+                break;
+            case nameof(MinimumDate):
+            case nameof(MaximumDate):
+            case nameof(OtherMonthDayIsVisible):
+            case nameof(DayViewCornerRadius):
+                UpdateAndAnimateDays(AnimateCalendar);
+                break;
+            case nameof(TodayTextColor):
+            case nameof(SelectedDayTextColor):
+            case nameof(SelectedTodayTextColor):
+            case nameof(OtherMonthDayColor):
+            case nameof(OtherMonthSelectedDayColor):
+            case nameof(WeekendDayColor):
+            case nameof(DeselectedDayTextColor):
+            case nameof(SelectedDayBackgroundColor):
+            case nameof(EventIndicatorColor):
+            case nameof(EventIndicatorSelectedColor):
+            case nameof(EventIndicatorTextColor):
+            case nameof(EventIndicatorSelectedTextColor):
+            case nameof(EventIndicatorType):
+            case nameof(TodayOutlineColor):
+            case nameof(TodayFillColor):
+            case nameof(DisabledDayColor):
+            case nameof(DayViewFontSize):
+                UpdateDaysColors();
+                break;
+            case nameof(FirstDayOfWeek):
+            case nameof(Culture):
+                if (ShownDate.Month > 0)
+                    UpdateLayoutUnitLabel();
+
+                UpdateSelectedDateLabel();
+                break;
+            case nameof(CalendarLayout):
+                RenderLayout();
+                UpdateAndAnimateDays(AnimateCalendar);
+                break;
+            case nameof(DaysTitleMaximumLength):
+            case nameof(DaysTitleColor):
+            case nameof(DaysTitleHeight):
+            case nameof(DaysTitleWeekendColor):
+            case nameof(DaysTitleLabelFirstUpperRestLower):
+                UpdateDayTitles();
+                break;
+            case nameof(CalendarSectionShown):
+                ShowHideCalendarSection();
+                break;
+        }
+    }
+
+    private void OnDayModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (
+            e.PropertyName != nameof(DayModel.IsSelected)
+            || sender is not DayModel newSelected
+            || (
+                _propertyChangedNotificationSupressions.TryGetValue(
+                    e.PropertyName,
+                    out bool isSuppressed
+                ) && isSuppressed
+            )
+        )
+            return;
+
+        SelectedDates = CurrentSelectionEngine.PerformDateSelection(
+            newSelected.Date,
+            DisabledDates
+        );
+    }
+
+    private void UpdateDayTitles()
+    {
+        var dayNumber = (int)FirstDayOfWeek;
+
+        foreach (var dayLabel in _daysControl.Children.OfType<Label>())
+        {
+            var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
+            var titleText = DaysTitleLabelFirstUpperRestLower
+                ? abberivatedDayName[..1].ToUpperInvariant()
+                    + abberivatedDayName[1..].ToLowerInvariant()
+                : abberivatedDayName.ToUpperInvariant();
+            dayLabel.Text = titleText[
+                ..(
+                    (int)DaysTitleMaximumLength > abberivatedDayName.Length
+                        ? abberivatedDayName.Length
+                        : (int)DaysTitleMaximumLength
+                )
+            ];
+            // Detect weekend days
+            if (
+                DaysTitleColor != DaysTitleWeekendColor
+                && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
+            )
+            {
+                // It's a weekend day
+                // You can change the color of the label or do something else
+                dayLabel.TextColor = DaysTitleWeekendColor;
+            }
+            dayNumber = (dayNumber + 1) % 7;
+        }
+    }
+
+    internal void UpdateAndAnimateDays(bool animate)
+    {
+        if (Culture == null)
+            return;
+
+        if (BindingContext == null)
+        {
+            UpdateDays();
+            _lastAnimationTime = DateTime.UtcNow;
+        }
+        else
+        {
+            MainThread.InvokeOnMainThreadAsync(
+                () =>
+                    Animate(
+                        () => _daysControl.FadeTo(animate ? 0 : 1, 50),
+                        () => _daysControl.FadeTo(1, 200),
+                        () => UpdateDays(),
+                        _lastAnimationTime = DateTime.UtcNow,
+                        () => UpdateAndAnimateDays(false)
+                    )
+            );
+        }
+    }
+
+    private void UpdateDays()
+    {
+        var firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
+
+        int addDays = 0;
+        foreach (var dayView in _dayViews)
+        {
+            var currentDate = firstDate.AddDays(addDays++);
+            var dayModel = dayView.BindingContext as DayModel;
+
+            dayModel.Date = currentDate.Date;
+            dayModel.DayTappedCommand = DayTappedCommand;
+            dayModel.EventIndicatorType = EventIndicatorType;
+            dayModel.DayViewSize = DayViewSize;
+            dayModel.FontSize = DayViewFontSize;
+            dayModel.DayViewCornerRadius = DayViewCornerRadius;
+            dayModel.DaysLabelStyle = DaysLabelStyle;
+            dayModel.IsThisMonth =
+                (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
+            dayModel.OtherMonthIsVisible =
+                (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
+            dayModel.HasEvents = Events.ContainsKey(currentDate);
+            dayModel.IsDisabled =
+                currentDate < MinimumDate
+                || currentDate > MaximumDate
+                || (DisabledDates?.Contains(currentDate.Date) ?? false);
+            dayModel.AllowDeselect = AllowDeselecting;
+
+            ChangePropertySilently(
+                nameof(dayModel.IsSelected),
+                () => dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date)
+            );
+            AssignIndicatorColors(ref dayModel);
+        }
+    }
+
+    private void UpdateDaysColors()
+    {
+        foreach (var dayView in _dayViews)
+        {
+            var dayModel = dayView.BindingContext as DayModel;
+
+            dayModel.DeselectedTextColor = DeselectedDayTextColor;
+            dayModel.TodayTextColor = TodayTextColor;
+            dayModel.SelectedTextColor = SelectedDayTextColor;
+            dayModel.SelectedTodayTextColor = SelectedTodayTextColor;
+            dayModel.OtherMonthColor = OtherMonthDayColor;
+            dayModel.OtherMonthSelectedColor = OtherMonthSelectedDayColor;
+            dayModel.WeekendDayColor = WeekendDayColor;
+            dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
+            dayModel.TodayOutlineColor = TodayOutlineColor;
+            dayModel.TodayFillColor = TodayFillColor;
+            dayModel.DisabledColor = DisabledDayColor;
+            dayModel.FontSize = DayViewFontSize;
+
+            AssignIndicatorColors(ref dayModel);
+        }
     }
 
     #endregion
@@ -1975,7 +2148,7 @@ public partial class Calendar : ContentView
     private void PrevUnit()
     {
         var oldMonth = DateOnly.FromDateTime(ShownDate);
-        ShownDate = _viewLayoutEngine.GetPreviousUnit(ShownDate);
+        ShownDate = CurrentViewLayoutEngine.GetPreviousUnit(ShownDate);
         var newMonth = DateOnly.FromDateTime(ShownDate);
 
         MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
@@ -1989,7 +2162,7 @@ public partial class Calendar : ContentView
     private void NextUnit()
     {
         var oldMonth = DateOnly.FromDateTime(ShownDate);
-        ShownDate = _viewLayoutEngine.GetNextUnit(ShownDate);
+        ShownDate = CurrentViewLayoutEngine.GetNextUnit(ShownDate);
         var newMonth = DateOnly.FromDateTime(ShownDate);
 
         MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
@@ -2055,7 +2228,7 @@ public partial class Calendar : ContentView
 
     public void Dispose()
     {
-        monthDaysView.Dispose();
+
         calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
         if (Events is EventCollection events)
         {
@@ -2064,7 +2237,131 @@ public partial class Calendar : ContentView
 
         calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
         Handler.DisconnectHandler();
+
+       // DiposeDayViews();
     }
 
     #endregion
+
+    public void InitializeViewLayoutEngine()
+    {
+        CurrentViewLayoutEngine = new MonthViewEngine(CultureInfo.InvariantCulture, FirstDayOfWeek);
+    }
+
+
+    private void RenderLayout()
+    {
+        CurrentViewLayoutEngine = CalendarLayout switch
+        {
+            WeekLayout.Week => new WeekViewEngine(Culture, 1, FirstDayOfWeek),
+            WeekLayout.TwoWeek => new WeekViewEngine(Culture, 2, FirstDayOfWeek),
+            _ => new MonthViewEngine(Culture, FirstDayOfWeek),
+        };
+
+        _daysControl = CurrentViewLayoutEngine.GenerateLayout(
+            _dayViews,
+            this,
+            nameof(DaysTitleHeight),
+            nameof(DaysTitleColor),
+            nameof(DaysTitleLabelStyle),
+            nameof(DayViewSize),
+            DayTappedCommand,
+            OnDayModelPropertyChanged
+        );
+
+        UpdateDaysColors();
+        UpdateDayTitles();
+
+        calendarContainer.Add(_daysControl);
+    }
+
+/*     private void DiposeDayViews()
+    {
+
+        foreach (var dayView in _daysControl.Children.OfType<DayView>())
+        {
+            if (dayView.BindingContext is DayModel dayModel)
+            {
+                dayModel.PropertyChanged -= OnDayModelPropertyChanged;
+#if !WINDOWS
+                dayView.BindingContext = null;
+#endif
+            }
+        }
+    } */
+
+    private void Animate(Func<Task> animationIn, Func<Task> animationOut, Action afterFirstAnimation, DateTime animationTime, Action callAgain)
+    {
+        if (_animating)
+            return;
+
+        _animating = true;
+
+        animationIn()
+            .ContinueWith(
+                        aIn =>
+                        {
+                            afterFirstAnimation();
+
+                            animationOut()
+                                .ContinueWith(
+                                    aOut =>
+                                    {
+                                        _animating = false;
+
+                                        if (animationTime != _lastAnimationTime)
+                                            callAgain();
+                                    },
+                                    TaskScheduler.FromCurrentSynchronizationContext()
+                                );
+                        },
+                        TaskScheduler.FromCurrentSynchronizationContext()
+                        );
+    }
+
+    internal void ChangePropertySilently(string propertyName, Action propertyChangeAction)
+    {
+        _propertyChangedNotificationSupressions[propertyName] = true;
+        propertyChangeAction();
+        _propertyChangedNotificationSupressions[propertyName] = false;
+    }
+
+    internal void AssignIndicatorColors(ref DayModel dayModel)
+    {
+        dayModel.EventIndicatorColor = EventIndicatorColor;
+        dayModel.EventIndicatorSelectedColor = EventIndicatorSelectedColor;
+        dayModel.EventIndicatorTextColor = EventIndicatorTextColor;
+        dayModel.EventIndicatorSelectedTextColor = EventIndicatorSelectedTextColor;
+
+        if (Events.TryGetValue(dayModel.Date, out var dayEventCollection))
+        {
+            if (dayEventCollection is IPersonalizableDayEvent personalizableDay)
+            {
+                dayModel.EventIndicatorColor =
+                    personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
+                dayModel.EventIndicatorSelectedColor =
+                    personalizableDay?.EventIndicatorSelectedColor
+                 ?? personalizableDay?.EventIndicatorColor
+                 ?? EventIndicatorSelectedColor;
+                dayModel.EventIndicatorTextColor =
+                    personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
+                dayModel.EventIndicatorSelectedTextColor =
+                    personalizableDay?.EventIndicatorSelectedTextColor
+                 ?? personalizableDay?.EventIndicatorTextColor
+                 ?? EventIndicatorSelectedTextColor;
+            }
+            if (dayEventCollection is IMultiEventDay multiEventDay)
+            {
+                dayModel.EventColors = multiEventDay.Colors?.ToArray() ?? [];
+            }
+            else
+            {
+                dayModel.EventColors = new Color[0];
+            }
+        }
+        else
+        {
+            dayModel.EventColors = new Color[0];
+        }
+    }
 }
