@@ -34,7 +34,7 @@ namespace Plugin.Maui.Calendar.Controls.Interfaces
         /// </summary>
         List<DateTime> PerformDateSelection(
             DateTime dateToSelect,
-            List<DateTime>? disabledDates = null
+            List<DateTime> disabledDates = null
         );
 
         /// <summary>
