@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
+using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -42,14 +43,31 @@ public class RangeSelectionCalendar : Calendar
         set => SetValue(SelectedEndDateProperty, value);
     }
 
+    /// <summary>
+    /// Background color for the range between SelectedStartDate and SelectedEndDate.
+    /// </summary>
+    public static readonly BindableProperty SelectedDatesRangeBackgroundColorProperty = BindableProperty.Create(
+        nameof(SelectedDatesRangeBackgroundColor),
+        typeof(Color),
+        typeof(RangeSelectionCalendar),
+        Colors.LightGray
+    );
+
+    /// <summary>
+    /// Background color for the range between SelectedStartDate and SelectedEndDate.
+    /// </summary>
+    public Color SelectedDatesRangeBackgroundColor
+    {
+        get => (Color)GetValue(SelectedDatesRangeBackgroundColorProperty);
+        set => SetValue(SelectedDatesRangeBackgroundColorProperty, value);
+    }
     private bool _isSelectionDatesChanging = false;
     private readonly RangedSelectionEngine _selectionEngine;
 
     /// <summary>
     /// Constructor
     /// </summary>
-    public RangeSelectionCalendar()
-        : base()
+    public RangeSelectionCalendar() : base()
     {
         CurrentSelectionEngine = new RangedSelectionEngine();
         _selectionEngine = CurrentSelectionEngine as RangedSelectionEngine;
@@ -72,6 +90,7 @@ public class RangeSelectionCalendar : Calendar
                 SetValue(SelectedStartDateProperty, first.First());
                 SetValue(SelectedEndDateProperty, first.Last());
             }
+            UpdateDateColors();
         }
     }
 
@@ -91,6 +110,7 @@ public class RangeSelectionCalendar : Calendar
                 );
             rangeSelectionCalendar._isSelectionDatesChanging = false;
         }
+        rangeSelectionCalendar.UpdateDateColors();
     }
 
     private static void OnSelectedEndDateChanged(BindableObject bindable, object oldValue, object newValue)
@@ -107,5 +127,26 @@ public class RangeSelectionCalendar : Calendar
                 rangeSelectionCalendar._selectionEngine.GetDateRange();
         }
         rangeSelectionCalendar._isSelectionDatesChanging = false;
+
+        rangeSelectionCalendar.UpdateDateColors();
+    }
+
+    private void UpdateDateColors()
+    {
+        foreach (var dayView in dayViews)
+        {
+            if (dayView.BindingContext is DayModel dayModel)
+            {
+                if (dayModel.Date == SelectedStartDate || dayModel.Date == SelectedEndDate)
+                {
+                    dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
+                }
+                else if (SelectedStartDate.HasValue && SelectedEndDate.HasValue &&
+                dayModel.Date > SelectedStartDate.Value && dayModel.Date < SelectedEndDate.Value)
+                {
+                    dayModel.SelectedBackgroundColor = SelectedDatesRangeBackgroundColor;
+                }
+            }
+        }
     }
 }

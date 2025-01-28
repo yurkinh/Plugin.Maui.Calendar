@@ -20,7 +20,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.2.5</PackageVersion>
+		<PackageVersion>1.2.6</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -37,7 +37,9 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-		                    Added AllowDeselecting property;					
+		                    Added SelectedDatesRangeBackgroundColor Property;
+							Fixed #76;
+                            Fixed #99;					
        </PackageReleaseNotes>
 	</PropertyGroup>	
 

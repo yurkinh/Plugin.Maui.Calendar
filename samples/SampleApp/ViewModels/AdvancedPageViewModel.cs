@@ -9,7 +9,9 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 {
     public AdvancedPageViewModel() : base()
     {
+
         MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
+
 
         Culture = CultureInfo.CreateSpecificCulture("en-GB");
         // testing all kinds of adding events
@@ -35,7 +37,6 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         // with indexer
         Events[DateTime.Now] = new List<AdvancedEventModel>(GenerateEvents(2, "Boring"));
 
-        ShownDate = ShownDate.AddMonths(1);
 
        /*  Task.Delay(5000).ContinueWith(_ =>
         {
@@ -51,10 +52,9 @@ public partial class AdvancedPageViewModel : BasePageViewModel
             // add later
             Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
-            Task.Delay(3000).ContinueWith(t =>
-            {
-                ShownDate = ShownDate.AddMonths(-2);
 
+           Task.Delay(3000).ContinueWith(t =>
+           {
                 // get observable collection later
                 var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
 
@@ -64,7 +64,6 @@ public partial class AdvancedPageViewModel : BasePageViewModel
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }, TaskScheduler.FromCurrentSynchronizationContext()); */
 
-        SelectedDate = DateTime.Today.AddDays(10);
     }
 
     private static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
@@ -95,7 +94,9 @@ public partial class AdvancedPageViewModel : BasePageViewModel
     static async Task DayTapped(DateTime date)
     {
         var message = $"Received tap event from date: {date}";
+
         await AppShell.Current.DisplayAlert("DayTapped", message, "Ok");
+
     }
 
     [RelayCommand]
@@ -105,7 +106,9 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         {
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
+
             await AppShell.Current.DisplayAlert(title, message, "Ok");
+
         }
     }
 }
