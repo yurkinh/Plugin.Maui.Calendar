@@ -13,10 +13,21 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView
 {
+    #region Private fields
     SwipeGestureRecognizer leftSwipeGesture;
     SwipeGestureRecognizer rightSwipeGesture;
     SwipeGestureRecognizer upSwipeGesture;
     SwipeGestureRecognizer downSwipeGesture;
+
+    const uint CalendarSectionAnimationRate = 16;
+    const int CalendarSectionAnimationDuration = 200;
+    const string CalendarSectionAnimationId = nameof(CalendarSectionAnimationId);
+    readonly Animation _calendarSectionAnimateHide;
+    readonly Animation _calendarSectionAnimateShow;
+    bool _calendarSectionAnimating;
+    double _calendarSectionHeight;
+    IViewLayoutEngine _viewLayoutEngine;
+
     #region Events
 
     /// <summary>
@@ -51,7 +62,6 @@ public partial class Calendar : ContentView
 
         _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
         _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
-
     }
 
     protected override void OnHandlerChanged()
@@ -1673,17 +1683,6 @@ public partial class Calendar : ContentView
     }
 
     #endregion
-
-    private const uint CalendarSectionAnimationRate = 16;
-    private const int CalendarSectionAnimationDuration = 200;
-    private const string CalendarSectionAnimationId = nameof(CalendarSectionAnimationId);
-    private readonly Animation _calendarSectionAnimateHide;
-    private readonly Animation _calendarSectionAnimateShow;
-    private bool _calendarSectionAnimating;
-    private double _calendarSectionHeight;
-    private IViewLayoutEngine _viewLayoutEngine;
-
-
 
     private void InitializeViewLayoutEngine()
     {
