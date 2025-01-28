@@ -23,16 +23,16 @@ public partial class Calendar : ContentView
     const uint CalendarSectionAnimationRate = 16;
     const int CalendarSectionAnimationDuration = 200;
     const string CalendarSectionAnimationId = nameof(CalendarSectionAnimationId);
-    readonly Animation _calendarSectionAnimateHide;
-    readonly Animation _calendarSectionAnimateShow;
-    bool _calendarSectionAnimating;
-    double _calendarSectionHeight;
+    readonly Animation calendarSectionAnimateHide;
+    readonly Animation calendarSectionAnimateShow;
+    bool calendarSectionAnimating;
+    double calendarSectionHeight;
     IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
     public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
-    readonly Dictionary<string, bool> _propertyChangedNotificationSupressions = [];
-    readonly List<DayView> _dayViews = [];
-    DateTime _lastAnimationTime;
-    bool _animating;
+    readonly Dictionary<string, bool> propertyChangedNotificationSupressions = [];
+    readonly List<DayView> dayViews = [];
+    DateTime lastAnimationTime;
+    bool animating;
 
     #endregion
 
@@ -69,8 +69,8 @@ public partial class Calendar : ContentView
         UpdateEvents();
         RenderLayout();
 
-        _calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
-        _calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
+        calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
+        calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
     }
 
     protected override void OnHandlerChanged()
@@ -1608,7 +1608,7 @@ public partial class Calendar : ContentView
 
         control.SetValue(SelectedDateProperty, dateToSet);
         if (
-            !control._isSelectingDates
+            !control.isSelectingDates
             || control.CurrentSelectionEngine is SingleSelectionEngine
         )
         {
@@ -1619,7 +1619,7 @@ public partial class Calendar : ContentView
         }
         else
         {
-            control._isSelectingDates = false;
+            control.isSelectingDates = false;
         }
         control.UpdateDays();
 
@@ -1642,7 +1642,7 @@ public partial class Calendar : ContentView
         }
     }
 
-    private bool _isSelectingDates = false;
+    private bool isSelectingDates = false;
 
     /// <summary>
     /// Bindable property for SelectedDates
@@ -1671,7 +1671,7 @@ public partial class Calendar : ContentView
         set
         {
             SetValue(SelectedDatesProperty, value);
-            _isSelectingDates = true;
+            isSelectingDates = true;
             SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
         }
     }
@@ -1810,7 +1810,7 @@ public partial class Calendar : ContentView
                 _ => new MonthViewEngine(calendar.Culture, calendar.FirstDayOfWeek),
             };
 
-            //calendar.monthDaysView.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
         }
     }
 
@@ -1855,14 +1855,14 @@ public partial class Calendar : ContentView
 
     private void ShowHideCalendarSection()
     {
-        if (_calendarSectionAnimating)
+        if (calendarSectionAnimating)
             return;
 
-        _calendarSectionAnimating = true;
+        calendarSectionAnimating = true;
 
         var animation = CalendarSectionShown
-            ? _calendarSectionAnimateShow
-            : _calendarSectionAnimateHide;
+            ? calendarSectionAnimateShow
+            : calendarSectionAnimateHide;
         var prevState = CalendarSectionShown;
 
         animation.Commit(
@@ -1872,7 +1872,7 @@ public partial class Calendar : ContentView
             CalendarSectionAnimationDuration,
             finished: (value, cancelled) =>
             {
-                _calendarSectionAnimating = false;
+                calendarSectionAnimating = false;
 
                 if (prevState != CalendarSectionShown)
                     ToggleCalendarSectionVisibility();
@@ -1882,7 +1882,7 @@ public partial class Calendar : ContentView
 
     private void UpdateCalendarSectionHeight()
     {
-        _calendarSectionHeight = calendarContainer.Height;
+        calendarSectionHeight = calendarContainer.Height;
     }
 
     private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
@@ -1899,7 +1899,7 @@ public partial class Calendar : ContentView
     {
         base.OnPropertyChanged(propertyName);
 
-        if (_propertyChangedNotificationSupressions.TryGetValue(propertyName, out bool isSuppressed) && isSuppressed)
+        if (propertyChangedNotificationSupressions.TryGetValue(propertyName, out bool isSuppressed) && isSuppressed)
             return;
 
         switch (propertyName)
@@ -1968,7 +1968,7 @@ public partial class Calendar : ContentView
             e.PropertyName != nameof(DayModel.IsSelected)
             || sender is not DayModel newSelected
             || (
-                _propertyChangedNotificationSupressions.TryGetValue(
+                propertyChangedNotificationSupressions.TryGetValue(
                     e.PropertyName,
                     out bool isSuppressed
                 ) && isSuppressed
@@ -2022,7 +2022,7 @@ public partial class Calendar : ContentView
         if (BindingContext == null)
         {
             UpdateDays();
-            _lastAnimationTime = DateTime.UtcNow;
+            lastAnimationTime = DateTime.UtcNow;
         }
         else
         {
@@ -2032,7 +2032,7 @@ public partial class Calendar : ContentView
                         () => daysControl.FadeTo(animate ? 0 : 1, 50),
                         () => daysControl.FadeTo(1, 200),
                         () => UpdateDays(),
-                        _lastAnimationTime = DateTime.UtcNow,
+                        lastAnimationTime = DateTime.UtcNow,
                         () => UpdateAndAnimateDays(false)
                     )
             );
@@ -2044,7 +2044,7 @@ public partial class Calendar : ContentView
         var firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
 
         int addDays = 0;
-        foreach (var dayView in _dayViews)
+        foreach (var dayView in dayViews)
         {
             var currentDate = firstDate.AddDays(addDays++);
             var dayModel = dayView.BindingContext as DayModel;
@@ -2077,7 +2077,7 @@ public partial class Calendar : ContentView
 
     private void UpdateDaysColors()
     {
-        foreach (var dayView in _dayViews)
+        foreach (var dayView in dayViews)
         {
             var dayModel = dayView.BindingContext as DayModel;
 
@@ -2104,7 +2104,7 @@ public partial class Calendar : ContentView
 
     private void OnCalendarContainerSizeChanged(object sender, EventArgs e)
     {
-        if (calendarContainer.Height > 0 && !_calendarSectionAnimating)
+        if (calendarContainer.Height > 0 && !calendarSectionAnimating)
             UpdateCalendarSectionHeight();
     }
 
@@ -2187,14 +2187,14 @@ public partial class Calendar : ContentView
 
     private void AnimateMonths(double currentValue)
     {
-        calendarContainer.HeightRequest = _calendarSectionHeight * currentValue;
-        calendarContainer.TranslationY = _calendarSectionHeight * (currentValue - 1);
+        calendarContainer.HeightRequest = calendarSectionHeight * currentValue;
+        calendarContainer.TranslationY = calendarSectionHeight * (currentValue - 1);
         calendarContainer.Opacity = currentValue * currentValue * currentValue;
     }
 
     public void ClearSelection()
     {
-        _isSelectingDates = false;
+        isSelectingDates = false;
         SelectedDates = null;
         SelectedDate = null;
     }
@@ -2259,7 +2259,7 @@ public partial class Calendar : ContentView
         };
 
         daysControl = CurrentViewLayoutEngine.GenerateLayout(
-            _dayViews,
+            dayViews,
             this,
             nameof(DaysTitleHeight),
             nameof(DaysTitleColor),
@@ -2293,10 +2293,10 @@ public partial class Calendar : ContentView
 
     private void Animate(Func<Task> animationIn, Func<Task> animationOut, Action afterFirstAnimation, DateTime animationTime, Action callAgain)
     {
-        if (_animating)
+        if (animating)
             return;
 
-        _animating = true;
+        animating = true;
 
         animationIn()
             .ContinueWith(
@@ -2308,9 +2308,9 @@ public partial class Calendar : ContentView
                                 .ContinueWith(
                                     aOut =>
                                     {
-                                        _animating = false;
+                                        animating = false;
 
-                                        if (animationTime != _lastAnimationTime)
+                                        if (animationTime != lastAnimationTime)
                                             callAgain();
                                     },
                                     TaskScheduler.FromCurrentSynchronizationContext()
@@ -2322,9 +2322,9 @@ public partial class Calendar : ContentView
 
     internal void ChangePropertySilently(string propertyName, Action propertyChangeAction)
     {
-        _propertyChangedNotificationSupressions[propertyName] = true;
+        propertyChangedNotificationSupressions[propertyName] = true;
         propertyChangeAction();
-        _propertyChangedNotificationSupressions[propertyName] = false;
+        propertyChangedNotificationSupressions[propertyName] = false;
     }
 
     internal void AssignIndicatorColors(ref DayModel dayModel)
