@@ -7,7 +7,7 @@ namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
 internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOfWeek)
 {
-    protected const int _numberOfDaysInWeek = 7;
+    protected const int numberOfDaysInWeek = 7;
 
     public CultureInfo Culture { get; set; } = culture;
 
@@ -20,20 +20,14 @@ internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOf
     protected static Grid GenerateWeekLayout(
             List<DayView> dayViews,
             object bindingContext,
-            string daysTitleHeightBindingName,
             string daysTitleColorBindingName,
             string daysTitleLabelStyleBindingName,
-            string dayViewSizeBindingName,
             ICommand dayTappedCommand,
             PropertyChangedEventHandler dayModelPropertyChanged,
             int numberOfWeeks
         )
     {
-        var rowDefinition = new RowDefinition()
-        {
-            // BindingContext = bindingContext,
-        };
-        rowDefinition.SetBinding(RowDefinition.HeightProperty, daysTitleHeightBindingName);
+        var rowDefinition = new RowDefinition();
 
         var grid = new Grid
         {
@@ -55,7 +49,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOf
             }
         };
 
-        for (int i = 0; i < _numberOfDaysInWeek; i++)
+        for (int i = 0; i < numberOfDaysInWeek; i++)
         {
             var label = new Label
             {
@@ -72,11 +66,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOf
 
         for (int i = 1; i <= numberOfWeeks; i++)
         {
-            rowDefinition = new RowDefinition()
-            {
-                // BindingContext = bindingContext,
-            };
-            rowDefinition.SetBinding(RowDefinition.HeightProperty, dayViewSizeBindingName);
+            rowDefinition = new RowDefinition();
             grid.RowDefinitions.Add(rowDefinition);
 
             for (int ii = 0; ii < 7; ii++)

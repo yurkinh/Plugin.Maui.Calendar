@@ -9,10 +9,8 @@ internal interface IViewLayoutEngine
     Grid GenerateLayout(
         List<DayView> dayViews,
         object bindingContext,
-        string daysTitleHeightBindingName,
         string daysTitleColorBindingName,
         string daysTitleLabelStyleBindingName,
-        string dayViewSizeBindingName,
         ICommand dayTappedCommand,
         PropertyChangedEventHandler dayModelPropertyChanged
     );

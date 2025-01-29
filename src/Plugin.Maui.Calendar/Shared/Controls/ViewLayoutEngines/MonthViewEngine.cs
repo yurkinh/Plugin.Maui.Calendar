@@ -12,10 +12,8 @@ internal class MonthViewEngine(CultureInfo culture, DayOfWeek firstDayOfWeek) : 
     public Grid GenerateLayout(
         List<DayView> dayViews,
         object bindingContext,
-        string daysTitleHeightBindingName,
         string daysTitleColorBindingName,
         string daysTitleLabelStyleBindingName,
-        string dayViewSizeBindingName,
         ICommand dayTappedCommand,
         PropertyChangedEventHandler dayModelPropertyChanged
     )
@@ -24,10 +22,8 @@ internal class MonthViewEngine(CultureInfo culture, DayOfWeek firstDayOfWeek) : 
         return GenerateWeekLayout(
             dayViews,
             bindingContext,
-            daysTitleHeightBindingName,
             daysTitleColorBindingName,
             daysTitleLabelStyleBindingName,
-            dayViewSizeBindingName,
             dayTappedCommand,
             dayModelPropertyChanged,
             _monthNumberOfWeeks
