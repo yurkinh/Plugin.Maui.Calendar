@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -1795,6 +1795,8 @@ public partial class Calendar : ContentView
             if (calendar.Year != newDateTime.Year)
                 calendar.Year = newDateTime.Year;
 
+            calendar.UpdateLayoutUnitLabel();
+            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
 
             calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
         }
@@ -1913,7 +1915,6 @@ public partial class Calendar : ContentView
                 UpdateEvents();
                 break;
             case nameof(Events):
-            case nameof(ShownDate):
                 UpdateLayoutUnitLabel();
                 UpdateAndAnimateDays(AnimateCalendar);
                 break;
