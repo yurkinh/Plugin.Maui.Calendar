@@ -655,7 +655,8 @@ public partial class Calendar : ContentView
         set => SetValue(AllowDeselectingProperty, value);
     }
 
-
+    #endregion
+    
     #region Color BindableProperties
     /// <summary>
     /// Bindable property for MonthLabelColor
@@ -2454,7 +2455,6 @@ public partial class Calendar : ContentView
         DiposeDayViews();
     }
 
-    #endregion
 
     public void InitializeViewLayoutEngine()
     {
@@ -2576,4 +2576,5 @@ public partial class Calendar : ContentView
             dayModel.EventColors = [];
         }
     }
+    #endregion
 }
