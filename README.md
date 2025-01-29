@@ -60,6 +60,7 @@ Weekend calendar
 * Added **MonthChanged** Event and **MonthChangedCommand**
 * Added **AllowDeselecting** property
 * Added **SelectedDatesRangeBackgroundColor** property
+* Removed **DaysTitleHeight** property, use instead **DaysTitleLabelStyle** (**HeightRequest** or **FontSize** Property)
 * Updated samples
 
 
