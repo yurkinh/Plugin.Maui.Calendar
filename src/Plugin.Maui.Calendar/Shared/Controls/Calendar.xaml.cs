@@ -1218,25 +1218,6 @@ public partial class Calendar : ContentView
     }
 
     /// <summary>
-    /// Bindable property for DaysTitleHeight
-    /// </summary>
-    public static readonly BindableProperty DaysTitleHeightProperty = BindableProperty.Create(
-        nameof(DaysTitleHeight),
-        typeof(double),
-        typeof(Calendar),
-        30.0
-    );
-
-    /// <summary>
-    /// Specifies the height of weekday titles
-    /// </summary>
-    public double DaysTitleHeight
-    {
-        get => (double)GetValue(DaysTitleHeightProperty);
-        set => SetValue(DaysTitleHeightProperty, value);
-    }
-
-    /// <summary>
     /// Bindable property for DaysTitleLabelFirstUpperRestLower
     /// </summary>
     public static readonly BindableProperty DaysTitleLabelFirstUpperRestLowerProperty =
@@ -1957,7 +1938,6 @@ public partial class Calendar : ContentView
                 break;
             case nameof(DaysTitleMaximumLength):
             case nameof(DaysTitleColor):
-            case nameof(DaysTitleHeight):
             case nameof(DaysTitleWeekendColor):
             case nameof(DaysTitleLabelFirstUpperRestLower):
                 UpdateDayTitles();
@@ -1991,8 +1971,9 @@ public partial class Calendar : ContentView
     private void UpdateDayTitles()
     {
         var dayNumber = (int)FirstDayOfWeek;
+        var dl = daysControl.Children.OfType<Label>();
 
-        foreach (var dayLabel in daysControl.Children.OfType<Label>())
+        foreach (var dayLabel in dl)
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower
@@ -2270,7 +2251,7 @@ public partial class Calendar : ContentView
         UpdateDaysColors();
         UpdateDayTitles();
 
-       calendarContainer.Add(daysControl);
+        calendarContainer.Add(daysControl);
     }
 
     private void DiposeDayViews()
