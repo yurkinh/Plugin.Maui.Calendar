@@ -57,7 +57,6 @@
         DayViewSize="40"
         DaysLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleColor="Orange"
-        DaysTitleHeight="40"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
         DeselectedDayTextColor="Blue"
