@@ -2261,10 +2261,8 @@ public partial class Calendar : ContentView
         daysControl = CurrentViewLayoutEngine.GenerateLayout(
             dayViews,
             this,
-            nameof(DaysTitleHeight),
             nameof(DaysTitleColor),
             nameof(DaysTitleLabelStyle),
-            nameof(DayViewSize),
             DayTappedCommand,
             OnDayModelPropertyChanged
         );

@@ -13,10 +13,8 @@ internal class WeekViewEngine(CultureInfo culture, int numberOfWeeks, DayOfWeek 
     public Grid GenerateLayout(
         List<DayView> dayViews,
         object bindingContext,
-        string daysTitleHeightBindingName,
         string daysTitleColorBindingName,
         string daysTitleLabelStyleBindingName,
-        string dayViewSizeBindingName,
         ICommand dayTappedCommand,
         PropertyChangedEventHandler dayModelPropertyChanged
     )
@@ -24,10 +22,8 @@ internal class WeekViewEngine(CultureInfo culture, int numberOfWeeks, DayOfWeek 
         var grid = GenerateWeekLayout(
             dayViews,
             bindingContext,
-            daysTitleHeightBindingName,
             daysTitleColorBindingName,
             daysTitleLabelStyleBindingName,
-            dayViewSizeBindingName,
             dayTappedCommand,
             dayModelPropertyChanged,
             _numberOfWeeks
