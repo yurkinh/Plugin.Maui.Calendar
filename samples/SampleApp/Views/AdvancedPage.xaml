@@ -46,8 +46,7 @@
 
     <plugin:Calendar
         x:Name="calendar"
-        Padding="10,0"
-        AnimateCalendar="True"
+        Padding="10,0"       
         ArrowsFontFamily="FontAwesomeSolid"
         CalendarLayout="{Binding CalendarLayout}"
         Culture="{Binding Culture}"

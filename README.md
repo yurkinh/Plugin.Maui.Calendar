@@ -303,11 +303,7 @@ On the `MultiselectionCalendar` you can select multiple separate dates
 __Remark: Don't use both `SelectedDates` and `SelectedStartDate`/`SelectedEndDate`__
 
 ##### Other customizations
-Enable/Disable animation when calendar is loaded or refreshed
-Sample properties:
-```xml
-AnimateCalendar="False"
-```
+
 Enable/Disable the visibility of the Events scrollview panel at the bottom
 Sample properties:
 ```xml

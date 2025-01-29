@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
@@ -30,9 +29,7 @@ public partial class Calendar : ContentView
     IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
     public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
     readonly Dictionary<string, bool> propertyChangedNotificationSupressions = [];
-    protected readonly List<DayView> dayViews = [];
-    DateTime lastAnimationTime;
-    bool animating;
+    protected readonly List<DayView> dayViews = [];  
 
     #endregion
 
@@ -257,7 +254,7 @@ public partial class Calendar : ContentView
                 calendar.Year = newDateTime.Year;
 
             calendar.UpdateLayoutUnitLabel();
-            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            calendar.UpdateDays();
 
             calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
         }
@@ -401,7 +398,7 @@ public partial class Calendar : ContentView
     {
         if (bindable is Calendar calendar)
         {
-            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            calendar.UpdateDays();
         }
     }
 
@@ -492,29 +489,9 @@ public partial class Calendar : ContentView
     {
         if (bindable is Calendar calendar)
         {
-            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            calendar.UpdateDays(); ;
         }
-    }
-
-
-    /// <summary>
-    /// Bindable property for AnimateCalendar
-    /// </summary>
-    public static readonly BindableProperty AnimateCalendarProperty = BindableProperty.Create(
-        nameof(AnimateCalendar),
-        typeof(bool),
-        typeof(Calendar),
-        true
-    );
-
-    /// <summary>
-    /// Specifies whether the calendar is animated
-    /// </summary>
-    public bool AnimateCalendar
-    {
-        get => (bool)GetValue(AnimateCalendarProperty);
-        set => SetValue(AnimateCalendarProperty, value);
-    }
+    }   
 
 
     /// <summary>
@@ -551,7 +528,7 @@ public partial class Calendar : ContentView
             };
 
             calendar.RenderLayout();
-            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            calendar.UpdateDays();
         }
     }
 
@@ -656,7 +633,7 @@ public partial class Calendar : ContentView
     }
 
     #endregion
-    
+
     #region Color BindableProperties
     /// <summary>
     /// Bindable property for MonthLabelColor
@@ -832,7 +809,7 @@ public partial class Calendar : ContentView
     {
         if (bindable is Calendar calendar)
         {
-            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            calendar.UpdateDays();
         }
     }
 
@@ -1098,7 +1075,8 @@ public partial class Calendar : ContentView
 
             calendar.UpdateEvents();
             calendar.UpdateLayoutUnitLabel();
-            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
+            //Todo: called two time at the calendar start
+            calendar.UpdateDays();
         }
     }
 
@@ -2181,7 +2159,7 @@ public partial class Calendar : ContentView
     private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
     {
         UpdateEvents();
-        UpdateAndAnimateDays(AnimateCalendar);
+        UpdateDays();
     }
 
     private void OnDayModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -2230,31 +2208,6 @@ public partial class Calendar : ContentView
                 dayLabel.TextColor = DaysTitleWeekendColor;
             }
             dayNumber = (dayNumber + 1) % 7;
-        }
-    }
-
-    internal void UpdateAndAnimateDays(bool animate)
-    {
-        if (Culture == null)
-            return;
-
-        if (BindingContext == null)
-        {
-            UpdateDays();
-            lastAnimationTime = DateTime.UtcNow;
-        }
-        else
-        {
-            MainThread.InvokeOnMainThreadAsync(
-                () =>
-                    Animate(
-                        () => daysControl.FadeTo(animate ? 0 : 1, 50),
-                        () => daysControl.FadeTo(1, 200),
-                        () => UpdateDays(),
-                        lastAnimationTime = DateTime.UtcNow,
-                        () => UpdateAndAnimateDays(false)
-                    )
-            );
         }
     }
 
@@ -2499,37 +2452,7 @@ public partial class Calendar : ContentView
 #endif
             }
         }
-
-    }
-
-    private void Animate(Func<Task> animationIn, Func<Task> animationOut, Action afterFirstAnimation, DateTime animationTime, Action callAgain)
-    {
-        if (animating)
-            return;
-
-        animating = true;
-
-        animationIn()
-            .ContinueWith(
-                        aIn =>
-                        {
-                            afterFirstAnimation();
-
-                            animationOut()
-                                .ContinueWith(
-                                    aOut =>
-                                    {
-                                        animating = false;
-
-                                        if (animationTime != lastAnimationTime)
-                                            callAgain();
-                                    },
-                                    TaskScheduler.FromCurrentSynchronizationContext()
-                                );
-                        },
-                        TaskScheduler.FromCurrentSynchronizationContext()
-                        );
-    }
+    }   
 
     internal void ChangePropertySilently(string propertyName, Action propertyChangeAction)
     {
