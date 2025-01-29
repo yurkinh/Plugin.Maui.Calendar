@@ -44,6 +44,7 @@
                 Padding="10,0"
                 ArrowsFontSize="Medium"
                 Day="{Binding Day}"
+                EventsScrollViewVisible="True"
                 EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 DayViewFontSize="Medium"
                 SwipeDetectionDisabled="False"
