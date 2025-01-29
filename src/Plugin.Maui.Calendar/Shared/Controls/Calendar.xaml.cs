@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -2271,8 +2271,7 @@ public partial class Calendar : ContentView
         UpdateDaysColors();
         UpdateDayTitles();
 
-        calendarContainer.SetRow(daysControl, 1);
-        calendarContainer.Children.Add(daysControl);
+       calendarContainer.Add(daysControl);
     }
 
     private void DiposeDayViews()
