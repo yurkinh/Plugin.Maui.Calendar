@@ -31,7 +31,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOf
     {
         var rowDefinition = new RowDefinition()
         {
-            BindingContext = bindingContext,
+            // BindingContext = bindingContext,
         };
         rowDefinition.SetBinding(RowDefinition.HeightProperty, daysTitleHeightBindingName);
 
@@ -74,7 +74,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOf
         {
             rowDefinition = new RowDefinition()
             {
-                BindingContext = bindingContext,
+                // BindingContext = bindingContext,
             };
             rowDefinition.SetBinding(RowDefinition.HeightProperty, dayViewSizeBindingName);
             grid.RowDefinitions.Add(rowDefinition);

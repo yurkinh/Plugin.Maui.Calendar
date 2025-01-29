@@ -2357,12 +2357,12 @@ public partial class Calendar : ContentView
             }
             else
             {
-                dayModel.EventColors = new Color[0];
+                dayModel.EventColors = [];
             }
         }
         else
         {
-            dayModel.EventColors = new Color[0];
+            dayModel.EventColors = [];
         }
     }
 }
