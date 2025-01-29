@@ -1791,9 +1791,9 @@ public partial class Calendar : ContentView
 
             calendar.CurrentViewLayoutEngine = layout switch
             {
-                WeekLayout.Week => new WeekViewEngine(calendar.Culture, 1, calendar.FirstDayOfWeek),
-                WeekLayout.TwoWeek => new WeekViewEngine(calendar.Culture, 2, calendar.FirstDayOfWeek),
-                _ => new MonthViewEngine(calendar.Culture, calendar.FirstDayOfWeek),
+                WeekLayout.Week => new WeekViewEngine(1, calendar.FirstDayOfWeek),
+                WeekLayout.TwoWeek => new WeekViewEngine(2, calendar.FirstDayOfWeek),
+                _ => new MonthViewEngine(calendar.FirstDayOfWeek),
             };
 
             calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
@@ -1971,9 +1971,8 @@ public partial class Calendar : ContentView
     private void UpdateDayTitles()
     {
         var dayNumber = (int)FirstDayOfWeek;
-        var dl = daysControl.Children.OfType<Label>();
 
-        foreach (var dayLabel in dl)
+        foreach (var dayLabel in daysControl.Children.OfType<Label>())
         {
             var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
             var titleText = DaysTitleLabelFirstUpperRestLower
@@ -2226,7 +2225,7 @@ public partial class Calendar : ContentView
 
     public void InitializeViewLayoutEngine()
     {
-        CurrentViewLayoutEngine = new MonthViewEngine(CultureInfo.InvariantCulture, FirstDayOfWeek);
+        CurrentViewLayoutEngine = new MonthViewEngine(FirstDayOfWeek);
     }
 
 
@@ -2234,9 +2233,9 @@ public partial class Calendar : ContentView
     {
         CurrentViewLayoutEngine = CalendarLayout switch
         {
-            WeekLayout.Week => new WeekViewEngine(Culture, 1, FirstDayOfWeek),
-            WeekLayout.TwoWeek => new WeekViewEngine(Culture, 2, FirstDayOfWeek),
-            _ => new MonthViewEngine(Culture, FirstDayOfWeek),
+            WeekLayout.Week => new WeekViewEngine(1, FirstDayOfWeek),
+            WeekLayout.TwoWeek => new WeekViewEngine(2, FirstDayOfWeek),
+            _ => new MonthViewEngine(FirstDayOfWeek),
         };
 
         daysControl = CurrentViewLayoutEngine.GenerateLayout(

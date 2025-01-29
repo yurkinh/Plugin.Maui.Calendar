@@ -5,11 +5,9 @@ using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOfWeek)
+internal abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 {
     protected const int numberOfDaysInWeek = 7;
-
-    public CultureInfo Culture { get; set; } = culture;
 
     protected DateTime GetFirstDateOfWeek(DateTime dateInWeek)
     {
