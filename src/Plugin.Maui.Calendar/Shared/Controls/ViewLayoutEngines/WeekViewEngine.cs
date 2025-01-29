@@ -5,7 +5,7 @@ using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal class WeekViewEngine(CultureInfo culture, int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBase(culture, firstDayOfWeek), IViewLayoutEngine
+internal class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDayOfWeek), IViewLayoutEngine
 {
     private readonly int _numberOfWeeks = numberOfWeeks;
     private readonly int _unitSizeinDays = 7 * numberOfWeeks;
