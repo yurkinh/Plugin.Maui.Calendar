@@ -7,7 +7,7 @@ namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
 internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOfWeek)
 {
-    protected const int _numberOfDaysInWeek = 7;
+    protected const int numberOfDaysInWeek = 7;
 
     public CultureInfo Culture { get; set; } = culture;
 
@@ -49,7 +49,7 @@ internal abstract class ViewLayoutBase(CultureInfo culture, DayOfWeek firstDayOf
             }
         };
 
-        for (int i = 0; i < _numberOfDaysInWeek; i++)
+        for (int i = 0; i < numberOfDaysInWeek; i++)
         {
             var label = new Label
             {
