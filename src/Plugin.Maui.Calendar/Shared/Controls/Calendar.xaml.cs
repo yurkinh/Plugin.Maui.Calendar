@@ -1795,6 +1795,8 @@ public partial class Calendar : ContentView
             if (calendar.Year != newDateTime.Year)
                 calendar.Year = newDateTime.Year;
 
+            calendar.UpdateLayoutUnitLabel();
+            calendar.UpdateAndAnimateDays(calendar.AnimateCalendar);
 
             calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
         }
@@ -1913,7 +1915,6 @@ public partial class Calendar : ContentView
                 UpdateEvents();
                 break;
             case nameof(Events):
-            case nameof(ShownDate):
                 UpdateLayoutUnitLabel();
                 UpdateAndAnimateDays(AnimateCalendar);
                 break;
@@ -2271,8 +2272,7 @@ public partial class Calendar : ContentView
         UpdateDaysColors();
         UpdateDayTitles();
 
-        calendarContainer.SetRow(daysControl, 1);
-        calendarContainer.Children.Add(daysControl);
+       calendarContainer.Add(daysControl);
     }
 
     private void DiposeDayViews()
