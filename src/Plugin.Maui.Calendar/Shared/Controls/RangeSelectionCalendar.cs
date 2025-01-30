@@ -125,7 +125,7 @@ public class RangeSelectionCalendar : Calendar
     {
         foreach (var dayView in dayViews)
         {
-            if (dayView.BindingContext is DayModel dayModel)
+            if (dayView.BindingContext as DayModel dayModel)
             {
                 if (dayModel.Date == SelectedStartDate || dayModel.Date == SelectedEndDate)
                 {
