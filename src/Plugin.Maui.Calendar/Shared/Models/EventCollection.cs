@@ -41,9 +41,11 @@ public class EventCollection : Dictionary<DateTime, ICollection>
         var removed = base.Remove(key.Date);
 
         if (removed)
-            CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = key.Date, Type = EventCollectionChangedType.Remove });
+		{
+			CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = key.Date, Type = EventCollectionChangedType.Remove });
+		}
 
-        return removed;
+		return removed;
     }
 
     /// <summary>
@@ -104,11 +106,17 @@ public class EventCollection : Dictionary<DateTime, ICollection>
         var listToReturn = new List<object>();
 
         foreach (var currentDate in keys)
-            if (base.TryGetValue(currentDate, out var dayEvents))
-                foreach (var singleEvent in dayEvents)
-                    listToReturn.Add(singleEvent);
+		{
+			if (base.TryGetValue(currentDate, out var dayEvents))
+			{
+				foreach (var singleEvent in dayEvents)
+				{
+					listToReturn.Add(singleEvent);
+				}
+			}
+		}
 
-        if (listToReturn.Count > 0)
+		if (listToReturn.Count > 0)
         {
             values = listToReturn;
             return true;
@@ -126,9 +134,11 @@ public class EventCollection : Dictionary<DateTime, ICollection>
     public new void Clear()
     {
         if (base.Count == 0)
-            return;
+		{
+			return;
+		}
 
-        base.Clear();
+		base.Clear();
         CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = default, Type = EventCollectionChangedType.Clear });
     }
 

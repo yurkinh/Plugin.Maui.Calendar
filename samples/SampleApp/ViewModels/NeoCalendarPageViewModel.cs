@@ -79,7 +79,7 @@ public partial class NeoCalendarPageViewModel : BasePageViewModel
         await Shell.Current.DisplayAlert("Month Changed", message, "OK");
     }
 
-    private static IEnumerable<EventModel> GenerateEvents(int count, string name)
+    static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new EventModel
         {

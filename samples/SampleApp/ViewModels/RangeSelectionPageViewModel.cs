@@ -71,7 +71,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
     }
 
 
-    private static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name, DateTime timeOfEvent)
+    static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name, DateTime timeOfEvent)
     {
         return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
         {

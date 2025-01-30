@@ -4,7 +4,7 @@ using Plugin.Maui.Calendar.Enums;
 namespace SampleApp.ViewModels;
 
 public partial class CalendarRangePickerPopupSelectedDatesViewModel : BasePageViewModel
-{  
+{
     public CalendarRangePickerPopupSelectedDatesViewModel()
     {
         SelectedDates =

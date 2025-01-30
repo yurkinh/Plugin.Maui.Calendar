@@ -4,11 +4,11 @@ namespace SampleApp.Views;
 
 public partial class CalendarPickerPopup : PopupPage
 {
-    private readonly Action<CalendarPickerResult> _onClosedPopup;
+    readonly Action<CalendarPickerResult> onClosedPopup;
 
     public CalendarPickerPopup(Action<CalendarPickerResult> onClosedPopup)
     {
-        _onClosedPopup = onClosedPopup;
+		this.onClosedPopup = onClosedPopup;
         InitializeComponent();
     }
 
@@ -17,13 +17,17 @@ public partial class CalendarPickerPopup : PopupPage
         base.OnAppearing();
 
         if (BindingContext is CalendarPickerPopupViewModel vm)
-            vm.Closed += _onClosedPopup;
+        {
+            vm.Closed += onClosedPopup;
+        }
     }
 
     protected override void OnDisappearing()
     {
         if (BindingContext is CalendarPickerPopupViewModel vm)
-            vm.Closed -= _onClosedPopup;
+        {
+            vm.Closed -= onClosedPopup;
+        }
 
         base.OnDisappearing();
     }

@@ -4,7 +4,7 @@ namespace SampleApp;
 
 public partial class App : Application
 {
-    readonly IThemeService themeService;
+	readonly IThemeService themeService;
 
     public static new App Current => (App)Application.Current;
     public App(IThemeService themeService)

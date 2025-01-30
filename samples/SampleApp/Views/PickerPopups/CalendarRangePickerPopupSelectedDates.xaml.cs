@@ -4,11 +4,11 @@ namespace SampleApp.Views;
 
 public partial class CalendarRangePickerPopupSelectedDates : PopupPage
 {
-    private readonly Action<CalendarRangePickerResult> _onClosedPopup;
+    readonly Action<CalendarRangePickerResult> onClosedPopup;
 
     public CalendarRangePickerPopupSelectedDates(Action<CalendarRangePickerResult> onClosedPopup)
     {
-        _onClosedPopup = onClosedPopup;
+        this.onClosedPopup = onClosedPopup;
         InitializeComponent();
     }
 
@@ -17,13 +17,17 @@ public partial class CalendarRangePickerPopupSelectedDates : PopupPage
         base.OnAppearing();
 
         if (BindingContext is CalendarRangePickerPopupSelectedDatesViewModel vm)
-            vm.Closed += _onClosedPopup;
+        {
+            vm.Closed += onClosedPopup;
+        }
     }
 
     protected override void OnDisappearing()
     {
         if (BindingContext is CalendarRangePickerPopupSelectedDatesViewModel vm)
-            vm.Closed -= _onClosedPopup;
+        {
+            vm.Closed -= onClosedPopup;
+        }
 
         base.OnDisappearing();
     }

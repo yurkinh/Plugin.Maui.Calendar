@@ -4,7 +4,7 @@ using Plugin.Maui.Calendar.Controls;
 
 namespace Plugin.Maui.Calendar.Interfaces;
 
-internal interface IViewLayoutEngine
+interface IViewLayoutEngine
 {
     Grid GenerateLayout(
         List<DayView> dayViews,

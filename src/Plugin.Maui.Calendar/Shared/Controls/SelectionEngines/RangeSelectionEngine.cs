@@ -5,20 +5,20 @@ using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.SelectionEngines;
 
-internal class RangedSelectionEngine : ISelectionEngine
+class RangedSelectionEngine : ISelectionEngine
 {
-    private DateTime? _rangeSelectionEndDate;
-    private DateTime? _rangeSelectionStartDate;
+    DateTime? rangeSelectionEndDate;
+    DateTime? rangeSelectionStartDate;
 
     string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
     {
-        if (_rangeSelectionStartDate.HasValue)
+        if (rangeSelectionStartDate.HasValue)
         {
-            var startDateText = _rangeSelectionStartDate.Value.ToString(
+            var startDateText = rangeSelectionStartDate.Value.ToString(
                 selectedDateTextFormat,
                 culture
             );
-            var endDateText = _rangeSelectionEndDate.Value.ToString(
+            var endDateText = rangeSelectionEndDate.Value.ToString(
                 selectedDateTextFormat,
                 culture
             );
@@ -38,11 +38,13 @@ internal class RangedSelectionEngine : ISelectionEngine
 
     bool ISelectionEngine.IsDateSelected(DateTime dateToCheck)
     {
-        if (!_rangeSelectionStartDate.HasValue)
-            return false;
+        if (!rangeSelectionStartDate.HasValue)
+		{
+			return false;
+		}
 
-        return DateTime.Compare(dateToCheck, _rangeSelectionEndDate.Value.Date) <= 0
-            && DateTime.Compare(dateToCheck, _rangeSelectionStartDate.Value.Date) >= 0;
+		return DateTime.Compare(dateToCheck, rangeSelectionEndDate.Value.Date) <= 0
+            && DateTime.Compare(dateToCheck, rangeSelectionStartDate.Value.Date) >= 0;
     }
 
     List<DateTime> ISelectionEngine.PerformDateSelection(
@@ -57,54 +59,64 @@ internal class RangedSelectionEngine : ISelectionEngine
     {
         if (datesToSelect?.Count > 0)
         {
-            _rangeSelectionStartDate = datesToSelect[0];
-            _rangeSelectionEndDate = datesToSelect[0];
+            rangeSelectionStartDate = datesToSelect[0];
+            rangeSelectionEndDate = datesToSelect[0];
 
             foreach (var date in datesToSelect)
             {
-                if (DateTime.Compare(date, _rangeSelectionStartDate.Value) < 0)
-                    _rangeSelectionStartDate = date;
+                if (DateTime.Compare(date, rangeSelectionStartDate.Value) < 0)
+				{
+					rangeSelectionStartDate = date;
+				}
 
-                if (DateTime.Compare(_rangeSelectionEndDate.Value, date) < 0)
-                    _rangeSelectionEndDate = date;
-            }
+				if (DateTime.Compare(rangeSelectionEndDate.Value, date) < 0)
+				{
+					rangeSelectionEndDate = date;
+				}
+			}
         }
         else
         {
-            _rangeSelectionStartDate = null;
-            _rangeSelectionEndDate = null;
+            rangeSelectionStartDate = null;
+            rangeSelectionEndDate = null;
         }
     }
 
     internal List<DateTime> SelectDateRange(DateTime? newSelected, List<DateTime> disabledDates)
     {
         if (
-            _rangeSelectionStartDate is null
-            || !Equals(_rangeSelectionStartDate, _rangeSelectionEndDate)
+            rangeSelectionStartDate is null
+            || !Equals(rangeSelectionStartDate, rangeSelectionEndDate)
             || newSelected is null
         )
-            SelectFirstIntervalBorder(newSelected);
-        else
-            SelectSecondIntervalBorder(newSelected);
+		{
+			SelectFirstIntervalBorder(newSelected);
+		}
+		else
+		{
+			SelectSecondIntervalBorder(newSelected);
+		}
 
-        return CreateRangeList(disabledDates);
+		return CreateRangeList(disabledDates);
     }
 
-    private List<DateTime> CreateRangeList(List<DateTime> disabledDates = null)
+    List<DateTime> CreateRangeList(List<DateTime> disabledDates = null)
     {
         var rangeList = new List<DateTime>();
-        if (_rangeSelectionStartDate.HasValue && _rangeSelectionEndDate.HasValue)
+        if (rangeSelectionStartDate.HasValue && rangeSelectionEndDate.HasValue)
         {
             for (
-                var currentDate = _rangeSelectionStartDate;
-                DateTime.Compare(currentDate.Value, _rangeSelectionEndDate.Value) <= 0;
+                var currentDate = rangeSelectionStartDate;
+                DateTime.Compare(currentDate.Value, rangeSelectionEndDate.Value) <= 0;
                 currentDate = currentDate.Value.AddDays(1)
             )
-                if (disabledDates is null || !disabledDates.Contains(currentDate.Value))
+			{
+				if (disabledDates is null || !disabledDates.Contains(currentDate.Value))
                 {
                     rangeList.Add(currentDate.Value);
                 }
-        }
+			}
+		}
 
         return rangeList;
     }
@@ -112,20 +124,24 @@ internal class RangedSelectionEngine : ISelectionEngine
     internal List<DateTime> GetDateRange(List<DateTime> disabledDates = null) =>
         CreateRangeList(disabledDates);
 
-    private void SelectFirstIntervalBorder(DateTime? newSelected)
+    void SelectFirstIntervalBorder(DateTime? newSelected)
     {
-        _rangeSelectionStartDate = newSelected?.Date;
-        _rangeSelectionEndDate = newSelected?.Date;
+        rangeSelectionStartDate = newSelected?.Date;
+        rangeSelectionEndDate = newSelected?.Date;
     }
 
-    internal DateTime? RangeSelectionStartDate => _rangeSelectionStartDate;
-    internal DateTime? RangeSelectionEndDate => _rangeSelectionEndDate;
+    internal DateTime? RangeSelectionStartDate => rangeSelectionStartDate;
+    internal DateTime? RangeSelectionEndDate => rangeSelectionEndDate;
 
-    private void SelectSecondIntervalBorder(DateTime? newSelected)
+    void SelectSecondIntervalBorder(DateTime? newSelected)
     {
-        if (DateTime.Compare(newSelected.Value.Date, _rangeSelectionStartDate.Value.Date) <= 0)
-            _rangeSelectionStartDate = newSelected.Value.Date;
-        else
-            _rangeSelectionEndDate = newSelected.Value.Date;
-    }
+        if (DateTime.Compare(newSelected.Value.Date, rangeSelectionStartDate.Value.Date) <= 0)
+		{
+			rangeSelectionStartDate = newSelected.Value.Date;
+		}
+		else
+		{
+			rangeSelectionEndDate = newSelected.Value.Date;
+		}
+	}
 }

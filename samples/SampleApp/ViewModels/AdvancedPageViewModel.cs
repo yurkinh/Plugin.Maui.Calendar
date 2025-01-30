@@ -38,35 +38,35 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         Events[DateTime.Now] = new List<AdvancedEventModel>(GenerateEvents(2, "Boring"));
 
 
-       /*  Task.Delay(5000).ContinueWith(_ =>
-        {
-            // indexer - update later
-            Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
+        /*  Task.Delay(5000).ContinueWith(_ =>
+         {
+             // indexer - update later
+             Events[DateTime.Now] = new ObservableCollection<AdvancedEventModel>(GenerateEvents(10, "Cool"));
 
-            // add later
-            Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
+             // add later
+             Events.Add(DateTime.Now.AddDays(3), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
 
-            // indexer later
-            Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
+             // indexer later
+             Events[DateTime.Now.AddDays(10)] = new List<AdvancedEventModel>(GenerateEvents(10, "Boring"));
 
-            // add later
-            Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
+             // add later
+             Events.Add(DateTime.Now.AddDays(15), new List<AdvancedEventModel>(GenerateEvents(10, "Cool")));
 
 
-           Task.Delay(3000).ContinueWith(t =>
-           {
-                // get observable collection later
-                var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
+            Task.Delay(3000).ContinueWith(t =>
+            {
+                 // get observable collection later
+                 var todayEvents = Events[DateTime.Now] as ObservableCollection<AdvancedEventModel>;
 
-                // insert/add items to observable collection
-                todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
-                todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }, TaskScheduler.FromCurrentSynchronizationContext()); */
+                 // insert/add items to observable collection
+                 todayEvents.Insert(0, new AdvancedEventModel { Name = "Cool event insert", Description = "This is Cool event's description!", Starting = new DateTime() });
+                 todayEvents.Add(new AdvancedEventModel { Name = "Cool event add", Description = "This is Cool event's description!", Starting = new DateTime() });
+             }, TaskScheduler.FromCurrentSynchronizationContext());
+         }, TaskScheduler.FromCurrentSynchronizationContext()); */
 
     }
 
-    private static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
+    static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
         {

@@ -8,7 +8,7 @@ public partial class AdvancedPage : ContentPage
         InitializeComponent();
     }
 
-    void UnloadedHandler(object sender, EventArgs e)
+	void UnloadedHandler(object sender, EventArgs e)
     {
         calendar.Dispose();
     }

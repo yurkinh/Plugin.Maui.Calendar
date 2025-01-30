@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Input;
 using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDayOfWeek), IViewLayoutEngine
+class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDayOfWeek), IViewLayoutEngine
 {
-    private readonly int _numberOfWeeks = numberOfWeeks;
-    private readonly int _unitSizeinDays = 7 * numberOfWeeks;
+    readonly int numberOfWeeks = numberOfWeeks;
+    readonly int unitSizeinDays = 7 * numberOfWeeks;
 
     public Grid GenerateLayout(
         List<DayView> dayViews,
@@ -26,7 +25,7 @@ internal class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : Vie
             daysTitleLabelStyleBindingName,
             dayTappedCommand,
             dayModelPropertyChanged,
-            _numberOfWeeks
+            numberOfWeeks
         );
 
         return grid;
@@ -39,21 +38,21 @@ internal class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : Vie
 
     public DateTime GetNextUnit(DateTime forDate)
     {
-        return forDate.AddDays(_unitSizeinDays);
+        return forDate.AddDays(unitSizeinDays);
     }
 
     public DateTime GetNextUnit(DateTime forDate, int numberOfUnits)
     {
-        return forDate.AddDays(_unitSizeinDays * numberOfUnits);
+        return forDate.AddDays(unitSizeinDays * numberOfUnits);
     }
 
     public DateTime GetPreviousUnit(DateTime forDate)
     {
-        return forDate.AddDays(_unitSizeinDays * -1);
+        return forDate.AddDays(unitSizeinDays * -1);
     }
 
     public DateTime GetPreviousUnit(DateTime forDate, int numberOfUnits)
     {
-        return forDate.AddDays(_unitSizeinDays * -1 * numberOfUnits);
+        return forDate.AddDays(unitSizeinDays * -1 * numberOfUnits);
     }
 }

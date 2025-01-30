@@ -6,7 +6,7 @@ using Plugin.Maui.Calendar.Enums;
 
 namespace Plugin.Maui.Calendar.Models;
 
-internal partial class DayModel : ObservableObject
+partial class DayModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(BackgroundColor))]
@@ -128,7 +128,7 @@ internal partial class DayModel : ObservableObject
         nameof(FourthEventColor),
         nameof(FifthEventColor)
     )]
-    private IReadOnlyList<Color> eventColors;
+IReadOnlyList<Color> eventColors;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(
@@ -198,9 +198,11 @@ internal partial class DayModel : ObservableObject
         get
         {
             if (!IsVisible || IsDisabled)
-                return DeselectedBackgroundColor;
+			{
+				return DeselectedBackgroundColor;
+			}
 
-            return (BackgroundEventIndicator, IsSelected, IsToday) switch
+			return (BackgroundEventIndicator, IsSelected, IsToday) switch
             {
                 (true, false, _) => EventIndicatorColor,
                 (true, true, _) => EventIndicatorSelectedColor,
@@ -216,9 +218,11 @@ internal partial class DayModel : ObservableObject
         get
         {
             if (!IsVisible)
-                return OtherMonthColor;
+			{
+				return OtherMonthColor;
+			}
 
-            return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
+			return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
             {
                 (true, _, _, _, _, _) => DisabledColor,
                 (false, true, false, true, true, _)
@@ -240,7 +244,7 @@ internal partial class DayModel : ObservableObject
 
     public bool IsVisible => IsThisMonth || OtherMonthIsVisible;
 
-    private bool IsToday => Date.Date == DateTime.Today;
+    bool IsToday => Date.Date == DateTime.Today;
 
     public bool IsWeekend =>
         (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday)
