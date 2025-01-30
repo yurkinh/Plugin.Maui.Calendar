@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Input;
 using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDayOfWeek), IViewLayoutEngine
+class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDayOfWeek), IViewLayoutEngine
 {
-    private const int _monthNumberOfWeeks = 6;
+    const int monthNumberOfWeeks = 6;
 
     public Grid GenerateLayout(
         List<DayView> dayViews,
@@ -26,7 +25,7 @@ internal class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstD
             daysTitleLabelStyleBindingName,
             dayTappedCommand,
             dayModelPropertyChanged,
-            _monthNumberOfWeeks
+            monthNumberOfWeeks
         );
     }
 

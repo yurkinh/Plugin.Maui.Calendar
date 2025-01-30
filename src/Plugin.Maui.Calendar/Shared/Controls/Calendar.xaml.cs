@@ -19,9 +19,9 @@ public partial class Calendar : ContentView, IDisposable
 	SwipeGestureRecognizer upSwipeGesture;
 	SwipeGestureRecognizer downSwipeGesture;
 
-	const uint CalendarSectionAnimationRate = 16;
-	const int CalendarSectionAnimationDuration = 200;
-	const string CalendarSectionAnimationId = nameof(CalendarSectionAnimationId);
+	const uint calendarSectionAnimationRate = 16;
+	const int calendarSectionAnimationDuration = 200;
+	const string calendarSectionAnimationId = nameof(calendarSectionAnimationId);
 	readonly Animation calendarSectionAnimateHide;
 	readonly Animation calendarSectionAnimateShow;
 	bool calendarSectionAnimating;
@@ -52,14 +52,13 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	public Calendar()
 	{
-
-		InitializeComponent();
-
 		PrevLayoutUnitCommand = new Command(PrevUnit);
 		NextLayoutUnitCommand = new Command(NextUnit);
 		PrevYearCommand = new Command(PrevYear);
 		NextYearCommand = new Command(NextYear);
 		ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
+
+		InitializeComponent();
 
 		InitializeViewLayoutEngine();
 		InitializeSelectionType();
@@ -148,10 +147,12 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DayProperty, value);
 	}
 
-	private static void OnDayChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDayChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar && newValue is int newDay && calendar.ShownDate.Day != newDay)
+		{
 			calendar.ShownDate = new DateTime(calendar.Year, calendar.Month, newDay);
+		}
 	}
 
 
@@ -176,10 +177,12 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(MonthProperty, value);
 	}
 
-	private static void OnMonthChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnMonthChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (newValue is not int newMonth || newMonth <= 0 || newMonth > 12)
+		{
 			throw new ArgumentException("Month must be between 1 and 12.");
+		}
 
 		if (bindable is Calendar calendar && calendar.ShownDate.Month != newMonth)
 		{
@@ -243,18 +246,24 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(ShownDateProperty, value);
 	}
 
-	private static void OnShownDateChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnShownDateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar && newValue is DateTime newDateTime)
 		{
 			if (calendar.Day != newDateTime.Day)
+			{
 				calendar.Day = newDateTime.Day;
+			}
 
 			if (calendar.Month != newDateTime.Month)
+			{
 				calendar.Month = newDateTime.Month;
+			}
 
 			if (calendar.Year != newDateTime.Year)
+			{
 				calendar.Year = newDateTime.Year;
+			}
 
 			calendar.UpdateLayoutUnitLabel();
 			calendar.UpdateDays();
@@ -345,12 +354,14 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 
-	private static void OnCultureChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnCultureChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
 			if (calendar.ShownDate.Month > 0)
+			{
 				calendar.UpdateLayoutUnitLabel();
+			}
 
 			calendar.UpdateSelectedDateLabel();
 		}
@@ -397,7 +408,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(OtherMonthDayIsVisibleProperty, value);
 	}
 
-	private static void OnOtherMonthDayIsVisibleChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnOtherMonthDayIsVisibleChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -426,7 +437,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(CalendarSectionShownProperty, value);
 	}
 
-	private static void OnCalendarSectionShownChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnCalendarSectionShownChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -488,7 +499,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(MaximumDateProperty, value);
 	}
 
-	private static void OnMinMaxDateChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnMinMaxDateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -517,7 +528,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(CalendarLayoutProperty, value);
 	}
 
-	private static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar && newValue is WeekLayout layout)
 		{
@@ -556,7 +567,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(WeekViewUnitProperty, value);
 	}
 
-	private static void OnWeekViewUnitChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnWeekViewUnitChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar && newValue is WeekViewUnit viewUnit)
 		{
@@ -585,12 +596,14 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(FirstDayOfWeekProperty, value);
 	}
 
-	private static void OnFirstDayOfWeekChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnFirstDayOfWeekChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
 			if (calendar.ShownDate.Month > 0)
+			{
 				calendar.UpdateLayoutUnitLabel();
+			}
 
 			calendar.UpdateSelectedDateLabel();
 		}
@@ -697,7 +710,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(WeekendDayColorProperty, value);
 	}
 
-	private static void OnWeekendDayColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnWeekendDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -726,7 +739,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(OtherMonthDayColorProperty, value);
 	}
 
-	private static void OnOtherMonthDayColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnOtherMonthDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -779,7 +792,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DayViewFontSizeProperty, value);
 	}
 
-	private static void OnDayViewFontSizeChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDayViewFontSizeChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -808,7 +821,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DayViewCornerRadiusProperty, value);
 	}
 
-	private static void OnDayViewCornerRadiusChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDayViewCornerRadiusChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -869,7 +882,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DisabledDayColorProperty, value);
 	}
 
-	private static void OnDisabledDayColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDisabledDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -901,7 +914,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(EventIndicatorTypeProperty, value);
 	}
 
-	private static void OnEventIndicatorTypeChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnEventIndicatorTypeChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -930,7 +943,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(EventIndicatorColorProperty, value);
 	}
 
-	private static void OnEventIndicatorColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnEventIndicatorColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -959,7 +972,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(EventIndicatorSelectedColorProperty, value);
 	}
 
-	private static void OnEventIndicatorSelectedColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnEventIndicatorSelectedColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -988,7 +1001,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(EventIndicatorTextColorProperty, value);
 	}
 
-	private static void OnEventIndicatorTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnEventIndicatorTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1017,7 +1030,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(EventIndicatorSelectedTextColorProperty, value);
 	}
 
-	private static void OnEventIndicatorSelectedTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnEventIndicatorSelectedTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1066,15 +1079,19 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(EventsProperty, value);
 	}
 
-	private static void OnEventsChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnEventsChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
 			if (oldValue is EventCollection oldEvents)
+			{
 				oldEvents.CollectionChanged -= calendar.OnEventsCollectionChanged;
+			}
 
 			if (newValue is EventCollection newEvents)
+			{
 				newEvents.CollectionChanged += calendar.OnEventsCollectionChanged;
+			}
 
 			calendar.UpdateEvents();
 			calendar.UpdateLayoutUnitLabel();
@@ -1443,7 +1460,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(TodayOutlineColorProperty, value);
 	}
 
-	private static void OnTodayOutlineColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnTodayOutlineColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1472,7 +1489,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(TodayTextColorProperty, value);
 	}
 
-	private static void OnTodayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnTodayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1501,7 +1518,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(TodayFillColorProperty, value);
 	}
 
-	private static void OnTodayFillColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnTodayFillColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1553,7 +1570,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DaysTitleColorProperty, value);
 	}
 
-	private static void OnDaysTitleColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDaysTitleColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1582,7 +1599,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DaysTitleMaximumLengthProperty, value);
 	}
 
-	private static void OnDaysTitleMaximumLengthChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDaysTitleMaximumLengthChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1611,7 +1628,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DaysTitleLabelFirstUpperRestLowerProperty, value);
 	}
 
-	private static void OnDaysTitleLabelFirstUpperRestLowerChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDaysTitleLabelFirstUpperRestLowerChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1639,7 +1656,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DaysTitleWeekendColorProperty, value);
 	}
 
-	private static void OnDaysTitleWeekendColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDaysTitleWeekendColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1691,7 +1708,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(SelectedDayTextColorProperty, value);
 	}
 
-	private static void OnSelectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnSelectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1720,7 +1737,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DeselectedDayTextColorProperty, value);
 	}
 
-	private static void OnDeselectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnDeselectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1749,7 +1766,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(SelectedTodayTextColorProperty, value);
 	}
 
-	private static void OnSelectedTodayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnSelectedTodayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1778,7 +1795,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(OtherMonthSelectedDayColorProperty, value);
 	}
 
-	private static void OnOtherMonthSelectedDayColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnOtherMonthSelectedDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1807,7 +1824,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(SelectedDayBackgroundColorProperty, value);
 	}
 
-	private static void OnSelectedDayBackgroundColorChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnSelectedDayBackgroundColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -1885,7 +1902,7 @@ public partial class Calendar : ContentView, IDisposable
 			SetValue(SelectedDateProperty, value);
 		}
 	}
-	private static void OnSelectedDateChanged(BindableObject bindable, object oldValue, object newValue)
+	static void OnSelectedDateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		var control = (Calendar)bindable;
 		var dateToSet = (DateTime?)newValue;
@@ -1897,9 +1914,13 @@ public partial class Calendar : ContentView, IDisposable
 		)
 		{
 			if (dateToSet.HasValue)
+			{
 				control.SetValue(SelectedDatesProperty, new List<DateTime> { dateToSet.Value });
+			}
 			else
+			{
 				control.SetValue(SelectedDatesProperty, new List<DateTime>());
+			}
 		}
 		else
 		{
@@ -1909,8 +1930,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	}
 
-	private bool isSelectingDates = false;
-	bool disposedValue;
+	bool isSelectingDates = false;
 
 	/// <summary>
 	/// Bindable property for SelectedDates
@@ -1936,7 +1956,7 @@ public partial class Calendar : ContentView, IDisposable
 			SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
 		}
 	}
-	private static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
+	static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
 		{
@@ -2063,7 +2083,7 @@ public partial class Calendar : ContentView, IDisposable
 	#endregion
 
 
-	private void InitializeSelectionType()
+	void InitializeSelectionType()
 	{
 		CurrentSelectionEngine = new SingleSelectionEngine();
 	}
@@ -2103,7 +2123,7 @@ public partial class Calendar : ContentView, IDisposable
 	#endregion
 
 	#region Update methods
-	private void UpdateEvents()
+	void UpdateEvents()
 	{
 		SelectedDayEvents =
 			CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents)
@@ -2113,7 +2133,7 @@ public partial class Calendar : ContentView, IDisposable
 		eventsScrollView.ScrollToAsync(0, 0, false);
 	}
 
-	private void UpdateLayoutUnitLabel()
+	void UpdateLayoutUnitLabel()
 	{
 		if (WeekViewUnit == WeekViewUnit.WeekNumber)
 		{
@@ -2124,14 +2144,16 @@ public partial class Calendar : ContentView, IDisposable
 		LayoutUnitText = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
 	}
 
-	private void UpdateSelectedDateLabel() =>
+	void UpdateSelectedDateLabel() =>
 		 SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
 
 
-	private void ShowHideCalendarSection()
+	void ShowHideCalendarSection()
 	{
 		if (calendarSectionAnimating)
+		{
 			return;
+		}
 
 		calendarSectionAnimating = true;
 
@@ -2142,31 +2164,33 @@ public partial class Calendar : ContentView, IDisposable
 
 		animation.Commit(
 			this,
-			CalendarSectionAnimationId,
-			CalendarSectionAnimationRate,
-			CalendarSectionAnimationDuration,
+			calendarSectionAnimationId,
+			calendarSectionAnimationRate,
+			calendarSectionAnimationDuration,
 			finished: (value, cancelled) =>
 			{
 				calendarSectionAnimating = false;
 
 				if (prevState != CalendarSectionShown)
+				{
 					ToggleCalendarSectionVisibility();
+				}
 			}
 		);
 	}
 
-	private void UpdateCalendarSectionHeight()
+	void UpdateCalendarSectionHeight()
 	{
 		calendarSectionHeight = calendarContainer.Height;
 	}
 
-	private void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
+	void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
 	{
 		UpdateEvents();
 		UpdateDays();
 	}
 
-	private void OnDayModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+	void OnDayModelPropertyChanged(object sender, PropertyChangedEventArgs e)
 	{
 		if (
 			e.PropertyName != nameof(DayModel.IsSelected)
@@ -2178,12 +2202,14 @@ public partial class Calendar : ContentView, IDisposable
 				) && isSuppressed
 			)
 		)
+		{
 			return;
+		}
 
 		SelectedDates = CurrentSelectionEngine.PerformDateSelection(newSelected.Date, DisabledDates);
 	}
 
-	private void UpdateDayTitles()
+	void UpdateDayTitles()
 	{
 		var dayNumber = (int)FirstDayOfWeek;
 
@@ -2215,7 +2241,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	private void UpdateDays()
+	void UpdateDays()
 	{
 		var firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
 
@@ -2251,7 +2277,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	private void UpdateDaysColors()
+	void UpdateDaysColors()
 	{
 		foreach (var dayView in dayViews)
 		{
@@ -2278,34 +2304,42 @@ public partial class Calendar : ContentView, IDisposable
 
 	#region Event Handlers
 
-	private void OnCalendarContainerSizeChanged(object sender, EventArgs e)
+	void OnCalendarContainerSizeChanged(object sender, EventArgs e)
 	{
 		if (calendarContainer.Height > 0 && !calendarSectionAnimating)
+		{
 			UpdateCalendarSectionHeight();
+		}
 	}
 
-	private void OnSwipedRight(object sender, EventArgs e)
+	void OnSwipedRight(object sender, EventArgs e)
 	{
 		SwipeRightCommand?.Execute(null);
 
 		if (SwipeToChangeMonthEnabled)
+		{
 			PrevUnit();
+		}
 	}
 
-	private void OnSwipedLeft(object sender, EventArgs e)
+	void OnSwipedLeft(object sender, EventArgs e)
 	{
 		SwipeLeftCommand?.Execute(null);
 
 		if (SwipeToChangeMonthEnabled)
+		{
 			NextUnit();
+		}
 	}
 
-	private void OnSwipedUp(object sender, EventArgs e)
+	void OnSwipedUp(object sender, EventArgs e)
 	{
 		SwipeUpCommand?.Execute(null);
 
 		if (SwipeUpToHideEnabled)
+		{
 			ToggleCalendarSectionVisibility();
+		}
 	}
 
 	#endregion
@@ -2313,7 +2347,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	#region Other methods
 
-	private int GetWeekNumber(DateTime date)
+	int GetWeekNumber(DateTime date)
 	{
 		return Culture.Calendar.GetWeekOfYear(
 			date,
@@ -2322,7 +2356,7 @@ public partial class Calendar : ContentView, IDisposable
 		);
 	}
 
-	private void PrevUnit()
+	void PrevUnit()
 	{
 		var oldMonth = DateOnly.FromDateTime(ShownDate);
 		ShownDate = CurrentViewLayoutEngine.GetPreviousUnit(ShownDate);
@@ -2336,7 +2370,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	private void NextUnit()
+	void NextUnit()
 	{
 		var oldMonth = DateOnly.FromDateTime(ShownDate);
 		ShownDate = CurrentViewLayoutEngine.GetNextUnit(ShownDate);
@@ -2350,19 +2384,19 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	private void NextYear(object obj)
+	void NextYear(object obj)
 	{
 		ShownDate = ShownDate.AddYears(1);
 	}
 
-	private void PrevYear(object obj)
+	void PrevYear(object obj)
 	{
 		ShownDate = ShownDate.AddYears(-1);
 	}
 
-	private void ToggleCalendarSectionVisibility() => CalendarSectionShown = !CalendarSectionShown;
+	void ToggleCalendarSectionVisibility() => CalendarSectionShown = !CalendarSectionShown;
 
-	private void AnimateMonths(double currentValue)
+	void AnimateMonths(double currentValue)
 	{
 		calendarContainer.HeightRequest = calendarSectionHeight * currentValue;
 		calendarContainer.TranslationY = calendarSectionHeight * (currentValue - 1);
@@ -2412,7 +2446,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 
-	private void RenderLayout()
+	void RenderLayout()
 	{
 		CurrentViewLayoutEngine = CalendarLayout switch
 		{

@@ -38,7 +38,7 @@ public static class MauiProgram
 
         return app;
     }
-    static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
+	static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
     {
         builder.Services.AddTransient<UserSettingPage>();
         builder.Services.AddTransient<UserSettingViewModel>();
@@ -48,7 +48,7 @@ public static class MauiProgram
 
         return builder;
     }
-    static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
+	static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         return builder;

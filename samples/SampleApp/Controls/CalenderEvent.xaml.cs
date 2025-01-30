@@ -18,9 +18,11 @@ public partial class CalenderEvent : ContentView
         set => SetValue(CalenderEventCommandProperty, value);
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+    void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
     {
         if (BindingContext is AdvancedEventModel eventModel)
-            CalenderEventCommand?.Execute(eventModel);
-    }
+		{
+			CalenderEventCommand?.Execute(eventModel);
+		}
+	}
 }

@@ -56,7 +56,7 @@ public partial class SimplePageViewModel : BasePageViewModel
         }, TaskScheduler.FromCurrentSynchronizationContext()); */
     }
 
-    private static IEnumerable<EventModel> GenerateEvents(int count, string name)
+    static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new EventModel
         {

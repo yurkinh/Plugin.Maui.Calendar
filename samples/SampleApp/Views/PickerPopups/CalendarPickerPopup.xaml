@@ -9,21 +9,23 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="local:CalendarPickerPopupViewModel"
     BackgroundColor="Transparent"
-    CloseWhenBackgroundIsClicked="False"
-    Unloaded="UnloadedHandler">
+    CloseWhenBackgroundIsClicked="False">
 
     <rg:PopupPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
+                <Setter Property="Margin"
+                        Value="5"/>
+                <Setter Property="TextColor"
+                        Value="Black"/>
+                <Setter Property="BackgroundColor"
+                        Value="{toolkit:AppThemeResource ButtonColor}"/>
             </Style>
         </ResourceDictionary>
     </rg:PopupPage.Resources>
 
     <rg:PopupPage.BindingContext>
-        <local:CalendarPickerPopupViewModel />
+        <local:CalendarPickerPopupViewModel/>
     </rg:PopupPage.BindingContext>
 
     <rg:PopupPage.Content>
@@ -33,14 +35,15 @@
             HorizontalOptions="Center"
             StrokeShape="RoundRectangle 6"
             VerticalOptions="Center">
-            <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
+            <VerticalStackLayout IsClippedToBounds="True"
+                    Spacing="3">
                 <Label
                     FontAttributes="Bold"
                     FontSize="Large"
                     HorizontalOptions="Fill"
                     HorizontalTextAlignment="Center"
                     Text="Choose Date"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"/>
                 <plugin:Calendar
                     x:Name="calendar"
                     Padding="10,0"
@@ -55,7 +58,7 @@
                     MinimumDate="{Binding MinimumDate}"
                     SelectedDate="{Binding SelectedDate}"
                     VerticalOptions="Center"
-                    WidthRequest="320" />
+                    WidthRequest="320"/>
                 <Grid
                     Margin="5"
                     ColumnDefinitions="*,*,*"
@@ -63,15 +66,15 @@
                     <Button
                         Grid.Column="0"
                         Command="{Binding ClearCommand}"
-                        Text="Clear" />
+                        Text="Clear"/>
                     <Button
                         Grid.Column="1"
                         Command="{Binding SuccessCommand}"
-                        Text="Select" />
+                        Text="Select"/>
                     <Button
                         Grid.Column="2"
                         Command="{Binding CancelCommand}"
-                        Text="Cancel" />
+                        Text="Cancel"/>
                 </Grid>
             </VerticalStackLayout>
         </Border>

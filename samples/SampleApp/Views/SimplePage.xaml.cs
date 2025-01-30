@@ -8,6 +8,4 @@ public partial class SimplePage : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
-
-
 }

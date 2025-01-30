@@ -11,8 +11,7 @@
     Title="MultiSelectionPage"
     Shell.TabBarIsVisible="False"
     x:DataType="local:SimplePageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Unloaded="UnloadedHandler">
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle"
@@ -80,7 +79,7 @@
                     <VerticalStackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
                                               CommandParameter="{Binding .}"
-                                x:DataType='local:SimplePageViewModel'/>
+                                              x:DataType='local:SimplePageViewModel'/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

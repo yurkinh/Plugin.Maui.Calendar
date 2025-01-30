@@ -9,7 +9,7 @@ public partial class DayView : ContentView
 		InitializeComponent();
 	}
 
-    private void OnTapped(object sender, EventArgs e)
+    void OnTapped(object sender, EventArgs e)
     {
         if (BindingContext is DayModel dayModel && !dayModel.IsDisabled && dayModel.IsVisible)
         {

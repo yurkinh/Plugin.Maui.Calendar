@@ -2,14 +2,16 @@
 
 namespace Plugin.Maui.Calendar;
 
-internal static class Extensions
+static class Extensions
 {
     internal static string Capitalize(this string source)
     {
         if (source.Length == 0)
-            return source;
+		{
+			return source;
+		}
 
-        return char.ToUpperInvariant(source[0]) + source[1..];
+		return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
     internal static object CreateContent(this DataTemplate dataTemplate, object itemModel)

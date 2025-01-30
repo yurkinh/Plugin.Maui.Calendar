@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Input;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
-internal abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
+abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 {
     protected const int numberOfDaysInWeek = 7;
 
