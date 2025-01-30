@@ -29,7 +29,7 @@ public partial class Calendar : ContentView
     IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
     public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
     readonly Dictionary<string, bool> propertyChangedNotificationSupressions = [];
-    protected readonly List<DayView> dayViews = [];  
+    protected readonly List<DayView> dayViews = [];
 
     #endregion
 
@@ -52,13 +52,14 @@ public partial class Calendar : ContentView
     /// </summary>
     public Calendar()
     {
+
+        InitializeComponent();
+
         PrevLayoutUnitCommand = new Command(PrevUnit);
         NextLayoutUnitCommand = new Command(NextUnit);
         PrevYearCommand = new Command(PrevYear);
         NextYearCommand = new Command(NextYear);
         ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
-
-        InitializeComponent();
 
         InitializeViewLayoutEngine();
         InitializeSelectionType();
@@ -491,7 +492,7 @@ public partial class Calendar : ContentView
         {
             calendar.UpdateDays(); ;
         }
-    }   
+    }
 
 
     /// <summary>
@@ -2452,7 +2453,7 @@ public partial class Calendar : ContentView
 #endif
             }
         }
-    }   
+    }
 
     internal void ChangePropertySilently(string propertyName, Action propertyChangeAction)
     {
