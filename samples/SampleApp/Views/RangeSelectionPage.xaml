@@ -10,8 +10,7 @@
     x:Name="advancedRangeSelectionCalendarPage"
     x:DataType="local:RangeSelectionPageViewModel"
     Shell.TabBarIsVisible="False"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Unloaded="UnloadedHandler">
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
 
     <ContentPage.BindingContext>
         <local:RangeSelectionPageViewModel/>

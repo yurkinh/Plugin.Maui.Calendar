@@ -11,8 +11,7 @@
     Shell.TabBarIsVisible="False"
     xmlns:models="clr-namespace:SampleApp.Model"
     x:DataType="local:TwoWeekViewPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Unloaded="UnloadedHandler">
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}"
@@ -63,7 +62,8 @@
                         Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding EventSelectedCommand, Source={x:Reference twoWeekViewCalendarPage}}"
-                                              CommandParameter="{Binding .}" x:DataType='local:TwoWeekViewPageViewModel' />
+                                              CommandParameter="{Binding .}"
+                                              x:DataType='local:TwoWeekViewPageViewModel'/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

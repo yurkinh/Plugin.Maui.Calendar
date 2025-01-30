@@ -31,9 +31,4 @@ public partial class CalendarPickerPopup : PopupPage
 
         base.OnDisappearing();
     }
-
-    void UnloadedHandler(object sender, EventArgs e)
-    {
-        calendar.Dispose();
-    }
 }

@@ -7,9 +7,4 @@ public partial class RangeSelectionPage : ContentPage
     {
         InitializeComponent();
     }
-
-    void UnloadedHandler(object sender, EventArgs e)
-    {
-        rangedCalendar.Dispose();
-    }
 }

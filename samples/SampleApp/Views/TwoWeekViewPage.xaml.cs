@@ -7,9 +7,4 @@ public partial class TwoWeekViewPage : ContentPage
     {
         InitializeComponent();
     }
-
-    void UnloadedHandler(object sender, EventArgs e)
-    {
-        calendar.Dispose();
-    }
 }

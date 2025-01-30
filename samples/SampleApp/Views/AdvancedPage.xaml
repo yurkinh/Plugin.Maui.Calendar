@@ -10,8 +10,7 @@
     x:Name="advancedCalendarPage"
     Shell.TabBarIsVisible="False"
     x:DataType="local:AdvancedPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Unloaded="UnloadedHandler">
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="daysLabelStyle"
@@ -46,7 +45,7 @@
 
     <plugin:Calendar
         x:Name="calendar"
-        Padding="10,0"       
+        Padding="10,0"
         ArrowsFontFamily="FontAwesomeSolid"
         CalendarLayout="{Binding CalendarLayout}"
         Culture="{Binding Culture}"
