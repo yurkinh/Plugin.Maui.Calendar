@@ -22,8 +22,8 @@ public partial class Calendar : ContentView, IDisposable
 	const uint calendarSectionAnimationRate = 16;
 	const int calendarSectionAnimationDuration = 200;
 	const string calendarSectionAnimationId = nameof(calendarSectionAnimationId);
-	readonly Animation calendarSectionAnimateHide;
-	readonly Animation calendarSectionAnimateShow;
+	readonly Lazy<Animation> calendarSectionAnimateHide;
+	readonly Lazy<Animation> calendarSectionAnimateShow;
 	bool calendarSectionAnimating;
 	double calendarSectionHeight;
 	IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
@@ -67,8 +67,8 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateEvents();
 		RenderLayout();
 
-		calendarSectionAnimateHide = new Animation(AnimateMonths, 1, 0);
-		calendarSectionAnimateShow = new Animation(AnimateMonths, 0, 1);
+		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
+		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));
 	}
 	#endregion
 
@@ -1395,7 +1395,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(FooterSectionVisibleProperty, value);
 	}
 
-
+	readonly Lazy<DataTemplate> headerSectionTemplate = new(() => new DataTemplate(() => new DefaultHeaderSection()));
 	/// <summary>
 	/// Bindable property for HeaderSectionTemplate
 	/// </summary>
@@ -1403,7 +1403,7 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(HeaderSectionTemplate),
 		typeof(DataTemplate),
 		typeof(Calendar),
-		new DataTemplate(() => new DefaultHeaderSection())
+		 defaultValueCreator: bindable => ((Calendar)bindable).headerSectionTemplate.Value
 	);
 
 	/// <summary>
@@ -1415,7 +1415,7 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(HeaderSectionTemplateProperty, value);
 	}
 
-
+	readonly Lazy<DataTemplate> footerSectionTemplate = new(() => new DataTemplate(() => new DefaultFooterSection()));
 	/// <summary>
 	/// Bindable property for FooterSectionTemplate
 	/// </summary>
@@ -1423,7 +1423,7 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(FooterSectionTemplate),
 		typeof(DataTemplate),
 		typeof(Calendar),
-		new DataTemplate(() => new DefaultFooterSection())
+		defaultValueCreator: bindable => ((Calendar)bindable).footerSectionTemplate.Value
 	);
 
 	/// <summary>
@@ -2162,7 +2162,7 @@ public partial class Calendar : ContentView, IDisposable
 			: calendarSectionAnimateHide;
 		var prevState = CalendarSectionShown;
 
-		animation.Commit(
+		animation.Value.Commit(
 			this,
 			calendarSectionAnimationId,
 			calendarSectionAnimationRate,
@@ -2531,9 +2531,6 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-
-
-
 	protected virtual void Dispose(bool disposing)
 	{
 		if (disposing)
@@ -2543,8 +2540,8 @@ public partial class Calendar : ContentView, IDisposable
 				events.CollectionChanged -= OnEventsCollectionChanged;
 			}
 			DiposeDayViews();
-			calendarSectionAnimateHide?.Dispose();
-			calendarSectionAnimateShow?.Dispose();
+			calendarSectionAnimateHide.Value.Dispose();
+			calendarSectionAnimateShow.Value.Dispose();
 		}
 	}
 
