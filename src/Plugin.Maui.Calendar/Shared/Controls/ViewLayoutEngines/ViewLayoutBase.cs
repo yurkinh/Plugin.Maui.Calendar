@@ -57,9 +57,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 			label.SetBinding(VisualElement.StyleProperty, daysTitleLabelStyleBindingName);
 
 			grid.Add(label, i, 0);
-		}
-
-		dayViews.Clear();
+		}		
 
 		for (int i = 1; i <= numberOfWeeks; i++)
 		{

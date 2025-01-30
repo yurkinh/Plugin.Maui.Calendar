@@ -266,7 +266,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			calendar.UpdateLayoutUnitLabel();
-			calendar.UpdateDays();
+			calendar.UpdateDays(true);
 
 			calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
 		}
@@ -1960,7 +1960,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (bindable is Calendar calendar && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
 		{
-			calendar.UpdateDays();
+			calendar.UpdateDays(true);
 			calendar.CurrentSelectionEngine.UpdateDateSelection(calendar.SelectedDates);
 			calendar.UpdateSelectedDateLabel();
 			calendar.UpdateEvents();
@@ -2241,9 +2241,14 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	void UpdateDays()
+	DateTime firstDate = DateTime.MinValue;
+	void UpdateDays(bool forceUpdate=false)
 	{
-		var firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
+		if (!forceUpdate && firstDate == CurrentViewLayoutEngine.GetFirstDate(ShownDate))
+		{
+			return;
+		}
+		firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
 
 		int addDays = 0;
 		foreach (var dayView in dayViews)
