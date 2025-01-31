@@ -2453,13 +2453,18 @@ public partial class Calendar : ContentView, IDisposable
 
 	void RenderLayout()
 	{
-		calendarContainer.Remove(daysControl);
+		
 		CurrentViewLayoutEngine = CalendarLayout switch
 		{
 			WeekLayout.Week => new WeekViewEngine(1, FirstDayOfWeek),
 			WeekLayout.TwoWeek => new WeekViewEngine(2, FirstDayOfWeek),
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
+
+		if((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
+		{
+			calendarContainer.Remove(daysControl);
+		}		
 
 		daysControl = CurrentViewLayoutEngine.GenerateLayout(
 			dayViews,
