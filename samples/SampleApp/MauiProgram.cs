@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
+using MemoryToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using SampleApp.Helpers;
@@ -27,8 +28,15 @@ public static class MauiProgram
                 fonts.AddFont("DarkerGrotesque-VariableFont_wght.ttf", "DarkerGrotesque");
             });
 
+
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
+        builder.UseLeakDetection(collectionTarget =>
+            {
+                // This callback will run any time a leak is detected.
+                Shell.Current.DisplayAlert("💦Leak Detected💦",
+                    $"❗🧟❗{collectionTarget.Name} is a zombie!", "OK");
+            });
 #endif
 
         var app = builder.Build();
@@ -38,7 +46,7 @@ public static class MauiProgram
 
         return app;
     }
-	static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
+    static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
     {
         builder.Services.AddTransient<UserSettingPage>();
         builder.Services.AddTransient<UserSettingViewModel>();
@@ -48,7 +56,7 @@ public static class MauiProgram
 
         return builder;
     }
-	static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
+    static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         return builder;

@@ -66,10 +66,15 @@
     <ScrollView>
         <VerticalStackLayout HorizontalOptions="Fill"
                              Spacing="6">
+            <Button
+                Margin="30,30,30,0"
+                Clicked="DefaultCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Default Calendar"/>
+
             <Label
-                Margin="0,20,0,0"
                 Style="{StaticResource LabelMainPageStyle}"
-                Text="Event Calendar"/>
+                Text="Event Calendars"/>
             <Button
                 Clicked="SimpleCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -90,14 +95,16 @@
                 Clicked="RangeCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar"/>
+
             <Label Style="{StaticResource LabelMainPageStyle}"
                    Text="Calendars from Devices"/>
             <Button
                 Clicked="Windows11Calendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Windows 11 Calendar"/>
+
             <Label Style="{StaticResource LabelMainPageStyle}"
-                   Text="Picker Popup"/>
+                   Text="Picker Popups"/>
             <Button
                 Clicked="PickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
@@ -110,6 +117,7 @@
                 Clicked="RangeStartEndDatePickerPopup"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Start-End Selection Calendar"/>
+                
             <Label Style="{StaticResource LabelMainPageStyle}"
                    Text="Week View Calendars"/>
             <Button

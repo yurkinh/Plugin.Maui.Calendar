@@ -11,6 +11,9 @@ public partial class MainPage : ContentPage
     }
 
 
+    async void DefaultCalendar(object sender, EventArgs e) =>
+        await Shell.Current.GoToAsync(nameof(CalendarPage));
+
     async void SimpleCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(SimplePage));
 

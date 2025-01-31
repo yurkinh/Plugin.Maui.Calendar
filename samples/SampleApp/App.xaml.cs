@@ -15,8 +15,6 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState activationState) => new(new AppShell());
 
-
-
     protected override void OnStart()
     {
         themeService.SetTheme(AppTheme.Unspecified);
@@ -26,6 +24,4 @@ public partial class App : Application
     {
 
     }
-
 }
-
