@@ -18,7 +18,7 @@ class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBa
         PropertyChangedEventHandler dayModelPropertyChanged
     )
     {
-        var grid = GenerateWeekLayout(
+        return GenerateWeekLayout(
             dayViews,
             bindingContext,
             daysTitleColorBindingName,
@@ -27,8 +27,6 @@ class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewLayoutBa
             dayModelPropertyChanged,
             numberOfWeeks
         );
-
-        return grid;
     }
 
     public DateTime GetFirstDate(DateTime dateToShow)
