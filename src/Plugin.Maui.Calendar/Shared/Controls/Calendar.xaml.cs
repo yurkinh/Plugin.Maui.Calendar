@@ -2453,6 +2453,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	void RenderLayout()
 	{
+		calendarContainer.Remove(daysControl);
 		CurrentViewLayoutEngine = CalendarLayout switch
 		{
 			WeekLayout.Week => new WeekViewEngine(1, FirstDayOfWeek),
