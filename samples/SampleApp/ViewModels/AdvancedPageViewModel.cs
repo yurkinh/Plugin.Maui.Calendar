@@ -9,9 +9,8 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 {
     public AdvancedPageViewModel() : base()
     {
-
-        MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
-
+        //uncoment if want to show alert when page is loaded
+        //MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
         Culture = CultureInfo.CreateSpecificCulture("en-GB");
         // testing all kinds of adding events
