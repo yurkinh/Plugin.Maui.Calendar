@@ -8,6 +8,7 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 
+		Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
 		Routing.RegisterRoute(nameof(UserSettingPage), typeof(UserSettingPage));
 		Routing.RegisterRoute(nameof(SimplePage), typeof(SimplePage));
 		Routing.RegisterRoute(nameof(WeekendCalendarPage), typeof(WeekendCalendarPage));
@@ -17,5 +18,7 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(WeekViewPage), typeof(WeekViewPage));
 		Routing.RegisterRoute(nameof(TwoWeekViewPage), typeof(TwoWeekViewPage));
 		Routing.RegisterRoute(nameof(Windows11CalendarPage), typeof(Windows11CalendarPage));
+		Routing.RegisterRoute(nameof(CalendarPage), typeof(CalendarPage));
 	}
 }
+
