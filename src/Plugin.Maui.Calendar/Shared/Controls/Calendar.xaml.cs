@@ -2242,7 +2242,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	DateTime firstDate = DateTime.MinValue;
-	void UpdateDays(bool forceUpdate=false)
+	void UpdateDays(bool forceUpdate = false)
 	{
 		if (!forceUpdate && firstDate == CurrentViewLayoutEngine.GetFirstDate(ShownDate))
 		{
@@ -2471,6 +2471,7 @@ public partial class Calendar : ContentView, IDisposable
 
 		UpdateDaysColors();
 		UpdateDayTitles();
+		UpdateDays();
 
 		calendarContainer.Add(daysControl);
 	}
