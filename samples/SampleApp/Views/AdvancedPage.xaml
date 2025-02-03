@@ -36,6 +36,11 @@
                 <Setter Property="FontFamily"
                         Value="OpenSansSemibold"/>
             </Style>
+            <Style x:Key="selectedDateLabelStyle"
+                   TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="Red"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -47,7 +52,6 @@
     <plugin:Calendar
         x:Name="calendar"
         Padding="10,0"
-        ArrowsFontFamily="FontAwesomeSolid"
         CalendarLayout="{Binding CalendarLayout}"
         Culture="{Binding Culture}"
         DayTappedCommand="{Binding DayTappedCommand}"
@@ -67,12 +71,11 @@
         EventIndicatorType="Background"
         Events="{Binding Events}"
         HeaderSectionVisible="True"
+        SelectedDateLabelStyle="{StaticResource selectedDateLabelStyle}"
         HorizontalOptions="Fill"
-        MonthLabelColor="Red"
         OtherMonthDayColor="Gray"
         OtherMonthDayIsVisible="False"
         SelectedDate="{Binding SelectedDate}"
-        SelectedDateColor="Red"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
         SelectedDayBackgroundColor="DarkCyan"
         SelectedDayTextColor="Cyan"
@@ -83,8 +86,7 @@
         TodayFillColor="Silver"
         TodayOutlineColor="Blue"
         TodayTextColor="Yellow"
-        VerticalOptions="Fill"
-        YearLabelColor="Blue">
+        VerticalOptions="Fill">
 
         <plugin:Calendar.HeaderSectionTemplate>
             <controls:CalendarHeader/>

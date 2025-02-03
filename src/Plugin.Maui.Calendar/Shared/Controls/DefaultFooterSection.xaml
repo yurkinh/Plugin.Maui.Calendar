@@ -12,12 +12,8 @@
         ColumnDefinitions="Auto,*">
         <Label
             Grid.Column="0"
-            FontAttributes="Bold"
-            FontSize="Medium"
             Text="{Binding SelectedDateText}"
-            TextColor="{Binding SelectedDateColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center"/>
+            Style="{Binding SelectedDateLabelStyle}"/>
         <Label
             x:Name="showHideLabel"
             Grid.Column="1"

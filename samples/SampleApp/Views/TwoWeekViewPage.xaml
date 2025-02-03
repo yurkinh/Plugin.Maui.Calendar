@@ -25,7 +25,6 @@
     <plugin:Calendar
         x:Name="calendar"
         Padding="10,0"
-        ArrowsFontFamily="FontAwesomeSolid"
         CalendarLayout="{Binding CalendarLayout}"
         Day="{Binding Day}"
         DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"

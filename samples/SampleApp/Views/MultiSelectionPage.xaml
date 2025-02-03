@@ -47,7 +47,6 @@
     <plugin:MultiSelectionCalendar
         x:Name="calendar"
         Padding="10,0"
-        ArrowsFontSize="Medium"
         DaysLabelStyle="{StaticResource daysLabelStyle}"
         DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"

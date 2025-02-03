@@ -8,6 +8,7 @@ using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Styles;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -1122,25 +1123,6 @@ public partial class Calendar : ContentView, IDisposable
 	#endregion
 
 	#region Arrows Styles Bindable
-
-	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
-	/// </summary>
-	public static readonly BindableProperty BaseArrowButtonStyleProperty = BindableProperty.Create(
-		nameof(BaseArrowButtonStyle),
-		typeof(Style),
-		typeof(Calendar),
-		DefaultStyles.BaseArrowButtonStyle
-	);
-
-	/// <summary>
-	/// Specifies the style of day title labels
-	/// </summary>
-	public Style BaseArrowButtonStyle
-	{
-		get => (Style)GetValue(BaseArrowButtonStyleProperty);
-		set => SetValue(BaseArrowButtonStyleProperty, value);
-	}
 
 	/// <summary>
 	/// Bindable property for DaysTitleLabelStyle

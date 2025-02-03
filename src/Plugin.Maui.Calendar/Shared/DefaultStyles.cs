@@ -1,10 +1,10 @@
-﻿namespace Plugin.Maui.Calendar;
+﻿namespace Plugin.Maui.Calendar.Styles;
 
 public static class DefaultStyles
 {
     #region Base Styles   
     static Style BaseHeaderLabelStyle { get; }
-    public static Style BaseArrowButtonStyle { get; }
+    static Style BaseArrowButtonStyle { get; }
 
     #endregion
 
@@ -44,6 +44,8 @@ public static class DefaultStyles
         style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
         style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
+        style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
+        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 16 });
 
         return style;
     }
@@ -85,7 +87,6 @@ public static class DefaultStyles
     static Style CreateDefaultMonthLabelStyle()
     {
         Style style = new(typeof(Label)) { CanCascade = true, BasedOn = BaseHeaderLabelStyle };
-        style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
 
         return style;
     }
@@ -93,7 +94,6 @@ public static class DefaultStyles
     static Style CreateDefaultYearLabelStyle()
     {
         Style style = new(typeof(Label)) { CanCascade = true, BasedOn = BaseHeaderLabelStyle };
-        style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
 
         return style;
     }
@@ -141,7 +141,7 @@ public static class DefaultStyles
         style.Setters.Add(new Setter() { Property = Label.TextProperty, Value = "↑" });
         style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Black });
         style.Setters.Add(new Setter() { Property = Label.FontFamilyProperty, Value = "OpenSansSemibold" });
-        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 14 });
+        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
         style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
 
         return style;
@@ -154,7 +154,7 @@ public static class DefaultStyles
         style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = LayoutOptions.Center });
         style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
-        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 14 });
+        style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 16 });
         style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
 
         return style;
