@@ -36,7 +36,7 @@
             StrokeShape="RoundRectangle 6"
             VerticalOptions="Center">
             <VerticalStackLayout IsClippedToBounds="True"
-                    Spacing="3">
+                                 Spacing="3">
                 <Label
                     FontAttributes="Bold"
                     FontSize="Large"
@@ -47,7 +47,6 @@
                 <plugin:Calendar
                     x:Name="calendar"
                     Padding="10,0"
-                    ArrowsFontFamily="FontAwesomeSolid"
                     DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
                     DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
                     DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"

@@ -13,12 +13,8 @@
         ColumnDefinitions="Auto,*">
         <Label
             Grid.Column="0"
-            FontAttributes="Bold"
-            FontSize="Medium"
-            Text="{Binding SelectedDateText}"
-            TextColor="{Binding SelectedDateColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center"/>
+            Style="{Binding SelectedDateLabelStyle}"
+            Text="{Binding SelectedDateText}"/>
 
         <Label
             x:Name="showHideLabel"
@@ -26,7 +22,7 @@
             Margin="0,0,15,0"
             BackgroundColor="Transparent"
             FontAttributes="Bold"
-            FontFamily="{Binding ArrowsFontFamily}"
+            FontFamily="FontAwesomeSolid"
             FontSize="25"
             HorizontalOptions="End"
             IsVisible="{Binding FooterArrowVisible}"

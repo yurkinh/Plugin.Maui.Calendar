@@ -48,7 +48,6 @@
                 <plugin:RangeSelectionCalendar
                     x:Name="calendar"
                     Padding="10,0"
-                    ArrowsFontFamily="FontAwesomeSolid"
                     DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
                     DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
                     DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"

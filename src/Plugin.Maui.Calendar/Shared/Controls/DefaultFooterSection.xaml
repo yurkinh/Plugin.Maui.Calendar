@@ -2,47 +2,35 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Plugin.Maui.Calendar.Controls.DefaultFooterSection"
-             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls" 
+             xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
              x:DataType="controls:Calendar">
     <Grid
         HeightRequest="40"
         RowSpacing="6"
         HorizontalOptions="Fill"
         VerticalOptions="Fill"
-        ColumnDefinitions="Auto,*">        
+        ColumnDefinitions="Auto,*">
         <Label
             Grid.Column="0"
-            FontAttributes="Bold"
-            FontSize="Medium"
             Text="{Binding SelectedDateText}"
-            TextColor="{Binding SelectedDateColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center" />
+            Style="{Binding SelectedDateLabelStyle}"/>
         <Label
             x:Name="showHideLabel"
             Grid.Column="1"
-            Margin="0,0,15,0"
-            FontAttributes="Bold"
-            FontSize="Medium"            
-            HorizontalOptions="End"
-            IsVisible="{Binding FooterArrowVisible}"
-            Text="↑"
-            LineBreakMode="TailTruncation"
-            FontFamily="{Binding ArrowsFontFamily}"
-            TextColor="{Binding ArrowsColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center">
+            Style="{Binding FooterArrowLabelStyle}"
+            IsVisible="{Binding FooterArrowVisible}">
             <Label.Triggers>
                 <DataTrigger
                     Binding="{Binding CalendarSectionShown}"
                     TargetType="Label"
                     Value="False">
-                    <Setter Property="Text" Value="↓" />
+                    <Setter Property="Text"
+                            Value="↓"/>
                 </DataTrigger>
             </Label.Triggers>
         </Label>
         <Grid.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
+            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}"/>
         </Grid.GestureRecognizers>
     </Grid>
 </ContentView>

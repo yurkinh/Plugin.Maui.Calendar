@@ -21,7 +21,6 @@
         x:Name="rangedCalendar"
         DaysTitleWeekendColor="Red"
         Padding="10,0"
-        ArrowsFontFamily="FontAwesomeSolid"
         DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DayTappedCommand="{Binding DayTappedCommand}"
         Events="{Binding Events}"

@@ -35,6 +35,16 @@
                                 <Setter Property="FontSize"
                                         Value="18"/>
                         </Style>
+                        <Style x:Key="monthLabelStyle"
+                               TargetType="Label">
+                                <Setter Property="FontSize"
+                                        Value="18"/>
+                        </Style>
+                        <Style x:Key="yearLabelStyle"
+                               TargetType="Label">
+                                <Setter Property="FontSize"
+                                        Value="18"/>
+                        </Style>
                 </ResourceDictionary>
         </ContentPage.Resources>
         <ContentPage.ToolbarItems>
@@ -50,8 +60,11 @@
                 Padding="10,0"
                 DaysLabelStyle="{StaticResource daysLabelStyle}"
                 DaysTitleWeekendColor="Red"
+                YearLabelStyle="{StaticResource yearLabelStyle}"
                 Events="{Binding Events, Mode=OneWay}"
                 FooterArrowVisible="False"
+                MonthLabelStyle="{StaticResource monthLabelStyle}"
+                PreviousMonthArrowButtonStyle="{StaticResource previousMonthArrowButtonStyle}"
                 EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
                 EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextColor}"
                 DaysTitleColor="{toolkit:AppThemeResource TextColor}"
