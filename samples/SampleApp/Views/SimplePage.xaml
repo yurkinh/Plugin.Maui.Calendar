@@ -34,15 +34,6 @@
                                 <Setter Property="FontSize"
                                         Value="18"/>
                         </Style>
-                        <Style x:Key="PreviousMonthArrowStyle"
-                               TargetType="Button"
-                               BasedOn="{x:Static styles:DefaultStyles.DefaultPreviousMonthArrowButtonStyle}">
-                                <Setter Property="TextColor"
-                                        Value="Red"/>
-                                <Setter Property="BorderColor"
-                                        Value="Red"/>
-                        </Style>
-
                 </ResourceDictionary>
         </ContentPage.Resources>
         <ContentPage.ToolbarItems>
@@ -52,7 +43,6 @@
         <plugin:Calendar
                 x:Name="calendar"
                 Padding="10,0"
-                PreviousMonthArrowButtonStyle="{StaticResource PreviousMonthArrowStyle}"
                 Day="{Binding Day}"
                 MonthLabelStyle="{StaticResource monthLabelStyle}"
                 EventsScrollViewVisible="True"
