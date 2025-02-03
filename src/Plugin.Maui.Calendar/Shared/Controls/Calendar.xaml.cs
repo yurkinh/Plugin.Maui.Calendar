@@ -651,44 +651,6 @@ public partial class Calendar : ContentView, IDisposable
 	#endregion
 
 	#region Color BindableProperties
-	/// <summary>
-	/// Bindable property for MonthLabelColor
-	/// </summary>
-	public static readonly BindableProperty MonthLabelColorProperty = BindableProperty.Create(
-		nameof(MonthLabelColor),
-		typeof(Color),
-		typeof(Calendar),
-		Color.FromArgb("#2196F3")
-	);
-
-	/// <summary>
-	/// Specifies the color of the month label
-	/// </summary>
-	public Color MonthLabelColor
-	{
-		get => (Color)GetValue(MonthLabelColorProperty);
-		set => SetValue(MonthLabelColorProperty, value);
-	}
-
-	/// <summary>
-	/// Bindable property for YearLabelColor
-	/// </summary>
-	public static readonly BindableProperty YearLabelColorProperty = BindableProperty.Create(
-		nameof(YearLabelColor),
-		typeof(Color),
-		typeof(Calendar),
-		Color.FromArgb("#2196F3")
-	);
-
-	/// <summary>
-	/// Specifies the color of the year label
-	/// </summary>
-	public Color YearLabelColor
-	{
-		get => (Color)GetValue(YearLabelColorProperty);
-		set => SetValue(YearLabelColorProperty, value);
-	}
-
 
 	/// <summary>
 	/// Bindable property for WeekendDayColor
@@ -1159,181 +1121,166 @@ public partial class Calendar : ContentView, IDisposable
 	}
 	#endregion
 
-	#region Arrows BindableProperties
+	#region Arrows Styles Bindable
+
 	/// <summary>
-	/// Bindable property for ArrowsColor
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty ArrowsColorProperty = BindableProperty.Create(
-		nameof(ArrowsColor),
-		typeof(Color),
+	public static readonly BindableProperty BaseArrowButtonStyleProperty = BindableProperty.Create(
+		nameof(BaseArrowButtonStyle),
+		typeof(Style),
 		typeof(Calendar),
-		Colors.Black
+		DefaultStyles.BaseArrowButtonStyle
 	);
 
 	/// <summary>
-	/// Specifies the color of month and year selection arrows
+	/// Specifies the style of day title labels
 	/// </summary>
-	public Color ArrowsColor
+	public Style BaseArrowButtonStyle
 	{
-		get => (Color)GetValue(ArrowsColorProperty);
-		set => SetValue(ArrowsColorProperty, value);
+		get => (Style)GetValue(BaseArrowButtonStyleProperty);
+		set => SetValue(BaseArrowButtonStyleProperty, value);
 	}
 
 	/// <summary>
-	/// Bindable property for ArrowsFontSizeProperty
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty ArrowsFontSizeProperty = BindableProperty.Create(
-		nameof(ArrowsFontSize),
-		typeof(double),
+	public static readonly BindableProperty PreviousMonthArrowButtonStyleProperty = BindableProperty.Create(
+		nameof(PreviousMonthArrowButtonStyle),
+		typeof(Style),
 		typeof(Calendar),
-		14d
+		DefaultStyles.DefaultPreviousMonthArrowButtonStyle
 	);
 
 	/// <summary>
-	/// Specifies the FontSize of month and year selection arrows
+	/// Specifies the style of day title labels
 	/// </summary>
-	[TypeConverter(typeof(FontSizeConverter))]
-	public double ArrowsFontSize
+	public Style PreviousMonthArrowButtonStyle
 	{
-		get => (double)GetValue(ArrowsFontSizeProperty);
-		set => SetValue(ArrowsFontSizeProperty, value);
+		get => (Style)GetValue(PreviousMonthArrowButtonStyleProperty);
+		set => SetValue(PreviousMonthArrowButtonStyleProperty, value);
 	}
 
 	/// <summary>
-	/// Bindable property for ArrowsFontFamily
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty ArrowsFontFamilyProperty = BindableProperty.Create(
-		nameof(ArrowsFontFamily),
-		typeof(string),
+	public static readonly BindableProperty NextMonthArrowButtonStyleProperty = BindableProperty.Create(
+		nameof(NextMonthArrowButtonStyle),
+		typeof(Style),
 		typeof(Calendar),
-		"OpenSansSemibold"
+		DefaultStyles.DefaultNextMonthArrowButtonStyle
 	);
 
 	/// <summary>
-	/// Specifies symbol for arrow prev
+	/// Specifies the style of day title labels
 	/// </summary>
-	public string ArrowsFontFamily
+	public Style NextMonthArrowButtonStyle
 	{
-		get => (string)GetValue(ArrowsFontFamilyProperty);
-		set => SetValue(ArrowsFontFamilyProperty, value);
+		get => (Style)GetValue(NextMonthArrowButtonStyleProperty);
+		set => SetValue(NextMonthArrowButtonStyleProperty, value);
 	}
 
+
 	/// <summary>
-	/// Bindable property for ArrowsSymbolPrev
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty ArrowsSymbolPrevProperty = BindableProperty.Create(
-		nameof(ArrowsSymbolPrev),
-		typeof(string),
+	public static readonly BindableProperty PreviousYearArrowButtonStyleProperty = BindableProperty.Create(
+		nameof(PreviousYearArrowButtonStyle),
+		typeof(Style),
 		typeof(Calendar),
-		"←"
+		DefaultStyles.DefaultPreviousYearArrowButtonStyle
 	);
 
 	/// <summary>
-	/// Specifies symbol for arrow prev
+	/// Specifies the style of day title labels
 	/// </summary>
-	public string ArrowsSymbolPrev
+	public Style PreviousYearArrowButtonStyle
 	{
-		get => (string)GetValue(ArrowsSymbolPrevProperty);
-		set => SetValue(ArrowsSymbolPrevProperty, value);
+		get => (Style)GetValue(PreviousYearArrowButtonStyleProperty);
+		set => SetValue(PreviousYearArrowButtonStyleProperty, value);
 	}
 
 	/// <summary>
-	/// Bindable property for ArrowsSymbolNext
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty ArrowsSymbolNextProperty = BindableProperty.Create(
-		nameof(ArrowsSymbolNext),
-		typeof(string),
+	public static readonly BindableProperty NextYearArrowButtonStyleProperty = BindableProperty.Create(
+		nameof(NextYearArrowButtonStyle),
+		typeof(Style),
 		typeof(Calendar),
-		"→"
+		DefaultStyles.DefaultNextYearArrowButtonStyle
 	);
 
 	/// <summary>
-	/// Specifies symbol for arrow next
+	/// Specifies the style of day title labels
 	/// </summary>
-	public string ArrowsSymbolNext
+	public Style NextYearArrowButtonStyle
 	{
-		get => (string)GetValue(ArrowsSymbolNextProperty);
-		set => SetValue(ArrowsSymbolNextProperty, value);
+		get => (Style)GetValue(NextYearArrowButtonStyleProperty);
+		set => SetValue(NextYearArrowButtonStyleProperty, value);
 	}
 
+
 	/// <summary>
-	/// Bindable property for ArrowsFontAttribute
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty ArrowsFontAttributeProperty = BindableProperty.Create(
-		nameof(ArrowsFontAttribute),
-		typeof(FontAttributes),
+	public static readonly BindableProperty FooterArrowButtonLabelProperty = BindableProperty.Create(
+		nameof(FooterArrowLabelStyle),
+		typeof(Style),
 		typeof(Calendar),
-		FontAttributes.Bold
+		DefaultStyles.DefaultFooterArrowLabelStyle
 	);
 
 	/// <summary>
-	/// Specifies font attribute of the arrow
+	/// Specifies the style of day title labels
 	/// </summary>
-	public FontAttributes ArrowsFontAttribute
+	public Style FooterArrowLabelStyle
 	{
-		get => (FontAttributes)GetValue(ArrowsFontAttributeProperty);
-		set => SetValue(ArrowsFontAttributeProperty, value);
+		get => (Style)GetValue(FooterArrowButtonLabelProperty);
+		set => SetValue(FooterArrowButtonLabelProperty, value);
 	}
 
-	/// <summary>
-	/// Bindable property for ArrowsBorderColor
-	/// </summary>
-	public static readonly BindableProperty ArrowsBorderColorProperty = BindableProperty.Create(
-		nameof(ArrowsBorderColor),
-		typeof(Color),
-		typeof(Calendar),
-		Colors.Black
-	);
+	#endregion
 
-	/// <summary>
-	/// Specifies the color of arrows border
-	/// </summary>
-	public Color ArrowsBorderColor
-	{
-		get => (Color)GetValue(ArrowsBorderColorProperty);
-		set => SetValue(ArrowsBorderColorProperty, value);
-	}
-
-	/// <summary>
-	/// Bindable property for ArrowsBackgroundColor
-	/// </summary>
-	public static readonly BindableProperty ArrowsBackgroundColorProperty = BindableProperty.Create(
-		nameof(ArrowsBackgroundColor),
-		typeof(Color),
-		typeof(Calendar),
-		Colors.White
-	);
-
-	/// <summary>
-	/// Specifies the color of arrows Background
-	/// </summary>
-	public Color ArrowsBackgroundColor
-	{
-		get => (Color)GetValue(ArrowsBackgroundColorProperty);
-		set => SetValue(ArrowsBackgroundColorProperty, value);
-	}
-
-	/// <summary>
-	/// Bindable property for ArrowsBorderWidth
-	/// </summary>
-	public static readonly BindableProperty ArrowsBorderWidthProperty = BindableProperty.Create(
-		nameof(ArrowsBorderWidth),
-		typeof(double),
-		typeof(Calendar),
-		1d
-	);
-
-	/// <summary>
-	/// Specifies the ArrowsBorderWidth of month and year selection arrows
-	/// </summary>
-
-	public double ArrowsBorderWidth
-	{
-		get => (double)GetValue(ArrowsBorderWidthProperty);
-		set => SetValue(ArrowsBorderWidthProperty, value);
-	}
 
 	#region Footer & Header BindableProperties
+
+	/// <summary>
+	/// Bindable property for DaysTitleLabelStyle
+	/// </summary>
+	public static readonly BindableProperty MonthLabelStyleProperty = BindableProperty.Create(
+		nameof(MonthLabelStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultMonthLabelStyle
+	);
+
+	/// <summary>
+	/// Specifies the style of day title labels
+	/// </summary>
+	public Style MonthLabelStyle
+	{
+		get => (Style)GetValue(MonthLabelStyleProperty);
+		set => SetValue(MonthLabelStyleProperty, value);
+	}
+
+	/// <summary>
+	/// Bindable property for DaysTitleLabelStyle
+	/// </summary>
+	public static readonly BindableProperty YearLabelStyleProperty = BindableProperty.Create(
+		nameof(YearLabelStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultYearLabelStyle
+	);
+
+	/// <summary>
+	/// Specifies the style of day title labels
+	/// </summary>
+	public Style YearLabelStyle
+	{
+		get => (Style)GetValue(YearLabelStyleProperty);
+		set => SetValue(YearLabelStyleProperty, value);
+	}
 
 	/// <summary>
 	/// Bindable property for FooterArrowVisible
@@ -1353,8 +1300,6 @@ public partial class Calendar : ContentView, IDisposable
 		get => (bool)GetValue(FooterArrowVisibleProperty);
 		set => SetValue(FooterArrowVisibleProperty, value);
 	}
-	#endregion
-
 
 	/// <summary>
 	/// Bindable property for HeaderSectionVisible
@@ -1669,24 +1614,65 @@ public partial class Calendar : ContentView, IDisposable
 	#region SelectedDate BindableProperies
 
 	/// <summary>
-	/// Bindable property for SelectedDateColor
+	/// Bindable property for DaysTitleLabelStyle
 	/// </summary>
-	public static readonly BindableProperty SelectedDateColorProperty = BindableProperty.Create(
-		nameof(SelectedDateColor),
-		typeof(Color),
+	public static readonly BindableProperty SelectedDateLabelStyleProperty = BindableProperty.Create(
+		nameof(SelectedDateLabelStyle),
+		typeof(Style),
 		typeof(Calendar),
-		Color.FromArgb("#2196F3")
+		DefaultStyles.DefaultSelectedDateLabelStyle
 	);
 
 	/// <summary>
-	/// Specifies the text color for the selected date
+	/// Specifies the style of day title labels
 	/// </summary>
-	public Color SelectedDateColor
+	public Style SelectedDateLabelStyle
 	{
-		get => (Color)GetValue(SelectedDateColorProperty);
-		set => SetValue(SelectedDateColorProperty, value);
+		get => (Style)GetValue(SelectedDateLabelStyleProperty);
+		set => SetValue(SelectedDateLabelStyleProperty, value);
 	}
 
+	/// <summary>
+	/// Bindable property for SelectedDateText
+	/// </summary>
+	public static readonly BindableProperty SelectedDateTextProperty = BindableProperty.Create(
+		nameof(SelectedDateText),
+		typeof(string),
+		typeof(Calendar),
+		null
+	);
+
+	/// <summary>
+	/// Text showing which dates are currently selected
+	/// </summary>
+	public string SelectedDateText
+	{
+		get => (string)GetValue(SelectedDateTextProperty);
+		set => SetValue(SelectedDateTextProperty, value);
+	}
+
+
+	/// <summary>
+	/// Bindable property for SelectedDateTextFormat
+	/// </summary>
+	public static readonly BindableProperty SelectedDateTextFormatProperty = BindableProperty.Create(
+			nameof(SelectedDateTextFormat),
+			typeof(string),
+			typeof(Calendar),
+			"d MMM yyyy"
+		);
+
+	/// <summary>
+	/// Specifies the format of selected date text
+	/// </summary>
+	public string SelectedDateTextFormat
+	{
+		get => (string)GetValue(SelectedDateTextFormatProperty);
+		set => SetValue(SelectedDateTextFormatProperty, value);
+	}
+	#endregion
+
+	#region SelectedDay BindableProperies
 
 	/// <summary>
 	/// Bindable property for SelectedDayTextColor
@@ -1831,46 +1817,6 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDaysColors();
 		}
 	}
-
-
-	/// <summary>
-	/// Bindable property for SelectedDateText
-	/// </summary>
-	public static readonly BindableProperty SelectedDateTextProperty = BindableProperty.Create(
-		nameof(SelectedDateText),
-		typeof(string),
-		typeof(Calendar),
-		null
-	);
-
-	/// <summary>
-	/// Text showing which dates are currently selected
-	/// </summary>
-	public string SelectedDateText
-	{
-		get => (string)GetValue(SelectedDateTextProperty);
-		set => SetValue(SelectedDateTextProperty, value);
-	}
-
-	/// <summary>
-	/// Bindable property for SelectedDateTextFormat
-	/// </summary>
-	public static readonly BindableProperty SelectedDateTextFormatProperty = BindableProperty.Create(
-			nameof(SelectedDateTextFormat),
-			typeof(string),
-			typeof(Calendar),
-			"d MMM yyyy"
-		);
-
-	/// <summary>
-	/// Specifies the format of selected date text
-	/// </summary>
-	public string SelectedDateTextFormat
-	{
-		get => (string)GetValue(SelectedDateTextFormatProperty);
-		set => SetValue(SelectedDateTextFormatProperty, value);
-	}
-
 
 	#endregion
 
@@ -2453,7 +2399,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	void RenderLayout()
 	{
-		
+
 		CurrentViewLayoutEngine = CalendarLayout switch
 		{
 			WeekLayout.Week => new WeekViewEngine(1, FirstDayOfWeek),
@@ -2461,10 +2407,10 @@ public partial class Calendar : ContentView, IDisposable
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
 
-		if((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
+		if ((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
 		{
 			calendarContainer.Remove(daysControl);
-		}		
+		}
 
 		daysControl = CurrentViewLayoutEngine.GenerateLayout(
 			dayViews,
