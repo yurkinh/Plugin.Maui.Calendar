@@ -14,7 +14,7 @@
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysLabelStyle"
+            <Style x:Key="MyDaysLabelStyle"
                    TargetType="Label">
                 <Setter Property="HorizontalTextAlignment"
                         Value="Center"/>
@@ -29,14 +29,14 @@
                 <Setter Property="Margin"
                         Value="5,2"/>
             </Style>
-            <Style x:Key="daysTitleLabelStyle"
+            <Style x:Key="MyDaysTitleLabelStyle"
                    TargetType="Label">
                 <Setter Property="FontSize"
                         Value="18"/>
                 <Setter Property="FontFamily"
                         Value="OpenSansSemibold"/>
             </Style>
-            <Style x:Key="selectedDateLabelStyle"
+            <Style x:Key="MySelectedDateLabelStyle"
                    TargetType="Label">
                 <Setter Property="TextColor"
                         Value="Red"/>
@@ -58,9 +58,9 @@
         DayViewCornerRadius="3"
         EventsScrollViewVisible="True"
         DayViewSize="40"
-        DaysLabelStyle="{StaticResource daysLabelStyle}"
+        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
         DaysTitleColor="Orange"
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
         DeselectedDayTextColor="Blue"
         SwipeDetectionDisabled="False"
@@ -71,7 +71,7 @@
         EventIndicatorType="Background"
         Events="{Binding Events}"
         HeaderSectionVisible="True"
-        SelectedDateLabelStyle="{StaticResource selectedDateLabelStyle}"
+        SelectedDateLabelStyle="{StaticResource MySelectedDateLabelStyle}"
         HorizontalOptions="Fill"
         OtherMonthDayColor="Gray"
         OtherMonthDayIsVisible="False"

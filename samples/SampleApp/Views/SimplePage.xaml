@@ -14,7 +14,7 @@
         BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
         <ContentPage.Resources>
                 <ResourceDictionary>
-                        <Style x:Key="daysLabelStyle"
+                        <Style x:Key="MyDaysLabelStyle"
                                TargetType="Label">
                                 <Setter Property="HorizontalTextAlignment"
                                         Value="Center"/>
@@ -29,7 +29,7 @@
                                 <Setter Property="Margin"
                                         Value="5,2"/>
                         </Style>
-                        <Style x:Key="daysTitleLabelStyle"
+                        <Style x:Key="MyDaysTitleLabelStyle"
                                TargetType="Label">
                                 <Setter Property="FontSize"
                                         Value="18"/>
@@ -44,14 +44,13 @@
                 x:Name="calendar"
                 Padding="10,0"
                 Day="{Binding Day}"
-                MonthLabelStyle="{StaticResource monthLabelStyle}"
                 EventsScrollViewVisible="True"
                 EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 DayViewFontSize="Medium"
                 SwipeDetectionDisabled="False"
-                DaysLabelStyle="{StaticResource daysLabelStyle}"
+                DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
                 DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
-                DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
+                DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
                 DaysTitleWeekendColor="Red"
                 DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 Events="{Binding Events}"
