@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:SampleApp.ViewModels"
         Shell.TabBarIsVisible="False"
         Title="Weekend Calendar"
+        xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
         xmlns:model="clr-namespace:SampleApp.Model"
         xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
         xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -15,7 +16,7 @@
         BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
         <ContentPage.Resources>
                 <ResourceDictionary>
-                        <Style x:Key="daysLabelStyle"
+                        <Style x:Key="MyDaysLabelStyle"
                                TargetType="Label">
                                 <Setter Property="HorizontalTextAlignment"
                                         Value="Center"/>
@@ -30,17 +31,19 @@
                                 <Setter Property="Margin"
                                         Value="5,2"/>
                         </Style>
-                        <Style x:Key="daysTitleLabelStyle"
+                        <Style x:Key="MyDaysTitleLabelStyle"
                                TargetType="Label">
                                 <Setter Property="FontSize"
                                         Value="18"/>
                         </Style>
-                        <Style x:Key="monthLabelStyle"
+                        <Style x:Key="MyMonthLabelStyle"
+                               BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
                                TargetType="Label">
                                 <Setter Property="FontSize"
                                         Value="18"/>
                         </Style>
-                        <Style x:Key="yearLabelStyle"
+                        <Style x:Key="MyYearLabelStyle"
+                               BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
                                TargetType="Label">
                                 <Setter Property="FontSize"
                                         Value="18"/>
@@ -58,13 +61,12 @@
         <plugin:Calendar
                 x:Name="calendar"
                 Padding="10,0"
-                DaysLabelStyle="{StaticResource daysLabelStyle}"
+                DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
                 DaysTitleWeekendColor="Red"
-                YearLabelStyle="{StaticResource yearLabelStyle}"
+                YearLabelStyle="{StaticResource MyYearLabelStyle}"
                 Events="{Binding Events, Mode=OneWay}"
                 FooterArrowVisible="False"
-                MonthLabelStyle="{StaticResource monthLabelStyle}"
-                PreviousMonthArrowButtonStyle="{StaticResource previousMonthArrowButtonStyle}"
+                MonthLabelStyle="{StaticResource MyMonthLabelStyle}"
                 EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
                 EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextColor}"
                 DaysTitleColor="{toolkit:AppThemeResource TextColor}"
