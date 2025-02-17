@@ -54,8 +54,8 @@
 
 	<ItemGroup>
 
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />		
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />		
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
 	</ItemGroup>		
 
@@ -64,8 +64,8 @@
 	</ItemGroup>	
 	
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.30" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.40" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
 		<PackageReference Include="AdamE.MemoryToolkit.Maui" Version="1.0.0" />
 	</ItemGroup>	
 	
