@@ -29,8 +29,7 @@ public partial class Calendar : ContentView, IDisposable
 	bool calendarSectionAnimating;
 	double calendarSectionHeight;
 	IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
-	public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
-	readonly Dictionary<string, bool> propertyChangedNotificationSupressions = [];
+	public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();	
 	protected readonly List<DayView> dayViews = [];
 
 	#endregion
@@ -2193,10 +2192,7 @@ public partial class Calendar : ContentView, IDisposable
 				|| (DisabledDates?.Contains(currentDate.Date) ?? false);
 			dayModel.AllowDeselect = AllowDeselecting;
 
-			ChangePropertySilently(
-				nameof(dayModel.IsSelected),
-				() => dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date)
-			);
+			dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date);
 			AssignIndicatorColors(ref dayModel);
 		}
 	}
@@ -2413,14 +2409,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 		}
 	}
-
-	internal void ChangePropertySilently(string propertyName, Action propertyChangeAction)
-	{
-		propertyChangedNotificationSupressions[propertyName] = true;
-		propertyChangeAction();
-		propertyChangedNotificationSupressions[propertyName] = false;
-	}
-
+	
 	internal void AssignIndicatorColors(ref DayModel dayModel)
 	{
 		dayModel.EventIndicatorColor = EventIndicatorColor;
