@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
@@ -68,43 +69,49 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateEvents();
 		RenderLayout();
 
+
 		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
 		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));
 	}
 	#endregion
 
-	protected override void OnHandlerChanged()
-	{
-		//subscribe
-		base.OnHandlerChanged();
-		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
-		if (!SwipeDetectionDisabled)
-		{
-			leftSwipeGesture = new() { Direction = SwipeDirection.Left };
-			rightSwipeGesture = new() { Direction = SwipeDirection.Right };
-			upSwipeGesture = new() { Direction = SwipeDirection.Up };
-			downSwipeGesture = new() { Direction = SwipeDirection.Down };
 
-			leftSwipeGesture.Swiped += OnSwiped;
-			rightSwipeGesture.Swiped += OnSwiped;
-			upSwipeGesture.Swiped += OnSwiped;
-			downSwipeGesture.Swiped += OnSwiped;
-
-			GestureRecognizers.Add(leftSwipeGesture);
-			GestureRecognizers.Add(rightSwipeGesture);
-			GestureRecognizers.Add(upSwipeGesture);
-			GestureRecognizers.Add(downSwipeGesture);
-		}
-	}
 
 	protected override void OnHandlerChanging(HandlerChangingEventArgs args)
 	{
-		//unsunscribe
+
 		base.OnHandlerChanging(args);
+		if (args.NewHandler != null)
+		{
+			//subscribe
+			calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
+			WeakReferenceMessenger.Default.Register<DayTappedMessage>(this, (r, m) => OnDayTappedHandler(m.Value));
+
+			if (!SwipeDetectionDisabled)
+			{
+				leftSwipeGesture = new() { Direction = SwipeDirection.Left };
+				rightSwipeGesture = new() { Direction = SwipeDirection.Right };
+				upSwipeGesture = new() { Direction = SwipeDirection.Up };
+				downSwipeGesture = new() { Direction = SwipeDirection.Down };
+
+				leftSwipeGesture.Swiped += OnSwiped;
+				rightSwipeGesture.Swiped += OnSwiped;
+				upSwipeGesture.Swiped += OnSwiped;
+				downSwipeGesture.Swiped += OnSwiped;
+
+				GestureRecognizers.Add(leftSwipeGesture);
+				GestureRecognizers.Add(rightSwipeGesture);
+				GestureRecognizers.Add(upSwipeGesture);
+				GestureRecognizers.Add(downSwipeGesture);
+			}
+
+		}
 
 		if (args.OldHandler != null)
 		{
+			//unsubscribe
 			calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
+			WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(this);
 
 			if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
 			{
@@ -2048,6 +2055,7 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	public ICommand ShowHideCalendarCommand { get; }
 
+
 	#endregion
 
 	#region Update methods
@@ -2118,24 +2126,7 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDays();
 	}
 
-	void OnDayModelPropertyChanged(object sender, PropertyChangedEventArgs e)
-	{
-		if (
-			e.PropertyName != nameof(DayModel.IsSelected)
-			|| sender is not DayModel newSelected
-			|| (
-				propertyChangedNotificationSupressions.TryGetValue(
-					e.PropertyName,
-					out bool isSuppressed
-				) && isSuppressed
-			)
-		)
-		{
-			return;
-		}
-
-		SelectedDates = CurrentSelectionEngine.PerformDateSelection(newSelected.Date, DisabledDates);
-	}
+	void OnDayTappedHandler(DateTime value) => SelectedDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
 
 	void UpdateDayTitles()
 	{
@@ -2399,8 +2390,7 @@ public partial class Calendar : ContentView, IDisposable
 			this,
 			nameof(DaysTitleColor),
 			nameof(DaysTitleLabelStyle),
-			DayTappedCommand,
-			OnDayModelPropertyChanged
+			DayTappedCommand
 		);
 
 		UpdateDaysColors();
@@ -2417,7 +2407,6 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			if (dayView.BindingContext is DayModel dayModel)
 			{
-				dayModel.PropertyChanged -= OnDayModelPropertyChanged;
 #if !WINDOWS
 				dayView.BindingContext = null;
 #endif

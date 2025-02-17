@@ -20,8 +20,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 			string daysTitleColorBindingName,
 			string daysTitleLabelStyleBindingName,
 			ICommand dayTappedCommand,
-			PropertyChangedEventHandler dayModelPropertyChanged,
-			int numberOfWeeks
+int numberOfWeeks
 		)
 	{
 		var rowDefinition = new RowDefinition();
@@ -72,7 +71,6 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 				var dayModel = new DayModel();
 				dayView.BindingContext = dayModel;
 				dayModel.DayTappedCommand = dayTappedCommand;
-				dayModel.PropertyChanged += dayModelPropertyChanged;
 
 				dayViews.Add(dayView);
 				grid.Add(dayView, ii, i);

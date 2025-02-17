@@ -6,22 +6,21 @@ namespace Plugin.Maui.Calendar.Interfaces;
 
 interface IViewLayoutEngine
 {
-    Grid GenerateLayout(
-        List<DayView> dayViews,
-        object bindingContext,
-        string daysTitleColorBindingName,
-        string daysTitleLabelStyleBindingName,
-        ICommand dayTappedCommand,
-        PropertyChangedEventHandler dayModelPropertyChanged
-    );
+	Grid GenerateLayout(
+		List<DayView> dayViews,
+		object bindingContext,
+		string daysTitleColorBindingName,
+		string daysTitleLabelStyleBindingName,
+		ICommand dayTappedCommand
+	);
 
-    DateTime GetFirstDate(DateTime dateToShow);
+	DateTime GetFirstDate(DateTime dateToShow);
 
-    DateTime GetNextUnit(DateTime forDate);
+	DateTime GetNextUnit(DateTime forDate);
 
-    DateTime GetNextUnit(DateTime forDate, int numberOfUnits);
+	DateTime GetNextUnit(DateTime forDate, int numberOfUnits);
 
-    DateTime GetPreviousUnit(DateTime forDate);
+	DateTime GetPreviousUnit(DateTime forDate);
 
-    DateTime GetPreviousUnit(DateTime forDate, int numberOfUnits);
+	DateTime GetPreviousUnit(DateTime forDate, int numberOfUnits);
 }

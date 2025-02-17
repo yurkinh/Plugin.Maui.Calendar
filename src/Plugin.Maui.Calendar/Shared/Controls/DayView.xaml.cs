@@ -1,4 +1,5 @@
-﻿using Plugin.Maui.Calendar.Models;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -20,6 +21,8 @@ public partial class DayView : ContentView
 
             dayModel.IsSelected = !dayModel.IsSelected;
             dayModel.DayTappedCommand?.Execute(dayModel.Date);
+			WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date));
         }
     }
 }
+
