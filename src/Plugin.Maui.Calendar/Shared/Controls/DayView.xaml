@@ -42,42 +42,17 @@
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
                 TextColor="{Binding TextColor, Mode=OneWay}"/>
-            <HorizontalStackLayout HeightRequest="8">
+            <HorizontalStackLayout HeightRequest="8" BindableLayout.ItemsSource="{Binding Events}">
+            <BindableLayout.ItemTemplate>
+            <DataTemplate>
                 <Border
                     Padding="0"
                     BackgroundColor="{Binding EventColor, Mode=OneWay}"
-                    HeightRequest="8"
-                    IsVisible="{Binding IsEventDotVisible, Mode=OneWay}"
+                    HeightRequest="8"                   
                     StrokeShape="RoundRectangle 4"
                     WidthRequest="8"/>
-                <Border
-                    Padding="0"
-                    BackgroundColor="{Binding SecondEventColor, Mode=OneWay}"
-                    HeightRequest="8"
-                    IsVisible="{Binding IsSecondEventDotVisible, Mode=OneWay}"
-                    StrokeShape="RoundRectangle 4"
-                    WidthRequest="8"/>
-                <Border
-                    Padding="0"
-                    BackgroundColor="{Binding ThirdEventColor, Mode=OneWay}"
-                    HeightRequest="8"
-                    IsVisible="{Binding IsThirdEventDotVisible, Mode=OneWay}"
-                    StrokeShape="RoundRectangle 4"
-                    WidthRequest="8"/>
-                <Border
-                    Padding="0"
-                    BackgroundColor="{Binding FourthEventColor, Mode=OneWay}"
-                    HeightRequest="8"
-                    IsVisible="{Binding IsFourthEventDotVisible, Mode=OneWay}"
-                    StrokeShape="RoundRectangle 4"
-                    WidthRequest="8"/>
-                <Border
-                    Padding="0"
-                    BackgroundColor="{Binding FifthEventColor, Mode=OneWay}"
-                    HeightRequest="8"
-                    IsVisible="{Binding IsFifthEventDotVisible, Mode=OneWay}"
-                    StrokeShape="RoundRectangle 4"
-                    WidthRequest="8"/>
+            </DataTemplate>
+            </BindableLayout.ItemTemplate>               
             </HorizontalStackLayout>
         </FlexLayout>
     </Grid>
