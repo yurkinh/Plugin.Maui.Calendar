@@ -29,7 +29,7 @@ public partial class Calendar : ContentView, IDisposable
 	bool calendarSectionAnimating;
 	double calendarSectionHeight;
 	IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
-	public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();	
+	public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
 	protected readonly List<DayView> dayViews = [];
 
 	#endregion
@@ -2409,7 +2409,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 		}
 	}
-	
+
 	internal void AssignIndicatorColors(ref DayModel dayModel)
 	{
 		dayModel.EventIndicatorColor = EventIndicatorColor;
@@ -2436,7 +2436,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			if (dayEventCollection is IMultiEventDay multiEventDay)
 			{
-				dayModel.EventColors = multiEventDay.Colors?.ToArray() ?? [];
+				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToArray() ?? [];
 			}
 			else
 			{
