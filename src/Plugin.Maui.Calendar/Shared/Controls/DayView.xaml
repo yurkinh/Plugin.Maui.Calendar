@@ -42,7 +42,7 @@
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
                 TextColor="{Binding TextColor, Mode=OneWay}"/>
-            <HorizontalStackLayout HeightRequest="8" BindableLayout.ItemsSource="{Binding Events}">
+            <HorizontalStackLayout HeightRequest="8" BindableLayout.ItemsSource="{Binding Events, Mode=OneWay}">
             <BindableLayout.ItemTemplate>
             <DataTemplate>
                 <Border
