@@ -4,7 +4,7 @@ namespace SampleApp.Controls;
 
 public partial class CalenderEvent : ContentView
 {
-    public static BindableProperty CalenderEventCommandProperty =
+    public static readonly BindableProperty CalenderEventCommandProperty =
         BindableProperty.Create(nameof(CalenderEventCommand), typeof(ICommand), typeof(CalenderEvent), null);
 
     public CalenderEvent()
