@@ -1,69 +1,79 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-        x:Class="SampleApp.Views.SimplePage"
-        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        xmlns:local="clr-namespace:SampleApp.ViewModels"
-        xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-        x:Name="simpleCalendarPage"
-        Title="Simple Calendar"
-        xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-        x:DataType="local:SimplePageViewModel"
-        Shell.TabBarIsVisible="False"
-        BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
-        <ContentPage.Resources>
-                <ResourceDictionary>
-                        <Style x:Key="MyDaysLabelStyle"
-                               TargetType="Label">
-                                <Setter Property="HorizontalTextAlignment"
-                                        Value="Center"/>
-                                <Setter Property="TextColor"
-                                        Value="Black"/>
-                                <Setter Property="FontSize"
-                                        Value="Medium"/>
-                                <Setter Property="LineBreakMode"
-                                        Value="WordWrap"/>
-                                <Setter Property="VerticalTextAlignment"
-                                        Value="Center"/>
-                                <Setter Property="Margin"
-                                        Value="5,2"/>
-                        </Style>
-                        <Style x:Key="MyDaysTitleLabelStyle"
-                               TargetType="Label">
-                                <Setter Property="FontSize"
-                                        Value="18"/>
-                        </Style>
-                </ResourceDictionary>
-        </ContentPage.Resources>
-        <ContentPage.ToolbarItems>
-                <ToolbarItem Command="{Binding TodayCommand}"
-                             Text="Today"/>
-        </ContentPage.ToolbarItems>
-        <plugin:Calendar
-                x:Name="calendar"
-                Padding="10,0"
-                Day="{Binding Day}"
-                EventsScrollViewVisible="True"
-                EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-                DayViewFontSize="Medium"
-                SwipeDetectionDisabled="False"
-                DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-                DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
-                DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
-                DaysTitleWeekendColor="Red"
-                DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-                Events="{Binding Events}"
-                FirstDayOfWeek="Monday"
-                EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-                AllowDeselecting="False"
-                HorizontalOptions="Fill"
-                MaximumDate="{Binding MaximumDate}"
-                MinimumDate="{Binding MinimumDate}"
-                Month="{Binding Month}"
-                MonthChangedCommand="{Binding MonthChangedCommand}"
-                OtherMonthSelectedDayColor="HotPink"
-                SelectedDate="{Binding SelectedDate}"
-                VerticalOptions="Fill"
-                Year="{Binding Year}"/>
+    x:Class="SampleApp.Views.SimplePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="simpleCalendarPage"
+    Title="Simple Calendar"
+    x:DataType="local:SimplePageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Shell.TabBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MyDaysLabelStyle"
+                    TargetType="Label">
+                <Setter Property="HorizontalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="TextColor"
+                        Value="Black"/>
+                <Setter Property="FontSize"
+                        Value="Medium"/>
+                <Setter Property="LineBreakMode"
+                        Value="WordWrap"/>
+                <Setter Property="VerticalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="Margin"
+                        Value="5,2"/>
+            </Style>
+            <Style
+                x:Key="MyWeekdayTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18"/>
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{StaticResource MyWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="Red"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TodayCommand}"
+                Text="Today"/>
+    </ContentPage.ToolbarItems>
+    <plugin:Calendar
+        x:Name="calendar"
+        Padding="10,0"
+        AllowDeselecting="False"
+        Day="{Binding Day}"
+        DayViewFontSize="Medium"
+        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
+        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        Events="{Binding Events}"
+        EventsScrollViewVisible="True"
+        FirstDayOfWeek="Monday"
+        HorizontalOptions="Fill"
+        MaximumDate="{Binding MaximumDate}"
+        MinimumDate="{Binding MinimumDate}"
+        Month="{Binding Month}"
+        MonthChangedCommand="{Binding MonthChangedCommand}"
+        OtherMonthSelectedDayColor="HotPink"
+        SelectedDate="{Binding SelectedDate}"
+        SwipeDetectionDisabled="False"
+        VerticalOptions="Fill"
+        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
+        Year="{Binding Year}"/>
 </ContentPage>
