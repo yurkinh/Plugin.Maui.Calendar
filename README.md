@@ -45,11 +45,9 @@ Weekend calendar
 ### What's new
 * Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
 * Added Multiselection support (Latest PR that was not merged previously)
-* Exposed a few more properties for Arrow buttons customization
 * Refactored and revamped code
-* Updated to .NET 8 
+* Updated to .NET 9
 * Added OnShownDateChangedCommand so we can take action when date is changed.
-* Added Dispose method to force handlers disconnect call.
 * Added new property **OtherMonthSelectedDayColor**
 * Fixed bug with **OtherMonthDayIsVisible** property
 * Added a weekend calendar sample
@@ -62,7 +60,9 @@ Weekend calendar
 * Added **SelectedDatesRangeBackgroundColor** property
 * Removed **DaysTitleHeight** property, use instead **DaysTitleLabelStyle** (**HeightRequest** or **FontSize** Property)
 * Updated samples
+* Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
+### Breaking  Changes
 
 ### Usage
 To get started just install the package via Nuget.
@@ -205,28 +205,27 @@ In XAML add Culture binding
 #### Available color customization
 Sample properties:
 ```xml
-ArrowBorder
-MonthLabelColor="Red"
-YearLabelColor="Blue"
 EventIndicatorColor="Red"
 EventIndicatorSelectedColor="White"
-DaysTitleColor="Orange"
 DeselectedDayTextColor="Blue"
 OtherMonthDayColor="Gray"
 SelectedDayTextColor="Cyan"
 SelectedDayBackgroundColor="DarkCyan"
-SelectedDateColor="Red"
 SelectedTodayTextColor="Green"
 TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
 OtherMonthSelectedDayColor="HotPink"
+
+```
+#### Available Styles
+
+#### Available customization properties
+```xml
 FirstDayOfWeek="Monday"
 ```
 
-#### Available customization properties
-
-##### Calendar Layout customizations
+#### Calendar Layout customizations
 You can set the layout of the calendar with the property `CalendarLayout`
 
 - Available layouts are: 
