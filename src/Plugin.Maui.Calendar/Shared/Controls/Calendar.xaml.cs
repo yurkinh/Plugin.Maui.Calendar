@@ -1131,7 +1131,7 @@ public partial class Calendar : ContentView, IDisposable
 	#region Arrows Styles Bindable
 
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for PreviousMonthArrowButtonStyle
 	/// </summary>
 	public static readonly BindableProperty PreviousMonthArrowButtonStyleProperty = BindableProperty.Create(
 		nameof(PreviousMonthArrowButtonStyle),
@@ -1141,7 +1141,7 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the previous month arrow button
 	/// </summary>
 	public Style PreviousMonthArrowButtonStyle
 	{
@@ -1150,7 +1150,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for NextMonthArrowButtonStyle
 	/// </summary>
 	public static readonly BindableProperty NextMonthArrowButtonStyleProperty = BindableProperty.Create(
 		nameof(NextMonthArrowButtonStyle),
@@ -1160,7 +1160,7 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the next month arrow button
 	/// </summary>
 	public Style NextMonthArrowButtonStyle
 	{
@@ -1168,9 +1168,8 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(NextMonthArrowButtonStyleProperty, value);
 	}
 
-
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for PreviousYearArrowButtonStyle
 	/// </summary>
 	public static readonly BindableProperty PreviousYearArrowButtonStyleProperty = BindableProperty.Create(
 		nameof(PreviousYearArrowButtonStyle),
@@ -1180,7 +1179,7 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the previous year arrow button
 	/// </summary>
 	public Style PreviousYearArrowButtonStyle
 	{
@@ -1189,7 +1188,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for NextYearArrowButtonStyle
 	/// </summary>
 	public static readonly BindableProperty NextYearArrowButtonStyleProperty = BindableProperty.Create(
 		nameof(NextYearArrowButtonStyle),
@@ -1199,7 +1198,7 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the next year arrow button
 	/// </summary>
 	public Style NextYearArrowButtonStyle
 	{
@@ -1207,11 +1206,10 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(NextYearArrowButtonStyleProperty, value);
 	}
 
-
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for FooterArrowLabelStyle
 	/// </summary>
-	public static readonly BindableProperty FooterArrowButtonLabelProperty = BindableProperty.Create(
+	public static readonly BindableProperty FooterArrowLabelStyleProperty = BindableProperty.Create(
 		nameof(FooterArrowLabelStyle),
 		typeof(Style),
 		typeof(Calendar),
@@ -1219,13 +1217,14 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the footer arrow label
 	/// </summary>
 	public Style FooterArrowLabelStyle
 	{
-		get => (Style)GetValue(FooterArrowButtonLabelProperty);
-		set => SetValue(FooterArrowButtonLabelProperty, value);
+		get => (Style)GetValue(FooterArrowLabelStyleProperty);
+		set => SetValue(FooterArrowLabelStyleProperty, value);
 	}
+
 
 	#endregion
 
@@ -1233,7 +1232,7 @@ public partial class Calendar : ContentView, IDisposable
 	#region Footer & Header BindableProperties
 
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for MonthLabelStyle
 	/// </summary>
 	public static readonly BindableProperty MonthLabelStyleProperty = BindableProperty.Create(
 		nameof(MonthLabelStyle),
@@ -1243,7 +1242,7 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the month label
 	/// </summary>
 	public Style MonthLabelStyle
 	{
@@ -1252,7 +1251,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for YearLabelStyle
 	/// </summary>
 	public static readonly BindableProperty YearLabelStyleProperty = BindableProperty.Create(
 		nameof(YearLabelStyle),
@@ -1262,7 +1261,7 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of the year label
 	/// </summary>
 	public Style YearLabelStyle
 	{
@@ -1464,53 +1463,42 @@ public partial class Calendar : ContentView, IDisposable
 	#region DaysTitle Bindable properties
 
 	/// <summary>
-	/// Bindable property for DaysTitleLabelStyle
+	/// Bindable property for WeekdayTitleStyle
 	/// </summary>
-	public static readonly BindableProperty DaysTitleLabelStyleProperty = BindableProperty.Create(
-		nameof(DaysTitleLabelStyle),
+	public static readonly BindableProperty WeekdayTitleStyleProperty = BindableProperty.Create(
+		nameof(WeekdayTitleStyle),
 		typeof(Style),
 		typeof(Calendar),
-		null
+		DefaultStyles.DefaultWeekdayTitleStyle
 	);
 
 	/// <summary>
-	/// Specifies the style of day title labels
+	/// Specifies the style of weekday title labels
 	/// </summary>
-	public Style DaysTitleLabelStyle
+	public Style WeekdayTitleStyle
 	{
-		get => (Style)GetValue(DaysTitleLabelStyleProperty);
-		set => SetValue(DaysTitleLabelStyleProperty, value);
+		get => (Style)GetValue(WeekdayTitleStyleProperty);
+		set => SetValue(WeekdayTitleStyleProperty, value);
 	}
 
-
 	/// <summary>
-	/// Bindable property for DaysTitleColor
+	/// Bindable property for WeekendTitleStyle
 	/// </summary>
-	public static readonly BindableProperty DaysTitleColorProperty = BindableProperty.Create(
-		nameof(DaysTitleColor),
-		typeof(Color),
+	public static readonly BindableProperty WeekendTitleStyleProperty = BindableProperty.Create(
+		nameof(WeekendTitleStyle),
+		typeof(Style),
 		typeof(Calendar),
-		Colors.Black,
-		propertyChanged: OnDaysTitleColorChanged
+		DefaultStyles.DefaultWeekendTitleStyle
 	);
 
 	/// <summary>
-	/// Specifies the color for the titles of days
+	/// Specifies the style of weekend title labels
 	/// </summary>
-	public Color DaysTitleColor
+	public Style WeekendTitleStyle
 	{
-		get => (Color)GetValue(DaysTitleColorProperty);
-		set => SetValue(DaysTitleColorProperty, value);
+		get => (Style)GetValue(WeekendTitleStyleProperty);
+		set => SetValue(WeekendTitleStyleProperty, value);
 	}
-
-	static void OnDaysTitleColorChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayTitles();
-		}
-	}
-
 
 	/// <summary>
 	/// Bindable property for DaysTitleMaximumLength
@@ -1540,7 +1528,6 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-
 	/// <summary>
 	/// Bindable property for DaysTitleLabelFirstUpperRestLower
 	/// </summary>
@@ -1562,34 +1549,6 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	static void OnDaysTitleLabelFirstUpperRestLowerChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayTitles();
-		}
-	}
-
-
-	/// <summary>
-	/// Bindable property for DaysTitleWeekendColor
-	/// </summary>
-	public static readonly BindableProperty DaysTitleWeekendColorProperty = BindableProperty.Create(
-		nameof(DaysTitleWeekendColor),
-		typeof(Color),
-		typeof(Calendar),
-		Colors.Black
-	);
-
-	/// <summary>
-	/// Specifies the color for the titles of the weekend days
-	/// </summary>
-	public Color DaysTitleWeekendColor
-	{
-		get => (Color)GetValue(DaysTitleWeekendColorProperty);
-		set => SetValue(DaysTitleWeekendColorProperty, value);
-	}
-
-	static void OnDaysTitleWeekendColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
@@ -2135,25 +2094,17 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
 			var titleText = DaysTitleLabelFirstUpperRestLower
-				? abberivatedDayName[..1].ToUpperInvariant()
-					+ abberivatedDayName[1..].ToLowerInvariant()
-				: abberivatedDayName.ToUpperInvariant();
-			dayLabel.Text = titleText[
-				..(
-					(int)DaysTitleMaximumLength > abberivatedDayName.Length
-						? abberivatedDayName.Length
-						: (int)DaysTitleMaximumLength
-				)
-			];
+							? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant()
+							: abberivatedDayName.ToUpperInvariant();
+			dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length
+							? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+
 			// Detect weekend days
-			if (
-				DaysTitleColor != DaysTitleWeekendColor
-				&& (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
-			)
+			if (WeekdayTitleStyle != WeekendTitleStyle && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
 			{
 				// It's a weekend day
 				// You can change the color of the label or do something else
-				dayLabel.TextColor = DaysTitleWeekendColor;
+				dayLabel.Style = WeekendTitleStyle;
 			}
 			dayNumber = (dayNumber + 1) % 7;
 		}
@@ -2384,8 +2335,7 @@ public partial class Calendar : ContentView, IDisposable
 		daysControl = CurrentViewLayoutEngine.GenerateLayout(
 			dayViews,
 			this,
-			nameof(DaysTitleColor),
-			nameof(DaysTitleLabelStyle),
+			nameof(WeekdayTitleStyle),
 			DayTappedCommand
 		);
 
