@@ -3,7 +3,7 @@ using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
-public partial class DayView : ContentView
+public sealed partial class DayView : ContentView
 {
 	internal DayView()
 	{

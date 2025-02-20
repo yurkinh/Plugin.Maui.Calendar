@@ -34,7 +34,6 @@ sealed partial class DayModel : ObservableObject
 	[NotifyPropertyChangedFor(
 		nameof(TextColor),
 		nameof(BackgroundColor),
-		nameof(IsEventDotVisible),
 		nameof(BackgroundEventIndicator),
 		nameof(BackgroundFullEventColor)
 	)]
@@ -49,7 +48,6 @@ sealed partial class DayModel : ObservableObject
 		nameof(TextColor),
 		nameof(BackgroundColor),
 		nameof(OutlineColor),
-		nameof(EventColor),
 		nameof(BackgroundFullEventColor)
 	)]
 	bool isSelected;
@@ -100,11 +98,6 @@ sealed partial class DayModel : ObservableObject
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
-		nameof(IsEventDotVisible),
-		nameof(IsSecondEventDotVisible),
-		nameof(IsThirdEventDotVisible),
-		nameof(IsFourthEventDotVisible),
-		nameof(IsFifthEventDotVisible),
 		nameof(BackgroundEventIndicator),
 		nameof(BackgroundColor)
 	)]
@@ -112,28 +105,16 @@ sealed partial class DayModel : ObservableObject
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
-		nameof(EventColor),
 		nameof(BackgroundColor),
 		nameof(BackgroundFullEventColor)
 	)]
 	Color eventIndicatorColor = Color.FromArgb("#FF4081");
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(IsSecondEventDotVisible),
-		nameof(IsThirdEventDotVisible),
-		nameof(IsFourthEventDotVisible),
-		nameof(IsFifthEventDotVisible),
-		nameof(SecondEventColor),
-		nameof(ThirdEventColor),
-		nameof(FourthEventColor),
-		nameof(FifthEventColor)
-	)]
 	IReadOnlyList<Color> eventColors;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
-		nameof(EventColor),
 		nameof(BackgroundColor),
 		nameof(BackgroundFullEventColor)
 	)]
@@ -160,37 +141,11 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	Color disabledColor = Color.FromArgb("#ECECEC");
 
-	public bool IsEventDotVisible =>
-		HasEvents
-		&& (
-			EventIndicatorType == EventIndicatorType.BottomDot
-			|| EventIndicatorType == EventIndicatorType.TopDot
-		);
+	public FlexDirection EventLayoutDirection => (HasEvents && EventIndicatorType == EventIndicatorType.TopDot) ? FlexDirection.ColumnReverse : FlexDirection.Column;
 
-	public bool IsSecondEventDotVisible => EventColors?.Count >= 2 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
-	public bool IsThirdEventDotVisible => EventColors?.Count >= 3 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
-	public bool IsFourthEventDotVisible => EventColors?.Count >= 4 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
-	public bool IsFifthEventDotVisible => EventColors?.Count >= 5 && (EventIndicatorType == EventIndicatorType.BottomDot || EventIndicatorType == EventIndicatorType.TopDot);
+	public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
-	public FlexDirection EventLayoutDirection =>
-		(HasEvents && EventIndicatorType == EventIndicatorType.TopDot)
-			? FlexDirection.ColumnReverse
-			: FlexDirection.Column;
-
-	public bool BackgroundEventIndicator =>
-		HasEvents && EventIndicatorType == EventIndicatorType.Background;
-
-	public Color BackgroundFullEventColor =>
-		HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull
-			? EventColor
-			: Colors.Transparent;
-
-	public Color EventColor => IsSelected ? EventIndicatorSelectedColor : EventIndicatorColor;
-
-	public Color SecondEventColor => EventColors != null && EventColors.Count >= 2 ? EventColors[1] : Colors.Transparent;
-	public Color ThirdEventColor => EventColors != null && EventColors.Count >= 3 ? EventColors[2] : Colors.Transparent;
-	public Color FourthEventColor => EventColors != null && EventColors.Count >= 4 ? EventColors[3] : Colors.Transparent;
-	public Color FifthEventColor => EventColors != null && EventColors.Count >= 5 ? EventColors[4] : Colors.Transparent;
+	public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull ? EventIndicatorColor : Colors.Transparent;
 
 	public Color OutlineColor => IsToday && !IsSelected ? TodayOutlineColor : Colors.Transparent;
 
@@ -247,7 +202,5 @@ sealed partial class DayModel : ObservableObject
 
 	bool IsToday => Date.Date == DateTime.Today;
 
-	public bool IsWeekend =>
-		(Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday)
-		&& WeekendDayColor != Colors.Transparent;
+	public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;
 }
