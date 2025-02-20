@@ -89,7 +89,6 @@
                 TodayOutlineColor="Transparent"
                 TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
                 WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
-                WeekendDayColor="{StaticResource MyWeekendDayColor}"
                 WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                 Year="{Binding Year, Mode=TwoWay}">
 
