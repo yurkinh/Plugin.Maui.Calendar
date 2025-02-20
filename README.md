@@ -62,7 +62,7 @@ Weekend calendar
 * Updated samples
 * Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
-### Breaking  Changes
+#### Breaking  Changes
 
 ### Usage
 To get started just install the package via Nuget.
