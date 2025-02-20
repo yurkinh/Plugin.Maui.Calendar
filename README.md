@@ -58,11 +58,28 @@ Weekend calendar
 * Added **MonthChanged** Event and **MonthChangedCommand**
 * Added **AllowDeselecting** property
 * Added **SelectedDatesRangeBackgroundColor** property
-* Removed **DaysTitleHeight** property, use instead **DaysTitleLabelStyle** (**HeightRequest** or **FontSize** Property)
 * Updated samples
 * Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
-#### Breaking  Changes
+### Breaking  Changes
+
+Properties that were replaced by Styles
+```xml
+MonthLabelColor --> MonthLabelStyle
+YearLabelColor --> YearLabelStyle
+
+ArrowsBackgroundColor, ArrowsBorderColor, ArrowsBorderWidth, ArrowsFontAttribute, ArrowsFontSize, ArrowsFontFamily, ArrowsColor --> 
+ArrowsSymbolPrev --> PreviousMonthArrowButtonStyle
+ArrowsSymbolNext --> NextMonthArrowButtonStyle
+ArrowsSymbolPrev --> PreviousYearArrowButtonStyle
+ArrowsSymbolNext --> NextYearArrowButtonStyle
+
+SelectedDateColor --> FooterArrowLabelStyle
+ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
+
+DaysTitleHeight, DaysTitleColor --> WeekdayTitleStyle
+DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
+```
 
 ### Usage
 To get started just install the package via Nuget.
@@ -219,6 +236,21 @@ OtherMonthSelectedDayColor="HotPink"
 
 ```
 #### Available Styles
+```xml
+MonthLabelStyle
+YearLabelStyle
+
+PreviousMonthArrowButtonStyle
+NextMonthArrowButtonStyle
+PreviousYearArrowButtonStyle
+NextYearArrowButtonStyle
+
+FooterArrowLabelStyle
+SelectedDateLabelStyle
+
+WeekdayTitleStyle
+WeekendTitleStyle
+```
 
 #### Available customization properties
 ```xml
