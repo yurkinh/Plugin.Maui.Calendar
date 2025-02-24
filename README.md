@@ -63,7 +63,7 @@ Weekend calendar
 
 ### Breaking  Changes
 
-Properties that were replaced by Styles
+Properties that have been replaced by Styles
 ```xml
 MonthLabelColor --> MonthLabelStyle
 YearLabelColor --> YearLabelStyle
