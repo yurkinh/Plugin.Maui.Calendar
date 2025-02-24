@@ -11,6 +11,31 @@ Simple cross platform plugin for Calendar control featuring:
 - Customizable colors, day view sizes/label styles, custom Header/Footer template support
 - UI reactive to EventCollection, Culture and other changes 
 
+### What's new
+V1.0.x
+* Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
+* Added Multiselection support (Latest PR that was not merged previously)
+* Refactored and revamped code
+* Updated to .NET 8
+* Added OnShownDateChangedCommand so we can take action when date is changed.
+* Added new property **OtherMonthSelectedDayColor**
+* Fixed bug with **OtherMonthDayIsVisible** property
+* Added a weekend calendar sample
+* Added a windows 11 calendar sample
+* Added theme support
+* Added new property **FirstDayOfWeek**
+* Added support for multiple event dots (multidots) in calendar 
+* Added **MonthChanged** Event and **MonthChangedCommand**
+* Added **AllowDeselecting** property
+* Added **SelectedDatesRangeBackgroundColor** property
+* Updated samples
+
+V2.0.0
+* Updated to .NET 9
+* Optimized startup time
+* Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
+* Totaly revamped calendar structure
+* Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
 ## Screenshots
 | Android | iOS |
@@ -38,31 +63,25 @@ Weekend calendar
 | ------- | ------ |
 | ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
 
+### Breaking  Changes
 
+Properties that have been replaced by Styles
+```xml
+MonthLabelColor --> MonthLabelStyle
+YearLabelColor --> YearLabelStyle
 
+ArrowsBackgroundColor, ArrowsBorderColor, ArrowsBorderWidth, ArrowsFontAttribute, ArrowsFontSize, ArrowsFontFamily, ArrowsColor --> 
+ArrowsSymbolPrev --> PreviousMonthArrowButtonStyle
+ArrowsSymbolNext --> NextMonthArrowButtonStyle
+ArrowsSymbolPrev --> PreviousYearArrowButtonStyle
+ArrowsSymbolNext --> NextYearArrowButtonStyle
 
+SelectedDateColor --> FooterArrowLabelStyle
+ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
 
-### What's new
-* Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
-* Added Multiselection support (Latest PR that was not merged previously)
-* Exposed a few more properties for Arrow buttons customization
-* Refactored and revamped code
-* Updated to .NET 8 
-* Added OnShownDateChangedCommand so we can take action when date is changed.
-* Added Dispose method to force handlers disconnect call.
-* Added new property **OtherMonthSelectedDayColor**
-* Fixed bug with **OtherMonthDayIsVisible** property
-* Added a weekend calendar sample
-* Added a windows 11 calendar sample
-* Added theme support
-* Added new property **FirstDayOfWeek**
-* Added support for multiple event dots (multidots) in calendar 
-* Added **MonthChanged** Event and **MonthChangedCommand**
-* Added **AllowDeselecting** property
-* Added **SelectedDatesRangeBackgroundColor** property
-* Removed **DaysTitleHeight** property, use instead **DaysTitleLabelStyle** (**HeightRequest** or **FontSize** Property)
-* Updated samples
-
+DaysTitleHeight, DaysTitleColor --> WeekdayTitleStyle
+DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
+```
 
 ### Usage
 To get started just install the package via Nuget.
@@ -205,28 +224,42 @@ In XAML add Culture binding
 #### Available color customization
 Sample properties:
 ```xml
-ArrowBorder
-MonthLabelColor="Red"
-YearLabelColor="Blue"
 EventIndicatorColor="Red"
 EventIndicatorSelectedColor="White"
-DaysTitleColor="Orange"
 DeselectedDayTextColor="Blue"
 OtherMonthDayColor="Gray"
 SelectedDayTextColor="Cyan"
 SelectedDayBackgroundColor="DarkCyan"
-SelectedDateColor="Red"
 SelectedTodayTextColor="Green"
 TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
 OtherMonthSelectedDayColor="HotPink"
-FirstDayOfWeek="Monday"
+
+```
+#### Available Styles
+```xml
+MonthLabelStyle
+YearLabelStyle
+
+PreviousMonthArrowButtonStyle
+NextMonthArrowButtonStyle
+PreviousYearArrowButtonStyle
+NextYearArrowButtonStyle
+
+FooterArrowLabelStyle
+SelectedDateLabelStyle
+
+WeekdayTitleStyle
+WeekendTitleStyle
 ```
 
 #### Available customization properties
+```xml
+FirstDayOfWeek="Monday"
+```
 
-##### Calendar Layout customizations
+#### Calendar Layout customizations
 You can set the layout of the calendar with the property `CalendarLayout`
 
 - Available layouts are: 

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
@@ -17,11 +16,10 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	protected static Grid GenerateWeekLayout(
 			List<DayView> dayViews,
 			object bindingContext,
-			string daysTitleColorBindingName,
-			string daysTitleLabelStyleBindingName,
+			string weekdayTitleStyleBindingName,
 			ICommand dayTappedCommand,
-int numberOfWeeks
-		)
+			int numberOfWeeks
+	)
 	{
 		var rowDefinition = new RowDefinition();
 
@@ -52,8 +50,7 @@ int numberOfWeeks
 				HorizontalTextAlignment = TextAlignment.Center,
 				BindingContext = bindingContext
 			};
-			label.SetBinding(Label.TextColorProperty, daysTitleColorBindingName);
-			label.SetBinding(VisualElement.StyleProperty, daysTitleLabelStyleBindingName);
+			label.SetBinding(VisualElement.StyleProperty, weekdayTitleStyleBindingName);
 
 			grid.Add(label, i, 0);
 		}

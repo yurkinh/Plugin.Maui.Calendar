@@ -9,8 +9,7 @@ interface IViewLayoutEngine
 	Grid GenerateLayout(
 		List<DayView> dayViews,
 		object bindingContext,
-		string daysTitleColorBindingName,
-		string daysTitleLabelStyleBindingName,
+		string weekdayTitleStyleBindingName,
 		ICommand dayTappedCommand
 	);
 

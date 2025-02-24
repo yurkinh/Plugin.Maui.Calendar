@@ -5,18 +5,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="weekViewCalendarPage"
     Title="Week Calendar"
-    Shell.TabBarIsVisible="False"
-    xmlns:models="clr-namespace:SampleApp.Model"
     x:DataType="local:WeekViewPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style
+                x:Key="MyWeekdayTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{StaticResource MyWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}"
-                     Text="Today"/>
+                Text="Today"/>
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <local:WeekViewPageViewModel/>
@@ -27,8 +47,6 @@
         Padding="10,0"
         CalendarLayout="{Binding CalendarLayout}"
         Day="{Binding Day}"
-        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
-        DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
@@ -39,6 +57,8 @@
         SelectedDate="{Binding SelectedDate}"
         ShownDate="{Binding ShownDate}"
         VerticalOptions="Fill"
+        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
@@ -61,9 +81,10 @@
                         LineBreakMode="WordWrap"
                         Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
-                                              CommandParameter="{Binding .}"
-                                              x:DataType='local:WeekViewPageViewModel'/>
+                        <TapGestureRecognizer
+                            x:DataType="local:WeekViewPageViewModel"
+                            Command="{Binding EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
+                            CommandParameter="{Binding .}"/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

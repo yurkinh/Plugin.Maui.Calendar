@@ -6,11 +6,12 @@
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="windowsCalendarPage"
-    Shell.TabBarIsVisible="False"
     Title="Windows 11 Calendar"
-    x:DataType="local:Windows11CalendarViewModel">
+    x:DataType="local:Windows11CalendarViewModel"
+    Shell.TabBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -31,9 +32,22 @@
                 <Setter Property="TextColor"
                         Value="Red"/>
             </Style>
+            <Style
+                x:Key="MyWeekdayTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{StaticResource MyWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-
 
     <ContentPage.BindingContext>
         <local:Windows11CalendarViewModel/>
@@ -64,10 +78,8 @@
                 x:Name="calendar"
                 BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
                 DaysLabelStyle="{StaticResource DaysLabelStyle}"
-                DaysTitleColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 DaysTitleLabelFirstUpperRestLower="True"
                 DaysTitleMaximumLength="TwoChars"
-                DaysTitleWeekendColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 FooterSectionVisible="False"
                 Month="{Binding Month, Mode=TwoWay}"
                 SelectedDayBackgroundColor="{toolkit:AppThemeResource WindowsThemeColor}"
@@ -76,6 +88,8 @@
                 TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
                 TodayOutlineColor="Transparent"
                 TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
+                WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+                WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                 Year="{Binding Year, Mode=TwoWay}">
 
                 <plugin:Calendar.HeaderSectionTemplate>

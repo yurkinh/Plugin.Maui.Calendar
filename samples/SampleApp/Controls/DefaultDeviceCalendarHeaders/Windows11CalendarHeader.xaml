@@ -4,11 +4,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    x:DataType="plugin:Calendar"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="plugin:Calendar">
     <ContentView.Resources>
         <ResourceDictionary>
-            <Style x:Key="arrowButtonPrevStyle"
+            <Style x:Key="MyArrowButtonPrevStyle"
                    TargetType="Button">
                 <Setter Property="FontFamily"
                         Value="FontAwesomeSolid"/>
@@ -24,7 +24,7 @@
                         Value="DimGray"/>
             </Style>
 
-            <Style x:Key="arrowButtonNextStyle"
+            <Style x:Key="MyArrowButtonNextStyle"
                    TargetType="Button">
                 <Setter Property="FontFamily"
                         Value="FontAwesomeSolid"/>
@@ -39,7 +39,7 @@
                 <Setter Property="TextColor"
                         Value="DimGray"/>
             </Style>
-            <Style x:Key="ArrowFooterButtonUpStyle"
+            <Style x:Key="MyArrowFooterButtonUpStyle"
                    TargetType="Button">
                 <Setter Property="BackgroundColor"
                         Value="Transparent"/>
@@ -85,10 +85,10 @@
         <Button
             Grid.Column="1"
             Command="{Binding PrevLayoutUnitCommand, Mode=OneTime}"
-            Style="{StaticResource arrowButtonPrevStyle}"/>
+            Style="{StaticResource MyArrowButtonPrevStyle}"/>
         <Button
             Grid.Column="2"
             Command="{Binding NextLayoutUnitCommand, Mode=OneTime}"
-            Style="{StaticResource arrowButtonNextStyle}"/>
+            Style="{StaticResource MyArrowButtonNextStyle}"/>
     </Grid>
 </ContentView>

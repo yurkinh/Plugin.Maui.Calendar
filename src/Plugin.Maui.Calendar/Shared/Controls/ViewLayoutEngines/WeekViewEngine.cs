@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
@@ -12,16 +11,14 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 	public Grid GenerateLayout(
 		List<DayView> dayViews,
 		object bindingContext,
-		string daysTitleColorBindingName,
-		string daysTitleLabelStyleBindingName,
+		string weekdayTitleStyleBindingName,
 		ICommand dayTappedCommand
 	)
 	{
 		return GenerateWeekLayout(
 			dayViews,
 			bindingContext,
-			daysTitleColorBindingName,
-			daysTitleLabelStyleBindingName,
+			weekdayTitleStyleBindingName,
 			dayTappedCommand,
 			numberOfWeeks
 		);

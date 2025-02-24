@@ -6,16 +6,17 @@
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="multiCalendarPage"
     Title="Multi Selection Calendar"
-    Shell.TabBarIsVisible="False"
     x:DataType="local:SimplePageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="MyDaysLabelStyle"
-                   TargetType="Label">
+                    TargetType="Label">
                 <Setter Property="HorizontalTextAlignment"
                         Value="Center"/>
                 <Setter Property="TextColor"
@@ -29,16 +30,27 @@
                 <Setter Property="Margin"
                         Value="5,2"/>
             </Style>
-            <Style x:Key="MyDaysTitleLabelStyle"
-                   TargetType="Label">
+            <Style
+                x:Key="MyWeekdayTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                TargetType="Label">
                 <Setter Property="FontSize"
                         Value="18"/>
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{StaticResource MyWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}"
-                     Text="Today"/>
+                Text="Today"/>
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <local:SimplePageViewModel/>
@@ -48,9 +60,6 @@
         x:Name="calendar"
         Padding="10,0"
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
-        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
-        DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         HorizontalOptions="Fill"
@@ -59,6 +68,8 @@
         Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
         VerticalOptions="Fill"
+        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>
             <DataTemplate x:DataType="models:EventModel">
@@ -76,9 +87,10 @@
                         LineBreakMode="WordWrap"
                         Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
-                                              CommandParameter="{Binding .}"
-                                              x:DataType='local:SimplePageViewModel'/>
+                        <TapGestureRecognizer
+                            x:DataType="local:SimplePageViewModel"
+                            Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
+                            CommandParameter="{Binding .}"/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>
