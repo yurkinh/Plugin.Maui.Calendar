@@ -12,10 +12,11 @@ Simple cross platform plugin for Calendar control featuring:
 - UI reactive to EventCollection, Culture and other changes 
 
 ### What's new
+V1.0.x
 * Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
 * Added Multiselection support (Latest PR that was not merged previously)
 * Refactored and revamped code
-* Updated to .NET 9
+* Updated to .NET 8
 * Added OnShownDateChangedCommand so we can take action when date is changed.
 * Added new property **OtherMonthSelectedDayColor**
 * Fixed bug with **OtherMonthDayIsVisible** property
@@ -28,6 +29,12 @@ Simple cross platform plugin for Calendar control featuring:
 * Added **AllowDeselecting** property
 * Added **SelectedDatesRangeBackgroundColor** property
 * Updated samples
+
+V2.0.0
+* Updated to .NET 9
+* Optimized startup time
+* Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
+* Totaly revamped calendar structure
 * Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
 ## Screenshots
