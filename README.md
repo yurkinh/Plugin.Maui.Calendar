@@ -11,6 +11,24 @@ Simple cross platform plugin for Calendar control featuring:
 - Customizable colors, day view sizes/label styles, custom Header/Footer template support
 - UI reactive to EventCollection, Culture and other changes 
 
+### What's new
+* Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
+* Added Multiselection support (Latest PR that was not merged previously)
+* Refactored and revamped code
+* Updated to .NET 9
+* Added OnShownDateChangedCommand so we can take action when date is changed.
+* Added new property **OtherMonthSelectedDayColor**
+* Fixed bug with **OtherMonthDayIsVisible** property
+* Added a weekend calendar sample
+* Added a windows 11 calendar sample
+* Added theme support
+* Added new property **FirstDayOfWeek**
+* Added support for multiple event dots (multidots) in calendar 
+* Added **MonthChanged** Event and **MonthChangedCommand**
+* Added **AllowDeselecting** property
+* Added **SelectedDatesRangeBackgroundColor** property
+* Updated samples
+* Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
 ## Screenshots
 | Android | iOS |
@@ -37,29 +55,6 @@ Weekend calendar
 | Android     | IOS    |
 | ------- | ------ |
 | ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
-
-
-
-
-
-### What's new
-* Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
-* Added Multiselection support (Latest PR that was not merged previously)
-* Refactored and revamped code
-* Updated to .NET 9
-* Added OnShownDateChangedCommand so we can take action when date is changed.
-* Added new property **OtherMonthSelectedDayColor**
-* Fixed bug with **OtherMonthDayIsVisible** property
-* Added a weekend calendar sample
-* Added a windows 11 calendar sample
-* Added theme support
-* Added new property **FirstDayOfWeek**
-* Added support for multiple event dots (multidots) in calendar 
-* Added **MonthChanged** Event and **MonthChangedCommand**
-* Added **AllowDeselecting** property
-* Added **SelectedDatesRangeBackgroundColor** property
-* Updated samples
-* Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
 ### Breaking  Changes
 
