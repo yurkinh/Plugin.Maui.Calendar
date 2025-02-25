@@ -54,6 +54,12 @@ public static class MauiProgram
         builder.Services.AddTransient<SimplePage>();
         builder.Services.AddTransient<SimplePageViewModel>();
 
+        builder.Services.AddTransient<XiaomiCalendarPage>();
+        builder.Services.AddTransient<XiaomiCalendarViewModel>();
+
+        builder.Services.AddTransient<EditEventPage>();
+        builder.Services.AddTransient<EditEventPageViewModel>();
+
         return builder;
     }
     static MauiAppBuilder InjectServices(this MauiAppBuilder builder)

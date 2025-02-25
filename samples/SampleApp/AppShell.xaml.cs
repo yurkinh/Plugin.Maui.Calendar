@@ -19,6 +19,8 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(TwoWeekViewPage), typeof(TwoWeekViewPage));
 		Routing.RegisterRoute(nameof(Windows11CalendarPage), typeof(Windows11CalendarPage));
 		Routing.RegisterRoute(nameof(CalendarPage), typeof(CalendarPage));
+		Routing.RegisterRoute(nameof(XiaomiCalendarPage), typeof(XiaomiCalendarPage));
+		Routing.RegisterRoute(nameof(EditEventPage), typeof(EditEventPage));
 	}
 }
 
