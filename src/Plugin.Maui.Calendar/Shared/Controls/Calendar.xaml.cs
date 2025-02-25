@@ -2346,20 +2346,6 @@ public partial class Calendar : ContentView, IDisposable
 		calendarContainer.Add(daysControl);
 	}
 
-	void DiposeDayViews()
-	{
-
-		foreach (var dayView in daysControl.Children.OfType<DayView>())
-		{
-			if (dayView.BindingContext is DayModel dayModel)
-			{
-#if !WINDOWS
-				dayView.BindingContext = null;
-#endif
-			}
-		}
-	}
-
 	internal void AssignIndicatorColors(ref DayModel dayModel)
 	{
 		dayModel.EventIndicatorColor = EventIndicatorColor;
@@ -2407,7 +2393,6 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				events.CollectionChanged -= OnEventsCollectionChanged;
 			}
-			DiposeDayViews();
 			calendarSectionAnimateHide.Value.Dispose();
 			calendarSectionAnimateShow.Value.Dispose();
 		}
