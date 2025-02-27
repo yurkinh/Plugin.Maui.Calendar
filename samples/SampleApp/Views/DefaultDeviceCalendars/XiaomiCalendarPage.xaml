@@ -127,22 +127,16 @@
                                 LineBreakMode="WordWrap"
                                 Style="{StaticResource MyLabelStyle}"
                                 Text="{Binding Description}" />
-                            <Button
-                                Margin="10"
-                                BackgroundColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:XiaomiCalendarViewModel}}, Path=EventTappedCommand}"
-                                CommandParameter="{Binding}"
-                                Text="Edit" />
                         </VerticalStackLayout>
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:XiaomiCalendarViewModel}}, Path=EventTappedCommand}" CommandParameter="{Binding}" />
+                            <TapGestureRecognizer Command="{Binding EventTappedCommand, Source={RelativeSource AncestorType={x:Type vm:XiaomiCalendarViewModel}}, x:DataType='vm:XiaomiCalendarViewModel'}" CommandParameter="{Binding .}" />
                         </Border.GestureRecognizers>
                     </Border>
                 </DataTemplate>
             </plugin:Calendar.EventTemplate>
 
             <plugin:Calendar.EmptyTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="x:String">
                     <Border Style="{StaticResource MyBorderStyle}">
                         <Label Style="{StaticResource MyLabelStyle}" Text="No events" />
                     </Border>
