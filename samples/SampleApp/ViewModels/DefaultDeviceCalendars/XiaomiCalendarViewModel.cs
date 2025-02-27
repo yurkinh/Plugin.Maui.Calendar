@@ -1,4 +1,3 @@
-using System.Collections;
 using Plugin.Maui.Calendar.Models;
 using SampleApp.Views;
 
@@ -73,7 +72,7 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
         };
 
         await Shell.Current.GoToAsync(nameof(EditEventPage), navigationParameter);
-    }
+	}
 
     [RelayCommand]
     public async Task AddEvent()

@@ -57,10 +57,21 @@
             </Style>
             <Style x:Key="MyLabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="HorizontalTextAlignment" Value="Start" />
             </Style>
-            <Style x:Key="MyTitleLabelStyle" TargetType="Label">
+            <Style
+                x:Key="MyTitleLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleTextColor}" />
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+                TargetType="Label">
                 <Setter Property="FontSize" Value="12" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleTextColor}" />
             </Style>
@@ -103,10 +114,10 @@
             TodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
             WeekdayTitleStyle="{StaticResource MyTitleLabelStyle}"
             WeekendDayColor="{toolkit:AppThemeResource WeekendDaysTextColor}"
-            WeekendTitleStyle="{StaticResource MyTitleLabelStyle}"
+            WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
             Year="{Binding Year}">
             <plugin:Calendar.EventTemplate>
-                <DataTemplate x:DataType="models:EventModel">
+                <DataTemplate x:DataType="models:AdvancedEventModel">
                     <Border Style="{StaticResource MyBorderStyle}">
                         <VerticalStackLayout HorizontalOptions="Fill" VerticalOptions="Fill">
                             <Label Style="{StaticResource MyLabelStyle}" Text="{Binding Name}" />
@@ -114,15 +125,22 @@
                                 Margin="0,10,0,0"
                                 FontSize="14"
                                 LineBreakMode="WordWrap"
-                                Text="{Binding Description}"
-                                TextColor="{toolkit:AppThemeResource StrokeColor}" />
+                                Style="{StaticResource MyLabelStyle}"
+                                Text="{Binding Description}" />
+                            <Button
+                                Margin="10"
+                                BackgroundColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:XiaomiCalendarViewModel}}, Path=EventTappedCommand}"
+                                CommandParameter="{Binding}"
+                                Text="Edit" />
                         </VerticalStackLayout>
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:XiaomiCalendarViewModel}}, Path=EventTappedCommand}" CommandParameter="{Binding .}" />
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:XiaomiCalendarViewModel}}, Path=EventTappedCommand}" CommandParameter="{Binding}" />
                         </Border.GestureRecognizers>
                     </Border>
                 </DataTemplate>
             </plugin:Calendar.EventTemplate>
+
             <plugin:Calendar.EmptyTemplate>
                 <DataTemplate>
                     <Border Style="{StaticResource MyBorderStyle}">

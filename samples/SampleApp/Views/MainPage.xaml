@@ -84,8 +84,8 @@
             <Button
                 Clicked="XiaomiCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
-                Text="Xiaomi Calendar" />
-                
+                Text="Xiaomi Calendar (todo)" />
+
             <Label Style="{StaticResource LabelMainPageStyle}" Text="Picker Popup" />
             <Button
                 Clicked="PickerPopup"
