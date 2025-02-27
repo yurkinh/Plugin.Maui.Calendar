@@ -9,8 +9,6 @@ public partial class AppShell : Shell
 		InitializeComponent();
 
 		Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
-		Routing.RegisterRoute(nameof(UserSettingPage), typeof(UserSettingPage));
-		Routing.RegisterRoute(nameof(SimplePage), typeof(SimplePage));
 		Routing.RegisterRoute(nameof(WeekendCalendarPage), typeof(WeekendCalendarPage));
 		Routing.RegisterRoute(nameof(MultiSelectionPage), typeof(MultiSelectionPage));
 		Routing.RegisterRoute(nameof(AdvancedPage), typeof(AdvancedPage));

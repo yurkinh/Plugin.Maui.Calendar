@@ -1488,7 +1488,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(WeekendTitleStyle),
 		typeof(Style),
 		typeof(Calendar),
-		DefaultStyles.DefaultWeekendTitleStyle
+		DefaultStyles.DefaultWeekendTitleStyle,
+		propertyChanged: OnWeekendTitleStyleChanged
 	);
 
 	/// <summary>
@@ -1498,6 +1499,14 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (Style)GetValue(WeekendTitleStyleProperty);
 		set => SetValue(WeekendTitleStyleProperty, value);
+	}
+
+	static void OnWeekendTitleStyleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDayTitles();
+		}
 	}
 
 	/// <summary>
