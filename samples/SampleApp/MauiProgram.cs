@@ -48,19 +48,12 @@ public static class MauiProgram
     }
     static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
     {
-        builder.Services.AddTransient<UserSettingPage>();
-        builder.Services.AddTransient<UserSettingViewModel>();
+		builder.Services.AddTransientWithShellRoute<UserSettingPage, UserSettingViewModel>(nameof(UserSettingPage));
+		builder.Services.AddTransientWithShellRoute<SimplePage, SimplePageViewModel>(nameof(SimplePage));
+		builder.Services.AddTransientWithShellRoute<XiaomiCalendarPage, XiaomiCalendarViewModel>(nameof(XiaomiCalendarPage));
+		builder.Services.AddTransientWithShellRoute<EditEventPage, EditEventPageViewModel>(nameof(EditEventPage));
 
-        builder.Services.AddTransient<SimplePage>();
-        builder.Services.AddTransient<SimplePageViewModel>();
-
-        builder.Services.AddTransient<XiaomiCalendarPage>();
-        builder.Services.AddTransient<XiaomiCalendarViewModel>();
-
-        builder.Services.AddTransient<EditEventPage>();
-        builder.Services.AddTransient<EditEventPageViewModel>();
-
-        return builder;
+		return builder;
     }
     static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
     {
