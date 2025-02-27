@@ -18,44 +18,39 @@
             <toolkit:AppThemeColor
                 x:Key="WindowsThemeColor"
                 Dark="#04e762"
-                Light="#2b9348"/>
+                Light="#2b9348" />
             <toolkit:AppThemeColor
                 x:Key="TodayDayLabelTextColor"
                 Dark="Black"
-                Light="White"/>
+                Light="White" />
             <toolkit:AppThemeObject
                 x:Key="Walpaper"
                 Dark="windows_walpaper_dark.png"
-                Light="windows_walpaper_light.png"/>
-            <Style x:Key="DaysLabelStyle"
-                   TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="Red"/>
+                Light="windows_walpaper_light.png" />
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
             </Style>
             <Style
                 x:Key="MyWeekdayTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
-                BasedOn="{StaticResource MyWeekdayTitleStyle}"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
-        <local:Windows11CalendarViewModel/>
+        <local:Windows11CalendarViewModel />
     </ContentPage.BindingContext>
 
     <Grid>
-        <Image Aspect="AspectFill"
-               Source="{toolkit:AppThemeResource Walpaper}"/>
+        <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />
         <Border
             Margin="30"
             BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
@@ -72,7 +67,7 @@
                     Brush="Black"
                     Opacity="0.1"
                     Radius="2"
-                    Offset="0,4"/>
+                    Offset="0,4" />
             </Border.Shadow>
             <plugin:Calendar
                 x:Name="calendar"
@@ -94,7 +89,7 @@
 
                 <plugin:Calendar.HeaderSectionTemplate>
                     <DataTemplate>
-                        <controls:Windows11CalendarHeader/>
+                        <controls:Windows11CalendarHeader />
                     </DataTemplate>
                 </plugin:Calendar.HeaderSectionTemplate>
             </plugin:Calendar>
