@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -1829,7 +1829,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			control.isSelectingDates = false;
 		}
-		control.UpdateDays();
+		control.UpdateDays(true);
 
 	}
 
