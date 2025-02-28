@@ -157,7 +157,7 @@ public static class DefaultStyles
 		style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
 		style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = LayoutOptions.Center });
 		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 16 });
+		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
 		style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
 
 		return style;

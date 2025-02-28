@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -614,6 +614,7 @@ public partial class Calendar : ContentView, IDisposable
 
 			calendar.UpdateSelectedDateLabel();
 			calendar.UpdateDayTitles();
+			calendar.RenderLayout();
 		}
 	}
 
@@ -1696,7 +1697,7 @@ public partial class Calendar : ContentView, IDisposable
 			nameof(SelectedTodayTextColor),
 			typeof(Color),
 			typeof(Calendar),
-			Colors.Black,
+			Colors.White,
 			propertyChanged: OnSelectedTodayTextColorChanged
 		);
 
@@ -2338,6 +2339,11 @@ public partial class Calendar : ContentView, IDisposable
 		};
 
 		if ((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
+		{
+			calendarContainer.Remove(daysControl);
+		}
+
+		if (FirstDayOfWeek != DayOfWeek.Sunday && calendarContainer.Children.Contains(daysControl))
 		{
 			calendarContainer.Remove(daysControl);
 		}
