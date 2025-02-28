@@ -113,15 +113,6 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	List<Color> eventColors;
 
-	partial void OnEventColorsChanged(List<Color> value)
-	{
-		if (EventColors.Count == 1)
-		{
-			EventColors.Clear();
-			EventColors.Add(IsSelected ? EventIndicatorSelectedColor : EventIndicatorColor);
-		}
-	}
-
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
 		nameof(BackgroundColor),

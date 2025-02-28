@@ -2386,7 +2386,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			else
 			{
-				dayModel.EventColors = [EventIndicatorColor];
+				dayModel.EventColors = [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor];
 			}
 		}
 		else
