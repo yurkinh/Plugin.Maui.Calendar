@@ -21,22 +21,32 @@
                 x:Key="MyWeekdayTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+            </Style> 
+            <Style
+                x:Key="MyFooterArrowLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowLabelStyle}"
+                TargetType="Label">
+                <Setter Property="FontFamily"
+                        Value="FontAwesomeSolid"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <ToolbarItem Command="{Binding TodayCommand}"
+                     Text="Today"/>
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
-        <local:WeekViewPageViewModel />
+        <local:WeekViewPageViewModel/>
     </ContentPage.BindingContext>
 
     <plugin:Calendar
@@ -51,6 +61,7 @@
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"
+        FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
         SelectedDate="{Binding SelectedDate}"
         ShownDate="{Binding ShownDate}"
         VerticalOptions="Fill"
@@ -59,7 +70,7 @@
         Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarHeader />
+            <controls:CalendarHeader/>
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
@@ -72,16 +83,16 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}" />
+                        Text="{Binding Name}"/>
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                        Text="{Binding Description}"/>
                     <VerticalStackLayout.GestureRecognizers>
                         <TapGestureRecognizer
                             x:DataType="local:WeekViewPageViewModel"
                             Command="{Binding EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
-                            CommandParameter="{Binding .}" />
+                            CommandParameter="{Binding .}"/>
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>
