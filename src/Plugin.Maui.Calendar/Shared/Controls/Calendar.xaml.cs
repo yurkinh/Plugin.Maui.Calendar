@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -1697,7 +1697,7 @@ public partial class Calendar : ContentView, IDisposable
 			nameof(SelectedTodayTextColor),
 			typeof(Color),
 			typeof(Calendar),
-			Colors.Black,
+			Colors.White,
 			propertyChanged: OnSelectedTodayTextColorChanged
 		);
 
