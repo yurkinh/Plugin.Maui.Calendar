@@ -614,6 +614,7 @@ public partial class Calendar : ContentView, IDisposable
 
 			calendar.UpdateSelectedDateLabel();
 			calendar.UpdateDayTitles();
+			calendar.RenderLayout();
 		}
 	}
 
@@ -2338,6 +2339,11 @@ public partial class Calendar : ContentView, IDisposable
 		};
 
 		if ((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
+		{
+			calendarContainer.Remove(daysControl);
+		}
+
+		if (FirstDayOfWeek != DayOfWeek.Sunday && calendarContainer.Children.Contains(daysControl))
 		{
 			calendarContainer.Remove(daysControl);
 		}
