@@ -743,36 +743,6 @@ public partial class Calendar : ContentView, IDisposable
 
 
 	/// <summary>
-	/// Bindable property for DayViewFontSizeProperty
-	/// </summary>
-	public static readonly BindableProperty DayViewFontSizeProperty = BindableProperty.Create(
-		nameof(DayViewFontSize),
-		typeof(double),
-		typeof(Calendar),
-		14d,
-		propertyChanged: OnDayViewFontSizeChanged
-	);
-
-	/// <summary>
-	/// Specifies the FontSize of DayView label
-	/// </summary>
-	[TypeConverter(typeof(FontSizeConverter))]
-	public double DayViewFontSize
-	{
-		get => (double)GetValue(DayViewFontSizeProperty);
-		set => SetValue(DayViewFontSizeProperty, value);
-	}
-
-	static void OnDayViewFontSizeChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
-	}
-
-
-	/// <summary>
 	/// Bindable property for DayViewCornerRadius
 	/// </summary>
 	public static readonly BindableProperty DayViewCornerRadiusProperty = BindableProperty.Create(
@@ -2140,7 +2110,6 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
-			dayModel.FontSize = DayViewFontSize;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;
 			dayModel.IsThisMonth =
@@ -2176,7 +2145,6 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.TodayOutlineColor = TodayOutlineColor;
 			dayModel.TodayFillColor = TodayFillColor;
 			dayModel.DisabledColor = DisabledDayColor;
-			dayModel.FontSize = DayViewFontSize;
 
 			AssignIndicatorColors(ref dayModel);
 		}

@@ -17,10 +17,6 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	double dayViewSize;
 
-	[TypeConverter(typeof(FontSizeConverter))]
-	[ObservableProperty]
-	double fontSize = 14;
-
 	[ObservableProperty]
 	float dayViewCornerRadius;
 

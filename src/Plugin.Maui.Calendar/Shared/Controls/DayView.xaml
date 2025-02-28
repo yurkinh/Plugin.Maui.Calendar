@@ -36,7 +36,6 @@
             </FlexLayout.GestureRecognizers>
             <Grid HeightRequest="4"/>
             <Label
-                FontSize="{Binding FontSize, Mode=OneWay}"
                 HorizontalTextAlignment="Center"
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"

@@ -56,7 +56,6 @@
         Padding="10,0"
         AllowDeselecting="False"
         Day="{Binding Day}"
-        DayViewFontSize="Medium"
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
