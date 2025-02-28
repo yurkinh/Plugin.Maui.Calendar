@@ -111,7 +111,7 @@ sealed partial class DayModel : ObservableObject
 	Color eventIndicatorColor = Color.FromArgb("#FF4081");
 
 	[ObservableProperty]
-	IReadOnlyList<Color> eventColors;
+	List<Color> eventColors;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(

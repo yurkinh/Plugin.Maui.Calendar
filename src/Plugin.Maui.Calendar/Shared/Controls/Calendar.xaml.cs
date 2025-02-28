@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -613,6 +613,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			calendar.UpdateSelectedDateLabel();
+			calendar.UpdateDayTitles();
 		}
 	}
 
@@ -1828,7 +1829,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			control.isSelectingDates = false;
 		}
-		control.UpdateDays();
+		control.UpdateDays(true);
 
 	}
 
@@ -2381,11 +2382,11 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			if (dayEventCollection is IMultiEventDay multiEventDay)
 			{
-				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToArray() ?? [];
+				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToList() ?? [];
 			}
 			else
 			{
-				dayModel.EventColors = [];
+				dayModel.EventColors = [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor];
 			}
 		}
 		else
