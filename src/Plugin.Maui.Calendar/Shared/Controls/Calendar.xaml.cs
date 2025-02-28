@@ -613,6 +613,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			calendar.UpdateSelectedDateLabel();
+			calendar.UpdateDayTitles();
 		}
 	}
 
@@ -2381,11 +2382,11 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			if (dayEventCollection is IMultiEventDay multiEventDay)
 			{
-				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToArray() ?? [];
+				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToList() ?? [];
 			}
 			else
 			{
-				dayModel.EventColors = [];
+				dayModel.EventColors = [EventIndicatorColor];
 			}
 		}
 		else
