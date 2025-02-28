@@ -10,7 +10,7 @@
     BackgroundColor="{Binding BackgroundFullEventColor}">
     <ContentView.Resources>
         <ResourceDictionary>
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter" />
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>
         </ResourceDictionary>
     </ContentView.Resources>
     <Grid
@@ -26,22 +26,23 @@
             HorizontalOptions="Center"
             Stroke="{Binding OutlineColor, Mode=OneWay}"
             StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
-            WidthRequest="{Binding DayViewSize, Mode=OneWay}" />
+            WidthRequest="{Binding DayViewSize, Mode=OneWay}"/>
         <FlexLayout
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"
             JustifyContent="Center">
             <FlexLayout.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnTapped" />
+                <TapGestureRecognizer Tapped="OnTapped"/>
             </FlexLayout.GestureRecognizers>
-            <Grid HeightRequest="4" />
+            <Grid HeightRequest="4"/>
             <Label
                 FontSize="{Binding FontSize, Mode=OneWay}"
                 HorizontalTextAlignment="Center"
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
-                TextColor="{Binding TextColor, Mode=OneWay}" />
-            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EventColors, Mode=OneWay}" HeightRequest="8">
+                TextColor="{Binding TextColor, Mode=OneWay}"/>
+            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EventColors, Mode=OneWay}"
+                                   HeightRequest="8">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="Color">
                         <Border
@@ -49,7 +50,7 @@
                             BackgroundColor="{Binding ., Mode=OneWay}"
                             HeightRequest="8"
                             StrokeShape="RoundRectangle 4"
-                            WidthRequest="8" />
+                            WidthRequest="8"/>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </HorizontalStackLayout>
