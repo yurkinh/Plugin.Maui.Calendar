@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Plugin.Maui.Calendar.Controls.SelectionEngines;
+﻿using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -73,25 +72,17 @@ public class RangeSelectionCalendar : Calendar
 		selectionEngine = CurrentSelectionEngine as RangedSelectionEngine;
 	}
 
-	/// <summary>
-	/// Method that is called when a bound property is changed.
-	/// </summary>
-	/// <param name="propertyName">The name of the bound property that changed.</param>
-	protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+	protected override void UpdateRangeSelection()
 	{
-		base.OnPropertyChanged(propertyName);
-		if (propertyName is nameof(SelectedDates) && !isSelectionDatesChanging)
-		{
-			var first = selectionEngine.GetDateRange(DisabledDates);
+		var first = selectionEngine.GetDateRange(DisabledDates);
 
-			if (first.Count > 0)
-			{
-				isSelectionDatesChanging = true;
-				SetValue(SelectedStartDateProperty, first.First());
-				SetValue(SelectedEndDateProperty, first.Last());
-			}
-			UpdateDateColors();
+		if (first.Count > 0)
+		{
+			isSelectionDatesChanging = true;
+			SetValue(SelectedStartDateProperty, first.First());
+			SetValue(SelectedEndDateProperty, first.Last());
 		}
+		UpdateDateColors();
 	}
 
 	static void OnSelectedStartDateChanged(BindableObject bindable, object oldValue, object newValue)
@@ -104,6 +95,7 @@ public class RangeSelectionCalendar : Calendar
 			rangeSelectionCalendar.SelectedDates = rangeSelectionCalendar.selectionEngine.GetDateRange(rangeSelectionCalendar.DisabledDates);
 			rangeSelectionCalendar.isSelectionDatesChanging = false;
 		}
+
 		rangeSelectionCalendar.UpdateDateColors();
 	}
 
@@ -127,16 +119,15 @@ public class RangeSelectionCalendar : Calendar
 		{
 			var dayModel = dayView.BindingContext as DayModel;
 
-			if (dayModel.Date == SelectedStartDate || dayModel.Date == SelectedEndDate)
-			{
-				dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
-			}
-			else if (SelectedStartDate.HasValue && SelectedEndDate.HasValue &&
-					dayModel.Date > SelectedStartDate.Value && dayModel.Date < SelectedEndDate.Value)
+			if (SelectedDates.Contains(dayModel.Date))
 			{
 				dayModel.SelectedBackgroundColor = SelectedDatesRangeBackgroundColor;
 			}
 
+			if (dayModel.Date == SelectedStartDate || dayModel.Date == SelectedEndDate)
+			{
+				dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
+			}
 		}
 	}
 }

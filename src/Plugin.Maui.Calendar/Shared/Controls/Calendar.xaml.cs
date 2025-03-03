@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -1838,8 +1837,15 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.CurrentSelectionEngine.UpdateDateSelection(calendar.SelectedDates);
 			calendar.UpdateSelectedDateLabel();
 			calendar.UpdateEvents();
+
+			if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
+			{
+				calendar.UpdateRangeSelection();
+			}
 		}
 	}
+
+	protected virtual void UpdateRangeSelection() { }
 
 	#endregion
 
