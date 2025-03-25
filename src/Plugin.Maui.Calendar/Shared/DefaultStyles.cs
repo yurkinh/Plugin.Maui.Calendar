@@ -174,10 +174,7 @@ public static class DefaultStyles
 
 	static Style CreateDefaultWeekendTitleStyle()
 	{
-		Style style = new(typeof(Label)) { CanCascade = true };
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
-		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Red });
+		Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultWeekdayTitleStyle };
 		return style;
 	}
 }
-
