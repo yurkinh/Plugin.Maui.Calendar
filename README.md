@@ -5,13 +5,44 @@ This is a .NET MAUI port of the [lilcodelab](https://github.com/lilcodelab/) Xam
  Available on NuGet: <https://www.nuget.org/packages/Plugin.Maui.Calendar> [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.Calendar.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.Calendar/)
 
 
-Simple cross platform plugin for Calendar control featuring:
+Simple cross-platform plugin for Calendar control featuring:
 - Displaying events by binding EventCollection
 - Localization support with System.Globalization.CultureInfo
 - Customizable colors, day view sizes/label styles, custom Header/Footer template support
 - UI reactive to EventCollection, Culture and other changes 
 
 ### What's new
+V2.0.0
+* Updated to .NET 9
+* Optimized startup time
+* Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
+* Tottaly revamped calendar structure
+* Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties** (check Breaking Changes)
+### Breaking  Changes
+
+Properties that have been replaced by Styles
+```xml
+MonthLabelColor --> MonthLabelStyle
+YearLabelColor --> YearLabelStyle
+
+ArrowsBackgroundColor, ArrowsBorderColor, ArrowsBorderWidth, ArrowsFontAttribute, ArrowsFontSize, ArrowsFontFamily, ArrowsColor --> 
+ArrowsSymbolPrev --> PreviousMonthArrowButtonStyle
+ArrowsSymbolNext --> NextMonthArrowButtonStyle
+ArrowsSymbolPrev --> PreviousYearArrowButtonStyle
+ArrowsSymbolNext --> NextYearArrowButtonStyle
+
+SelectedDateColor --> FooterArrowLabelStyle
+ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
+
+DaysTitleHeight, DaysTitleColor --> WeekdayTitleStyle
+DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
+```
+
+Changes in styles
+```xml
+DaysTitleLabelStyle --> WeekdayTitleStyle, WeekendTitleStyle
+```
+
 V1.0.x
 * Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
 * Added Multiselection support (Latest PR that was not merged previously)
@@ -30,12 +61,6 @@ V1.0.x
 * Added **SelectedDatesRangeBackgroundColor** property
 * Updated samples
 
-V2.0.0
-* Updated to .NET 9
-* Optimized startup time
-* Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
-* Totaly revamped calendar structure
-* Added **Styles** (watch [Available Styles](#available-styles) section) that replace some **properties** (watch [Breaking  Changes](#breaking-changes) )
 
 ## Screenshots
 | Android | iOS |
@@ -62,26 +87,6 @@ Weekend calendar
 | Android     | IOS    |
 | ------- | ------ |
 | ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
-
-### Breaking  Changes
-
-Properties that have been replaced by Styles
-```xml
-MonthLabelColor --> MonthLabelStyle
-YearLabelColor --> YearLabelStyle
-
-ArrowsBackgroundColor, ArrowsBorderColor, ArrowsBorderWidth, ArrowsFontAttribute, ArrowsFontSize, ArrowsFontFamily, ArrowsColor --> 
-ArrowsSymbolPrev --> PreviousMonthArrowButtonStyle
-ArrowsSymbolNext --> NextMonthArrowButtonStyle
-ArrowsSymbolPrev --> PreviousYearArrowButtonStyle
-ArrowsSymbolNext --> NextYearArrowButtonStyle
-
-SelectedDateColor --> FooterArrowLabelStyle
-ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
-
-DaysTitleHeight, DaysTitleColor --> WeekdayTitleStyle
-DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
-```
 
 ### Usage
 To get started just install the package via Nuget.
