@@ -18,8 +18,8 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="TextColor"
                         Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
@@ -65,7 +65,7 @@
         SelectedDate="{Binding SelectedDate}"
         ShownDate="{Binding ShownDate}"
         VerticalOptions="Fill"
-        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+        DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
 

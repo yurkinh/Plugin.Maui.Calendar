@@ -80,7 +80,7 @@
             </Style>
             <Style
                 x:Key="MyTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="FontSize"
                         Value="12"/>
@@ -135,7 +135,7 @@
             SelectedTodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
             TodayOutlineColor="Transparent"
             TodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
-            WeekdayTitleStyle="{StaticResource MyTitleLabelStyle}"
+            DaysTitleLabelStyle ="{StaticResource MyTitleLabelStyle}"
             WeekendDayColor="{toolkit:AppThemeResource WeekendDaysTextColor}"
             WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
             Year="{Binding Year}">

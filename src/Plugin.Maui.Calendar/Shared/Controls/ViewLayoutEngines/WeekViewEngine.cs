@@ -11,14 +11,14 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 	public Grid GenerateLayout(
 		List<DayView> dayViews,
 		object bindingContext,
-		string weekdayTitleStyleBindingName,
+		string daysTitleLabelStyleeBindingName,
 		ICommand dayTappedCommand
 	)
 	{
 		return GenerateWeekLayout(
 			dayViews,
 			bindingContext,
-			weekdayTitleStyleBindingName,
+			daysTitleLabelStyleeBindingName,
 			dayTappedCommand,
 			numberOfWeeks
 		);

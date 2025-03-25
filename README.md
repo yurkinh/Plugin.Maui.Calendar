@@ -18,6 +18,8 @@ V2.0.0
 * Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
 * Tottaly revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties** (check Breaking Changes)
+* Added new WeekendTitleStyle
+
 ### Breaking  Changes
 
 Properties that have been replaced by Styles
@@ -34,13 +36,8 @@ ArrowsSymbolNext --> NextYearArrowButtonStyle
 SelectedDateColor --> FooterArrowLabelStyle
 ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
 
-DaysTitleHeight, DaysTitleColor --> WeekdayTitleStyle
+DaysTitleHeight, DaysTitleColor --> DaysTitleLabelStyle
 DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
-```
-
-Changes in styles
-```xml
-DaysTitleLabelStyle --> WeekdayTitleStyle, WeekendTitleStyle
 ```
 
 V1.0.x

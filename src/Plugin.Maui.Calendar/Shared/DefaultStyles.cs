@@ -19,7 +19,7 @@ public static class DefaultStyles
 	public static Style DefaultNextYearArrowButtonStyle { get; }
 	public static Style DefaultFooterArrowLabelStyle { get; }
 	public static Style DefaultSelectedDateLabelStyle { get; }
-	public static Style DefaultWeekdayTitleStyle { get; }
+	public static Style DefaultDaysTitleLabelStyle { get; }
 	public static Style DefaultWeekendTitleStyle { get; }
 
 	#endregion
@@ -38,7 +38,7 @@ public static class DefaultStyles
 		DefaultNextYearArrowButtonStyle = CreateDefaultNextYearArrowButtonStyle();
 		DefaultFooterArrowLabelStyle = CreateDefaultFooterArrowLabelStyle();
 		DefaultSelectedDateLabelStyle = CreateDefaultSelectedDateLabelStyle();
-		DefaultWeekdayTitleStyle = CreateDefaultWeekdayTitleStyle();
+		DefaultDaysTitleLabelStyle = CreateDefaultDaysTitleLabelStyle();
 		DefaultWeekendTitleStyle = CreateDefaultWeekendTitleStyle();
 	}
 
@@ -163,7 +163,7 @@ public static class DefaultStyles
 		return style;
 	}
 
-	static Style CreateDefaultWeekdayTitleStyle()
+	static Style CreateDefaultDaysTitleLabelStyle()
 	{
 		Style style = new(typeof(Label)) { CanCascade = true };
 		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
@@ -174,7 +174,7 @@ public static class DefaultStyles
 
 	static Style CreateDefaultWeekendTitleStyle()
 	{
-		Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultWeekdayTitleStyle };
+		Style style = new(typeof(Label)) { CanCascade = true, BasedOn = DefaultDaysTitleLabelStyle };
 		return style;
 	}
 }

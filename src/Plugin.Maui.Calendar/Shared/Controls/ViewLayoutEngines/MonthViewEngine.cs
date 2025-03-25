@@ -11,7 +11,7 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 	public Grid GenerateLayout(
 		List<DayView> dayViews,
 		object bindingContext,
-		string weekdayTitleStyleBindingName,
+		string daysTitleLabelStyleeBindingName,
 		ICommand dayTappedCommand
 	)
 	{
@@ -19,7 +19,7 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 		return GenerateWeekLayout(
 			dayViews,
 			bindingContext,
-			weekdayTitleStyleBindingName,
+			daysTitleLabelStyleeBindingName,
 			dayTappedCommand,
 			monthNumberOfWeeks
 		);

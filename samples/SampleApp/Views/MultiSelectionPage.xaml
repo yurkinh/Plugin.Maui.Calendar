@@ -24,8 +24,8 @@
                 <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
@@ -58,7 +58,7 @@
         Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
         VerticalOptions="Fill"
-        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+        DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>

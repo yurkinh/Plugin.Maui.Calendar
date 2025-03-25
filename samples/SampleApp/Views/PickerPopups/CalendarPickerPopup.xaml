@@ -20,8 +20,8 @@
                 <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
@@ -64,7 +64,7 @@
                     MinimumDate="{Binding MinimumDate}"
                     SelectedDate="{Binding SelectedDate}"
                     VerticalOptions="Center"
-                    WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+                    DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
                     WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                     WidthRequest="320" />
                 <Grid

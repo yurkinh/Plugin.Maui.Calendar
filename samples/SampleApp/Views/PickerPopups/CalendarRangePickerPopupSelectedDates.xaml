@@ -24,15 +24,15 @@
                         Value="{toolkit:AppThemeResource ButtonColor}"/>
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="TextColor"
                         Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
-                BasedOn="{StaticResource MyWeekdayTitleStyle}"
+                BasedOn="{StaticResource MyDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="TextColor"
                         Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
@@ -72,7 +72,7 @@
                     SelectedDates="{Binding SelectedDates}"
                     ShownDate="{Binding ShownDate}"
                     VerticalOptions="Center"
-                    WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+                    DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
                     WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                     WidthRequest="320">
                     <plugin:Calendar.HeaderSectionTemplate>
