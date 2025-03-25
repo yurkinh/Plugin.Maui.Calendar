@@ -2087,10 +2087,8 @@ public partial class Calendar : ContentView, IDisposable
 							? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
 
 			// Detect weekend days
-			if (WeekdayTitleStyle != WeekendTitleStyle && (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday))
+			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
 			{
-				// It's a weekend day
-				// You can change the color of the label or do something else
 				dayLabel.Style = WeekendTitleStyle;
 			}
 			dayNumber = (dayNumber + 1) % 7;
