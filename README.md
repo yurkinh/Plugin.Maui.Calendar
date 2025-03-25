@@ -18,7 +18,7 @@ V2.0.0
 * Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
 * Tottaly revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties** (check Breaking Changes)
-* Added new WeekendTitleStyle
+* Added **WeekendTitleStyle**
 
 ### Breaking  Changes
 
