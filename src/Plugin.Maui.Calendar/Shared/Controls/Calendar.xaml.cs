@@ -1434,22 +1434,22 @@ public partial class Calendar : ContentView, IDisposable
 	#region DaysTitle Bindable properties
 
 	/// <summary>
-	/// Bindable property for WeekdayTitleStyle
+	/// Bindable property for DaysTitleLabelStyle 
 	/// </summary>
-	public static readonly BindableProperty WeekdayTitleStyleProperty = BindableProperty.Create(
-		nameof(WeekdayTitleStyle),
+	public static readonly BindableProperty DaysTitleLabelStyleProperty = BindableProperty.Create(
+		nameof(DaysTitleLabelStyle),
 		typeof(Style),
 		typeof(Calendar),
-		DefaultStyles.DefaultWeekdayTitleStyle
+		DefaultStyles.DefaultDaysTitleLabelStyle
 	);
 
 	/// <summary>
 	/// Specifies the style of weekday title labels
 	/// </summary>
-	public Style WeekdayTitleStyle
+	public Style DaysTitleLabelStyle
 	{
-		get => (Style)GetValue(WeekdayTitleStyleProperty);
-		set => SetValue(WeekdayTitleStyleProperty, value);
+		get => (Style)GetValue(DaysTitleLabelStyleProperty);
+		set => SetValue(DaysTitleLabelStyleProperty, value);
 	}
 
 	/// <summary>
@@ -2323,7 +2323,7 @@ public partial class Calendar : ContentView, IDisposable
 		daysControl = CurrentViewLayoutEngine.GenerateLayout(
 			dayViews,
 			this,
-			nameof(WeekdayTitleStyle),
+			nameof(DaysTitleLabelStyle),
 			DayTappedCommand
 		);
 

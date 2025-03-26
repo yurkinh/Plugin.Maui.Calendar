@@ -16,7 +16,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	protected static Grid GenerateWeekLayout(
 			List<DayView> dayViews,
 			object bindingContext,
-			string weekdayTitleStyleBindingName,
+			string daysTitleLabelStyleeBindingName,
 			ICommand dayTappedCommand,
 			int numberOfWeeks
 	)
@@ -50,7 +50,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 				HorizontalTextAlignment = TextAlignment.Center,
 				BindingContext = bindingContext
 			};
-			label.SetBinding(VisualElement.StyleProperty, weekdayTitleStyleBindingName);
+			label.SetBinding(VisualElement.StyleProperty, daysTitleLabelStyleeBindingName);
 
 			grid.Add(label, i, 0);
 		}

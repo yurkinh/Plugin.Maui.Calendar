@@ -15,46 +15,37 @@
     Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle"
-                   TargetType="Label">
-                <Setter Property="HorizontalTextAlignment"
-                        Value="Center"/>
-                <Setter Property="TextColor"
-                        Value="Black"/>
-                <Setter Property="FontSize"
-                        Value="Medium"/>
-                <Setter Property="LineBreakMode"
-                        Value="WordWrap"/>
-                <Setter Property="VerticalTextAlignment"
-                        Value="Center"/>
-                <Setter Property="Margin"
-                        Value="5,2"/>
+            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="WeekendTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="Orange"/>
+                <Setter Property="TextColor" Value="Orange" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="Orange"/>
+                <Setter Property="TextColor" Value="Orange" />
             </Style>
-            <Style x:Key="MySelectedDateLabelStyle"
-                   TargetType="Label"
-                   BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}">
-                <Setter Property="TextColor"
-                        Value="Red"/>
+            <Style
+                x:Key="MySelectedDateLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
-        <local:AdvancedPageViewModel/>
+        <local:AdvancedPageViewModel />
     </ContentPage.BindingContext>
 
 
@@ -67,6 +58,7 @@
         DayViewCornerRadius="3"
         DayViewSize="40"
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
         DeselectedDayTextColor="Blue"
         EventIndicatorColor="Red"
@@ -94,22 +86,21 @@
         TodayOutlineColor="Blue"
         TodayTextColor="Yellow"
         VerticalOptions="Fill"
-        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}">
 
         <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarHeader/>
+            <controls:CalendarHeader />
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter/>
+                <controls:CalendarFooter />
             </DataTemplate>
         </plugin:Calendar.FooterSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
             <DataTemplate x:DataType="local:AdvancedPageViewModel">
-                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedCalendarPage}}"/>
+                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedCalendarPage}}" />
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
         <plugin:Calendar.EmptyTemplate>
@@ -118,7 +109,7 @@
                     <Label
                         Margin="0,5,0,5"
                         HorizontalTextAlignment="Center"
-                        Text="NO EVENTS FOR THE SELECTED DATE"/>
+                        Text="NO EVENTS FOR THE SELECTED DATE" />
                 </VerticalStackLayout>
             </DataTemplate>
         </plugin:Calendar.EmptyTemplate>

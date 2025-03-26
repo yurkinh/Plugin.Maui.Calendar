@@ -31,8 +31,8 @@
                 <Setter Property="TextColor" Value="Red" />
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
@@ -83,7 +83,7 @@
                 TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
                 TodayOutlineColor="Transparent"
                 TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
-                WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
+                DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
                 WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                 Year="{Binding Year, Mode=TwoWay}">
 

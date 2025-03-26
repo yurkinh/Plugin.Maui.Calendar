@@ -15,38 +15,34 @@
     Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysTitleLabelStyle"
-                    TargetType="Label">
-                <Setter Property="FontAttributes"
-                        Value="Bold"/>
-                <Setter Property="FontSize"
-                        Value="20"/>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="20" />
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="Red"/>
+                <Setter Property="TextColor" Value="Red" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BindingContext>
-        <local:RangeSelectionPageViewModel/>
+        <local:RangeSelectionPageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
         Padding="10,0"
         DayTappedCommand="{Binding DayTappedCommand}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
@@ -60,22 +56,21 @@
         SelectedStartDate="{Binding SelectedStartDate}"
         SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         ShownDate="{Binding ShownDate}"
-        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
-            <controls:CalendarHeader/>
+            <controls:CalendarHeader />
         </plugin:RangeSelectionCalendar.HeaderSectionTemplate>
 
         <plugin:RangeSelectionCalendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter/>
+                <controls:CalendarFooter />
             </DataTemplate>
         </plugin:RangeSelectionCalendar.FooterSectionTemplate>
 
         <plugin:RangeSelectionCalendar.EventTemplate>
             <DataTemplate x:DataType="local:RangeSelectionPageViewModel">
-                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}"/>
+                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EventTemplate>
         <plugin:RangeSelectionCalendar.EmptyTemplate>
@@ -84,7 +79,7 @@
                     <Label
                         Margin="0,5,0,5"
                         HorizontalTextAlignment="Center"
-                        Text="NO EVENTS FOR THE SELECTED DATE"/>
+                        Text="NO EVENTS FOR THE SELECTED DATE" />
                 </VerticalStackLayout>
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EmptyTemplate>

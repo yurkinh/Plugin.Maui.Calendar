@@ -14,42 +14,30 @@
     Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle"
-                    TargetType="Label">
-                <Setter Property="HorizontalTextAlignment"
-                        Value="Center"/>
-                <Setter Property="TextColor"
-                        Value="Black"/>
-                <Setter Property="FontSize"
-                        Value="Medium"/>
-                <Setter Property="LineBreakMode"
-                        Value="WordWrap"/>
-                <Setter Property="VerticalTextAlignment"
-                        Value="Center"/>
-                <Setter Property="Margin"
-                        Value="5,2"/>
+            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style
-                x:Key="MyWeekdayTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekdayTitleStyle}"
+                x:Key="MyDaysTitleLabelStyle "
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="FontSize"
-                        Value="18"/>
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="Red"/>
+                <Setter Property="TextColor" Value="Red" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}"
-                Text="Today"/>
+        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
     <plugin:Calendar
         x:Name="calendar"
@@ -57,6 +45,7 @@
         AllowDeselecting="False"
         Day="{Binding Day}"
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
@@ -72,7 +61,6 @@
         SelectedDate="{Binding SelectedDate}"
         SwipeDetectionDisabled="False"
         VerticalOptions="Fill"
-        WeekdayTitleStyle="{StaticResource MyWeekdayTitleStyle}"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
-        Year="{Binding Year}"/>
+        Year="{Binding Year}" />
 </ContentPage>
