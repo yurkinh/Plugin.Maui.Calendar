@@ -49,7 +49,7 @@ public class RangeSelectionCalendar : Calendar
 		nameof(SelectedDatesRangeBackgroundColor),
 		typeof(Color),
 		typeof(RangeSelectionCalendar),
-		Colors.LightGray
+		null
 	);
 
 	/// <summary>
@@ -57,7 +57,17 @@ public class RangeSelectionCalendar : Calendar
 	/// </summary>
 	public Color SelectedDatesRangeBackgroundColor
 	{
-		get => (Color)GetValue(SelectedDatesRangeBackgroundColorProperty);
+		get
+		{
+			var color = (Color)GetValue(SelectedDatesRangeBackgroundColorProperty);
+
+			if (color == null)
+			{
+				return SelectedDayBackgroundColor;
+			}
+
+			return color;
+		}
 		set => SetValue(SelectedDatesRangeBackgroundColorProperty, value);
 	}
 	bool isSelectionDatesChanging = false;
