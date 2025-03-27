@@ -19,6 +19,7 @@ V2.0.0
 * Revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties**
 * Added **WeekendTitleStyle**
+* Updated samples
 
 ### Breaking  Changes
 
