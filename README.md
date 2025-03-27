@@ -9,14 +9,14 @@ Simple cross-platform plugin for Calendar control featuring:
 - Displaying events by binding EventCollection
 - Localization support with System.Globalization.CultureInfo
 - Customizable colors, day view sizes/label styles, custom Header/Footer template support
-- UI reactive to EventCollection, Culture and other changes 
+- UI reactive to EventCollection, Culture, and other changes 
 
 ### What's new
 V2.0.0
 * Updated to .NET 9
 * Optimized startup time
 * Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
-* Tottaly revamped calendar structure
+* Totally revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties** (check Breaking Changes)
 * Added **WeekendTitleStyle**
 
