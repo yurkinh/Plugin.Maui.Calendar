@@ -15,15 +15,16 @@ Simple cross-platform plugin for Calendar control featuring:
 V2.0.0
 * Updated to .NET 9
 * Optimized startup time
-* Fixed memory leaks (Added  sample page (default calendar) with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
+* Fixed memory leaks.* 
 * Revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties**
 * Added **WeekendTitleStyle**
+* Added sample page (Default calendar) to test memory leaks with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
 * Updated samples
 
 ### Breaking  Changes
 
-Properties that have been replaced by Styles
+Properties that Styles have replaced
 ```xml
 MonthLabelColor --> MonthLabelStyle
 YearLabelColor --> YearLabelStyle
@@ -42,15 +43,15 @@ DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
 ```
 
 V1.0.x
-* Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
+* Removed all the platform-specific code, hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
 * Added Multiselection support (Latest PR that was not merged previously)
 * Refactored and revamped code
 * Updated to .NET 8
-* Added OnShownDateChangedCommand so we can take action when date is changed.
+* Added OnShownDateChangedCommand so we can take action when a date is changed.
 * Added new property **OtherMonthSelectedDayColor**
 * Fixed bug with **OtherMonthDayIsVisible** property
 * Added a weekend calendar sample
-* Added a windows 11 calendar sample
+* Added a Windows 11 calendar sample
 * Added theme support
 * Added new property **FirstDayOfWeek**
 * Added support for multiple event dots (multidots) in calendar 
