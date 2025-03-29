@@ -18,7 +18,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style
-                x:Key="MyDaysTitleLabelStyle "
+                x:Key="MyDaysTitleLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
                 <Setter Property="TextColor"
