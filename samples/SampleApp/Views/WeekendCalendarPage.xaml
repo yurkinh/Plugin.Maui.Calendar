@@ -16,48 +16,62 @@
     Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontSize" Value="20" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Margin" Value="5,2" />
+            <Style x:Key="MyDaysLabelStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="TextColor"
+                        Value="White"/>
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="VerticalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="Margin"
+                        Value="5,2"/>
             </Style>
             <Style
                 x:Key="MyDaysTitleLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
                 TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextColor}" />
+                <Setter Property="FontSize"
+                        Value="18"/>
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource TextColor}"/>
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="FontSize"
+                        Value="18"/>
+                <Setter Property="TextColor"
+                        Value="Red"/>
             </Style>
             <Style
                 x:Key="MyMonthLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
                 TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontSize"
+                        Value="18"/>
             </Style>
             <Style
                 x:Key="MyYearLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
                 TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontSize"
+                        Value="18"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}"
+                     Text="Today"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.BindingContext>
-        <local:WeekendCalendarPageViewModel />
+        <local:WeekendCalendarPageViewModel/>
     </ContentPage.BindingContext>
     <plugin:Calendar
         x:Name="calendar"
@@ -68,8 +82,10 @@
         EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
         Events="{Binding Events, Mode=OneWay}"
         FooterArrowVisible="False"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         HeaderSectionVisible="true"
         HorizontalOptions="Fill"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"
@@ -79,5 +95,5 @@
         VerticalOptions="Fill"
         WeekendDayColor="Red"
         Year="{Binding Year}"
-        YearLabelStyle="{StaticResource MyYearLabelStyle}" />
+        YearLabelStyle="{StaticResource MyYearLabelStyle}"/>
 </ContentPage>
