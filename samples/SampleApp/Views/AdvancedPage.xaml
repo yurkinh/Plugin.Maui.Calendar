@@ -24,7 +24,7 @@
                 <Setter Property="Margin" Value="5,2" />
             </Style>
             <Style
-                x:Key="WeekendTitleStyle"
+                x:Key="MyDaysTitleLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
                 <Setter Property="TextColor" Value="Orange" />
