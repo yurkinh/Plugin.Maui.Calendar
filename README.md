@@ -15,7 +15,7 @@ Simple cross-platform plugin for Calendar control featuring:
 V2.0.0
 * Updated to .NET 9
 * Optimized startup time
-* Fixed memory leaks.* 
+* Fixed memory leaks* 
 * Revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties**
 * Added **WeekendTitleStyle**
@@ -59,6 +59,9 @@ V1.0.x
 * Added **AllowDeselecting** property
 * Added **SelectedDatesRangeBackgroundColor** property
 * Updated samples
+
+## YouTube
+[![Free and Complete Calendar Control for .NET MAUI: Plugin.Maui.Calendar](https://img.youtube.com/vi/bmkizbS4jb4/0.jpg)]([https://www.youtube.com/watch?v=bmkizbS4jb4])
 
 
 ## Screenshots
