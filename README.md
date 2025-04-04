@@ -14,7 +14,7 @@ Simple cross-platform plugin for Calendar control featuring:
 ### What's new
 V2.0.0
 * Updated to .NET 9
-* Optimized startup time
+* Optimized startup time: iOS 20 % / Android 40 % 
 * Fixed memory leaks* 
 * Revamped calendar structure
 * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties**
