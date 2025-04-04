@@ -6,42 +6,51 @@
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="windowsCalendarPage"
-    Shell.TabBarIsVisible="False"
     Title="Windows 11 Calendar"
-    x:DataType="local:Windows11CalendarViewModel">
+    x:DataType="local:Windows11CalendarViewModel"
+    Shell.TabBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:AppThemeColor
                 x:Key="WindowsThemeColor"
                 Dark="#04e762"
-                Light="#2b9348"/>
+                Light="#2b9348" />
             <toolkit:AppThemeColor
                 x:Key="TodayDayLabelTextColor"
                 Dark="Black"
-                Light="White"/>
+                Light="White" />
             <toolkit:AppThemeObject
                 x:Key="Walpaper"
                 Dark="windows_walpaper_dark.png"
-                Light="windows_walpaper_light.png"/>
-            <Style x:Key="DaysLabelStyle"
-                   TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="Red"/>
+                Light="windows_walpaper_light.png" />
+            <Style x:Key="DaysLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+            <Style
+                x:Key="MyDaysTitleLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-
     <ContentPage.BindingContext>
-        <local:Windows11CalendarViewModel/>
+        <local:Windows11CalendarViewModel />
     </ContentPage.BindingContext>
 
     <Grid>
-        <Image Aspect="AspectFill"
-               Source="{toolkit:AppThemeResource Walpaper}"/>
+        <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />
         <Border
             Margin="30"
             BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
@@ -58,16 +67,14 @@
                     Brush="Black"
                     Opacity="0.1"
                     Radius="2"
-                    Offset="0,4"/>
+                    Offset="0,4" />
             </Border.Shadow>
             <plugin:Calendar
                 x:Name="calendar"
                 BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
                 DaysLabelStyle="{StaticResource DaysLabelStyle}"
-                DaysTitleColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 DaysTitleLabelFirstUpperRestLower="True"
                 DaysTitleMaximumLength="TwoChars"
-                DaysTitleWeekendColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 FooterSectionVisible="False"
                 Month="{Binding Month, Mode=TwoWay}"
                 SelectedDayBackgroundColor="{toolkit:AppThemeResource WindowsThemeColor}"
@@ -76,11 +83,13 @@
                 TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
                 TodayOutlineColor="Transparent"
                 TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
+                DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
+                WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                 Year="{Binding Year, Mode=TwoWay}">
 
                 <plugin:Calendar.HeaderSectionTemplate>
                     <DataTemplate>
-                        <controls:Windows11CalendarHeader/>
+                        <controls:Windows11CalendarHeader />
                     </DataTemplate>
                 </plugin:Calendar.HeaderSectionTemplate>
             </plugin:Calendar>

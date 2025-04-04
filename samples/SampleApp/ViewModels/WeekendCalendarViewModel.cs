@@ -5,7 +5,8 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 {
     public WeekendCalendarPageViewModel() : base()
     {
-        MainThread.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
+        //uncoment if want to show alert when page is loaded
+        //MainThread.BeginInvokeOnMainThread(async () => await AppShell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
         // testing all kinds of adding events
         // when initializing collection
@@ -51,7 +52,7 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
     {
         if (item is EventModel eventModel)
         {
-            await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
+            await Shell.Current.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
         }
     }
 
@@ -69,7 +70,7 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
         {
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
-            await App.Current.MainPage.DisplayAlert(title, message, "Ok");
+            await Shell.Current.DisplayAlert(title, message, "Ok");
         }
     }
 }

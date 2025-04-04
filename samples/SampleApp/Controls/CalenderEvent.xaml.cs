@@ -2,10 +2,9 @@
 
 namespace SampleApp.Controls;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class CalenderEvent : ContentView
 {
-    public static BindableProperty CalenderEventCommandProperty =
+    public static readonly BindableProperty CalenderEventCommandProperty =
         BindableProperty.Create(nameof(CalenderEventCommand), typeof(ICommand), typeof(CalenderEvent), null);
 
     public CalenderEvent()
@@ -19,9 +18,11 @@ public partial class CalenderEvent : ContentView
         set => SetValue(CalenderEventCommandProperty, value);
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+    void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
     {
         if (BindingContext is AdvancedEventModel eventModel)
-            CalenderEventCommand?.Execute(eventModel);
-    }
+		{
+			CalenderEventCommand?.Execute(eventModel);
+		}
+	}
 }

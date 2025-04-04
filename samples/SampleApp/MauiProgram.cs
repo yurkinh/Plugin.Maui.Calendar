@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
+using MemoryToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using SampleApp.Helpers;
@@ -27,8 +28,15 @@ public static class MauiProgram
                 fonts.AddFont("DarkerGrotesque-VariableFont_wght.ttf", "DarkerGrotesque");
             });
 
+
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
+        builder.UseLeakDetection(collectionTarget =>
+            {
+                // This callback will run any time a leak is detected.
+                Shell.Current.DisplayAlert("💦Leak Detected💦",
+                    $"❗🧟❗{collectionTarget.Name} is a zombie!", "OK");
+            });
 #endif
 
         var app = builder.Build();
@@ -40,13 +48,12 @@ public static class MauiProgram
     }
     static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
     {
-        builder.Services.AddTransient<UserSettingPage>();
-        builder.Services.AddTransient<UserSettingViewModel>();
+		builder.Services.AddTransientWithShellRoute<UserSettingPage, UserSettingViewModel>(nameof(UserSettingPage));
+		builder.Services.AddTransientWithShellRoute<SimplePage, SimplePageViewModel>(nameof(SimplePage));
+		builder.Services.AddTransientWithShellRoute<XiaomiCalendarPage, XiaomiCalendarViewModel>(nameof(XiaomiCalendarPage));
+		builder.Services.AddTransientWithShellRoute<EditEventPage, EditEventPageViewModel>(nameof(EditEventPage));
 
-        builder.Services.AddTransient<SimplePage>();
-        builder.Services.AddTransient<SimplePageViewModel>();
-
-        return builder;
+		return builder;
     }
     static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
     {

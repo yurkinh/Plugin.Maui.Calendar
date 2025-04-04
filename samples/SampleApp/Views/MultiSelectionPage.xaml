@@ -4,54 +4,52 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="multiCalendarPage"
-    Title="MultiSelectionPage"
-    Shell.TabBarIsVisible="False"
+    Title="Multi Selection Calendar"
     x:DataType="local:SimplePageViewModel"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Unloaded="UnloadedHandler">
+    Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="daysLabelStyle"
-                   TargetType="Label">
-                <Setter Property="HorizontalTextAlignment"
-                        Value="Center"/>
-                <Setter Property="TextColor"
-                        Value="Black"/>
-                <Setter Property="FontSize"
-                        Value="Medium"/>
-                <Setter Property="LineBreakMode"
-                        Value="WordWrap"/>
-                <Setter Property="VerticalTextAlignment"
-                        Value="Center"/>
-                <Setter Property="Margin"
-                        Value="5,2"/>
+            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,2" />
             </Style>
-            <Style x:Key="daysTitleLabelStyle"
-                   TargetType="Label">
-                <Setter Property="FontSize"
-                        Value="18"/>
+            <Style
+                x:Key="MyDaysTitleLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
+                TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+                TargetType="Label">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}"
-                     Text="Today"/>
+        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
-        <local:SimplePageViewModel/>
+        <local:SimplePageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:MultiSelectionCalendar
         x:Name="calendar"
         Padding="10,0"
-        ArrowsFontSize="Medium"
-        DaysLabelStyle="{StaticResource daysLabelStyle}"
-        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
-        DaysTitleLabelStyle="{StaticResource daysTitleLabelStyle}"
-        DaysTitleWeekendColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
+        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         HorizontalOptions="Fill"
@@ -60,9 +58,11 @@
         Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
         VerticalOptions="Fill"
+        DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
         <plugin:Calendar.EventTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="models:EventModel">
                 <VerticalStackLayout
                     Padding="15,0,0,0"
                     HorizontalOptions="Fill"
@@ -71,14 +71,16 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}"/>
+                        Text="{Binding Name}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}"/>
+                        Text="{Binding Description}" />
                     <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
-                                              CommandParameter="{Binding .}"/>
+                        <TapGestureRecognizer
+                            x:DataType="local:SimplePageViewModel"
+                            Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
+                            CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

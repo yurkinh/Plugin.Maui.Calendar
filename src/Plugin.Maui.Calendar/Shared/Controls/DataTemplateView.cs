@@ -13,11 +13,13 @@ public class DataTemplateView : ContentView
 
     public DataTemplateView() { }
 
-    private static void OnItemTemplateChanged(BindableObject bindable, object oldValue, object newValue)
+    static void OnItemTemplateChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is DataTemplateView view)
-            view.CreateContent();
-    }
+		{
+			view.CreateContent();
+		}
+	}
 
     protected override void OnBindingContextChanged()
     {
@@ -25,12 +27,14 @@ public class DataTemplateView : ContentView
         CreateContent();
     }
 
-    private void CreateContent()
+    void CreateContent()
     {
         if (BindingContext == null)
-            return;
+		{
+			return;
+		}
 
-        var itemContent = ItemTemplate?.CreateContent(BindingContext);
+		var itemContent = ItemTemplate?.CreateContent(BindingContext);
 
         Content = itemContent as View;
     }

@@ -2,21 +2,19 @@
 <ContentView
     x:Class="SampleApp.Controls.CalendarFooter"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    x:DataType="plugin:Calendar">
     <Grid
         HeightRequest="40"
         RowSpacing="6"
         HorizontalOptions="Fill"
         VerticalOptions="Fill"
-        ColumnDefinitions="Auto,*">        
+        ColumnDefinitions="Auto,*">
         <Label
             Grid.Column="0"
-            FontAttributes="Bold"
-            FontSize="Medium"
-            Text="{Binding SelectedDateText}"
-            TextColor="{Binding SelectedDateColor}"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center" />
+            Style="{Binding SelectedDateLabelStyle}"
+            Text="{Binding SelectedDateText}"/>
 
         <Label
             x:Name="showHideLabel"
@@ -24,7 +22,7 @@
             Margin="0,0,15,0"
             BackgroundColor="Transparent"
             FontAttributes="Bold"
-            FontFamily="{Binding ArrowsFontFamily}"
+            FontFamily="FontAwesomeSolid"
             FontSize="25"
             HorizontalOptions="End"
             IsVisible="{Binding FooterArrowVisible}"
@@ -37,12 +35,13 @@
                     Binding="{Binding CalendarSectionShown}"
                     TargetType="Label"
                     Value="False">
-                    <Setter Property="Text" Value="&#xf063;" />
+                    <Setter Property="Text"
+                            Value="&#xf063;"/>
                 </DataTrigger>
             </Label.Triggers>
         </Label>
         <Grid.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
+            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}"/>
         </Grid.GestureRecognizers>
     </Grid>
 </ContentView>

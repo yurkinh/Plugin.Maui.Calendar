@@ -1,22 +1,19 @@
-﻿using SampleApp.Model;
-using SampleApp.Services;
-using SampleApp.Views;
+﻿using SampleApp.Services;
 
 namespace SampleApp;
 
 public partial class App : Application
 {
-    readonly IThemeService themeService;
+	readonly IThemeService themeService;
 
     public static new App Current => (App)Application.Current;
     public App(IThemeService themeService)
     {
         this.themeService = themeService;
         InitializeComponent();
-
-        MainPage = new AppShell();
     }
 
+    protected override Window CreateWindow(IActivationState activationState) => new(new AppShell());
 
     protected override void OnStart()
     {
@@ -27,6 +24,4 @@ public partial class App : Application
     {
 
     }
-
 }
-

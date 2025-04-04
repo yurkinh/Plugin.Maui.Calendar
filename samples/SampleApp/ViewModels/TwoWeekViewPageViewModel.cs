@@ -70,7 +70,7 @@ public partial class TwoWeekViewPageViewModel : BasePageViewModel
 
     [ObservableProperty]
     string description;
-    private static IEnumerable<EventModel> GenerateEvents(int count, string name)
+    static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new EventModel
         {
@@ -83,7 +83,7 @@ public partial class TwoWeekViewPageViewModel : BasePageViewModel
     {
         if (item is EventModel eventModel)
         {
-            await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
+            await Shell.Current.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
         }
     }
 

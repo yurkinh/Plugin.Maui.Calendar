@@ -5,11 +5,63 @@ This is a .NET MAUI port of the [lilcodelab](https://github.com/lilcodelab/) Xam
  Available on NuGet: <https://www.nuget.org/packages/Plugin.Maui.Calendar> [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.Calendar.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.Calendar/)
 
 
-Simple cross platform plugin for Calendar control featuring:
+Simple cross-platform plugin for Calendar control featuring:
 - Displaying events by binding EventCollection
 - Localization support with System.Globalization.CultureInfo
 - Customizable colors, day view sizes/label styles, custom Header/Footer template support
-- UI reactive to EventCollection, Culture and other changes 
+- UI reactive to EventCollection, Culture, and other changes 
+
+### What's new
+V2.0.0
+* Updated to .NET 9
+* Optimized startup time: iOS 20 % / Android 40 % 
+* Fixed memory leaks* 
+* Revamped calendar structure
+* Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties**
+* Added **WeekendTitleStyle**
+* Added sample page (Default calendar) to test memory leaks with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
+* Updated samples
+
+### Breaking  Changes
+
+Properties that Styles have replaced
+```xml
+MonthLabelColor --> MonthLabelStyle
+YearLabelColor --> YearLabelStyle
+
+ArrowsBackgroundColor, ArrowsBorderColor, ArrowsBorderWidth, ArrowsFontAttribute, ArrowsFontSize, ArrowsFontFamily, ArrowsColor --> 
+ArrowsSymbolPrev --> PreviousMonthArrowButtonStyle
+ArrowsSymbolNext --> NextMonthArrowButtonStyle
+ArrowsSymbolPrev --> PreviousYearArrowButtonStyle
+ArrowsSymbolNext --> NextYearArrowButtonStyle
+
+SelectedDateColor --> FooterArrowLabelStyle
+ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
+
+DaysTitleHeight, DaysTitleColor --> DaysTitleLabelStyle
+DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
+```
+
+V1.0.x
+* Removed all the platform-specific code, hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
+* Added Multiselection support (Latest PR that was not merged previously)
+* Refactored and revamped code
+* Updated to .NET 8
+* Added OnShownDateChangedCommand so we can take action when a date is changed.
+* Added new property **OtherMonthSelectedDayColor**
+* Fixed bug with **OtherMonthDayIsVisible** property
+* Added a weekend calendar sample
+* Added a Windows 11 calendar sample
+* Added theme support
+* Added new property **FirstDayOfWeek**
+* Added support for multiple event dots (multidots) in calendar 
+* Added **MonthChanged** Event and **MonthChangedCommand**
+* Added **AllowDeselecting** property
+* Added **SelectedDatesRangeBackgroundColor** property
+* Updated samples
+
+## YouTube
+[![Free and Complete Calendar Control for .NET MAUI: Plugin.Maui.Calendar](https://img.youtube.com/vi/bmkizbS4jb4/0.jpg)](https://www.youtube.com/watch?v=bmkizbS4jb4)
 
 
 ## Screenshots
@@ -37,31 +89,6 @@ Weekend calendar
 | Android     | IOS    |
 | ------- | ------ |
 | ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
-
-
-
-
-
-### What's new
-* Removed all the platform-specific code hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
-* Added Multiselection support (Latest PR that was not merged previously)
-* Exposed a few more properties for Arrow buttons customization
-* Refactored and revamped code
-* Updated to .NET 8 
-* Added OnShownDateChangedCommand so we can take action when date is changed.
-* Added Dispose method to force handlers disconnect call.
-* Added new property **OtherMonthSelectedDayColor**
-* Fixed bug with **OtherMonthDayIsVisible** property
-* Added a weekend calendar sample
-* Added a windows 11 calendar sample
-* Added theme support
-* Added new property **FirstDayOfWeek**
-* Added support for multiple event dots (multidots) in calendar 
-* Added **MonthChanged** Event and **MonthChangedCommand**
-* Added **AllowDeselecting** property
-* Added **SelectedDatesRangeBackgroundColor** property
-* Updated samples
-
 
 ### Usage
 To get started just install the package via Nuget.
@@ -204,28 +231,42 @@ In XAML add Culture binding
 #### Available color customization
 Sample properties:
 ```xml
-ArrowBorder
-MonthLabelColor="Red"
-YearLabelColor="Blue"
 EventIndicatorColor="Red"
 EventIndicatorSelectedColor="White"
-DaysTitleColor="Orange"
 DeselectedDayTextColor="Blue"
 OtherMonthDayColor="Gray"
 SelectedDayTextColor="Cyan"
 SelectedDayBackgroundColor="DarkCyan"
-SelectedDateColor="Red"
 SelectedTodayTextColor="Green"
 TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
 OtherMonthSelectedDayColor="HotPink"
-FirstDayOfWeek="Monday"
+
+```
+#### Available Styles
+```xml
+MonthLabelStyle
+YearLabelStyle
+
+PreviousMonthArrowButtonStyle
+NextMonthArrowButtonStyle
+PreviousYearArrowButtonStyle
+NextYearArrowButtonStyle
+
+FooterArrowLabelStyle
+SelectedDateLabelStyle
+
+WeekdayTitleStyle
+WeekendTitleStyle
 ```
 
 #### Available customization properties
+```xml
+FirstDayOfWeek="Monday"
+```
 
-##### Calendar Layout customizations
+#### Calendar Layout customizations
 You can set the layout of the calendar with the property `CalendarLayout`
 
 - Available layouts are: 
@@ -302,11 +343,7 @@ On the `MultiselectionCalendar` you can select multiple separate dates
 __Remark: Don't use both `SelectedDates` and `SelectedStartDate`/`SelectedEndDate`__
 
 ##### Other customizations
-Enable/Disable animation when calendar is loaded or refreshed
-Sample properties:
-```xml
-AnimateCalendar="False"
-```
+
 Enable/Disable the visibility of the Events scrollview panel at the bottom
 Sample properties:
 ```xml
@@ -369,16 +406,4 @@ Customize what to show in case the selected date has no events. Example from Adv
         </StackLayout>
     </DataTemplate>
 </plugin:Calendar.EmptyTemplate>
-```
-
-###### Dispose
-Due to issues with maui controls disposing (memory leaks) it is recomended to call Dispose() method on page Unload event (or similiar)
-```xml
--Page Xaml-
-Unloaded="UnloadedHandler"
--Code behind-
-void UnloadedHandler(object sender, EventArgs e)
-{
-  calendar.Dispose();
-}
 ```

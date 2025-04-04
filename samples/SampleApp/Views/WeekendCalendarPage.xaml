@@ -1,68 +1,99 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-        x:Class="SampleApp.Views.WeekendCalendarPage"
-        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        xmlns:controls="clr-namespace:SampleApp.Controls"
-        xmlns:local="clr-namespace:SampleApp.ViewModels"
-        Shell.TabBarIsVisible="False"
-        xmlns:model="clr-namespace:SampleApp.Model"
-        xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-        x:Name="weekendCalendarPage"
-        x:DataType="local:WeekendCalendarPageViewModel"
-        BackgroundColor="{toolkit:AppThemeResource BackgroundColor}">
-        <ContentPage.Resources>
-                <ResourceDictionary>
-                        <Style x:Key="daysLabelStyle"
-                               TargetType="Label">
-                                <Setter Property="HorizontalTextAlignment"
-                                        Value="Center"/>
-                                <Setter Property="TextColor"
-                                        Value="White"/>
-                                <Setter Property="FontSize"
-                                        Value="20"/>
-                                <Setter Property="FontAttributes"
-                                        Value="Bold"/>
-                                <Setter Property="VerticalTextAlignment"
-                                        Value="Center"/>
-                                <Setter Property="Margin"
-                                        Value="5,2"/>
-                        </Style>
-                        <Style x:Key="daysTitleLabelStyle"
-                               TargetType="Label">
-                                <Setter Property="FontSize"
-                                        Value="18"/>
-                        </Style>
-                </ResourceDictionary>
-        </ContentPage.Resources>
-        <ContentPage.ToolbarItems>
-                <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}"
-                             Text="Today"/>
-        </ContentPage.ToolbarItems>
+    x:Class="SampleApp.Views.WeekendCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="weekendCalendarPage"
+    Title="Weekend Calendar"
+    x:DataType="local:WeekendCalendarPageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Shell.TabBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MyDaysLabelStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="TextColor"
+                        Value="White"/>
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="VerticalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="Margin"
+                        Value="5,2"/>
+            </Style>
+            <Style
+                x:Key="MyDaysTitleLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
+                TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18"/>
+                <Setter Property="TextColor"
+                        Value="{toolkit:AppThemeResource TextColor}"/>
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+                TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18"/>
+                <Setter Property="TextColor"
+                        Value="Red"/>
+            </Style>
+            <Style
+                x:Key="MyMonthLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
+                TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18"/>
+            </Style>
+            <Style
+                x:Key="MyYearLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
+                TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="18"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}"
+                     Text="Today"/>
+    </ContentPage.ToolbarItems>
 
-        <ContentPage.BindingContext>
-                <local:WeekendCalendarPageViewModel/>
-        </ContentPage.BindingContext>
-        <plugin:Calendar
-                x:Name="calendar"
-                Padding="10,0"
-                DaysLabelStyle="{StaticResource daysLabelStyle}"
-                DaysTitleWeekendColor="Red"
-                Events="{Binding Events, Mode=OneWay}"
-                FooterArrowVisible="False"
-                EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
-                EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextColor}"
-                DaysTitleColor="{toolkit:AppThemeResource TextColor}"
-                HeaderSectionVisible="true"
-                DeselectedDayTextColor="{toolkit:AppThemeResource TextColor}"
-                HorizontalOptions="Fill"
-                TodayTextColor="{toolkit:AppThemeResource TextColor}"
-                MaximumDate="{Binding MaximumDate, Mode=OneWay}"
-                MinimumDate="{Binding MinimumDate, Mode=OneWay}"
-                Month="{Binding Month}"
-                SelectedDate="{Binding SelectedDate, Mode=OneWay}"
-                VerticalOptions="Fill"
-                WeekendDayColor="Red"
-                Year="{Binding Year}"/>
+    <ContentPage.BindingContext>
+        <local:WeekendCalendarPageViewModel/>
+    </ContentPage.BindingContext>
+    <plugin:Calendar
+        x:Name="calendar"
+        Padding="10,0"
+        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
+        DeselectedDayTextColor="{toolkit:AppThemeResource TextColor}"
+        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextColor}"
+        EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
+        Events="{Binding Events, Mode=OneWay}"
+        FooterArrowVisible="False"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
+        HeaderSectionVisible="true"
+        HorizontalOptions="Fill"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
+        MaximumDate="{Binding MaximumDate, Mode=OneWay}"
+        MinimumDate="{Binding MinimumDate, Mode=OneWay}"
+        Month="{Binding Month}"
+        MonthLabelStyle="{StaticResource MyMonthLabelStyle}"
+        SelectedDate="{Binding SelectedDate, Mode=OneWay}"
+        TodayTextColor="{toolkit:AppThemeResource TextColor}"
+        VerticalOptions="Fill"
+        WeekendDayColor="Red"
+        Year="{Binding Year}"
+        YearLabelStyle="{StaticResource MyYearLabelStyle}"/>
 </ContentPage>

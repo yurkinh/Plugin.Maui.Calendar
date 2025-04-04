@@ -1,15 +1,15 @@
 ﻿using Mopups.Pages;
 namespace SampleApp.Views;
 
-[XamlCompilation(XamlCompilationOptions.Compile)]
+
 public partial class CalendarRangePickerPopup : PopupPage
 {
-    private readonly Action<CalendarRangePickerResult> _onClosedPopup;
+    readonly Action<CalendarRangePickerResult> onClosedPopup;
 
     public CalendarRangePickerPopup(Action<CalendarRangePickerResult> onClosedPopup)
     {
-        _onClosedPopup = onClosedPopup;
-        InitializeComponent();            
+		this.onClosedPopup = onClosedPopup;
+        InitializeComponent();
     }
 
     protected override void OnAppearing()
@@ -17,19 +17,18 @@ public partial class CalendarRangePickerPopup : PopupPage
         base.OnAppearing();
 
         if (BindingContext is CalendarRangePickerPopupViewModel vm)
-            vm.Closed += _onClosedPopup;
-    }
+		{
+			vm.Closed += onClosedPopup;
+		}
+	}
 
     protected override void OnDisappearing()
     {
         if (BindingContext is CalendarRangePickerPopupViewModel vm)
-            vm.Closed -= _onClosedPopup;
+		{
+			vm.Closed -= onClosedPopup;
+		}
 
-        base.OnDisappearing();
-    }
-
-    void UnloadedHandler(object sender, EventArgs e)
-    {
-        calendar.Dispose();
+		base.OnDisappearing();
     }
 }

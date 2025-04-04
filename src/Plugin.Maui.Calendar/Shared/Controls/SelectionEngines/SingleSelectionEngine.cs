@@ -5,65 +5,69 @@ using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.SelectionEngines;
 
-internal class SingleSelectionEngine : ISelectionEngine
+class SingleSelectionEngine : ISelectionEngine
 {
-    private DateTime? _selectedDate;
+	DateTime? selectedDate;
 
-    internal SingleSelectionEngine() { }
+	internal SingleSelectionEngine() { }
 
-    string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
-    {
-        return _selectedDate?.ToString(selectedDateTextFormat, culture);
-    }
+	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
+	{
+		return selectedDate?.ToString(selectedDateTextFormat, culture);
+	}
 
-    bool ISelectionEngine.TryGetSelectedEvents(
-        EventCollection allEvents,
-        out ICollection selectedEvents
-    )
-    {
-        if (_selectedDate.HasValue)
-            return allEvents.TryGetValue(_selectedDate.Value, out selectedEvents);
+	bool ISelectionEngine.TryGetSelectedEvents(
+		EventCollection allEvents,
+		out ICollection selectedEvents
+	)
+	{
+		if (selectedDate.HasValue)
+		{
+			return allEvents.TryGetValue(selectedDate.Value, out selectedEvents);
+		}
 
-        selectedEvents = null;
-        return false;
-    }
+		selectedEvents = null;
+		return false;
+	}
 
-    bool ISelectionEngine.IsDateSelected(DateTime dateToCheck)
-    {
-        return Equals(dateToCheck, _selectedDate);
-    }
+	bool ISelectionEngine.IsDateSelected(DateTime dateToCheck) => dateToCheck == selectedDate;
 
-    List<DateTime> ISelectionEngine.PerformDateSelection(
-        DateTime dateToSelect,
-        List<DateTime>? disabledDates = null
-    )
-    {
-        if (dateToSelect == _selectedDate)
-        {
-            _selectedDate = null;
-            return new List<DateTime>();
-        }
-        if (disabledDates is not null && disabledDates.Contains(dateToSelect))
-        {
-            _selectedDate = null;
-            return new List<DateTime>();
-        }
 
-        SelectSingleDate(dateToSelect);
+	List<DateTime> ISelectionEngine.PerformDateSelection(
+		DateTime dateToSelect,
+		List<DateTime> disabledDates
+	)
+	{
+		if (dateToSelect == selectedDate)
+		{
+			selectedDate = null;
+			return [];
+		}
+		if (disabledDates is not null && disabledDates.Contains(dateToSelect))
+		{
+			selectedDate = null;
+			return [];
+		}
 
-        return new List<DateTime> { dateToSelect };
-    }
+		SelectSingleDate(dateToSelect);
 
-    void ISelectionEngine.UpdateDateSelection(List<DateTime> datesToSelect)
-    {
-        if (datesToSelect?.Count > 0)
-            _selectedDate = datesToSelect[0];
-        else
-            _selectedDate = null;
-    }
+		return [dateToSelect];
+	}
 
-    private void SelectSingleDate(DateTime? dateToSelect)
-    {
-        _selectedDate = dateToSelect;
-    }
+	void ISelectionEngine.UpdateDateSelection(List<DateTime> datesToSelect)
+	{
+		if (datesToSelect?.Count > 0)
+		{
+			selectedDate = datesToSelect[0];
+		}
+		else
+		{
+			selectedDate = null;
+		}
+	}
+
+	void SelectSingleDate(DateTime? dateToSelect)
+	{
+		selectedDate = dateToSelect;
+	}
 }

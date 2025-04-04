@@ -3,6 +3,8 @@
     x:Class="SampleApp.Controls.ThemeButton"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.Controls"
+    x:DataType="local:ThemeButton"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="This">
     <ContentView.Resources>

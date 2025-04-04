@@ -7,19 +7,19 @@ namespace Plugin.Maui.Calendar.Shared.Controls.SelectionEngines;
 
 public class MultiSelectionEngine : ISelectionEngine
 {
-    private readonly HashSet<DateTime> _selectedDates;
+    readonly HashSet<DateTime> selectedDates;
 
     public MultiSelectionEngine()
     {
-        _selectedDates = [];
+        selectedDates = [];
     }
 
     public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
     {
         string dates = "";
-        if (_selectedDates?.Any(item => item > DateTime.MinValue) == true)
+        if (selectedDates?.Any(item => item > DateTime.MinValue) == true)
         {
-            dates = _selectedDates
+            dates = selectedDates
                 .Where(item => item > DateTime.MinValue)
                 .Select(item => item.ToString(selectedDateTextFormat, culture))
                 .Aggregate((a, b) => $"{a}, {b}");
@@ -30,12 +30,12 @@ public class MultiSelectionEngine : ISelectionEngine
 
     public bool TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
     {
-        return allEvents.TryGetValues(_selectedDates, out selectedEvents);
+        return allEvents.TryGetValues(selectedDates, out selectedEvents);
     }
 
     public bool IsDateSelected(DateTime dateToCheck)
     {
-        return _selectedDates.Contains(dateToCheck);
+        return selectedDates.Contains(dateToCheck);
     }
 
     public List<DateTime> PerformDateSelection(
@@ -43,19 +43,19 @@ public class MultiSelectionEngine : ISelectionEngine
         List<DateTime> disabledDates = null
     )
     {
-        if (!_selectedDates.Remove(dateToSelect))
+        if (!selectedDates.Remove(dateToSelect))
         {
             if (disabledDates is null || !disabledDates.Contains(dateToSelect))
             {
-                _selectedDates.Add(dateToSelect);
+                selectedDates.Add(dateToSelect);
             }
         }
 
-        return [.. _selectedDates];
+        return [.. selectedDates];
     }
 
     public void UpdateDateSelection(List<DateTime> datesToSelect)
     {
-        datesToSelect.ForEach(date => _selectedDates.Add(date));
+        datesToSelect.ForEach(date => selectedDates.Add(date));
     }
 }

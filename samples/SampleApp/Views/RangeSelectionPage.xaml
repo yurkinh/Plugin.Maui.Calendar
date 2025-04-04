@@ -6,50 +6,71 @@
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="advancedRangeSelectionCalendarPage"
+    Title="Range Selection Calendar"
     x:DataType="local:RangeSelectionPageViewModel"
-    Shell.TabBarIsVisible="False"
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
-    Unloaded="UnloadedHandler">
+    Shell.TabBarIsVisible="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="daysTitleLabelStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style
+                x:Key="MyDaysTitleLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+            </Style>
+            <Style
+                x:Key="MyWeekendTitleStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
-        <local:RangeSelectionPageViewModel/>
+        <local:RangeSelectionPageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"
-        DaysTitleWeekendColor="Red"
         Padding="10,0"
-        ArrowsFontFamily="FontAwesomeSolid"
-        DaysTitleColor="{toolkit:AppThemeResource DaysTitleLabelTextColor}"
         DayTappedCommand="{Binding DayTappedCommand}"
-        Events="{Binding Events}"
-        SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        SelectedDatesRangeBackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
-        SelectedDayBackgroundColor="{toolkit:AppThemeResource ButtonColor}"
-        SelectedDates="{Binding SelectedDates}"
         EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        Events="{Binding Events}"
+        EventsScrollViewVisible="True"
+        SelectedDates="{Binding SelectedDates}"
+        SelectedDatesRangeBackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
+        SelectedDayBackgroundColor="{toolkit:AppThemeResource ButtonColor}"
+        SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         SelectedEndDate="{Binding SelectedEndDate}"
         SelectedStartDate="{Binding SelectedStartDate}"
-        ShownDate="{Binding ShownDate}">
+        SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        ShownDate="{Binding ShownDate}"
+        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}">
 
         <plugin:RangeSelectionCalendar.HeaderSectionTemplate>
-            <controls:CalendarHeader/>
+            <controls:CalendarHeader />
         </plugin:RangeSelectionCalendar.HeaderSectionTemplate>
 
         <plugin:RangeSelectionCalendar.FooterSectionTemplate>
             <DataTemplate>
-                <controls:CalendarFooter/>
+                <controls:CalendarFooter />
             </DataTemplate>
         </plugin:RangeSelectionCalendar.FooterSectionTemplate>
 
         <plugin:RangeSelectionCalendar.EventTemplate>
-            <DataTemplate>
-                <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}"/>
+            <DataTemplate x:DataType="local:RangeSelectionPageViewModel">
+                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EventTemplate>
         <plugin:RangeSelectionCalendar.EmptyTemplate>
@@ -58,21 +79,9 @@
                     <Label
                         Margin="0,5,0,5"
                         HorizontalTextAlignment="Center"
-                        Text="NO EVENTS FOR THE SELECTED DATE"/>
+                        Text="NO EVENTS FOR THE SELECTED DATE" />
                 </VerticalStackLayout>
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EmptyTemplate>
     </plugin:RangeSelectionCalendar>
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="daysTitleLabelStyle"
-                   TargetType="Label">
-                <Setter Property="FontAttributes"
-                        Value="Bold"/>
-                <Setter Property="FontSize"
-                        Value="20"/>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 </ContentPage>
