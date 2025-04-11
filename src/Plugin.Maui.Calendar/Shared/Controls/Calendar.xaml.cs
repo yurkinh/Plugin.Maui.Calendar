@@ -370,6 +370,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			calendar.UpdateSelectedDateLabel();
+			calendar.UpdateDayTitles();
 		}
 	}
 
