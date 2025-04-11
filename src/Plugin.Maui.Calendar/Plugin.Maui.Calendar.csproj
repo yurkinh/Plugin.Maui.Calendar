@@ -21,7 +21,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>2.0.0</PackageVersion>
+		<PackageVersion>2.0.1</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -38,14 +38,7 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-		                    * Updated to .NET 9
-                        * Optimized startup time: iOS 20 % / Android 40 % 
-                        * Fixed memory leaks* 
-                        * Revamped calendar structure
-                        * Added **Styles** (check [Available Styles](#available-styles) section) that replace some **properties**
-                        * Added **WeekendTitleStyle**
-                        * Added sample page (Default calendar) to test memory leaks with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
-                        * Updated samples					
+		                    * Fixed Day names issue #158                       				
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
