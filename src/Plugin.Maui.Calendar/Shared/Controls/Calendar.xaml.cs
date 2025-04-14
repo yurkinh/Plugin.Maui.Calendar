@@ -1036,7 +1036,7 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateEvents();
 			calendar.UpdateLayoutUnitLabel();
 			//Todo: called two time at the calendar start
-			calendar.UpdateDays();
+			calendar.UpdateDays(true);
 		}
 	}
 
