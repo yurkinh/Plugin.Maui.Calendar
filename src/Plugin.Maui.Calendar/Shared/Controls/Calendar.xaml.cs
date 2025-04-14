@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Globalization;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -2112,6 +2112,7 @@ public partial class Calendar : ContentView, IDisposable
 			var dayModel = dayView.BindingContext as DayModel;
 
 			dayModel.Date = currentDate.Date;
+			dayModel.Day = currentDate.Date.Day.ToLocalizedString(Culture);
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
