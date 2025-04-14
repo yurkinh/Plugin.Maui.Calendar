@@ -1,4 +1,6 @@
-﻿<Solution>
-  <Project Path="SampleApp.csproj" />
+<Solution>
+  <Project Path="SampleApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="../../src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.csproj" />
 </Solution>
