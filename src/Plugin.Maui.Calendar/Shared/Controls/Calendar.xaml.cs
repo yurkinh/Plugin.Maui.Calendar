@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Plugin.Maui.Calendar.Controls.Interfaces;
@@ -9,6 +10,8 @@ using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
+using Plugin.Maui.Calendar.Shared.Extensions;
+
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -227,6 +230,7 @@ public partial class Calendar : ContentView, IDisposable
 		if (bindable is Calendar calendar && calendar.ShownDate.Year != (int)newValue)
 		{
 			calendar.ShownDate = new DateTime((int)newValue, calendar.Month, calendar.Day);
+			calendar.UpdateLayoutUnitLabel();
 		}
 	}
 
@@ -275,6 +279,8 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDays(true);
 
 			calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
+
+			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
 		}
 	}
 
@@ -371,6 +377,8 @@ public partial class Calendar : ContentView, IDisposable
 
 			calendar.UpdateSelectedDateLabel();
 			calendar.UpdateDayTitles();
+			calendar.UpdateDays(true);
+			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
 		}
 	}
 
@@ -1962,6 +1970,8 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(SwipeToChangeMonthEnabledProperty, value);
 	}
 	#endregion
+
+	public string LocalizedYear => ShownDate.Year.ToLocalizedString(Culture);
 
 
 	void InitializeSelectionType()

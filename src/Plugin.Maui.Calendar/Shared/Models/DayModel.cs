@@ -15,6 +15,9 @@ sealed partial class DayModel : ObservableObject
 	DateTime date;
 
 	[ObservableProperty]
+	string day;
+
+	[ObservableProperty]
 	double dayViewSize;
 
 	[ObservableProperty]
