@@ -2,60 +2,59 @@
 using System.Globalization;
 using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Shared.Extensions;
 
 namespace Plugin.Maui.Calendar.Shared.Controls.SelectionEngines;
 
 public class MultiSelectionEngine : ISelectionEngine
 {
-    readonly HashSet<DateTime> selectedDates;
+	readonly HashSet<DateTime> selectedDates;
 
-    public MultiSelectionEngine()
-    {
-        selectedDates = [];
-    }
+	public MultiSelectionEngine()
+	{
+		selectedDates = [];
+	}
 
-    public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
-    {
-        string dates = "";
-        if (selectedDates?.Any(item => item > DateTime.MinValue) == true)
-        {
-            dates = selectedDates
-                .Where(item => item > DateTime.MinValue)
-                .Select(item => item.ToString(selectedDateTextFormat, culture))
-                .Aggregate((a, b) => $"{a}, {b}");
-        }
+	public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
+	{
+		if (selectedDates?.Any(item => item > DateTime.MinValue) != true)
+		{
+			return string.Empty;
+		}
+		return selectedDates
+			.Where(item => item > DateTime.MinValue)
+			.Select(item => item.ToLocalizedString(selectedDateTextFormat, culture))
+			.Aggregate((a, b) => $"{a}, {b}");
+	}
 
-        return dates ?? string.Empty;
-    }
+	public bool TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
+	{
+		return allEvents.TryGetValues(selectedDates, out selectedEvents);
+	}
 
-    public bool TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
-    {
-        return allEvents.TryGetValues(selectedDates, out selectedEvents);
-    }
+	public bool IsDateSelected(DateTime dateToCheck)
+	{
+		return selectedDates.Contains(dateToCheck);
+	}
 
-    public bool IsDateSelected(DateTime dateToCheck)
-    {
-        return selectedDates.Contains(dateToCheck);
-    }
+	public List<DateTime> PerformDateSelection(
+		DateTime dateToSelect,
+		List<DateTime> disabledDates = null
+	)
+	{
+		if (!selectedDates.Remove(dateToSelect))
+		{
+			if (disabledDates is null || !disabledDates.Contains(dateToSelect))
+			{
+				selectedDates.Add(dateToSelect);
+			}
+		}
 
-    public List<DateTime> PerformDateSelection(
-        DateTime dateToSelect,
-        List<DateTime> disabledDates = null
-    )
-    {
-        if (!selectedDates.Remove(dateToSelect))
-        {
-            if (disabledDates is null || !disabledDates.Contains(dateToSelect))
-            {
-                selectedDates.Add(dateToSelect);
-            }
-        }
+		return [.. selectedDates];
+	}
 
-        return [.. selectedDates];
-    }
-
-    public void UpdateDateSelection(List<DateTime> datesToSelect)
-    {
-        datesToSelect.ForEach(date => selectedDates.Add(date));
-    }
+	public void UpdateDateSelection(List<DateTime> datesToSelect)
+	{
+		datesToSelect.ForEach(date => selectedDates.Add(date));
+	}
 }

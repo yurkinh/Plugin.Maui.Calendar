@@ -50,7 +50,7 @@
                 <FormattedString>
                     <Span Text="{Binding LayoutUnitText, Mode=TwoWay}"/>
                     <Span Text=", "/>
-                    <Span Text="{Binding Year, Mode=TwoWay}"/>
+                    <Span Text="{Binding LocalizedYear, Mode=TwoWay}"/>
                 </FormattedString>
             </Label.FormattedText>
         </Label>
