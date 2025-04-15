@@ -2070,6 +2070,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		UpdateEvents();
 		UpdateDays();
+		UpdateDaysColors();
 	}
 
 	void OnDayTappedHandler(DateTime value) => SelectedDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
