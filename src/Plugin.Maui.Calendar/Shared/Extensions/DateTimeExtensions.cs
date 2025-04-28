@@ -29,6 +29,7 @@ public static class DateTimeExtensions
 
 		return result.ToString();
 	}
+
 	public static string ToLocalizedString(this int number, CultureInfo culture)
 	{
 		var nativeDigits = culture.NumberFormat.NativeDigits;
