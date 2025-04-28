@@ -1045,7 +1045,7 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateEvents();
 			calendar.UpdateLayoutUnitLabel();
 			//Todo: called two time at the calendar start
-			calendar.UpdateDays();
+			calendar.UpdateDays(true);
 		}
 	}
 
@@ -2080,6 +2080,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		UpdateEvents();
 		UpdateDays();
+		UpdateDaysColors();
 	}
 
 	void OnDayTappedHandler(DateTime value) => SelectedDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
