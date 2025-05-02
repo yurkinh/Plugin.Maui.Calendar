@@ -2111,14 +2111,17 @@ public partial class Calendar : ContentView, IDisposable
 
 		foreach (var dayLabel in daysControl.Children.OfType<Label>())
 		{
-			var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
+			var abberivatedDayName = Culture.DateTimeFormat.DayNames[dayNumber];
 			var titleText = DaysTitleLabelFirstUpperRestLower
 							? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant()
 							: abberivatedDayName.ToUpperInvariant();
-			dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length
-							? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+			dayLabel.Text = DaysTitleMaximumLength == DaysTitleMaxLength.None
+							? titleText
+							: titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length
+											? abberivatedDayName.Length
+											: (int)DaysTitleMaximumLength)];
 
-			// Detect weekend days
+			// Detect weekend days	
 			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
 			{
 				dayLabel.Style = WeekendTitleStyle;
