@@ -1,6 +1,6 @@
 ﻿namespace Plugin.Maui.Calendar.Controls;
 
-public partial class DelayedView : ALazyView
+public partial class DelayedView : LazyView
 {
 	public static readonly BindableProperty ViewProperty = BindableProperty.Create(
 		nameof(View),
