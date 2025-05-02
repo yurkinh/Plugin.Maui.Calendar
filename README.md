@@ -21,6 +21,7 @@ V2.0.0
 * Added **WeekendTitleStyle**
 * Added sample page (Default calendar) to test memory leaks with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
 * Updated samples
+* Added native digits support (added **UseNativeDigits** Property)
 
 ### Breaking  Changes
 
@@ -79,9 +80,9 @@ Theme support
 | ![Light theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Settings Page Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
 
 Culture support
-| Android |
-| ------- |
-| ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support.png) |
+| Android | iOS |
+| ------- | ------ |
+| ![Android Culture Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_android.png) | ![iPhone Culture Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_iOS.png) |
 
 
 # New Samples
@@ -270,6 +271,7 @@ WeekendTitleStyle
 #### Available customization properties
 ```xml
 FirstDayOfWeek="Monday"
+UseNativeDigits="True"
 ```
 
 #### Calendar Layout customizations
