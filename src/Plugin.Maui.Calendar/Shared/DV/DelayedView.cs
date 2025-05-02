@@ -1,4 +1,4 @@
-namespace Plugin.Maui.Calendar.DV;
+﻿namespace Plugin.Maui.Calendar.DV;
 
 public partial class DelayedView : ALazyView
 {
@@ -16,11 +16,6 @@ public partial class DelayedView : ALazyView
 	}
 
 	public int DelayInMilliseconds { get; set; } = 200;
-
-	public DelayedView()
-	{
-		InitializeComponent();
-	}
 
 	static async void OnViewChanged(BindableObject bindable, object oldValue, object newValue)
 	{

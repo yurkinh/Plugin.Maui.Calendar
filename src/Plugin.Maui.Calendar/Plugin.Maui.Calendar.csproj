@@ -69,10 +69,5 @@
 	<ItemGroup>
 		<None Include="..\..\nuget.png" PackagePath="nuget.png" Pack="true" />
 		<None Include="..\..\README.md" PackagePath="README.md" Pack="true" />
-	</ItemGroup>
-	<ItemGroup>
-	  <MauiXaml Update="Shared\DV\DelayedView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	</ItemGroup>	
 </Project>
