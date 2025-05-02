@@ -1,4 +1,4 @@
-﻿namespace Plugin.Maui.Calendar.DV;
+﻿namespace Plugin.Maui.Calendar.Controls;
 
 public partial class DelayedView : ALazyView
 {

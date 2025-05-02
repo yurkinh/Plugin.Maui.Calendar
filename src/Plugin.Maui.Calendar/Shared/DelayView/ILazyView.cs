@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Plugin.Maui.Calendar.DV;
+namespace Plugin.Maui.Calendar.Controls;
 public interface ILazyView
 {
 	View Content { get; set; }

@@ -3,7 +3,6 @@
     x:Class="Plugin.Maui.Calendar.Controls.DayView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:DV="clr-namespace:Plugin.Maui.Calendar.DV"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
     xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
     xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
@@ -42,8 +41,8 @@
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
                 TextColor="{Binding TextColor, Mode=OneWay}" />
-            <DV:DelayedView>
-                <DV:DelayedView.View>
+            <controls:DelayedView>
+                <controls:DelayedView.View>
                     <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EventColors, Mode=OneWay}" HeightRequest="8">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="Color">
@@ -56,8 +55,8 @@
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </HorizontalStackLayout>
-                </DV:DelayedView.View>
-            </DV:DelayedView>
+                </controls:DelayedView.View>
+            </controls:DelayedView>
         </FlexLayout>
     </Grid>
 </ContentView>

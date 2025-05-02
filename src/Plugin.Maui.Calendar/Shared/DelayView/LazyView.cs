@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Plugin.Maui.Calendar.DV;
+namespace Plugin.Maui.Calendar.Controls;
 public abstract class ALazyView : ContentView, ILazyView, IDisposable
 {
 	public bool IsLoaded { get; protected set; }
