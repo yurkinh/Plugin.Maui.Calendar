@@ -79,9 +79,9 @@ Theme support
 | ![Light theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Settings Page Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
 
 Culture support
-| Android |
-| ------- |
-| ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support.png) |
+| Android | iOS |
+| ------- | ------ |
+| ![Android Culture Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_android.png) | ![iPhone Culture Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_iOS.png) |
 
 
 # New Samples
