@@ -14,7 +14,7 @@ public class DelayedView : LazyView
         set => SetValue(ViewProperty, value);
     }
 
-    public int DelayInMilliseconds { get; set; } = 1000;
+    public int DelayInMilliseconds { get; set; } = 200;
 
     public override void LoadView()
     {
