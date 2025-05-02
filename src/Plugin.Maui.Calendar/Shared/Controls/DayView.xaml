@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentView
     x:Class="Plugin.Maui.Calendar.Controls.DayView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:customViews="clr-namespace:Plugin.Maui.Calendar.Shared.CustomViews"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
     xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
@@ -40,19 +41,21 @@
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Date.Day, Mode=OneWay}"
                 TextColor="{Binding TextColor, Mode=OneWay}"/>
-            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EventColors, Mode=OneWay}"
-                                   HeightRequest="8">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="Color">
-                        <Border
-                            Padding="0"
-                            BackgroundColor="{Binding ., Mode=OneWay}"
-                            HeightRequest="8"
-                            StrokeShape="RoundRectangle 4"
-                            WidthRequest="8"/>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </HorizontalStackLayout>
+            <customViews:DelayedView>
+                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EventColors, Mode=OneWay}"
+                        HeightRequest="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="Color">
+                            <Border
+                                Padding="0"
+                                BackgroundColor="{Binding ., Mode=OneWay}"
+                                HeightRequest="8"
+                                StrokeShape="RoundRectangle 4"
+                                WidthRequest="8"/>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </customViews:DelayedView>
         </FlexLayout>
     </Grid>
 </ContentView>
