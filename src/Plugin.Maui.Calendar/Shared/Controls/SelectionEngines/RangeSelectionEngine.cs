@@ -11,12 +11,16 @@ class RangedSelectionEngine : ISelectionEngine
 	DateTime? rangeSelectionEndDate;
 	DateTime? rangeSelectionStartDate;
 
-	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
+	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
 	{
 		if (rangeSelectionStartDate.HasValue && rangeSelectionEndDate.HasValue)
 		{
-			var startDateText = rangeSelectionStartDate.Value.ToLocalizedString(selectedDateTextFormat, culture);
-			var endDateText = rangeSelectionEndDate.Value.ToLocalizedString(selectedDateTextFormat, culture);
+			var startDateText = isNativeDigits 
+								? rangeSelectionStartDate.Value.ToNativeDigitString(selectedDateTextFormat, culture) 
+								: rangeSelectionStartDate.Value.ToString(selectedDateTextFormat, culture);
+			var endDateText = isNativeDigits 
+								? rangeSelectionEndDate.Value.ToNativeDigitString(selectedDateTextFormat, culture) 
+								: rangeSelectionEndDate.Value.ToString(selectedDateTextFormat, culture);
 			return $"{startDateText} - {endDateText}";
 		}
 		return string.Empty;

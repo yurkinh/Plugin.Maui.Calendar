@@ -13,7 +13,10 @@ class SingleSelectionEngine : ISelectionEngine
 
 	internal SingleSelectionEngine() { }
 
-	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture) => selectedDate?.ToLocalizedString(selectedDateTextFormat, culture);
+	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
+	=> isNativeDigits
+		? selectedDate?.ToNativeDigitString(selectedDateTextFormat, culture)
+		: selectedDate?.ToString(selectedDateTextFormat, culture);
 
 	bool ISelectionEngine.TryGetSelectedEvents(
 		EventCollection allEvents,

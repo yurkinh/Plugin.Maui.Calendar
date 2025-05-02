@@ -382,6 +382,27 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
+	/// <summary>
+	/// Bindable property for UseNativeDigits
+	/// </summary>
+	public static readonly BindableProperty UseNativeDigitsProperty = BindableProperty.Create(
+		nameof(UseNativeDigits),
+		typeof(bool),
+		typeof(Calendar),
+		false
+	);
+
+	/// <summary>
+	/// Determines whether digits in calendar UI should be displayed using the native digits 
+	/// of the specified culture (e.g., Arabic, Hindi).
+	/// If set to true, numbers will be localized according to the culture's native digits;
+	/// otherwise, standard Western digits ("0"–"9") will be used.
+	/// </summary>
+	public bool UseNativeDigits
+	{
+		get => (bool)GetValue(UseNativeDigitsProperty);
+		set => SetValue(UseNativeDigitsProperty, value);
+	}
 
 	/// <summary>
 	/// Bindable property for MonthText
@@ -1971,8 +1992,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 	#endregion
 
-	public string LocalizedYear => ShownDate.Year.ToLocalizedString(Culture);
-
+	public string LocalizedYear => UseNativeDigits ? ShownDate.Year.ToNativeDigitString(Culture) : ShownDate.Year.ToString(Culture);
 
 	void InitializeSelectionType()
 	{
@@ -2037,7 +2057,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	void UpdateSelectedDateLabel() =>
-		 SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
+		 SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture, UseNativeDigits);
 
 
 	void ShowHideCalendarSection()
@@ -2123,16 +2143,14 @@ public partial class Calendar : ContentView, IDisposable
 			var dayModel = dayView.BindingContext as DayModel;
 
 			dayModel.Date = currentDate.Date;
-			dayModel.Day = currentDate.Date.Day.ToLocalizedString(Culture);
+			dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;
-			dayModel.IsThisMonth =
-				(CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
-			dayModel.OtherMonthIsVisible =
-				(CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
+			dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
+			dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
 			dayModel.HasEvents = Events.ContainsKey(currentDate);
 			dayModel.IsDisabled =
 				currentDate < MinimumDate

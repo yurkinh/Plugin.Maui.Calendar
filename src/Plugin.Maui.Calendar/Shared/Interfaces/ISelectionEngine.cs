@@ -12,7 +12,7 @@ public interface ISelectionEngine
     /// <summary>
     /// Method to get formatted selected dates text
     /// </summary>
-    string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture);
+    string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits);
 
     /// <summary>
     /// Method to get all events for currently selected dates

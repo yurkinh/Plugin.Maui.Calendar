@@ -15,7 +15,7 @@ public class MultiSelectionEngine : ISelectionEngine
 		selectedDates = [];
 	}
 
-	public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
+	public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
 	{
 		if (selectedDates?.Any(item => item > DateTime.MinValue) != true)
 		{
@@ -23,7 +23,9 @@ public class MultiSelectionEngine : ISelectionEngine
 		}
 		return selectedDates
 			.Where(item => item > DateTime.MinValue)
-			.Select(item => item.ToLocalizedString(selectedDateTextFormat, culture))
+			.Select(item => isNativeDigits 
+							? item.ToNativeDigitString(selectedDateTextFormat, culture) 
+							: item.ToString(selectedDateTextFormat, culture))
 			.Aggregate((a, b) => $"{a}, {b}");
 	}
 
