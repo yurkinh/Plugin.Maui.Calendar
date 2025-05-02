@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Plugin.Maui.Calendar.Controls;
 public abstract class LazyView : ContentView, ILazyView, IDisposable
 {
-	public bool IsLoaded { get; protected set; }
+	public new bool IsLoaded { get; protected set; }
 
 	public abstract void LoadView();
 
