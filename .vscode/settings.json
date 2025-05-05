@@ -1,0 +1,8 @@
+{
+    "dotrush.roslyn.projectOrSolutionFiles": [
+        "src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.slnx",
+        "samples/SampleApp/SampleApp.slnx",
+        "src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.csproj",
+        "samples/SampleApp/SampleApp.csproj"
+    ]
+}
