@@ -21,12 +21,14 @@
         WidthRequest="{Binding DayViewSize, Mode=OneWay}">
         <Border
             Padding="0"
+            Margin="{Binding DayViewBorderMargin, Mode=OneWay}"
             BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
-            HeightRequest="{Binding DayViewSize, Mode=OneWay}"
-            HorizontalOptions="Center"
+            MaximumHeightRequest="{Binding DayViewSize, Mode=OneWay}"
+            HorizontalOptions="Fill"
             Stroke="{Binding OutlineColor, Mode=OneWay}"
             StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
-            WidthRequest="{Binding DayViewSize, Mode=OneWay}"/>
+            MaximumWidthRequest="{Binding DayViewSize, Mode=OneWay}"
+            VerticalOptions="Fill"/>
         <FlexLayout
             AlignItems="Center"
             Direction="{Binding EventLayoutDirection}"

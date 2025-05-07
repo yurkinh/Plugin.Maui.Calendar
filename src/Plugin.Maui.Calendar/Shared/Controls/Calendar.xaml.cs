@@ -741,6 +741,24 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DayViewSizeProperty, value);
 	}
 
+	/// <summary>
+	/// Bindable property for DayViewBorderMargin
+	/// </summary>
+	public static readonly BindableProperty DayViewBorderMarginProperty = BindableProperty.Create(
+		nameof(DayViewBorderMargin),
+		typeof(Thickness),
+		typeof(Calendar),
+		default(Thickness)
+	);
+
+	/// <summary>
+	/// Specifies the margin of dayview border
+	/// </summary>
+	public Thickness DayViewBorderMargin
+	{
+		get => (Thickness)GetValue(DayViewBorderMarginProperty);
+		set => SetValue(DayViewBorderMarginProperty, value);
+	}	
 
 	/// <summary>
 	/// Bindable property for DayViewCornerRadius
@@ -2116,6 +2134,7 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
+			dayModel.DayViewBorderMargin = DayViewBorderMargin;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;
 			dayModel.IsThisMonth =

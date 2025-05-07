@@ -44,6 +44,7 @@
         Padding="10,0"
         AllowDeselecting="False"
         Day="{Binding Day}"
+        DayViewBorderMargin="6,4,6,8"
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
         DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
