@@ -39,7 +39,7 @@ sealed partial class DayModel : ObservableObject
 	bool hasEvents;
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible))]
+	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible))]
 	bool isThisMonth;
 
 	[ObservableProperty]
@@ -57,6 +57,10 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(IsVisible))]
 	bool otherMonthIsVisible;
+
+	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(IsControlVisible))]
+	bool otherMonthWeekIsVisible;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
@@ -199,6 +203,8 @@ sealed partial class DayModel : ObservableObject
 
 	public bool IsVisible => IsThisMonth || OtherMonthIsVisible;
 
+	public bool IsControlVisible => IsThisMonth || OtherMonthWeekIsVisible;
+	
 	bool IsToday => Date.Date == DateTime.Today;
 
 	public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;

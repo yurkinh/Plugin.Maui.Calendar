@@ -52,6 +52,7 @@
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         EventsScrollViewVisible="True"
+        OtherMonthWeekIsVisible="False"
         FirstDayOfWeek="Monday"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
