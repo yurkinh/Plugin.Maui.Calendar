@@ -2208,9 +2208,9 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.DayViewBorderMargin = DayViewBorderMargin;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;
-			dayModel.IsThisMonth = (CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
-			dayModel.OtherMonthIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
-			dayModel.OtherMonthWeekIsVisible = (CalendarLayout != WeekLayout.Month) || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
+			dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
+			dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
+			dayModel.OtherMonthWeekIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
 			dayModel.HasEvents = Events.ContainsKey(currentDate);
 			dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (DisabledDates?.Contains(currentDate.Date) ?? false);
 			dayModel.AllowDeselect = AllowDeselecting;
