@@ -21,7 +21,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>2.0.3</PackageVersion>
+		<PackageVersion>2.0.5</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -38,7 +38,8 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-		                    * Fixed indicators not updated on events added                     				
+		                    * Added support for number localization using culture-specific native digits 
+                        * Fixed adjusting height when OtherMonthDayIsVisible="False"                   				
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
