@@ -1,5 +1,6 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Plugin.Maui.Calendar.Controls.Interfaces;
@@ -9,6 +10,8 @@ using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
+using Plugin.Maui.Calendar.Shared.Extensions;
+
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -227,6 +230,7 @@ public partial class Calendar : ContentView, IDisposable
 		if (bindable is Calendar calendar && calendar.ShownDate.Year != (int)newValue)
 		{
 			calendar.ShownDate = new DateTime((int)newValue, calendar.Month, calendar.Day);
+			calendar.UpdateLayoutUnitLabel();
 		}
 	}
 
@@ -275,6 +279,8 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDays(true);
 
 			calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
+
+			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
 		}
 	}
 
@@ -371,9 +377,32 @@ public partial class Calendar : ContentView, IDisposable
 
 			calendar.UpdateSelectedDateLabel();
 			calendar.UpdateDayTitles();
+			calendar.UpdateDays(true);
+			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
 		}
 	}
 
+	/// <summary>
+	/// Bindable property for UseNativeDigits
+	/// </summary>
+	public static readonly BindableProperty UseNativeDigitsProperty = BindableProperty.Create(
+		nameof(UseNativeDigits),
+		typeof(bool),
+		typeof(Calendar),
+		false
+	);
+
+	/// <summary>
+	/// Determines whether digits in calendar UI should be displayed using the native digits 
+	/// of the specified culture (e.g., Arabic, Hindi).
+	/// If set to true, numbers will be localized according to the culture's native digits;
+	/// otherwise, standard Western digits ("0"–"9") will be used.
+	/// </summary>
+	public bool UseNativeDigits
+	{
+		get => (bool)GetValue(UseNativeDigitsProperty);
+		set => SetValue(UseNativeDigitsProperty, value);
+	}
 
 	/// <summary>
 	/// Bindable property for MonthText
@@ -787,7 +816,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (Thickness)GetValue(DayViewBorderMarginProperty);
 		set => SetValue(DayViewBorderMarginProperty, value);
-	}	
+	}
 
 	/// <summary>
 	/// Bindable property for DayViewCornerRadius
@@ -2010,6 +2039,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 	#endregion
 
+	public string LocalizedYear => UseNativeDigits ? ShownDate.Year.ToNativeDigitString(Culture) : ShownDate.Year.ToString(Culture);
 
 	void InitializeSelectionType()
 	{
@@ -2074,7 +2104,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	void UpdateSelectedDateLabel() =>
-		 SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture);
+		 SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture, UseNativeDigits);
 
 
 	void ShowHideCalendarSection()
@@ -2128,14 +2158,17 @@ public partial class Calendar : ContentView, IDisposable
 
 		foreach (var dayLabel in daysControl.Children.OfType<Label>())
 		{
-			var abberivatedDayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
+			var abberivatedDayName = Culture.DateTimeFormat.DayNames[dayNumber];
 			var titleText = DaysTitleLabelFirstUpperRestLower
 							? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant()
 							: abberivatedDayName.ToUpperInvariant();
-			dayLabel.Text = titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length
-							? abberivatedDayName.Length : (int)DaysTitleMaximumLength)];
+			dayLabel.Text = DaysTitleMaximumLength == DaysTitleMaxLength.None
+							? titleText
+							: titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length
+											? abberivatedDayName.Length
+											: (int)DaysTitleMaximumLength)];
 
-			// Detect weekend days
+			// Detect weekend days	
 			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
 			{
 				dayLabel.Style = WeekendTitleStyle;
@@ -2161,27 +2194,25 @@ public partial class Calendar : ContentView, IDisposable
 			var dayModel = dayView.BindingContext as DayModel;
 
 			if (currentDate.Month == ShownDate.Month)
+			{
 				lastDayOfMonth = addDays;
-			bool currentMonthOnLine = (lastDayOfMonth == 0 || (addDays-1) / 7 == (lastDayOfMonth-1) / 7 );
-				
+			}
+
+			bool currentMonthOnLine = (lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7);
+
 			dayModel.Date = currentDate.Date;
+			dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
 			dayModel.DayViewBorderMargin = DayViewBorderMargin;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;
-			dayModel.IsThisMonth =
-				(CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
-			dayModel.OtherMonthIsVisible =
-				(CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
-			dayModel.OtherMonthWeekIsVisible =
-				(CalendarLayout != WeekLayout.Month) || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
+			dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
+			dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
+			dayModel.OtherMonthWeekIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
 			dayModel.HasEvents = Events.ContainsKey(currentDate);
-			dayModel.IsDisabled =
-				currentDate < MinimumDate
-				|| currentDate > MaximumDate
-				|| (DisabledDates?.Contains(currentDate.Date) ?? false);
+			dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (DisabledDates?.Contains(currentDate.Date) ?? false);
 			dayModel.AllowDeselect = AllowDeselecting;
 
 			dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date);

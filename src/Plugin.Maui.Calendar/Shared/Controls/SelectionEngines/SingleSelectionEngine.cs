@@ -2,6 +2,8 @@
 using System.Globalization;
 using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Shared.Extensions;
+
 
 namespace Plugin.Maui.Calendar.Controls.SelectionEngines;
 
@@ -11,10 +13,10 @@ class SingleSelectionEngine : ISelectionEngine
 
 	internal SingleSelectionEngine() { }
 
-	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
-	{
-		return selectedDate?.ToString(selectedDateTextFormat, culture);
-	}
+	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
+	=> isNativeDigits
+		? selectedDate?.ToNativeDigitString(selectedDateTextFormat, culture)
+		: selectedDate?.ToString(selectedDateTextFormat, culture);
 
 	bool ISelectionEngine.TryGetSelectedEvents(
 		EventCollection allEvents,

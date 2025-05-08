@@ -16,5 +16,9 @@ public enum DaysTitleMaxLength
     /// <summary>
     /// Day title maximum length of three characters.
     /// </summary>
-    ThreeChars = 3
+    ThreeChars = 3,
+    /// <summary>
+    /// Day title maximum length is not limited.
+    /// </summary>
+    None = 0
 }

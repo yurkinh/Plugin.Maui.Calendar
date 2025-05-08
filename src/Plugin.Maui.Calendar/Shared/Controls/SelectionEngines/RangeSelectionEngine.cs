@@ -2,6 +2,7 @@
 using System.Globalization;
 using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.Calendar.Shared.Extensions;
 
 namespace Plugin.Maui.Calendar.Controls.SelectionEngines;
 
@@ -10,12 +11,16 @@ class RangedSelectionEngine : ISelectionEngine
 	DateTime? rangeSelectionEndDate;
 	DateTime? rangeSelectionStartDate;
 
-	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture)
+	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
 	{
 		if (rangeSelectionStartDate.HasValue && rangeSelectionEndDate.HasValue)
 		{
-			var startDateText = rangeSelectionStartDate.Value.ToString(selectedDateTextFormat, culture);
-			var endDateText = rangeSelectionEndDate.Value.ToString(selectedDateTextFormat, culture);
+			var startDateText = isNativeDigits 
+								? rangeSelectionStartDate.Value.ToNativeDigitString(selectedDateTextFormat, culture) 
+								: rangeSelectionStartDate.Value.ToString(selectedDateTextFormat, culture);
+			var endDateText = isNativeDigits 
+								? rangeSelectionEndDate.Value.ToNativeDigitString(selectedDateTextFormat, culture) 
+								: rangeSelectionEndDate.Value.ToString(selectedDateTextFormat, culture);
 			return $"{startDateText} - {endDateText}";
 		}
 		return string.Empty;

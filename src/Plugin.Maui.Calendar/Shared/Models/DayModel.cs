@@ -15,6 +15,9 @@ sealed partial class DayModel : ObservableObject
 	DateTime date;
 
 	[ObservableProperty]
+	string day;
+
+	[ObservableProperty]
 	Thickness dayViewBorderMargin = new(0, 0, 0, 0);
 	
 	[ObservableProperty]

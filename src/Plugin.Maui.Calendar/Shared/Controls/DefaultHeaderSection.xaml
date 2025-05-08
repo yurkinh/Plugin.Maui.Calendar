@@ -43,7 +43,7 @@
             <Label
                 Grid.Column="1"
                 Style="{Binding YearLabelStyle}"
-                Text="{Binding Year}"/>
+                Text="{Binding LocalizedYear}"/>
             <Button
                 Grid.Column="2"
                 Style="{Binding NextYearArrowButtonStyle}"
