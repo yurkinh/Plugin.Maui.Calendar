@@ -37,8 +37,8 @@ ArrowsSymbolNext --> NextMonthArrowButtonStyle
 ArrowsSymbolPrev --> PreviousYearArrowButtonStyle
 ArrowsSymbolNext --> NextYearArrowButtonStyle
 
-SelectedDateColor --> FooterArrowLabelStyle
-ArrowsFontFamily, ArrowsColor --> SelectedDateLabelStyle
+ArrowsFontFamily, ArrowsColor --> FooterArrowLabelStyle
+SelectedDateColor --> SelectedDateLabelStyle
 
 DaysTitleHeight, DaysTitleColor --> DaysTitleLabelStyle
 DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
