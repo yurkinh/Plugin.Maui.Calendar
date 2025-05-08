@@ -425,6 +425,35 @@ public partial class Calendar : ContentView, IDisposable
 
 
 	/// <summary>
+	/// Bindable property for OtherMonthWeekIsVisible
+	/// </summary>
+	public static readonly BindableProperty OtherMonthWeekIsVisibleProperty = BindableProperty.Create(
+		nameof(OtherMonthWeekIsVisible),
+		typeof(bool),
+		typeof(Calendar),
+		true,
+		propertyChanged: OnOtherMonthWeekIsVisibleChanged
+	);
+
+	/// <summary>
+	/// Specifies whether the weeks belonging to a month other than the selected one will be shown
+	/// </summary>
+	public bool OtherMonthWeekIsVisible
+	{
+		get => (bool)GetValue(OtherMonthWeekIsVisibleProperty);
+		set => SetValue(OtherMonthWeekIsVisibleProperty, value);
+	}
+
+	static void OnOtherMonthWeekIsVisibleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDays();
+		}
+	}
+
+
+	/// <summary>
 	/// Binding property for CalendarSectionShown
 	/// </summary>
 	public static readonly BindableProperty CalendarSectionShownProperty = BindableProperty.Create(
@@ -741,6 +770,24 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DayViewSizeProperty, value);
 	}
 
+	/// <summary>
+	/// Bindable property for DayViewBorderMargin
+	/// </summary>
+	public static readonly BindableProperty DayViewBorderMarginProperty = BindableProperty.Create(
+		nameof(DayViewBorderMargin),
+		typeof(Thickness),
+		typeof(Calendar),
+		default(Thickness)
+	);
+
+	/// <summary>
+	/// Specifies the margin of dayview border
+	/// </summary>
+	public Thickness DayViewBorderMargin
+	{
+		get => (Thickness)GetValue(DayViewBorderMarginProperty);
+		set => SetValue(DayViewBorderMarginProperty, value);
+	}	
 
 	/// <summary>
 	/// Bindable property for DayViewCornerRadius
@@ -2100,6 +2147,7 @@ public partial class Calendar : ContentView, IDisposable
 	DateTime firstDate = DateTime.MinValue;
 	void UpdateDays(bool forceUpdate = false)
 	{
+		int lastDayOfMonth = 0;
 		if (!forceUpdate && firstDate == CurrentViewLayoutEngine.GetFirstDate(ShownDate))
 		{
 			return;
@@ -2112,16 +2160,23 @@ public partial class Calendar : ContentView, IDisposable
 			var currentDate = firstDate.AddDays(addDays++);
 			var dayModel = dayView.BindingContext as DayModel;
 
+			if (currentDate.Month == ShownDate.Month)
+				lastDayOfMonth = addDays;
+			bool currentMonthOnLine = (lastDayOfMonth == 0 || (addDays-1) / 7 == (lastDayOfMonth-1) / 7 );
+				
 			dayModel.Date = currentDate.Date;
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
+			dayModel.DayViewBorderMargin = DayViewBorderMargin;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;
 			dayModel.IsThisMonth =
 				(CalendarLayout != WeekLayout.Month) || currentDate.Month == ShownDate.Month;
 			dayModel.OtherMonthIsVisible =
 				(CalendarLayout != WeekLayout.Month) || OtherMonthDayIsVisible;
+			dayModel.OtherMonthWeekIsVisible =
+				(CalendarLayout != WeekLayout.Month) || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
 			dayModel.HasEvents = Events.ContainsKey(currentDate);
 			dayModel.IsDisabled =
 				currentDate < MinimumDate

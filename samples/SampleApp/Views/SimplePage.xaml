@@ -17,7 +17,7 @@
             <Style x:Key="MyDaysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="FontSize" Value="16" />
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />
@@ -44,6 +44,7 @@
         Padding="10,0"
         AllowDeselecting="False"
         Day="{Binding Day}"
+        DayViewBorderMargin="6,4,6,8"
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
         DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
@@ -51,6 +52,7 @@
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         EventsScrollViewVisible="True"
+        OtherMonthWeekIsVisible="False"
         FirstDayOfWeek="Monday"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
