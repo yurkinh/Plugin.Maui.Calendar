@@ -22,6 +22,7 @@ V2.0.0
 * Added sample page (Default calendar) to test memory leaks with [MemoryToolkit.Maui](https://github.com/AdamEssenmacher/MemoryToolkit.Maui) )
 * Updated samples
 * Added native digits support (added **UseNativeDigits** Property)
+* Added **OtherMonthWeekIsVisible** and **DayViewBorderMargin** properties
 
 ### Breaking  Changes
 
@@ -272,6 +273,8 @@ WeekendTitleStyle
 ```xml
 FirstDayOfWeek="Monday"
 UseNativeDigits="True"
+OtherMonthWeekIsVisible="False"
+DayViewBorderMargin
 ```
 
 #### Calendar Layout customizations
