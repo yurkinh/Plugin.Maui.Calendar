@@ -45,7 +45,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
     WeekLayout calendarLayout = WeekLayout.Month;
 
     [ObservableProperty]
-    List<DateTime> selectedDates = [];
+    List<DateTime> selectedDates = [new DateTime(2023, 10, 1), new DateTime(2023, 10, 2), new DateTime(2023, 10, 3)];
 
     [ObservableProperty]
     DateTime? selectedStartDate = DateTime.Today.AddDays(-9);
