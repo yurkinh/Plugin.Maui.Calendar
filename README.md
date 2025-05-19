@@ -255,6 +255,7 @@ OtherMonthSelectedDayColor="HotPink"
 #### Available Styles
 | Style Key                       | Based On (`DefaultStyles`)                           |
 | ------------------------------- | ---------------------------------------------------- |
+| `DaysLabelStyle`                | `DefaultStyles.DefaultLabelStyle`                    |
 | `MonthLabelStyle`               | `DefaultStyles.DefaultMonthLabelStyle`               |
 | `YearLabelStyle`                | `DefaultStyles.DefaultYearLabelStyle`                |
 | `PreviousMonthArrowButtonStyle` | `DefaultStyles.DefaultPreviousMonthArrowButtonStyle` |
