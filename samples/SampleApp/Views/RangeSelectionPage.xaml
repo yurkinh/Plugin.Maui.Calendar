@@ -52,8 +52,6 @@
         SelectedDatesRangeBackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
         SelectedDayBackgroundColor="{toolkit:AppThemeResource ButtonColor}"
         SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        SelectedEndDate="{Binding SelectedEndDate}"
-        SelectedStartDate="{Binding SelectedStartDate}"
         SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         ShownDate="{Binding ShownDate}"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}">
