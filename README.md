@@ -250,24 +250,22 @@ TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
 OtherMonthSelectedDayColor="HotPink"
-
 ```
+
 #### Available Styles
-```xml
-MonthLabelStyle
-YearLabelStyle
+| Style Key                       | Based On (`DefaultStyles`)                           |
+| ------------------------------- | ---------------------------------------------------- |
+| `MonthLabelStyle`               | `DefaultStyles.DefaultMonthLabelStyle`               |
+| `YearLabelStyle`                | `DefaultStyles.DefaultYearLabelStyle`                |
+| `PreviousMonthArrowButtonStyle` | `DefaultStyles.DefaultPreviousMonthArrowButtonStyle` |
+| `NextMonthArrowButtonStyle`     | `DefaultStyles.DefaultNextMonthArrowButtonStyle`     |
+| `PreviousYearArrowButtonStyle`  | `DefaultStyles.DefaultPreviousYearArrowButtonStyle`  |
+| `NextYearArrowButtonStyle`      | `DefaultStyles.DefaultNextYearArrowButtonStyle`      |
+| `FooterArrowLabelStyle`         | `DefaultStyles.DefaultFooterArrowLabelStyle`         |
+| `SelectedDateLabelStyle`        | `DefaultStyles.DefaultSelectedDateLabelStyle`        |
+| `WeekdayTitleStyle`             | `DefaultStyles.DefaultDaysTitleLabelStyle`           |
+| `WeekendTitleStyle`             | `DefaultStyles.DefaultWeekendTitleStyle`             |
 
-PreviousMonthArrowButtonStyle
-NextMonthArrowButtonStyle
-PreviousYearArrowButtonStyle
-NextYearArrowButtonStyle
-
-FooterArrowLabelStyle
-SelectedDateLabelStyle
-
-WeekdayTitleStyle
-WeekendTitleStyle
-```
 
 #### Available customization properties
 ```xml
