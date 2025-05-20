@@ -1,4 +1,51 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" />
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Style x:Key="SampleLabelStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultLabelStyle}"
+           TargetType="Label"/>
+
+    <Style x:Key="SampleMonthLabelStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
+           TargetType="Label"/>
+
+    <Style x:Key="SampleYearLabelStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
+           TargetType="Label"/>
+
+    <Style x:Key="SamplePreviousMonthArrowButtonStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultPreviousMonthArrowButtonStyle}"
+           TargetType="Button"/>
+
+    <Style x:Key="SampleNextMonthArrowButtonStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultNextMonthArrowButtonStyle}"
+           TargetType="Button"/>
+
+    <Style x:Key="SamplePreviousYearArrowButtonStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultPreviousYearArrowButtonStyle}"
+           TargetType="Button"/>
+
+    <Style x:Key="SampleNextYearArrowButtonStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultNextYearArrowButtonStyle}"
+           TargetType="Button"/>
+
+    <Style x:Key="SampleFooterArrowLabelStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowLabelStyle}"
+           TargetType="Label"/>
+
+    <Style x:Key="SampleSelectedDateLabelStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}"
+           TargetType="Label"/>
+
+    <Style x:Key="SampleDaysTitleLabelStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
+           TargetType="Label"/>
+
+    <Style x:Key="SampleWeekendTitleStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
+           TargetType="Label"/>
+
+</ResourceDictionary>
