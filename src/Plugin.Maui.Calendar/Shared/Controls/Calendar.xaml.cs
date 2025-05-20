@@ -2182,9 +2182,13 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	void OnDayTappedHandler(DateTime value)
-	{
+	{		
+		var newDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
 		SelectedDates.Clear();
-		SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
+		foreach (var date in newDates)
+		{
+			SelectedDates.Add(date);
+		}
 	}
 
 	void UpdateDayTitles()
