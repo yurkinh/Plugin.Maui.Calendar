@@ -28,6 +28,7 @@ V2.0.0
 
 Properties that Styles have replaced
 ```xml
+DayViewFontSize --> DaysLabelStyle
 MonthLabelColor --> MonthLabelStyle
 YearLabelColor --> YearLabelStyle
 
