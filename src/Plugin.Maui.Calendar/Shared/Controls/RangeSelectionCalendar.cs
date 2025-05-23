@@ -86,12 +86,19 @@ public class RangeSelectionCalendar : Calendar
 	{
 		var first = selectionEngine.GetDateRange(DisabledDates);
 
+		isSelectionDatesChanging = true;
 		if (first.Count > 0)
 		{
-			isSelectionDatesChanging = true;
 			SetValue(SelectedStartDateProperty, first.First());
 			SetValue(SelectedEndDateProperty, first.Last());
 		}
+		else
+		{
+			SetValue(SelectedStartDateProperty, null);
+			SetValue(SelectedEndDateProperty, null);
+		}
+		isSelectionDatesChanging = false;
+		
 		UpdateDateColors();
 	}
 
@@ -117,8 +124,8 @@ public class RangeSelectionCalendar : Calendar
 			rangeSelectionCalendar.isSelectionDatesChanging = true;
 			rangeSelectionCalendar.selectionEngine.SelectDateRange((DateTime?)newValue, rangeSelectionCalendar.DisabledDates);
 			rangeSelectionCalendar.SelectedDates = rangeSelectionCalendar.selectionEngine.GetDateRange();
+			rangeSelectionCalendar.isSelectionDatesChanging = false;
 		}
-		rangeSelectionCalendar.isSelectionDatesChanging = false;
 
 		rangeSelectionCalendar.UpdateDateColors();
 	}
@@ -129,7 +136,7 @@ public class RangeSelectionCalendar : Calendar
 		{
 			var dayModel = dayView.BindingContext as DayModel;
 
-			if (SelectedDates.Contains(dayModel.Date))
+			if (SelectedDates != null && SelectedDates.Contains(dayModel.Date))
 			{
 				dayModel.SelectedBackgroundColor = SelectedDatesRangeBackgroundColor;
 			}
