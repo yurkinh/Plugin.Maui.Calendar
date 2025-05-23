@@ -44,6 +44,15 @@ SelectedDateColor --> SelectedDateLabelStyle
 DaysTitleHeight, DaysTitleColor --> DaysTitleLabelStyle
 DaysTitleHeight, DaysTitleWeekendColor --> WeekendTitleStyle
 ```
+> ⚠️ **Breaking Change**:  
+> The `SelectedDates` property is now an `ObservableCollection<DateTime>`.  
+> To ensure the calendar updates when dates are added/removed, use:
+>
+> ```csharp
+> SelectedDates = new ObservableCollection<DateTime> { ... };
+> ```
+>
+> Do not use `List<DateTime>` for `SelectedDates` binding.
 
 V1.0.x
 * Removed all the platform-specific code, hence it supports all available .NET MAUI backends: iOS, Android, Windows, Mac, Tizen (not tested yet)
