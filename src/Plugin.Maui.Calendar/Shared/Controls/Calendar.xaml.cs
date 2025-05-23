@@ -1891,7 +1891,7 @@ public partial class Calendar : ContentView, IDisposable
 	nameof(SelectedDates),
 	typeof(ObservableCollection<DateTime>),
 	typeof(Calendar),
-	new ObservableCollection<DateTime>(),
+	defaultValueCreator: () => new ObservableCollection<DateTime>(),
 	BindingMode.TwoWay,
 	propertyChanged: SelectedDatesChanged
 );
