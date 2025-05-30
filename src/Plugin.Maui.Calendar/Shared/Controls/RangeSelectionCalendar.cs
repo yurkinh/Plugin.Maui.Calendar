@@ -1,4 +1,5 @@
-﻿using Plugin.Maui.Calendar.Controls.SelectionEngines;
+﻿using System.Collections.ObjectModel;
+using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -89,9 +90,14 @@ public class RangeSelectionCalendar : Calendar
 		if (first.Count > 0)
 		{
 			isSelectionDatesChanging = true;
-			SetValue(SelectedStartDateProperty, first.First());
-			SetValue(SelectedEndDateProperty, first.Last());
+			SelectedStartDate = first.FirstOrDefault();
+			SelectedEndDate = first.LastOrDefault();
+			if (!first.SequenceEqual(SelectedDates))
+			{
+				SelectedDates = new ObservableCollection<DateTime>(first);
+			}
 		}
+
 		UpdateDateColors();
 	}
 
@@ -102,10 +108,11 @@ public class RangeSelectionCalendar : Calendar
 		{
 			rangeSelectionCalendar.isSelectionDatesChanging = true;
 			rangeSelectionCalendar.selectionEngine.SelectDateRange((DateTime?)newValue, rangeSelectionCalendar.DisabledDates);
-			rangeSelectionCalendar.SelectedDates = rangeSelectionCalendar.selectionEngine.GetDateRange(rangeSelectionCalendar.DisabledDates);
+			rangeSelectionCalendar.SelectedDates = new ObservableCollection<DateTime>(
+				rangeSelectionCalendar.selectionEngine.GetDateRange(rangeSelectionCalendar.DisabledDates)
+			);
 			rangeSelectionCalendar.isSelectionDatesChanging = false;
 		}
-
 		rangeSelectionCalendar.UpdateDateColors();
 	}
 
@@ -116,10 +123,11 @@ public class RangeSelectionCalendar : Calendar
 		{
 			rangeSelectionCalendar.isSelectionDatesChanging = true;
 			rangeSelectionCalendar.selectionEngine.SelectDateRange((DateTime?)newValue, rangeSelectionCalendar.DisabledDates);
-			rangeSelectionCalendar.SelectedDates = rangeSelectionCalendar.selectionEngine.GetDateRange();
+			rangeSelectionCalendar.SelectedDates = new ObservableCollection<DateTime>(
+				rangeSelectionCalendar.selectionEngine.GetDateRange()
+			);
 		}
 		rangeSelectionCalendar.isSelectionDatesChanging = false;
-
 		rangeSelectionCalendar.UpdateDateColors();
 	}
 

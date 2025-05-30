@@ -11,6 +11,8 @@ using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
 using Plugin.Maui.Calendar.Shared.Extensions;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -281,6 +283,11 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
 
 			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+
+			if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
+			{
+				calendar.UpdateRangeSelection();
+			}
 		}
 	}
 
@@ -1886,39 +1893,69 @@ public partial class Calendar : ContentView, IDisposable
 	/// Bindable property for SelectedDates
 	/// </summary>
 	public static readonly BindableProperty SelectedDatesProperty = BindableProperty.Create(
-		nameof(SelectedDates),
-		typeof(List<DateTime>),
-		typeof(Calendar),
-		new List<DateTime>(),
-		BindingMode.TwoWay,
-		propertyChanged: SelectedDatesChanged
-	);
-	/// <summary>
-	/// Selected date in single date selection mode
-	/// </summary>
-	public List<DateTime> SelectedDates
+		 nameof(SelectedDates),
+		 typeof(ObservableCollection<DateTime>),
+		 typeof(Calendar),
+		defaultValue: null,
+		 BindingMode.TwoWay,
+		propertyChanged: SelectedDatesChanged,
+		defaultValueCreator: (bindable) => new ObservableCollection<DateTime>());
+
+
+	public ObservableCollection<DateTime> SelectedDates
 	{
-		get => (List<DateTime>)GetValue(SelectedDatesProperty);
+		get => (ObservableCollection<DateTime>)GetValue(SelectedDatesProperty);
 		set
 		{
+			var oldCollection = SelectedDates;
+			if (oldCollection != null)
+			{
+				oldCollection.CollectionChanged -= OnSelectedDatesCollectionChanged;
+			}
+
 			SetValue(SelectedDatesProperty, value);
+			if (value != null)
+			{
+				value.CollectionChanged += OnSelectedDatesCollectionChanged;
+			}
+
 			isSelectingDates = true;
 			SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
 		}
 	}
+
+	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+	{
+		UpdateDays(true);
+		CurrentSelectionEngine.UpdateDateSelection(SelectedDates?.ToList());
+		UpdateSelectedDateLabel();
+		UpdateEvents();
+		if (CurrentSelectionEngine is RangedSelectionEngine)
+		{
+			UpdateRangeSelection();
+		}
+	}
+
 	static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar && (newValue is List<DateTime> || newValue is null) && !Equals(newValue, oldValue))
+		var calendar = (Calendar)bindable;
+		if (oldValue is ObservableCollection<DateTime> oldCollection)
 		{
-			calendar.UpdateDays(true);
-			calendar.CurrentSelectionEngine.UpdateDateSelection(calendar.SelectedDates);
-			calendar.UpdateSelectedDateLabel();
-			calendar.UpdateEvents();
+			oldCollection.CollectionChanged -= calendar.OnSelectedDatesCollectionChanged;
+		}
 
-			if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
-			{
-				calendar.UpdateRangeSelection();
-			}
+		if (newValue is ObservableCollection<DateTime> newCollection)
+		{
+			newCollection.CollectionChanged += calendar.OnSelectedDatesCollectionChanged;
+		}
+
+		calendar.UpdateDays(true);
+		calendar.CurrentSelectionEngine.UpdateDateSelection(calendar.SelectedDates?.ToList());
+		calendar.UpdateSelectedDateLabel();
+		calendar.UpdateEvents();
+		if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
+		{
+			calendar.UpdateRangeSelection();
 		}
 	}
 
@@ -2150,7 +2187,15 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDaysColors();
 	}
 
-	void OnDayTappedHandler(DateTime value) => SelectedDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
+	void OnDayTappedHandler(DateTime value)
+	{
+		var newDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
+		SelectedDates.Clear();
+		foreach (var date in newDates)
+		{
+			SelectedDates.Add(date);
+		}
+	}
 
 	void UpdateDayTitles()
 	{
@@ -2198,7 +2243,7 @@ public partial class Calendar : ContentView, IDisposable
 				lastDayOfMonth = addDays;
 			}
 
-			bool currentMonthOnLine = (lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7);
+			bool currentMonthOnLine = lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7;
 
 			dayModel.Date = currentDate.Date;
 			dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);

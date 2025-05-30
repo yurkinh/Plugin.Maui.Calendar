@@ -1,4 +1,5 @@
-﻿using Plugin.Maui.Calendar.Enums;
+﻿using System.Collections.ObjectModel;
+using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
 
 namespace SampleApp.ViewModels;
@@ -45,7 +46,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
     WeekLayout calendarLayout = WeekLayout.Month;
 
     [ObservableProperty]
-    List<DateTime> selectedDates = [];
+    ObservableCollection<DateTime> selectedDates = [];
 
     [ObservableProperty]
     DateTime? selectedStartDate = DateTime.Today.AddDays(-9);
