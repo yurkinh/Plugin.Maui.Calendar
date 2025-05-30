@@ -86,13 +86,18 @@ public class RangeSelectionCalendar : Calendar
 	protected override void UpdateRangeSelection()
 	{
 		var first = selectionEngine.GetDateRange(DisabledDates);
+
 		if (first.Count > 0)
 		{
 			isSelectionDatesChanging = true;
-			SetValue(SelectedStartDateProperty, first.First());
-			SetValue(SelectedEndDateProperty, first.Last());
-			SelectedDates = new ObservableCollection<DateTime>(first);
+			SelectedStartDate = first.FirstOrDefault();
+			SelectedEndDate = first.LastOrDefault();
+			if (!first.SequenceEqual(SelectedDates))
+			{
+				SelectedDates = new ObservableCollection<DateTime>(first);
+			}
 		}
+
 		UpdateDateColors();
 	}
 

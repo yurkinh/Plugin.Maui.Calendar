@@ -283,6 +283,11 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
 
 			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+
+			if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
+			{
+				calendar.UpdateRangeSelection();
+			}
 		}
 	}
 
@@ -1888,13 +1893,14 @@ public partial class Calendar : ContentView, IDisposable
 	/// Bindable property for SelectedDates
 	/// </summary>
 	public static readonly BindableProperty SelectedDatesProperty = BindableProperty.Create(
-	nameof(SelectedDates),
-	typeof(ObservableCollection<DateTime>),
-	typeof(Calendar),
-	defaultValueCreator: () => new ObservableCollection<DateTime>(),
-	BindingMode.TwoWay,
-	propertyChanged: SelectedDatesChanged
-);
+		 nameof(SelectedDates),
+		 typeof(ObservableCollection<DateTime>),
+		 typeof(Calendar),
+		defaultValue: null,
+		 BindingMode.TwoWay,
+		propertyChanged: SelectedDatesChanged,
+		defaultValueCreator: (bindable) => new ObservableCollection<DateTime>());
+
 
 	public ObservableCollection<DateTime> SelectedDates
 	{
@@ -2182,7 +2188,7 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	void OnDayTappedHandler(DateTime value)
-	{		
+	{
 		var newDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
 		SelectedDates.Clear();
 		foreach (var date in newDates)
