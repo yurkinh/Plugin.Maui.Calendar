@@ -17,16 +17,24 @@ public partial class DelayedView : LazyView
 
 	public int DelayInMilliseconds { get; set; } = 200;
 
-	static async void OnViewChanged(BindableObject bindable, object oldValue, object newValue)
+	static async Task OnViewChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is DelayedView control && newValue is View newView)
+		try
 		{
-			await Task.Delay(control.DelayInMilliseconds);
-			if (!control.IsLoaded)
+			if (bindable is DelayedView control && newValue is View newView)
 			{
-				control.IsLoaded = true;
-				control.Content = newView;
+				await Task.Delay(control.DelayInMilliseconds);
+				if (!control.IsLoaded)
+				{
+					control.IsLoaded = true;
+					control.Content = newView;
+				}
 			}
+		}
+		catch (Exception ex)
+		{
+			// Log or handle the exception as needed
+			Console.WriteLine($"Error in OnViewChanged: {ex}");
 		}
 	}
 
