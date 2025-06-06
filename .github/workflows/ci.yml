@@ -19,6 +19,6 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
     - name: Install .NET MAUI
-      run: dotnet workload install maui
+      run: dotnet workload install maui-android maui-windows
     - name: Build
-      run: msbuild src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.sln -r -property:Configuration=Release
+      run: msbuild src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -r -property:Configuration=Release

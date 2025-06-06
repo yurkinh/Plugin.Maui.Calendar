@@ -23,7 +23,7 @@ jobs:
         with:
          dotnet-version: 9.0.x
       - name: Install .NET MAUI
-        run: dotnet workload install maui      
+        run: dotnet workload install maui-android maui-windows      
       - name: Get version information from tag
         id: get_version
         uses: battila7/get-version-action@v2
