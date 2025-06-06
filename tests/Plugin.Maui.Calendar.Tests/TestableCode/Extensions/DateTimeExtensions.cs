@@ -39,8 +39,9 @@ public static class DateTimeExtensions
         return DateTime.DaysInMonth(value.Year, value.Month);
     }
 
+    [Obsolete("Use StartDayOfMonth instead.")]
     public static DateTime FirstDayOfMonth(this DateTime dt)
     {
-        return new DateTime(dt.Year, dt.Month, 1);
+        return dt.StartDayOfMonth();
     }
 }
