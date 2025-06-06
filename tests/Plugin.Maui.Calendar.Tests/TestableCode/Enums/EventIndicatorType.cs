@@ -6,7 +6,7 @@ namespace Plugin.Maui.Calendar.Tests.TestableCode.Enums;
 public enum EventIndicatorType
 {
     /// <summary>
-    /// Set event indicator as dot bellow of date in calendar
+    /// Set event indicator as dot below the date in the calendar
     /// </summary>
     BottomDot,
     /// <summary>
