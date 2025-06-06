@@ -60,6 +60,12 @@
 	  <None Remove="Shared\Controls\" />
 	  <None Remove="Shared\Converters\" />
 	</ItemGroup>
+	
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Plugin.Maui.Calendar.Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Shared\Models\" />
 	  <Folder Include="Shared\Converters\" />

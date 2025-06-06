@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.csproj" />
+  <Project Path="tests/Plugin.Maui.Calendar.Tests/Plugin.Maui.Calendar.Tests.csproj" />
+</Solution>
