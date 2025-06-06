@@ -22,3 +22,17 @@ jobs:
       run: dotnet workload install maui
     - name: Build
       run: msbuild src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -r -property:Configuration=Release
+    - name: Run Unit Tests
+      run: dotnet test tests\Plugin.Maui.Calendar.Tests\Plugin.Maui.Calendar.Tests.csproj --configuration Release --logger trx --collect:"XPlat Code Coverage"
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: tests/Plugin.Maui.Calendar.Tests/TestResults/
+    - name: Upload Coverage Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-report
+        path: tests/Plugin.Maui.Calendar.Tests/TestResults/**/coverage.cobertura.xml
