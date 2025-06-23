@@ -1916,12 +1916,25 @@ public partial class Calendar : ContentView, IDisposable
 				value.CollectionChanged += OnSelectedDatesCollectionChanged;
 			}
 
-			isSelectingDates = true;
-			SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
-			isSelectingDates = false;
+			RunWithSelectionSuppressed(() =>
+			{
+				SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
+			});
 		}
 	}
 
+	private void RunWithSelectionSuppressed(Action action)
+	{
+		isSelectingDates = true;
+		try
+		{
+			action();
+		}
+		finally
+		{
+			isSelectingDates = false;
+		}
+	}
 	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 	{
 		UpdateDays(true);
