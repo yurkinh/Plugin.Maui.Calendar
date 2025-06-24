@@ -2204,15 +2204,7 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDaysColors();
 	}
 
-	void OnDayTappedHandler(DateTime value)
-	{
-		var newDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
-		SelectedDates.Clear();
-		foreach (var date in newDates)
-		{
-			SelectedDates.Add(date);
-		}
-	}
+	void OnDayTappedHandler(DateTime value) => SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
 
 	void UpdateDayTitles()
 	{
