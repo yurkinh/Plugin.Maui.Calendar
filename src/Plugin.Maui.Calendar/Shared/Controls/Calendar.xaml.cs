@@ -1923,7 +1923,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	private void RunWithSelectionSuppressed(Action action)
+	void RunWithSelectionSuppressed(Action action)
 	{
 		isSelectingDates = true;
 		try
