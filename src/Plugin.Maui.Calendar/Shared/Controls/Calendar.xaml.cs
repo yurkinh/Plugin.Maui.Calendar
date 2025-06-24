@@ -1864,7 +1864,6 @@ public partial class Calendar : ContentView, IDisposable
 		var control = (Calendar)bindable;
 		var dateToSet = (DateTime?)newValue;
 
-		control.SetValue(SelectedDateProperty, dateToSet);
 		if (
 			!control.isSelectingDates
 			|| control.CurrentSelectionEngine is SingleSelectionEngine
@@ -1879,12 +1878,10 @@ public partial class Calendar : ContentView, IDisposable
 				control.SetValue(SelectedDatesProperty, new List<DateTime>());
 			}
 		}
-		else
-		{
-			control.isSelectingDates = false;
-		}
+		
+		// Always reset the flag after processing
+		control.isSelectingDates = false;
 		control.UpdateDays(true);
-
 	}
 
 	bool isSelectingDates = false;
@@ -1919,17 +1916,37 @@ public partial class Calendar : ContentView, IDisposable
 				value.CollectionChanged += OnSelectedDatesCollectionChanged;
 			}
 
-			isSelectingDates = true;
-			SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
+			RunWithSelectionSuppressed(() =>
+			{
+				SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
+			});
 		}
 	}
 
+	private void RunWithSelectionSuppressed(Action action)
+	{
+		isSelectingDates = true;
+		try
+		{
+			action();
+		}
+		finally
+		{
+			isSelectingDates = false;
+		}
+	}
 	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 	{
 		UpdateDays(true);
 		CurrentSelectionEngine.UpdateDateSelection(SelectedDates?.ToList());
 		UpdateSelectedDateLabel();
 		UpdateEvents();
+		
+		// Update SelectedDate property when SelectedDates collection changes
+		isSelectingDates = true;
+		SetValue(SelectedDateProperty, SelectedDates?.Count > 0 ? SelectedDates.First() : null);
+		isSelectingDates = false;
+		
 		if (CurrentSelectionEngine is RangedSelectionEngine)
 		{
 			UpdateRangeSelection();
