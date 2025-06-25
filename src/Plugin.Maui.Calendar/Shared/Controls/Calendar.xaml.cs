@@ -1864,6 +1864,7 @@ public partial class Calendar : ContentView, IDisposable
 		var control = (Calendar)bindable;
 		var dateToSet = (DateTime?)newValue;
 
+		control.SetValue(SelectedDateProperty, dateToSet);
 		if (
 			!control.isSelectingDates
 			|| control.CurrentSelectionEngine is SingleSelectionEngine
@@ -1878,10 +1879,12 @@ public partial class Calendar : ContentView, IDisposable
 				control.SetValue(SelectedDatesProperty, new List<DateTime>());
 			}
 		}
-		
-		// Always reset the flag after processing
-		control.isSelectingDates = false;
+		else
+		{
+			control.isSelectingDates = false;
+		}
 		control.UpdateDays(true);
+
 	}
 
 	bool isSelectingDates = false;
@@ -1916,37 +1919,17 @@ public partial class Calendar : ContentView, IDisposable
 				value.CollectionChanged += OnSelectedDatesCollectionChanged;
 			}
 
-			RunWithSelectionSuppressed(() =>
-			{
-				SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
-			});
+			isSelectingDates = true;
+			SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
 		}
 	}
 
-	private void RunWithSelectionSuppressed(Action action)
-	{
-		isSelectingDates = true;
-		try
-		{
-			action();
-		}
-		finally
-		{
-			isSelectingDates = false;
-		}
-	}
 	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 	{
 		UpdateDays(true);
 		CurrentSelectionEngine.UpdateDateSelection(SelectedDates?.ToList());
 		UpdateSelectedDateLabel();
 		UpdateEvents();
-		
-		// Update SelectedDate property when SelectedDates collection changes
-		isSelectingDates = true;
-		SetValue(SelectedDateProperty, SelectedDates?.Count > 0 ? SelectedDates.First() : null);
-		isSelectingDates = false;
-		
 		if (CurrentSelectionEngine is RangedSelectionEngine)
 		{
 			UpdateRangeSelection();
@@ -2204,15 +2187,7 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDaysColors();
 	}
 
-	void OnDayTappedHandler(DateTime value)
-	{
-		var newDates = CurrentSelectionEngine.PerformDateSelection(value, DisabledDates);
-		SelectedDates.Clear();
-		foreach (var date in newDates)
-		{
-			SelectedDates.Add(date);
-		}
-	}
+	void OnDayTappedHandler(DateTime value) => SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
 
 	void UpdateDayTitles()
 	{
