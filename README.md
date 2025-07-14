@@ -1,3 +1,4 @@
++
 # Calendar Plugin for .NET MAUI
 
 This is a .NET MAUI port of the [lilcodelab](https://github.com/lilcodelab/) Xamarin.Forms  [Calendar Plugin](https://github.com/lilcodelab/Xamarin.Plugin.Calendar)
@@ -231,6 +232,16 @@ Where `EventModel` is just an example, it can be replaced by any data model you 
 `EventsCollection` is just a wrapper over `Dictionary<DateTime, ICollection>` exposing custom `Add` method and `this[DateTime]` indexer which internally extracts the `.Date` component of `DateTime` values and uses it as a key in this dictionary.
 
 `DayEventCollection` is just a wrapper over `List<T>` exposing custom properties `EventIndicatorColor` and `EventIndicatorSelectedColor` for assigning a custom color to the dot.
+
+
+#### DayTappedCommand
+The **DayTappedCommand** is triggered when a user taps on a specific day in the calendar.
+
+XAML Usage:
+```xml
+DayTappedCommand="{Binding DayTappedCommand}"
+```
+
 
 #### Set up culture
 
