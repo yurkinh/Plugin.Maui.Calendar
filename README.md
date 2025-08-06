@@ -24,6 +24,8 @@ V2.0.0
 * Updated samples
 * Added native digits support (added **UseNativeDigits** Property)
 * Added **OtherMonthWeekIsVisible** and **DayViewBorderMargin** properties
+* Added **AutoChangeMonthOnDayTap** property — allows automatically switching the displayed month when user taps on a day from another month (disabled by default)
+
 
 ### Breaking  Changes
 
@@ -295,6 +297,7 @@ FirstDayOfWeek="Monday"
 UseNativeDigits="True"
 OtherMonthWeekIsVisible="False"
 DayViewBorderMargin
+AutoChangeMonthOnDayTap="True"
 ```
 
 #### Calendar Layout customizations
