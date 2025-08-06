@@ -2214,9 +2214,8 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			if (value.Month != ShownDate.Month || value.Year != ShownDate.Year)
 			{
-				ShownDate = value;
-
 				var oldMonth = new DateOnly(ShownDate.Year, ShownDate.Month, 1);
+				ShownDate = value;
 				var newMonth = new DateOnly(value.Year, value.Month, 1);
 
 				MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
