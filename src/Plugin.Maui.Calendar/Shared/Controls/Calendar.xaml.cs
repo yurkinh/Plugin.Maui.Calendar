@@ -1872,7 +1872,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			if (dateToSet.HasValue)
 			{
-				control.SetValue(SelectedDatesProperty, new List<DateTime> { dateToSet.Value });
+				control.SelectedDates = [dateToSet.Value];
 			}
 			else
 			{
@@ -1920,21 +1920,12 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			isSelectingDates = true;
-			SetValue(SelectedDateProperty, value?.Count > 0 ? value.First() : null);
+			SelectedDate = value?.Count > 0 ? value.First() : null;
 		}
 	}
 
-	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-	{
-		UpdateDays(true);
-		CurrentSelectionEngine.UpdateDateSelection(SelectedDates?.ToList());
-		UpdateSelectedDateLabel();
-		UpdateEvents();
-		if (CurrentSelectionEngine is RangedSelectionEngine)
-		{
-			UpdateRangeSelection();
-		}
-	}
+	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateSelectedDatesCollection(SelectedDates?.ToList());
+
 
 	static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
 	{
@@ -1948,14 +1939,18 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			newCollection.CollectionChanged += calendar.OnSelectedDatesCollectionChanged;
 		}
+		calendar.UpdateSelectedDatesCollection(calendar.SelectedDates?.ToList());
+	}
 
-		calendar.UpdateDays(true);
-		calendar.CurrentSelectionEngine.UpdateDateSelection(calendar.SelectedDates?.ToList());
-		calendar.UpdateSelectedDateLabel();
-		calendar.UpdateEvents();
-		if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
+	void UpdateSelectedDatesCollection(List<DateTime> SelectedDates)
+	{
+		CurrentSelectionEngine.UpdateDateSelection([.. SelectedDates]);
+		UpdateDays(true);
+		UpdateSelectedDateLabel();
+		UpdateEvents();
+		if (CurrentSelectionEngine is RangedSelectionEngine)
 		{
-			calendar.UpdateRangeSelection();
+			UpdateRangeSelection();
 		}
 	}
 
