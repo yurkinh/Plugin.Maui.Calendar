@@ -1681,6 +1681,27 @@ public partial class Calendar : ContentView, IDisposable
 		get => (string)GetValue(SelectedDateTextFormatProperty);
 		set => SetValue(SelectedDateTextFormatProperty, value);
 	}
+
+	/// <summary>
+	/// Determines whether tapping on a day from another month should change the displayed month.
+	/// </summary>
+	public static readonly BindableProperty AutoChangeMonthOnDayTapProperty =
+		BindableProperty.Create(
+			nameof(AutoChangeMonthOnDayTap),
+			typeof(bool),
+			typeof(Calendar),
+			false
+		);
+
+	/// <summary>
+	/// Gets or sets whether tapping on a day from another month should change the displayed month.
+	/// </summary>
+	public bool AutoChangeMonthOnDayTap
+	{
+		get => (bool)GetValue(AutoChangeMonthOnDayTapProperty);
+		set => SetValue(AutoChangeMonthOnDayTapProperty, value);
+	}
+
 	#endregion
 
 	#region SelectedDay BindableProperies
@@ -2187,7 +2208,30 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDaysColors();
 	}
 
-	void OnDayTappedHandler(DateTime value) => SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
+	void OnDayTappedHandler(DateTime value)
+	{
+		if (AutoChangeMonthOnDayTap)
+		{
+			if (value.Month != ShownDate.Month || value.Year != ShownDate.Year)
+			{
+				ShownDate = value;
+
+				var oldMonth = new DateOnly(ShownDate.Year, ShownDate.Month, 1);
+				var newMonth = new DateOnly(value.Year, value.Month, 1);
+
+				MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
+
+				if (MonthChangedCommand?.CanExecute(null) == true)
+				{
+					MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+				}
+			}
+		}
+
+		SelectedDates = new ObservableCollection<DateTime>(
+			CurrentSelectionEngine.PerformDateSelection(value, DisabledDates)
+		);
+	}
 
 	void UpdateDayTitles()
 	{
