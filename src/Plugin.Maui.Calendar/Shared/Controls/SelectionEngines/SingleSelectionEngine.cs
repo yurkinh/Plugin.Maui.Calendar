@@ -32,8 +32,8 @@ class SingleSelectionEngine : ISelectionEngine
 		return false;
 	}
 
-	bool ISelectionEngine.IsDateSelected(DateTime dateToCheck) => dateToCheck == selectedDate;
-
+	bool ISelectionEngine.IsDateSelected(DateTime dateToCheck) =>
+		selectedDate.HasValue && dateToCheck.Date == selectedDate.Value.Date;
 
 	List<DateTime> ISelectionEngine.PerformDateSelection(
 		DateTime dateToSelect,
