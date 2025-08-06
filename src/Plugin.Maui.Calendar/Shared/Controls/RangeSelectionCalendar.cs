@@ -92,7 +92,7 @@ public class RangeSelectionCalendar : Calendar
 			isSelectionDatesChanging = true;
 			SelectedStartDate = first.FirstOrDefault();
 			SelectedEndDate = first.LastOrDefault();
-			if (!first.SequenceEqual(SelectedDates))
+			if (!first.Select(d => d.Date).SequenceEqual(SelectedDates.Select(d => d.Date)))
 			{
 				SelectedDates = new ObservableCollection<DateTime>(first);
 			}
