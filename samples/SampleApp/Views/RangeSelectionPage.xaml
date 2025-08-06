@@ -70,7 +70,7 @@
 
         <plugin:RangeSelectionCalendar.EventTemplate>
             <DataTemplate x:DataType="local:RangeSelectionPageViewModel">
-                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
+                <controls:CalendarEvent CalendarEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedRangeSelectionCalendarPage}}" />
             </DataTemplate>
         </plugin:RangeSelectionCalendar.EventTemplate>
         <plugin:RangeSelectionCalendar.EmptyTemplate>

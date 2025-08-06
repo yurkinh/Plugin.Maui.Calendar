@@ -101,7 +101,7 @@
 
         <plugin:Calendar.EventTemplate>
             <DataTemplate x:DataType="model:AdvancedEventModel">
-                <controls:CalenderEvent CalenderEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedCalendarPage}, x:DataType=local:AdvancedPageViewModel}" />
+                <controls:CalendarEvent CalendarEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedCalendarPage}, x:DataType=local:AdvancedPageViewModel}" />
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
         <plugin:Calendar.EmptyTemplate>

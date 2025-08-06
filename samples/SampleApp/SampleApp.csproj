@@ -67,7 +67,13 @@
 
   <ItemGroup>
 	  <ProjectReference Include="..\..\src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj" />
-	</ItemGroup>		
+	</ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\CalendarEvent.xaml.cs">
+      <DependentUpon>CalendarEvent.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>		
 	
 	<ItemGroup>
 	  <MauiXaml Update="Controls\ThemeButton.xaml">
