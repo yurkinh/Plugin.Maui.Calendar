@@ -25,6 +25,14 @@ public partial class SimplePageViewModel : BasePageViewModel
 		// with indexer
 		Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
 
+		selectedDates =
+		[
+			DateTime.Today,
+			DateTime.Today.AddDays(1),
+			DateTime.Today.AddDays(2),
+			DateTime.Today.AddDays(3),
+		];
+
 	}
 
 	static IEnumerable<EventModel> GenerateEvents(int count, string name)
@@ -52,10 +60,13 @@ public partial class SimplePageViewModel : BasePageViewModel
 	DateTime? selectedDate = DateTime.Today;
 
 	[ObservableProperty]
-	DateTime minimumDate = new DateTime(2019, 4, 29);
+	DateTime minimumDate = new(2019, 4, 29);
 
 	[ObservableProperty]
 	DateTime maximumDate = DateTime.Today.AddMonths(5);
+
+	[ObservableProperty]
+	ObservableCollection<DateTime> selectedDates = [];
 
 	[ObservableProperty]
 	string name;
@@ -89,4 +100,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 		string message = $"From {oldMonthName} to {newMonthName}";
 		await Shell.Current.DisplayAlert("Month Changed", message, "OK");
 	}
+
+	[RelayCommand]
+	void ClearSelectedDates() => SelectedDates.Clear();
 }

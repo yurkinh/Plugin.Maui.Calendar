@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="SampleApp.Views.MultiSelectionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -45,45 +45,58 @@
     <ContentPage.BindingContext>
         <local:SimplePageViewModel />
     </ContentPage.BindingContext>
+    <ScrollView>
+        <VerticalStackLayout>
 
-    <plugin:MultiSelectionCalendar
-        x:Name="calendar"
-        Padding="10,0"
-        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        Events="{Binding Events}"
-        HorizontalOptions="Fill"
-        MaximumDate="{Binding MaximumDate}"
-        MinimumDate="{Binding MinimumDate}"
-        Month="{Binding Month}"
-        SelectedDate="{Binding SelectedDate}"
-        VerticalOptions="Fill"
-        DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
-        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
-        Year="{Binding Year}">
-        <plugin:Calendar.EventTemplate>
-            <DataTemplate x:DataType="models:EventModel">
-                <VerticalStackLayout
-                    Padding="15,0,0,0"
-                    HorizontalOptions="Fill"
-                    Spacing="6"
-                    VerticalOptions="Fill">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="Medium"
-                        Text="{Binding Name}" />
-                    <Label
-                        FontSize="Small"
-                        LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer
-                            x:DataType="local:SimplePageViewModel"
-                            Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
-                            CommandParameter="{Binding .}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-            </DataTemplate>
-        </plugin:Calendar.EventTemplate>
-    </plugin:MultiSelectionCalendar>
+            <plugin:MultiSelectionCalendar
+                x:Name="calendar"
+                Padding="10,0"
+                DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
+                DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
+                DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                Events="{Binding Events}"
+                HorizontalOptions="Fill"
+                MaximumDate="{Binding MaximumDate}"
+                MinimumDate="{Binding MinimumDate}"
+                Month="{Binding Month}"
+                SelectedDate="{Binding SelectedDate}"
+                SelectedDates="{Binding SelectedDates, Mode=TwoWay}"
+                VerticalOptions="Fill"
+                WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
+                Year="{Binding Year}">
+                <plugin:Calendar.EventTemplate>
+                    <DataTemplate x:DataType="models:EventModel">
+                        <VerticalStackLayout
+                            Padding="15,0,0,0"
+                            HorizontalOptions="Fill"
+                            Spacing="6"
+                            VerticalOptions="Fill">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="Medium"
+                                Text="{Binding Name}" />
+                            <Label
+                                FontSize="Small"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding Description}" />
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    x:DataType="local:SimplePageViewModel"
+                                    Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
+                                    CommandParameter="{Binding .}" />
+                            </VerticalStackLayout.GestureRecognizers>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </plugin:Calendar.EventTemplate>
+            </plugin:MultiSelectionCalendar>
+
+            <Button
+                Margin="150,50"
+                Padding="10"
+                BackgroundColor="{toolkit:AppThemeResource ButtonColor}"
+                Command="{Binding ClearSelectedDatesCommand}"
+                CornerRadius="10"
+                Text="Clear Selection" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
