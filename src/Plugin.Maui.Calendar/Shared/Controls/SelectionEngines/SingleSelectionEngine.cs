@@ -56,11 +56,11 @@ class SingleSelectionEngine : ISelectionEngine
 		return [dateToSelect];
 	}
 
-	void ISelectionEngine.UpdateDateSelection(List<DateTime> datesToSelect)
+	void ISelectionEngine.UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
-		if (datesToSelect?.Count > 0)
+		if (datesToSelect is not null && datesToSelect.Any())
 		{
-			selectedDate = datesToSelect[0];
+			selectedDate = datesToSelect.First();
 		}
 		else
 		{

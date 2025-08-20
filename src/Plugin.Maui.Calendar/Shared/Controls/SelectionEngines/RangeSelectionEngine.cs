@@ -45,12 +45,12 @@ class RangedSelectionEngine : ISelectionEngine
 
 	List<DateTime> ISelectionEngine.PerformDateSelection(DateTime dateToSelect, List<DateTime> disabledDates)
 	{
-		return SelectDateRange(dateToSelect, disabledDates ?? new List<DateTime>());
+		return SelectDateRange(dateToSelect, disabledDates ?? []);
 	}
 
-	void ISelectionEngine.UpdateDateSelection(List<DateTime> datesToSelect)
+	void ISelectionEngine.UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
-		if (datesToSelect?.Count > 0)
+		if (datesToSelect is not null && datesToSelect.Any())
 		{
 			// Use LINQ to simplify finding min and max
 			rangeSelectionStartDate = datesToSelect.Min().Date;

@@ -41,5 +41,5 @@ public interface ISelectionEngine
     /// Method to selectedDates when changed from code
     /// </summary>
     /// <param name="datesToSelect"></param>
-    void UpdateDateSelection(List<DateTime> datesToSelect);
+    void UpdateDateSelection(IEnumerable<DateTime> datesToSelect);
 }
