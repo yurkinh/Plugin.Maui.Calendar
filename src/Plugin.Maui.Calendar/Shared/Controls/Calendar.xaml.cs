@@ -1965,7 +1965,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	void UpdateSelectedDatesCollection(List<DateTime> SelectedDates)
 	{
-		CurrentSelectionEngine.UpdateDateSelection(SelectedDates ?? new List<DateTime>());
+		CurrentSelectionEngine.UpdateDateSelection(SelectedDates ?? []);
 		UpdateDays(true);
 		UpdateSelectedDateLabel();
 		UpdateEvents();

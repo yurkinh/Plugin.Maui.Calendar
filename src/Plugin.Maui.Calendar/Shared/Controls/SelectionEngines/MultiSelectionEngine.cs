@@ -55,8 +55,13 @@ public class MultiSelectionEngine : ISelectionEngine
 		return [.. selectedDates];
 	}
 
-	public void UpdateDateSelection(List<DateTime> datesToSelect)
+	public void UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
-		datesToSelect.ForEach(date => selectedDates.Add(date));
+		selectedDates.Clear();
+
+		foreach (var date in datesToSelect ?? [])
+		{
+			selectedDates.Add(date);
+		}
 	}
 }
