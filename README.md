@@ -369,7 +369,7 @@ On the `RangeSelectionCalendar` you can use binding for start date `SelectedStar
 On the `MultiselectionCalendar` you can select multiple separate dates
 
 ```xml
-    plugin:MultiSelectionCalendar
+    <plugin:MultiSelectionCalendar
         Events="{Binding Events}"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
