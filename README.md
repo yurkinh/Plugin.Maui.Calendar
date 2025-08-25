@@ -25,6 +25,7 @@ V2.0.0
 * Added native digits support (added **UseNativeDigits** Property)
 * Added **OtherMonthWeekIsVisible** and **DayViewBorderMargin** properties
 * Added **AutoChangeMonthOnDayTap** property — allows automatically switching the displayed month when user taps on a day from another month (disabled by default)
+* Added **UseAbbreviatedDayNames** property — allows using built-in .NET AbbreviatedDayNames without trimming
 
 
 ### Breaking  Changes
@@ -298,6 +299,7 @@ UseNativeDigits="True"
 OtherMonthWeekIsVisible="False"
 DayViewBorderMargin
 AutoChangeMonthOnDayTap="True"
+UseAbbreviatedDayNames="True"
 ```
 
 #### Calendar Layout customizations
