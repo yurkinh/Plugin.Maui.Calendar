@@ -1,4 +1,4 @@
-﻿using Mopups.Services;
+using Mopups.Services;
 
 namespace SampleApp.Views;
 
@@ -10,6 +10,9 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
+
+	async void TestingCalendar(object sender, EventArgs e) =>
+		await Shell.Current.GoToAsync(nameof(TestingPage));
 
     async void DefaultCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(CalendarPage));
