@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.TestingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    Title="TestingPage"
+    x:DataType="vm:TestingPageViewModel">
+    <VerticalStackLayout>
+        <plugin:Calendar />
+    </VerticalStackLayout>
+</ContentPage>
