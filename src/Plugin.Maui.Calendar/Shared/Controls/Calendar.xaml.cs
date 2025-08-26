@@ -2249,14 +2249,14 @@ public partial class Calendar : ContentView, IDisposable
 			string dayName;
 			if (UseAbbreviatedDayNames)
 			{
+				dayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
+			}
+			else
+			{
 				var fullName = Culture.DateTimeFormat.DayNames[dayNumber];
 				dayName = DaysTitleMaximumLength == DaysTitleMaxLength.None
 						? fullName
 						: fullName[..((int)DaysTitleMaximumLength > fullName.Length ? fullName.Length : (int)DaysTitleMaximumLength)];
-			}
-			else
-			{
-				dayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
 			}
 
 			var titleText = DaysTitleLabelFirstUpperRestLower
