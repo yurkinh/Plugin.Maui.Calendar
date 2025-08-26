@@ -1568,12 +1568,22 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(UseAbbreviatedDayNames),
 		typeof(bool),
 		typeof(Calendar),
-		false);
+		false,
+		propertyChanged: OnUseAbbreviatedDayNamesChanged
+		);
 
 	public bool UseAbbreviatedDayNames
 	{
 		get => (bool)GetValue(UseAbbreviatedDayNamesProperty);
 		set => SetValue(UseAbbreviatedDayNamesProperty, value);
+	}
+
+	static void OnUseAbbreviatedDayNamesChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDayTitles();
+		}
 	}
 
 	/// <summary>
