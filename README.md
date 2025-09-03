@@ -25,6 +25,7 @@ V2.0.0
 * Added native digits support (added **UseNativeDigits** Property)
 * Added **OtherMonthWeekIsVisible** and **DayViewBorderMargin** properties
 * Added **AutoChangeMonthOnDayTap** property — allows automatically switching the displayed month when user taps on a day from another month (disabled by default)
+* Added **UseAbbreviatedDayNames** property — allows using built-in .NET AbbreviatedDayNames without trimming. When this property is enabled, **DaysTitleMaximumLength** is ignored.
 
 
 ### Breaking  Changes
@@ -298,6 +299,7 @@ UseNativeDigits="True"
 OtherMonthWeekIsVisible="False"
 DayViewBorderMargin
 AutoChangeMonthOnDayTap="True"
+UseAbbreviatedDayNames="True"  <!-- Uses built-in .NET AbbreviatedDayNames; when enabled, DaysTitleMaximumLength is ignored -->
 ```
 
 #### Calendar Layout customizations
@@ -367,7 +369,7 @@ On the `RangeSelectionCalendar` you can use binding for start date `SelectedStar
 On the `MultiselectionCalendar` you can select multiple separate dates
 
 ```xml
-    plugin:MultiSelectionCalendar
+    <plugin:MultiSelectionCalendar
         Events="{Binding Events}"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"

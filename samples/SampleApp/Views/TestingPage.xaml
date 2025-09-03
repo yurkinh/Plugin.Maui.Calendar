@@ -7,7 +7,24 @@
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     Title="TestingPage"
     x:DataType="vm:TestingPageViewModel">
-    <VerticalStackLayout>
-        <plugin:Calendar />
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <plugin:Calendar
+            Culture="{Binding Culture}"
+            DaysTitleMaximumLength="{Binding DaysTitleMaxLength}"
+            UseAbbreviatedDayNames="{Binding UseAbbreviatedDayNames}" />
+
+        <Picker
+            Title="Select Language"
+            ItemDisplayBinding="{Binding DisplayName}"
+            ItemsSource="{Binding AvailableCultures}"
+            SelectedItem="{Binding Culture}" />
+        <Picker
+            Title="Select Day Title Length"
+            ItemsSource="{Binding DaysTitleMaxLengthOptions}"
+            SelectedItem="{Binding DaysTitleMaxLength}" />
+        <HorizontalStackLayout Spacing="10">
+            <Label Text="Use Abbreviated Day Names" VerticalOptions="Center" />
+            <Switch IsToggled="{Binding UseAbbreviatedDayNames}" />
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

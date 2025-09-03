@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Plugin.Maui.Calendar.Controls.Interfaces;
@@ -1564,6 +1563,29 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
+	public static readonly BindableProperty UseAbbreviatedDayNamesProperty =
+	BindableProperty.Create(
+		nameof(UseAbbreviatedDayNames),
+		typeof(bool),
+		typeof(Calendar),
+		false,
+		propertyChanged: OnUseAbbreviatedDayNamesChanged
+		);
+
+	public bool UseAbbreviatedDayNames
+	{
+		get => (bool)GetValue(UseAbbreviatedDayNamesProperty);
+		set => SetValue(UseAbbreviatedDayNamesProperty, value);
+	}
+
+	static void OnUseAbbreviatedDayNamesChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDayTitles();
+		}
+	}
+
 	/// <summary>
 	/// Bindable property for DaysTitleMaximumLength
 	/// </summary>
@@ -2234,15 +2256,24 @@ public partial class Calendar : ContentView, IDisposable
 
 		foreach (var dayLabel in daysControl.Children.OfType<Label>())
 		{
-			var abberivatedDayName = Culture.DateTimeFormat.DayNames[dayNumber];
+			string dayName;
+			if (UseAbbreviatedDayNames)
+			{
+				dayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
+			}
+			else
+			{
+				var fullName = Culture.DateTimeFormat.DayNames[dayNumber];
+				dayName = DaysTitleMaximumLength == DaysTitleMaxLength.None
+						? fullName
+						: fullName[..((int)DaysTitleMaximumLength > fullName.Length ? fullName.Length : (int)DaysTitleMaximumLength)];
+			}
+
 			var titleText = DaysTitleLabelFirstUpperRestLower
-							? abberivatedDayName[..1].ToUpperInvariant() + abberivatedDayName[1..].ToLowerInvariant()
-							: abberivatedDayName.ToUpperInvariant();
-			dayLabel.Text = DaysTitleMaximumLength == DaysTitleMaxLength.None
-							? titleText
-							: titleText[..((int)DaysTitleMaximumLength > abberivatedDayName.Length
-											? abberivatedDayName.Length
-											: (int)DaysTitleMaximumLength)];
+							? dayName[..1].ToUpperInvariant() + dayName[1..].ToLowerInvariant()
+							: dayName.ToUpperInvariant();
+
+			dayLabel.Text = titleText;
 
 			// Detect weekend days	
 			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
