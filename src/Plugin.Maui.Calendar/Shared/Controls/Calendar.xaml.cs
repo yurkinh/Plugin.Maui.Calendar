@@ -604,13 +604,13 @@ public partial class Calendar : ContentView, IDisposable
 		if (bindable is Calendar calendar && newValue is WeekLayout layout)
 		{
 			calendar.CalendarLayout = layout;
-
-			calendar.CurrentViewLayoutEngine = layout switch
-			{
-				WeekLayout.Week => new WeekViewEngine(1, calendar.FirstDayOfWeek),
-				WeekLayout.TwoWeek => new WeekViewEngine(2, calendar.FirstDayOfWeek),
-				_ => new MonthViewEngine(calendar.FirstDayOfWeek),
-			};
+			//Do we really need to reinitialize the layout engine here?
+			// calendar.CurrentViewLayoutEngine = layout switch
+			// {
+			// 	WeekLayout.Week => new WeekViewEngine(1, calendar.FirstDayOfWeek),
+			// 	WeekLayout.TwoWeek => new WeekViewEngine(2, calendar.FirstDayOfWeek),
+			// 	_ => new MonthViewEngine(calendar.FirstDayOfWeek),
+			// };
 
 			calendar.RenderLayout();
 			calendar.UpdateDays();
@@ -2233,7 +2233,7 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				var oldMonth = new DateOnly(ShownDate.Year, ShownDate.Month, 1);
 				var newMonth = new DateOnly(value.Year, value.Month, 1);
-				
+
 				ShownDate = value;
 
 				MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
@@ -2505,28 +2505,57 @@ public partial class Calendar : ContentView, IDisposable
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
 
-		if ((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
-		{
-			calendarContainer.Remove(daysControl);
-		}
 
-		if (FirstDayOfWeek != DayOfWeek.Sunday && calendarContainer.Children.Contains(daysControl))
-		{
-			calendarContainer.Remove(daysControl);
-		}
+		// if ((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
+		// {
+		// 	calendarContainer.Remove(daysControl);
+		// }
 
-		daysControl = CurrentViewLayoutEngine.GenerateLayout(
+		// if (FirstDayOfWeek != DayOfWeek.Sunday && calendarContainer.Children.Contains(daysControl))
+		// {
+		// 	calendarContainer.Remove(daysControl);
+		// }
+
+		// daysControl = CurrentViewLayoutEngine.GenerateLayout(
+		// 	dayViews,
+		// 	this,
+		// 	nameof(DaysTitleLabelStyle),
+		// 	DayTappedCommand
+		// );
+		// Clear the existing daysControl Grid
+		daysControl.Children.Clear();
+		daysControl.RowDefinitions.Clear();
+		daysControl.ColumnDefinitions.Clear();
+
+		// Generate the new layout and populate the existing daysControl Grid
+		var generatedLayout = CurrentViewLayoutEngine.GenerateLayout(
 			dayViews,
 			this,
 			nameof(DaysTitleLabelStyle),
 			DayTappedCommand
 		);
 
+		// Copy the generated layout structure to the existing daysControl Grid
+		foreach (var child in generatedLayout.Children)
+		{
+			daysControl.Children.Add(child);
+		}
+
+		foreach (var rowDef in generatedLayout.RowDefinitions)
+		{
+			daysControl.RowDefinitions.Add(rowDef);
+		}
+
+		foreach (var colDef in generatedLayout.ColumnDefinitions)
+		{
+			daysControl.ColumnDefinitions.Add(colDef);
+		}
+
 		UpdateDaysColors();
 		UpdateDayTitles();
 		UpdateDays();
 
-		calendarContainer.Add(daysControl);
+		// calendarContainer.Add(daysControl);
 	}
 
 	internal void AssignIndicatorColors(ref DayModel dayModel)
