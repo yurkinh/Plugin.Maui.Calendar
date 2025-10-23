@@ -604,13 +604,6 @@ public partial class Calendar : ContentView, IDisposable
 		if (bindable is Calendar calendar && newValue is WeekLayout layout)
 		{
 			calendar.CalendarLayout = layout;
-			//Do we really need to reinitialize the layout engine here?
-			// calendar.CurrentViewLayoutEngine = layout switch
-			// {
-			// 	WeekLayout.Week => new WeekViewEngine(1, calendar.FirstDayOfWeek),
-			// 	WeekLayout.TwoWeek => new WeekViewEngine(2, calendar.FirstDayOfWeek),
-			// 	_ => new MonthViewEngine(calendar.FirstDayOfWeek),
-			// };
 
 			calendar.RenderLayout();
 			calendar.UpdateDays();
