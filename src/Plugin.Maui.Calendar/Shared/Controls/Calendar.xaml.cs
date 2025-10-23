@@ -605,6 +605,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			calendar.CalendarLayout = layout;
 
+			
 			calendar.RenderLayout();
 			calendar.UpdateDays();
 		}
@@ -2497,25 +2498,6 @@ public partial class Calendar : ContentView, IDisposable
 			WeekLayout.TwoWeek => new WeekViewEngine(2, FirstDayOfWeek),
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
-
-
-		// if ((CalendarLayout == WeekLayout.Week || CalendarLayout == WeekLayout.TwoWeek) && calendarContainer.Children.Contains(daysControl))
-		// {
-		// 	calendarContainer.Remove(daysControl);
-		// }
-
-		// if (FirstDayOfWeek != DayOfWeek.Sunday && calendarContainer.Children.Contains(daysControl))
-		// {
-		// 	calendarContainer.Remove(daysControl);
-		// }
-
-		// daysControl = CurrentViewLayoutEngine.GenerateLayout(
-		// 	dayViews,
-		// 	this,
-		// 	nameof(DaysTitleLabelStyle),
-		// 	DayTappedCommand
-		// );
-		// Clear the existing daysControl Grid
 		daysControl.Children.Clear();
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
@@ -2547,7 +2529,6 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDaysColors();
 		UpdateDayTitles();
 		UpdateDays();
-
 	}
 
 	internal void AssignIndicatorColors(ref DayModel dayModel)
