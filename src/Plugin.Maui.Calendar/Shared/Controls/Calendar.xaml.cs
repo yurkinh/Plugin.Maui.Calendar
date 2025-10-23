@@ -2548,7 +2548,6 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDayTitles();
 		UpdateDays();
 
-		// calendarContainer.Add(daysControl);
 	}
 
 	internal void AssignIndicatorColors(ref DayModel dayModel)
