@@ -19,34 +19,30 @@
         <ResourceDictionary>
             <Style
                 x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
-            </Style> 
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
+            </Style>
             <Style
                 x:Key="MyFooterArrowLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowLabelStyle}"
                 TargetType="Label">
-                <Setter Property="FontFamily"
-                        Value="FontAwesomeSolid"/>
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}"
-                     Text="Today"/>
+        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
-        <local:WeekViewPageViewModel/>
+        <local:WeekViewPageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:Calendar
@@ -54,23 +50,113 @@
         Padding="10,0"
         CalendarLayout="{Binding CalendarLayout}"
         Day="{Binding Day}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
+        FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"
-        FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
         SelectedDate="{Binding SelectedDate}"
         ShownDate="{Binding ShownDate}"
         VerticalOptions="Fill"
-        DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarHeader/>
+            <!-- <controls:CalendarHeader/> -->
+            <DataTemplate x:DataType="plugin:Calendar">
+                <Grid RowDefinitions="60,*" RowSpacing="8">
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="5">
+                        <Label
+                            Grid.Column="1"
+                            Text="Month"
+                            VerticalOptions="Center" />
+                        <Switch Grid.Column="2" Toggled="Switch_Toggled" />
+                    </Grid>
+
+                    <Grid
+                        Grid.Row="1"
+                        Margin="0,2"
+                        Padding="0"
+                        ColumnDefinitions="1*,3*,1*"
+                        HorizontalOptions="Fill"
+                        IsVisible="{Binding ShowMonthPicker}"
+                        RowDefinitions="Auto"
+                        VerticalOptions="Start">
+                        <Border
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="White"
+                            HeightRequest="36"
+                            HorizontalOptions="Center"
+                            Stroke="Orange"
+                            StrokeShape="RoundRectangle 18"
+                            VerticalOptions="Center"
+                            WidthRequest="36">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="FontAwesomeSolid"
+                                FontSize="25"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                InputTransparent="True"
+                                Text="&#xf060;"
+                                TextColor="Black"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            HorizontalOptions="Center"
+                            TextColor="#2196F3"
+                            VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}" />
+                                    <Span Text=", " />
+                                    <Span Text="{Binding LocalizedYear, Mode=TwoWay}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Border
+                            Grid.Column="2"
+                            Padding="0"
+                            BackgroundColor="White"
+                            HeightRequest="36"
+                            HorizontalOptions="Center"
+                            Stroke="Orange"
+                            StrokeShape="RoundRectangle 18"
+                            VerticalOptions="Center"
+                            WidthRequest="36">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="FontAwesomeSolid"
+                                FontSize="25"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                InputTransparent="True"
+                                Text="&#xf061;"
+                                TextColor="Black"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+            </DataTemplate>
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
@@ -83,16 +169,16 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}"/>
+                        Text="{Binding Name}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}"/>
+                        Text="{Binding Description}" />
                     <VerticalStackLayout.GestureRecognizers>
                         <TapGestureRecognizer
                             x:DataType="local:WeekViewPageViewModel"
                             Command="{Binding EventSelectedCommand, Source={x:Reference weekViewCalendarPage}}"
-                            CommandParameter="{Binding .}"/>
+                            CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>
