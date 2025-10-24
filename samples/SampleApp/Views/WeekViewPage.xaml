@@ -68,7 +68,7 @@
         <plugin:Calendar.HeaderSectionTemplate>
             <!-- <controls:CalendarHeader/> -->
             <DataTemplate x:DataType="plugin:Calendar">
-                <Grid RowDefinitions="30,*" RowSpacing="8">
+                <Grid RowDefinitions="60,*" RowSpacing="8">
                     <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="5">
                         <Label
                             Grid.Column="1"

@@ -604,7 +604,6 @@ public partial class Calendar : ContentView, IDisposable
 		if (bindable is Calendar calendar && newValue is WeekLayout layout)
 		{
 			calendar.CalendarLayout = layout;
-
 			
 			calendar.RenderLayout();
 			calendar.UpdateDays();
@@ -2498,6 +2497,7 @@ public partial class Calendar : ContentView, IDisposable
 			WeekLayout.TwoWeek => new WeekViewEngine(2, FirstDayOfWeek),
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
+
 		daysControl.Children.Clear();
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
