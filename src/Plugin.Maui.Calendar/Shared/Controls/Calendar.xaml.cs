@@ -58,8 +58,8 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		PrevLayoutUnitCommand = new Command(PrevUnit);
 		NextLayoutUnitCommand = new Command(NextUnit);
-		PrevYearCommand = new Command(PrevYear);
-		NextYearCommand = new Command(NextYear);
+		PrevYearCommand = new Command(PrevYear, CanExecutePrevYear);
+		NextYearCommand = new Command(NextYear, CanExecuteNextYear);
 		ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
 
 		InitializeComponent();
@@ -287,6 +287,9 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				calendar.UpdateRangeSelection();
 			}
+
+			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
+			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
 		}
 	}
 
@@ -385,6 +388,9 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDayTitles();
 			calendar.UpdateDays(true);
 			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+
+			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
+			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
 		}
 	}
 
@@ -2431,9 +2437,35 @@ public partial class Calendar : ContentView, IDisposable
 		ShownDate = ShownDate.AddYears(1);
 	}
 
+	bool CanExecuteNextYear(object obj)
+	{
+		try
+		{
+			var maxDate = Culture.Calendar.MaxSupportedDateTime;
+			return ShownDate.Year < maxDate.Year;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
 	void PrevYear(object obj)
 	{
 		ShownDate = ShownDate.AddYears(-1);
+	}
+
+	bool CanExecutePrevYear(object obj)
+	{
+		try
+		{
+			var minDate = Culture.Calendar.MinSupportedDateTime;
+			return ShownDate.Year > minDate.Year;
+		}
+		catch
+		{
+			return false;
+		}
 	}
 
 	void ToggleCalendarSectionVisibility() => CalendarSectionShown = !CalendarSectionShown;
