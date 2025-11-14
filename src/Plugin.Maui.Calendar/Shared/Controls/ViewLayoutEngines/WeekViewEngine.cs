@@ -26,26 +26,70 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 
 	public DateTime GetFirstDate(DateTime dateToShow)
 	{
+		if (dateToShow == DateTime.MinValue)
+		{
+			return DateTime.MinValue;
+		}
 		return GetFirstDateOfWeek(dateToShow);
 	}
 
 	public DateTime GetNextUnit(DateTime forDate)
 	{
-		return forDate.AddDays(unitSizeinDays);
+		return GetNextUnit(forDate, 1);
 	}
 
 	public DateTime GetNextUnit(DateTime forDate, int numberOfUnits)
 	{
-		return forDate.AddDays(unitSizeinDays * numberOfUnits);
+		if (numberOfUnits == 0)
+		{
+			return forDate;
+		}
+		if (numberOfUnits < 0)
+		{
+			return GetPreviousUnit(forDate, -numberOfUnits);
+		}
+
+		long totalDays = (long)unitSizeinDays * numberOfUnits;
+		var daysLeft = (DateTime.MaxValue.Date - forDate.Date).Days;
+		var step = (int)Math.Min(daysLeft, Math.Min(int.MaxValue, totalDays));
+
+		var baseDate = forDate.Date.AddDays(step);
+		if (baseDate == DateTime.MaxValue.Date)
+		{
+			return new DateTime(DateTime.MaxValue.Ticks, forDate.Kind);
+		}
+
+		var timeTicks = forDate.Ticks - forDate.Date.Ticks;
+		return new DateTime(baseDate.Ticks + timeTicks, forDate.Kind);
 	}
 
 	public DateTime GetPreviousUnit(DateTime forDate)
 	{
-		return forDate.AddDays(unitSizeinDays * -1);
+		return GetPreviousUnit(forDate, 1);
 	}
 
 	public DateTime GetPreviousUnit(DateTime forDate, int numberOfUnits)
 	{
-		return forDate.AddDays(unitSizeinDays * -1 * numberOfUnits);
+		if (numberOfUnits == 0)
+		{
+			return forDate;
+		}
+		if (numberOfUnits < 0)
+		{
+			return GetNextUnit(forDate, -numberOfUnits);
+		}
+
+		long totalDays = (long)unitSizeinDays * numberOfUnits;
+		var daysToMin = (forDate.Date - DateTime.MinValue.Date).Days;
+		var step = (int)Math.Min(daysToMin, Math.Min(int.MaxValue, totalDays));
+
+		var baseDate = forDate.Date.AddDays(-step);
+		if (baseDate == DateTime.MinValue.Date)
+		{
+			return new DateTime(DateTime.MinValue.Ticks, forDate.Kind);
+		}
+
+		var timeTicks = forDate.Ticks - forDate.Date.Ticks;
+		return new DateTime(baseDate.Ticks + timeTicks, forDate.Kind);
 	}
 }
