@@ -17,7 +17,6 @@ using System.Collections.ObjectModel;
 namespace Plugin.Maui.Calendar.Controls;
 public partial class Calendar : ContentView, IDisposable
 {
-	#region Bindable properties
 
 	/// <summary>
 	/// Bindable property for Day
@@ -170,6 +169,9 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				calendar.UpdateRangeSelection();
 			}
+
+			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
+			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
 		}
 	}
 
@@ -268,6 +270,9 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDayTitles();
 			calendar.UpdateDays(true);
 			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+
+			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
+			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
 		}
 	}
 
@@ -596,6 +601,4 @@ public partial class Calendar : ContentView, IDisposable
 		get => (bool)GetValue(AllowDeselectingProperty);
 		set => SetValue(AllowDeselectingProperty, value);
 	}
-	#endregion
-
 }
