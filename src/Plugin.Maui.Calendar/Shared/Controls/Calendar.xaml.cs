@@ -58,8 +58,8 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		PrevLayoutUnitCommand = new Command(PrevUnit);
 		NextLayoutUnitCommand = new Command(NextUnit);
-		PrevYearCommand = new Command(PrevYear);
-		NextYearCommand = new Command(NextYear);
+		PrevYearCommand = new Command(PrevYear, CanExecutePrevYear);
+		NextYearCommand = new Command(NextYear, CanExecuteNextYear);
 		ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
 
 		InitializeComponent();
@@ -287,6 +287,9 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				calendar.UpdateRangeSelection();
 			}
+
+			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
+			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
 		}
 	}
 
@@ -385,6 +388,9 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDayTitles();
 			calendar.UpdateDays(true);
 			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+
+			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
+			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
 		}
 	}
 
@@ -1929,13 +1935,13 @@ public partial class Calendar : ContentView, IDisposable
 	/// Bindable property for SelectedDates
 	/// </summary>
 	public static readonly BindableProperty SelectedDatesProperty = BindableProperty.Create(
-		 nameof(SelectedDates),
-		 typeof(ObservableCollection<DateTime>),
-		 typeof(Calendar),
-		defaultValue: null,
-		 BindingMode.TwoWay,
-		propertyChanged: SelectedDatesChanged,
-		defaultValueCreator: (bindable) => new ObservableCollection<DateTime>());
+			 nameof(SelectedDates),
+			 typeof(ObservableCollection<DateTime>),
+			 typeof(Calendar),
+			defaultValue: null,
+			 BindingMode.TwoWay,
+			propertyChanged: SelectedDatesChanged,
+			defaultValueCreator: (bindable) => new ObservableCollection<DateTime>());
 
 
 	public ObservableCollection<DateTime> SelectedDates
@@ -2283,40 +2289,68 @@ public partial class Calendar : ContentView, IDisposable
 		int lastDayOfMonth = 0;
 		if (!forceUpdate && firstDate == CurrentViewLayoutEngine.GetFirstDate(ShownDate))
 		{
-			return;
+			return; 
 		}
 		firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
 
 		int addDays = 0;
+		var remainingDaysUntilMax = (DateTime.MaxValue.Date - firstDate.Date).Days + 1;
+		var safeOffsets = (int)Math.Min(dayViews.Count, Math.Max(0, remainingDaysUntilMax));
+
 		foreach (var dayView in dayViews)
 		{
-			var currentDate = firstDate.AddDays(addDays++);
 			var dayModel = dayView.BindingContext as DayModel;
 
-			if (currentDate.Month == ShownDate.Month)
+			if (addDays < safeOffsets)
 			{
-				lastDayOfMonth = addDays;
+				var currentDate = firstDate.AddDays(addDays++);
+
+				if (currentDate.Month == ShownDate.Month)
+				{
+					lastDayOfMonth = addDays;
+				}
+
+				bool currentMonthOnLine = lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7;
+
+				dayModel.Date = currentDate.Date;
+				dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
+				dayModel.DayTappedCommand = DayTappedCommand;
+				dayModel.EventIndicatorType = EventIndicatorType;
+				dayModel.DayViewSize = DayViewSize;
+				dayModel.DayViewBorderMargin = DayViewBorderMargin;
+				dayModel.DayViewCornerRadius = DayViewCornerRadius;
+				dayModel.DaysLabelStyle = DaysLabelStyle;
+				dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
+				dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
+				dayModel.OtherMonthWeekIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
+				dayModel.HasEvents = Events.ContainsKey(currentDate);
+				dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (DisabledDates?.Contains(currentDate.Date) ?? false);
+				dayModel.AllowDeselect = AllowDeselecting;
+
+				dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date);
+				AssignIndicatorColors(ref dayModel);
 			}
+			else
+			{
+				addDays++;
 
-			bool currentMonthOnLine = lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7;
-
-			dayModel.Date = currentDate.Date;
-			dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
-			dayModel.DayTappedCommand = DayTappedCommand;
-			dayModel.EventIndicatorType = EventIndicatorType;
-			dayModel.DayViewSize = DayViewSize;
-			dayModel.DayViewBorderMargin = DayViewBorderMargin;
-			dayModel.DayViewCornerRadius = DayViewCornerRadius;
-			dayModel.DaysLabelStyle = DaysLabelStyle;
-			dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
-			dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
-			dayModel.OtherMonthWeekIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
-			dayModel.HasEvents = Events.ContainsKey(currentDate);
-			dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (DisabledDates?.Contains(currentDate.Date) ?? false);
-			dayModel.AllowDeselect = AllowDeselecting;
-
-			dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date);
-			AssignIndicatorColors(ref dayModel);
+				dayModel.Date = DateTime.MaxValue.Date;
+				dayModel.Day = string.Empty;
+				dayModel.DayTappedCommand = DayTappedCommand;
+				dayModel.EventIndicatorType = EventIndicatorType;
+				dayModel.DayViewSize = DayViewSize;
+				dayModel.DayViewBorderMargin = DayViewBorderMargin;
+				dayModel.DayViewCornerRadius = DayViewCornerRadius;
+				dayModel.DaysLabelStyle = DaysLabelStyle;
+				dayModel.IsThisMonth = false;
+				dayModel.OtherMonthIsVisible = false;
+				dayModel.OtherMonthWeekIsVisible = false;
+				dayModel.HasEvents = false;
+				dayModel.IsDisabled = true;
+				dayModel.AllowDeselect = AllowDeselecting;
+				dayModel.IsSelected = false;
+				AssignIndicatorColors(ref dayModel);
+			}
 		}
 	}
 
@@ -2431,9 +2465,35 @@ public partial class Calendar : ContentView, IDisposable
 		ShownDate = ShownDate.AddYears(1);
 	}
 
+	bool CanExecuteNextYear(object obj)
+	{
+		try
+		{
+			var maxDate = Culture.Calendar.MaxSupportedDateTime;
+			return ShownDate.Year < maxDate.Year;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
 	void PrevYear(object obj)
 	{
 		ShownDate = ShownDate.AddYears(-1);
+	}
+
+	bool CanExecutePrevYear(object obj)
+	{
+		try
+		{
+			var minDate = Culture.Calendar.MinSupportedDateTime;
+			return ShownDate.Year > minDate.Year;
+		}
+		catch
+		{
+			return false;
+		}
 	}
 
 	void ToggleCalendarSectionVisibility() => CalendarSectionShown = !CalendarSectionShown;
@@ -2478,7 +2538,6 @@ public partial class Calendar : ContentView, IDisposable
 	void OnSwipeUp() => SwipedUp?.Invoke(this, EventArgs.Empty);
 
 	void OnSwipeDown() => SwipedDown?.Invoke(this, EventArgs.Empty);
-
 
 
 

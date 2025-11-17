@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Plugin.Maui.Calendar.Interfaces;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
@@ -32,21 +31,72 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 
 	public DateTime GetNextUnit(DateTime forDate)
 	{
-		return forDate.AddMonths(1);
+		if (forDate.Year == DateTime.MaxValue.Year && forDate.Month == DateTime.MaxValue.Month)
+		{
+			return forDate;
+		}
+		return GetNextUnit(forDate, 1);
 	}
 
 	public DateTime GetNextUnit(DateTime forDate, int numberOfUnits)
 	{
-		return forDate.AddMonths(numberOfUnits);
+		if (numberOfUnits == 0)
+		{
+			return forDate;
+		}
+		if (numberOfUnits < 0)
+		{
+			return GetPreviousUnit(forDate, -numberOfUnits);
+		}
+
+		long currentMonthIndex = (long)forDate.Year * 12 + (forDate.Month - 1);
+		long maxMonthIndex = (long)DateTime.MaxValue.Year * 12 + (DateTime.MaxValue.Month - 1);
+		long targetMonthIndex = currentMonthIndex + numberOfUnits;
+		if (targetMonthIndex > maxMonthIndex)
+		{
+			targetMonthIndex = maxMonthIndex;
+		}
+
+		int targetYear = (int)(targetMonthIndex / 12);
+		int targetMonth = (int)(targetMonthIndex % 12) + 1;
+		int targetDay = Math.Min(forDate.Day, DateTime.DaysInMonth(targetYear, targetMonth));
+
+		return new DateTime(targetYear, targetMonth, targetDay, forDate.Hour, forDate.Minute, forDate.Second, forDate.Kind);
 	}
 
 	public DateTime GetPreviousUnit(DateTime forDate)
 	{
-		return forDate.AddMonths(-1);
+		if (forDate.Year == DateTime.MinValue.Year && forDate.Month == DateTime.MinValue.Month)
+		{
+			return forDate;
+		}
+		return GetPreviousUnit(forDate, 1);
 	}
 
 	public DateTime GetPreviousUnit(DateTime forDate, int numberOfUnits)
 	{
-		return forDate.AddMonths(numberOfUnits * -1);
+		if (numberOfUnits == 0)
+		{
+			return forDate;
+		}
+		if (numberOfUnits < 0)
+		{
+			return GetNextUnit(forDate, -numberOfUnits);
+		}
+
+		long currentMonthIndex = (long)forDate.Year * 12 + (forDate.Month - 1);
+		long minMonthIndex = (long)DateTime.MinValue.Year * 12 + (DateTime.MinValue.Month - 1);
+		minMonthIndex = 0;
+		long targetMonthIndex = currentMonthIndex - numberOfUnits;
+		if (targetMonthIndex < minMonthIndex)
+		{
+			targetMonthIndex = minMonthIndex;
+		}
+
+		int targetYear = (int)(targetMonthIndex / 12);
+		int targetMonth = (int)(targetMonthIndex % 12) + 1;
+		int targetDay = Math.Min(forDate.Day, DateTime.DaysInMonth(targetYear, targetMonth));
+
+		return new DateTime(targetYear, targetMonth, targetDay, forDate.Hour, forDate.Minute, forDate.Second, forDate.Kind);
 	}
 }
