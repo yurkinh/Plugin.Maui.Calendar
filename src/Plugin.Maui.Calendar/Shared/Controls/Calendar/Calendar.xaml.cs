@@ -18,6 +18,7 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView, IDisposable
 {
+<<<<<<< HEAD
 	#region Private fields
 	SwipeGestureRecognizer leftSwipeGesture;
 	SwipeGestureRecognizer rightSwipeGesture;
@@ -50,6 +51,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	#endregion
 
+=======
+>>>>>>> 61588f5 (Split the code into different files)
 	#region Ctor
 	/// <summary>
 	/// Calendar plugin for .NET MAUI
@@ -77,8 +80,11 @@ public partial class Calendar : ContentView, IDisposable
 	}
 	#endregion
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 61588f5 (Split the code into different files)
 	protected override void OnHandlerChanging(HandlerChangingEventArgs args)
 	{
 
@@ -133,6 +139,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
+<<<<<<< HEAD
 	#region DayView BindableProperties
 	/// <summary>
 	/// Bindable property for DayViewSize
@@ -1462,12 +1469,15 @@ public partial class Calendar : ContentView, IDisposable
 	}
 	#endregion
 
+=======
+>>>>>>> 61588f5 (Split the code into different files)
 	public string LocalizedYear => UseNativeDigits ? ShownDate.Year.ToNativeDigitString(Culture) : ShownDate.Year.ToString(Culture);
 
 	void InitializeSelectionType()
 	{
 		CurrentSelectionEngine = new SingleSelectionEngine();
 	}
+<<<<<<< HEAD
 
 	#region Properties
 
@@ -1998,4 +2008,6 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	#endregion
+=======
+>>>>>>> 61588f5 (Split the code into different files)
 }

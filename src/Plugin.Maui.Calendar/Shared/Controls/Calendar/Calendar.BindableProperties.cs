@@ -17,7 +17,10 @@ using System.Collections.ObjectModel;
 namespace Plugin.Maui.Calendar.Controls;
 public partial class Calendar : ContentView, IDisposable
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 61588f5 (Split the code into different files)
 	/// <summary>
 	/// Bindable property for Day
 	/// </summary>
