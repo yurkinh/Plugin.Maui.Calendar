@@ -385,7 +385,10 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			calendar.UpdateSelectedDateLabel();
-			calendar.UpdateDayTitles();
+			if (calendar.daysControl?.Children?.Count > 0)
+			{
+				calendar.UpdateDayTitles();
+			}
 			calendar.UpdateDays(true);
 			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
 
@@ -676,7 +679,10 @@ public partial class Calendar : ContentView, IDisposable
 			}
 
 			calendar.UpdateSelectedDateLabel();
-			calendar.UpdateDayTitles();
+			if (calendar.daysControl?.Children?.Count > 0)
+			{
+				calendar.UpdateDayTitles();
+			}
 			calendar.RenderLayout();
 		}
 	}
@@ -1556,7 +1562,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnWeekendTitleStyleChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
+		if (bindable is Calendar calendar && calendar.daysControl?.Children?.Count > 0)
 		{
 			calendar.UpdateDayTitles();
 		}
@@ -1579,7 +1585,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnUseAbbreviatedDayNamesChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
+		if (bindable is Calendar calendar && calendar.daysControl?.Children?.Count > 0)
 		{
 			calendar.UpdateDayTitles();
 		}
@@ -1607,7 +1613,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDaysTitleMaximumLengthChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
+		if (bindable is Calendar calendar && calendar.daysControl?.Children?.Count > 0)
 		{
 			calendar.UpdateDayTitles();
 		}
@@ -1635,7 +1641,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDaysTitleLabelFirstUpperRestLowerChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
+		if (bindable is Calendar calendar && calendar.daysControl?.Children?.Count > 0)
 		{
 			calendar.UpdateDayTitles();
 		}
