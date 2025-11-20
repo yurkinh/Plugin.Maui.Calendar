@@ -1,28 +1,15 @@
-﻿using System.Collections;
-using System.Globalization;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Plugin.Maui.Calendar.Controls.Interfaces;
-using Plugin.Maui.Calendar.Controls.SelectionEngines;
-using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
-using Plugin.Maui.Calendar.Enums;
-using Plugin.Maui.Calendar.Interfaces;
+﻿using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
-using Plugin.Maui.Calendar.Styles;
 using Plugin.Maui.Calendar.Shared.Extensions;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 
-
 namespace Plugin.Maui.Calendar.Controls;
+
 public partial class Calendar : ContentView, IDisposable
 {
 	void UpdateEvents()
 	{
-		SelectedDayEvents =
-			CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents)
-				? selectedEvents
-				: null;
+		SelectedDayEvents = CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents) ? selectedEvents : null;
 
 		eventsScrollView.ScrollToAsync(0, 0, false);
 	}
@@ -38,9 +25,7 @@ public partial class Calendar : ContentView, IDisposable
 		LayoutUnitText = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
 	}
 
-	void UpdateSelectedDateLabel() =>
-		 SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture, UseNativeDigits);
-
+	void UpdateSelectedDateLabel() => SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture, UseNativeDigits);
 
 	void ShowHideCalendarSection()
 	{
@@ -51,9 +36,7 @@ public partial class Calendar : ContentView, IDisposable
 
 		calendarSectionAnimating = true;
 
-		var animation = CalendarSectionShown
-			? calendarSectionAnimateShow
-			: calendarSectionAnimateHide;
+		var animation = CalendarSectionShown ? calendarSectionAnimateShow : calendarSectionAnimateHide;
 		var prevState = CalendarSectionShown;
 
 		animation.Value.Commit(
@@ -105,9 +88,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 		}
 
-		SelectedDates = new ObservableCollection<DateTime>(
-			CurrentSelectionEngine.PerformDateSelection(value, DisabledDates)
-		);
+		SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
 	}
 
 	void UpdateDayTitles()

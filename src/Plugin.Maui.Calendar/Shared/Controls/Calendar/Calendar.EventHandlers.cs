@@ -1,22 +1,26 @@
-﻿using System.Collections;
-using System.Globalization;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Plugin.Maui.Calendar.Controls.Interfaces;
-using Plugin.Maui.Calendar.Controls.SelectionEngines;
-using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
-using Plugin.Maui.Calendar.Enums;
-using Plugin.Maui.Calendar.Interfaces;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Plugin.Maui.Calendar.Models;
-using Plugin.Maui.Calendar.Styles;
-using Plugin.Maui.Calendar.Shared.Extensions;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
-
 
 namespace Plugin.Maui.Calendar.Controls;
+
 public partial class Calendar : ContentView, IDisposable
 {
+	protected override void OnHandlerChanging(HandlerChangingEventArgs args)
+	{
+
+		base.OnHandlerChanging(args);
+
+		if (args.NewHandler != null)
+		{
+			AttachHandler();
+		}
+
+		if (args.OldHandler != null)
+		{
+			DetachHandler();
+		}
+	}
+
 	void OnCalendarContainerSizeChanged(object sender, EventArgs e)
 	{
 		if (calendarContainer.Height > 0 && !calendarSectionAnimating)
@@ -53,5 +57,51 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			ToggleCalendarSectionVisibility();
 		}
+	}
+
+	void AttachHandler()
+	{
+		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
+		WeakReferenceMessenger.Default.Register<DayTappedMessage>(this, (r, m) => OnDayTappedHandler(m.Value));
+
+		if (!SwipeDetectionDisabled)
+		{
+			leftSwipeGesture = new() { Direction = SwipeDirection.Left };
+			rightSwipeGesture = new() { Direction = SwipeDirection.Right };
+			upSwipeGesture = new() { Direction = SwipeDirection.Up };
+			downSwipeGesture = new() { Direction = SwipeDirection.Down };
+
+			leftSwipeGesture.Swiped += OnSwiped;
+			rightSwipeGesture.Swiped += OnSwiped;
+			upSwipeGesture.Swiped += OnSwiped;
+			downSwipeGesture.Swiped += OnSwiped;
+
+			GestureRecognizers.Add(leftSwipeGesture);
+			GestureRecognizers.Add(rightSwipeGesture);
+			GestureRecognizers.Add(upSwipeGesture);
+			GestureRecognizers.Add(downSwipeGesture);
+		}
+	}
+
+	void DetachHandler()
+	{
+		calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
+		WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(this);
+
+		if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
+		{
+			leftSwipeGesture.Swiped -= OnSwiped;
+			rightSwipeGesture.Swiped -= OnSwiped;
+			upSwipeGesture.Swiped -= OnSwiped;
+			downSwipeGesture.Swiped -= OnSwiped;
+
+			GestureRecognizers.Remove(leftSwipeGesture);
+			GestureRecognizers.Remove(rightSwipeGesture);
+			GestureRecognizers.Remove(upSwipeGesture);
+			GestureRecognizers.Remove(downSwipeGesture);
+		}
+		//Todo remove later/when all event and properties will be refactored
+		//all this should be done automaticall or not needed
+		Dispose();
 	}
 }
