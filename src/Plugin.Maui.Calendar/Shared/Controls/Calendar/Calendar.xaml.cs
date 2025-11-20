@@ -1,5 +1,3 @@
-using Plugin.Maui.Calendar.Controls.SelectionEngines;
-
 namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView, IDisposable
