@@ -92,7 +92,7 @@ public class RangeSelectionCalendar : Calendar
 			isSelectionDatesChanging = true;
 			SelectedStartDate = first.FirstOrDefault();
 			SelectedEndDate = first.LastOrDefault();
-			if (!first.Select(d => d.Date).SequenceEqual(SelectedDates.Select(d => d.Date)))
+			if (SelectedDates is null || !first.Select(d => d.Date).SequenceEqual(SelectedDates.Select(d => d.Date)))
 			{
 				SelectedDates = new ObservableCollection<DateTime>(first);
 			}
@@ -136,6 +136,11 @@ public class RangeSelectionCalendar : Calendar
 		foreach (var dayView in dayViews)
 		{
 			var dayModel = dayView.BindingContext as DayModel;
+
+			if (dayModel is null || SelectedDates is null)
+			{
+				continue;
+			}
 
 			if (SelectedDates.Contains(dayModel.Date))
 			{
