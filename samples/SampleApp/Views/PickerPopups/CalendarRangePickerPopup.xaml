@@ -16,32 +16,27 @@
     <rg:PopupPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="TextColor"
-                        Value="Black"/>
-                <Setter Property="Margin"
-                        Value="5"/>
-                <Setter Property="BackgroundColor"
-                        Value="{toolkit:AppThemeResource ButtonColor}"/>
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
             </Style>
             <Style
                 x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
-                BasedOn="{StaticResource MyDaysTitleLabelStyle }"
+                BasedOn="{StaticResource MyDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
         </ResourceDictionary>
     </rg:PopupPage.Resources>
 
     <rg:PopupPage.BindingContext>
-        <local:CalendarRangePickerPopupViewModel/>
+        <local:CalendarRangePickerPopupViewModel />
     </rg:PopupPage.BindingContext>
 
     <rg:PopupPage.Content>
@@ -51,18 +46,18 @@
             HorizontalOptions="Center"
             StrokeShape="RoundRectangle 6"
             VerticalOptions="Center">
-            <VerticalStackLayout IsClippedToBounds="True"
-                                 Spacing="3">
+            <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
                 <Label
                     FontAttributes="Bold"
                     FontSize="Large"
                     HorizontalOptions="Fill"
                     HorizontalTextAlignment="Center"
                     Text="Choose Date Range"
-                    VerticalOptions="Center"/>
+                    VerticalOptions="Center" />
                 <plugin:RangeSelectionCalendar
                     x:Name="calendar"
                     Padding="10,0"
+                    DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
                     DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                     FooterSectionVisible="False"
                     HorizontalOptions="Center"
@@ -72,11 +67,10 @@
                     SelectedStartDate="{Binding SelectedStartDate}"
                     ShownDate="{Binding ShownDate}"
                     VerticalOptions="Center"
-                    DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
                     WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                     WidthRequest="320">
                     <plugin:Calendar.HeaderSectionTemplate>
-                        <controls:CalendarHeader/>
+                        <controls:CalendarHeader />
                     </plugin:Calendar.HeaderSectionTemplate>
                 </plugin:RangeSelectionCalendar>
 
@@ -87,15 +81,15 @@
                     <Button
                         Grid.Column="0"
                         Command="{Binding ClearCommand}"
-                        Text="Clear"/>
+                        Text="Clear" />
                     <Button
                         Grid.Column="1"
                         Command="{Binding SuccessCommand}"
-                        Text="Select"/>
+                        Text="Select" />
                     <Button
                         Grid.Column="2"
                         Command="{Binding CancelCommand}"
-                        Text="Cancel"/>
+                        Text="Cancel" />
                 </Grid>
             </VerticalStackLayout>
         </Border>

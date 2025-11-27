@@ -19,33 +19,29 @@
         <ResourceDictionary>
             <Style
                 x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle }"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}"/>
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
             </Style>
             <Style
                 x:Key="MyFooterArrowLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowLabelStyle}"
                 TargetType="Label">
-                <Setter Property="FontFamily"
-                        Value="FontAwesomeSolid"/>
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding TodayCommand}"
-                     Text="Today"/>
+        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
-        <local:TwoWeekViewPageViewModel/>
+        <local:TwoWeekViewPageViewModel />
     </ContentPage.BindingContext>
 
     <plugin:Calendar
@@ -53,23 +49,23 @@
         Padding="10,0"
         CalendarLayout="{Binding CalendarLayout}"
         Day="{Binding Day}"
+        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
+        FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
         HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
-        FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
         ShownDate="{Binding ShownDate}"
         VerticalOptions="Fill"
-        DaysTitleLabelStyle ="{StaticResource MyDaysTitleLabelStyle }"
         WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
         Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
-            <controls:CalendarHeader/>
+            <controls:CalendarHeader />
         </plugin:Calendar.HeaderSectionTemplate>
 
         <plugin:Calendar.EventTemplate>
@@ -82,16 +78,16 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="Medium"
-                        Text="{Binding Name}"/>
+                        Text="{Binding Name}" />
                     <Label
                         FontSize="Small"
                         LineBreakMode="WordWrap"
-                        Text="{Binding Description}"/>
+                        Text="{Binding Description}" />
                     <VerticalStackLayout.GestureRecognizers>
                         <TapGestureRecognizer
                             x:DataType="local:TwoWeekViewPageViewModel"
                             Command="{Binding EventSelectedCommand, Source={x:Reference twoWeekViewCalendarPage}}"
-                            CommandParameter="{Binding .}"/>
+                            CommandParameter="{Binding .}" />
                     </VerticalStackLayout.GestureRecognizers>
                 </VerticalStackLayout>
             </DataTemplate>

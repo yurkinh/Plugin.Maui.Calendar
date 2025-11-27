@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SampleApp.Views.CalendarPage"
-             Shell.TabBarIsVisible="False"
-             xmlns:mtk="clr-namespace:MemoryToolkit.Maui;assembly=MemoryToolkit.Maui"
-             mtk:LeakMonitorBehavior.Cascade="True"
-             xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-             Title="CalendarPage">
-   <VerticalStackLayout>
-      <plugin:Calendar/>
-   </VerticalStackLayout>
+<ContentPage
+    x:Class="SampleApp.Views.CalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mtk="clr-namespace:MemoryToolkit.Maui;assembly=MemoryToolkit.Maui"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    Title="CalendarPage"
+    mtk:LeakMonitorBehavior.Cascade="True"
+    Shell.TabBarIsVisible="False">
+    <VerticalStackLayout>
+        <plugin:Calendar />
+    </VerticalStackLayout>
 </ContentPage>

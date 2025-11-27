@@ -15,26 +15,26 @@
             FontSize="20"
             HorizontalOptions="Center"
             Text="Theme mode"
-            TextColor="{toolkit:AppThemeResource TextColor}"/>
+            TextColor="{toolkit:AppThemeResource TextColor}" />
         <Grid ColumnDefinitions="*,*,*">
             <controls:ThemeButton
                 Title="Light"
                 Grid.Column="0"
                 GroupName="ThemeButtons"
                 Icon="&#xf185;"
-                IsChecked="{Binding IsCheckedLight, Mode=TwoWay}"/>
+                IsChecked="{Binding IsCheckedLight, Mode=TwoWay}" />
             <controls:ThemeButton
                 Title="Dark"
                 Grid.Column="1"
                 GroupName="ThemeButtons"
                 Icon="&#xf186;"
-                IsChecked="{Binding IsCheckedDark, Mode=TwoWay}"/>
+                IsChecked="{Binding IsCheckedDark, Mode=TwoWay}" />
             <controls:ThemeButton
                 Title="System"
                 Grid.Column="2"
                 GroupName="ThemeButtons"
                 Icon="&#xf390;"
-                IsChecked="{Binding IsCheckedSystem, Mode=TwoWay}"/>
+                IsChecked="{Binding IsCheckedSystem, Mode=TwoWay}" />
         </Grid>
     </VerticalStackLayout>
 </ContentPage>
