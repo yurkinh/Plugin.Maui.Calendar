@@ -95,7 +95,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		var dayNumber = (int)FirstDayOfWeek;
 
-		if (daysControl == null)
+		if (daysControl is null)
 		{
 			return;
 		}
