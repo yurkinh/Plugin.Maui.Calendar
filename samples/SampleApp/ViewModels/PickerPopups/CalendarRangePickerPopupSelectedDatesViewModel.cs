@@ -9,11 +9,10 @@ public partial class CalendarRangePickerPopupSelectedDatesViewModel : BasePageVi
 	public CalendarRangePickerPopupSelectedDatesViewModel()
 	{
 		SelectedDates =
-		new ObservableCollection<DateTime>
-			{
-				DateTime.Today,
-				DateTime.Today.AddDays(6),
-			};
+		[
+			DateTime.Today,
+			DateTime.Today.AddDays(6),
+		];
 	}
 
 	public event Action<CalendarRangePickerResult> Closed;

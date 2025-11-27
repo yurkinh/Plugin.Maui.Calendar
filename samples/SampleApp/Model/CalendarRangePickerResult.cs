@@ -3,7 +3,7 @@
 public class CalendarRangePickerResult
 {
     public bool IsSuccess { get; set; }
-    public List<DateTime> SelectedDates { get; set; } = new List<DateTime>();
+    public List<DateTime> SelectedDates { get; set; } = [];
     public DateTime? SelectedStartDate { get; set; }
     public DateTime? SelectedEndDate { get; set; }
 }
