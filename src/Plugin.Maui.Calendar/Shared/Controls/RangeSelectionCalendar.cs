@@ -137,7 +137,7 @@ public class RangeSelectionCalendar : Calendar
 		{
 			var dayModel = dayView.BindingContext as DayModel;
 
-			if (SelectedDates.Contains(dayModel.Date))
+			if (SelectedDates != null && SelectedDates.Contains(dayModel.Date))
 			{
 				dayModel.SelectedBackgroundColor = SelectedDatesRangeBackgroundColor;
 			}
