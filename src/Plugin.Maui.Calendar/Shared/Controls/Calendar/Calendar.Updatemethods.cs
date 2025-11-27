@@ -95,6 +95,11 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		var dayNumber = (int)FirstDayOfWeek;
 
+		if (daysControl == null)
+		{
+			return;
+		}
+
 		foreach (var dayLabel in daysControl.Children.OfType<Label>())
 		{
 			string dayName;
