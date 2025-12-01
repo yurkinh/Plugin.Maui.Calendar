@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="SampleApp.Views.ModernCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    x:Name="modernCalendarPage"
+    Title="ModernCalendarPage"
+    x:DataType="local:ModernCalendarPageViewModel"
+    BackgroundColor="HotPink">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MyDaysLabelStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="TextColor"
+                        Value="Black"/>
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="FontAttributes"
+                        Value="Bold"/>
+                <Setter Property="VerticalTextAlignment"
+                        Value="Center"/>
+                <Setter Property="Margin"
+                        Value="5,2"/>
+            </Style>
+            <Style
+                x:Key="MyMonthLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="Beige"/>
+            </Style>
+            <Style
+                x:Key="MyYearLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="Beige"/>
+            </Style>
+            <Style
+                x:Key="MySelectedDateLabelStyle"
+                BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" 
+                        Value="Beige" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <plugin:Calendar
+        x:Name="modernCalendar"
+        Padding="10,0"
+        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
+        DeselectedDayTextColor="Black"
+        FooterArrowVisible="False"
+        HeaderSectionVisible="true"
+        HorizontalOptions="Fill"
+        MonthLabelStyle="{StaticResource MyMonthLabelStyle}"
+        SelectedDayBackgroundColor="LightPink"
+        SelectedDateLabelStyle="{StaticResource MySelectedDateLabelStyle}"
+        TodayTextColor="Black"
+        TodayOutlineColor="Black"
+        VerticalOptions="Fill"
+        YearLabelStyle="{StaticResource MyYearLabelStyle}"
+        EventIndicatorType="{StaticResource MyEventIndicatorTypeBackground}"/>
+
+</ContentPage>
+
+    

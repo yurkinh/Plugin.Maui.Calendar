@@ -106,4 +106,7 @@ public partial class MainPage : ContentPage
 
     async void XiaomiCalendar(object sender, EventArgs e)=>
         await Shell.Current.GoToAsync(nameof(XiaomiCalendarPage));
+
+	async void ModernCalendar(object sender, EventArgs e) =>
+		await Shell.Current.GoToAsync(nameof(ModernCalendarPage));
 }
