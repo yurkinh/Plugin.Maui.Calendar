@@ -50,6 +50,12 @@
         <VerticalStackLayout HorizontalOptions="Fill" Spacing="6">
             <Button
                 Margin="30,30,30,0"
+                Clicked="ModernCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Modern Page"/>
+
+            <Button
+                Margin="30,30,30,0"
                 Clicked="TestingCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Testing Page" />
