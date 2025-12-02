@@ -494,7 +494,7 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.CalendarLayout = layout;
 
 			calendar.RenderLayout();
-			calendar.UpdateDays();
+			calendar.UpdateDays(true);
 		}
 	}
 
