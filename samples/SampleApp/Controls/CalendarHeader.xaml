@@ -8,19 +8,19 @@
     <Grid
         Margin="0,2"
         Padding="0"
+        ColumnDefinitions="1*,3*,1*"
         HorizontalOptions="Fill"
         IsVisible="{Binding ShowMonthPicker}"
-        VerticalOptions="Start"
         RowDefinitions="Auto"
-        ColumnDefinitions="1*,3*,1*">
+        VerticalOptions="Start">
         <Border
             Grid.Column="0"
             Padding="0"
             BackgroundColor="White"
-            Stroke="Orange"
-            StrokeShape="RoundRectangle 18"
             HeightRequest="36"
             HorizontalOptions="Center"
+            Stroke="Orange"
+            StrokeShape="RoundRectangle 18"
             VerticalOptions="Center"
             WidthRequest="36">
             <Label
@@ -33,9 +33,9 @@
                 Text="&#xf060;"
                 TextColor="Black"
                 VerticalOptions="Center"
-                VerticalTextAlignment="Center"/>
+                VerticalTextAlignment="Center" />
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}"/>
+                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
             </Border.GestureRecognizers>
         </Border>
 
@@ -48,9 +48,9 @@
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}"/>
-                    <Span Text=", "/>
-                    <Span Text="{Binding LocalizedYear, Mode=TwoWay}"/>
+                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}" />
+                    <Span Text=", " />
+                    <Span Text="{Binding LocalizedYear}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
@@ -59,10 +59,10 @@
             Grid.Column="2"
             Padding="0"
             BackgroundColor="White"
-            Stroke="Orange"
-            StrokeShape="RoundRectangle 18"
             HeightRequest="36"
             HorizontalOptions="Center"
+            Stroke="Orange"
+            StrokeShape="RoundRectangle 18"
             VerticalOptions="Center"
             WidthRequest="36">
             <Label
@@ -75,9 +75,9 @@
                 Text="&#xf061;"
                 TextColor="Black"
                 VerticalOptions="Center"
-                VerticalTextAlignment="Center"/>
+                VerticalTextAlignment="Center" />
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}"/>
+                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
             </Border.GestureRecognizers>
         </Border>
     </Grid>
