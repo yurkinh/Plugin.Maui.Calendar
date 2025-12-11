@@ -22,7 +22,7 @@
 
 		<!-- Enable Source Generators for XAML in .NET 10 -->
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		 <!-- <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
 
 		<!-- Display name -->
 		<ApplicationTitle>SampleCalendarApp</ApplicationTitle>
