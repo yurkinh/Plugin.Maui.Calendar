@@ -20,6 +20,7 @@
 		<IsAotCompatible>true</IsAotCompatible>
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+		<PublishAot>true</PublishAot>
     
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.2</SupportedOSPlatformVersion>
@@ -49,6 +50,7 @@
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
                         * Updated to .NET 10
+                        * Enabled Native AOT support with trimming analyzers
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
