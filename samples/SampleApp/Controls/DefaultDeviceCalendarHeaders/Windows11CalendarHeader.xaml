@@ -8,55 +8,32 @@
     x:DataType="plugin:Calendar">
     <ContentView.Resources>
         <ResourceDictionary>
-            <Style x:Key="MyArrowButtonPrevStyle"
-                   TargetType="Button">
-                <Setter Property="FontFamily"
-                        Value="FontAwesomeSolid"/>
-                <Setter Property="BorderColor"
-                        Value="Transparent"/>
-                <Setter Property="BackgroundColor"
-                        Value="Transparent"/>
-                <Setter Property="Text"
-                        Value="&#xf062;"/>
-                <Setter Property="FontSize"
-                        Value="15"/>
-                <Setter Property="TextColor"
-                        Value="DimGray"/>
+            <Style x:Key="MyArrowButtonPrevStyle" TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="Text" Value="&#xf062;" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextColor" Value="DimGray" />
             </Style>
 
-            <Style x:Key="MyArrowButtonNextStyle"
-                   TargetType="Button">
-                <Setter Property="FontFamily"
-                        Value="FontAwesomeSolid"/>
-                <Setter Property="Text"
-                        Value="&#xf063;"/>
-                <Setter Property="BorderColor"
-                        Value="Transparent"/>
-                <Setter Property="BackgroundColor"
-                        Value="Transparent"/>
-                <Setter Property="FontSize"
-                        Value="15"/>
-                <Setter Property="TextColor"
-                        Value="DimGray"/>
+            <Style x:Key="MyArrowButtonNextStyle" TargetType="Button">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="Text" Value="&#xf063;" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="TextColor" Value="DimGray" />
             </Style>
-            <Style x:Key="MyArrowFooterButtonUpStyle"
-                   TargetType="Button">
-                <Setter Property="BackgroundColor"
-                        Value="Transparent"/>
-                <Setter Property="FontFamily"
-                        Value="FontAwesomeSolid"/>
-                <Setter Property="FontAttributes"
-                        Value="Bold"/>
-                <Setter Property="FontSize"
-                        Value="15"/>
-                <Setter Property="HorizontalOptions"
-                        Value="End"/>
-                <Setter Property="Text"
-                        Value="&#xf063;"/>
-                <Setter Property="TextColor"
-                        Value="DimGray"/>
-                <Setter Property="VerticalOptions"
-                        Value="Center"/>
+            <Style x:Key="MyArrowFooterButtonUpStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="HorizontalOptions" Value="End" />
+                <Setter Property="Text" Value="&#xf063;" />
+                <Setter Property="TextColor" Value="DimGray" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
@@ -76,19 +53,19 @@
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}"/>
-                    <Span Text=" "/>
-                    <Span Text="{Binding LocalizedYear, Mode=TwoWay}"/>
+                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}" />
+                    <Span Text=" " />
+                    <Span Text="{Binding LocalizedYear}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
         <Button
             Grid.Column="1"
             Command="{Binding PrevLayoutUnitCommand, Mode=OneTime}"
-            Style="{StaticResource MyArrowButtonPrevStyle}"/>
+            Style="{StaticResource MyArrowButtonPrevStyle}" />
         <Button
             Grid.Column="2"
             Command="{Binding NextLayoutUnitCommand, Mode=OneTime}"
-            Style="{StaticResource MyArrowButtonNextStyle}"/>
+            Style="{StaticResource MyArrowButtonNextStyle}" />
     </Grid>
 </ContentView>
