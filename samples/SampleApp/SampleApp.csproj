@@ -24,6 +24,11 @@
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 		 <!-- <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
 
+		<!-- Enable trimming and AOT analyzers on all platforms -->
+		<IsAotCompatible>true</IsAotCompatible>
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+
 		<!-- Display name -->
 		<ApplicationTitle>SampleCalendarApp</ApplicationTitle>
 
