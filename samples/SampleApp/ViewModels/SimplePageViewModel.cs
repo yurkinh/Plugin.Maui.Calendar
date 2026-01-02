@@ -87,7 +87,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 		{
 			var title = $"Selected: {eventModel.Name}";
 			var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
-			await Shell.Current.DisplayAlert(title, message, "Ok");
+			await Shell.Current.DisplayAlertAsync(title, message, "Ok");
 		}
 	}
 
@@ -98,7 +98,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 		string newMonthName = new DateTime(1, args.NewMonth.Month, 1).ToString("MMMM");
 
 		string message = $"From {oldMonthName} to {newMonthName}";
-		await Shell.Current.DisplayAlert("Month Changed", message, "OK");
+		await Shell.Current.DisplayAlertAsync("Month Changed", message, "OK");
 	}
 
 	[RelayCommand]

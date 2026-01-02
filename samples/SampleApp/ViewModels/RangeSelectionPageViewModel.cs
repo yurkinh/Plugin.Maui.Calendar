@@ -61,7 +61,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
 
-            await Shell.Current.DisplayAlert(title, message, "Ok");
+            await Application.Current.MainPage.DisplayAlert(title, message, "Ok");
         }
     }
 

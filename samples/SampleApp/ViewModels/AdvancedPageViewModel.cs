@@ -94,7 +94,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
     {
         var message = $"Received tap event from date: {date}";
 
-        await AppShell.Current.DisplayAlert("DayTapped", message, "Ok");
+        await Shell.Current.DisplayAlertAsync("DayTapped", message, "Ok");
 
     }
 
@@ -106,7 +106,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
 
-            await AppShell.Current.DisplayAlert(title, message, "Ok");
+            await Shell.Current.DisplayAlertAsync(title, message, "Ok");
 
         }
     }
