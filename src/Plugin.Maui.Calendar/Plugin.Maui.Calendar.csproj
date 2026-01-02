@@ -50,8 +50,9 @@
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
                         * Updated to .NET 10
-                        * Enabled Native AOT support with trimming analyzers
+                        * Enabled Native AOT support with trimming analyzers (disabled by default for plugin)
                         * Updated maui nugets
+                        * Added compatibility for the Xaml SourceGen inflator. Enabled by default in .NET 10                        
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
