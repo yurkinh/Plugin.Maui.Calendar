@@ -19,7 +19,8 @@
             <Style x:Key="MyDaysLabelStyle" TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="FontSize"
+                        Value="16"/>
                 <Setter Property="LineBreakMode" Value="WordWrap" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
                 <Setter Property="Margin" Value="5,2" />

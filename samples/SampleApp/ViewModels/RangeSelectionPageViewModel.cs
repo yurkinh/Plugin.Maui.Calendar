@@ -61,11 +61,14 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
 
-            await Shell.Current.DisplayAlert(title, message, "Ok");
+            if (Shell.Current is not null)
+            {
+                await Shell.Current.DisplayAlertAsync(title, message, "Ok");
+            }
         }
     }
 
-    [RelayCommand]
+	[RelayCommand]
     static void DayTapped(object item)
     {
 

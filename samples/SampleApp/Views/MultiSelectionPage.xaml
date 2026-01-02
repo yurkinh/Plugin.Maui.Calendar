@@ -73,10 +73,10 @@
                             VerticalOptions="Fill">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="Medium"
+                                FontSize="16"
                                 Text="{Binding Name}" />
                             <Label
-                                FontSize="Small"
+                                FontSize="12"
                                 LineBreakMode="WordWrap"
                                 Text="{Binding Description}" />
                             <VerticalStackLayout.GestureRecognizers>

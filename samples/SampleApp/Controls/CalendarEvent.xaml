@@ -10,7 +10,7 @@
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         <Label FontAttributes="Bold"
-               FontSize="Medium">
+               FontSize="16">
             <Label.FormattedText>
                 <FormattedString>
                     <Span Text="{Binding Starting, StringFormat='{0:MM/dd HH\\:mm}'}"
@@ -21,7 +21,7 @@
             </Label.FormattedText>
         </Label>
         <Label
-            FontSize="Small"
+            FontSize="12"
             LineBreakMode="WordWrap"
             Text="{Binding Description}"/>
         <VerticalStackLayout.GestureRecognizers>

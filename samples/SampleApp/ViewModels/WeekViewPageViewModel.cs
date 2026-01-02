@@ -93,7 +93,7 @@ public partial class WeekViewPageViewModel : BasePageViewModel
         {
             var title = $"Selected: {eventModel.Name}";
             var message = $"Starts: {eventModel.Starting:HH:mm}{Environment.NewLine}Details: {eventModel.Description}";
-            await Shell.Current.DisplayAlert(title, message, "Ok");
+            await Shell.Current.DisplayAlertAsync(title, message, "Ok");
         }
     }
 }

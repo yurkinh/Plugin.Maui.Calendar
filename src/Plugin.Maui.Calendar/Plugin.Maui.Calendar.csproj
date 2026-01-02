@@ -17,10 +17,10 @@
     <!--  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
     
 		<!-- Enable trimming and AOT analyzers on all platforms -->
-		<IsAotCompatible>true</IsAotCompatible>
+		<!-- <IsAotCompatible>true</IsAotCompatible>
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
-		<PublishAot>true</PublishAot>
+		<PublishAot>true</PublishAot> -->
     
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.2</SupportedOSPlatformVersion>
@@ -32,7 +32,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>2.1.0</PackageVersion>
+		<PackageVersion>3.0.0</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -51,6 +51,7 @@
 		<PackageReleaseNotes>
                         * Updated to .NET 10
                         * Enabled Native AOT support with trimming analyzers
+                        * Updated maui nugets
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
@@ -59,7 +60,7 @@
 	</PropertyGroup> 
 	<ItemGroup>
 
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.11" />		
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />		
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
