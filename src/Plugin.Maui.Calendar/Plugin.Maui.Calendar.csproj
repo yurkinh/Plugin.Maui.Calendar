@@ -17,10 +17,10 @@
     <!--  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
     
 		<!-- Enable trimming and AOT analyzers on all platforms -->
-		<IsAotCompatible>true</IsAotCompatible>
+		<!-- <IsAotCompatible>true</IsAotCompatible>
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
-		<PublishAot>true</PublishAot>
+		<PublishAot>true</PublishAot> -->
     
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.2</SupportedOSPlatformVersion>
