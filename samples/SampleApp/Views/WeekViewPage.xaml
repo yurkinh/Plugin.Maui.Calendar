@@ -169,7 +169,7 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="16"
-                        Text="Name"/>
+                        Text="{Binding Name}" />
                     <Label
                         FontSize="12"
                         LineBreakMode="WordWrap"
