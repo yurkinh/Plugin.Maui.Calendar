@@ -48,7 +48,7 @@
             <VerticalStackLayout IsClippedToBounds="True" Spacing="3">
                 <Label
                     FontAttributes="Bold"
-                    FontSize="Large"
+                    FontSize="18"
                     HorizontalOptions="Fill"
                     HorizontalTextAlignment="Center"
                     Text="Choose Date"

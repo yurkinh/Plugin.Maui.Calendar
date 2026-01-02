@@ -33,13 +33,13 @@ public static class MauiProgram
         builder.Logging.AddDebug();
         builder.UseLeakDetection(collectionTarget =>
             {
-                // This callback will run any time a leak is detected.
-                Application.Current?.Dispatcher.Dispatch(async () =>
-                {
-                    await Shell.Current.DisplayAlertAsync("💦Leak Detected💦",
-                        $"❗🧟❗{collectionTarget.Name} is a zombie!", "OK");
-                });
-            });
+				// This callback will run any time a leak is detected.
+				Application.Current?.Dispatcher.Dispatch(async () =>
+				{
+					await Shell.Current.DisplayAlertAsync("💦Leak Detected💦",
+						$"❗🧟❗{collectionTarget.Name} is a zombie!", "OK");
+				});
+			});
 #endif
 
         var app = builder.Build();
