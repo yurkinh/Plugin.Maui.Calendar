@@ -38,7 +38,7 @@ public class DateTimeAdvancedExtensionsTests
         var culture = new CultureInfo(cultureName);
 
         // Act
-        var firstDay = date.FirstDayOfMonth();
+        var firstDay = date.StartDayOfMonth();
 
         // Assert
         firstDay.Day.Should().Be(1);

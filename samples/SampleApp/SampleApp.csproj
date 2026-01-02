@@ -25,10 +25,10 @@
 		 <!-- <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
 
 		<!-- Enable trimming and AOT analyzers on all platforms -->
-		<!-- Disable AOT for Mac Catalyst as it's not supported in .NET 10 -->
-		<IsAotCompatible Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'maccatalyst'">true</IsAotCompatible>
+		<!-- Disable AOT for iOS and Mac Catalyst as it's not supported in .NET 10 -->
+		<!-- <IsAotCompatible Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'maccatalyst' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'ios'">true</IsAotCompatible> -->
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+		
 
 		<!-- Display name -->
 		<ApplicationTitle>SampleCalendarApp</ApplicationTitle>

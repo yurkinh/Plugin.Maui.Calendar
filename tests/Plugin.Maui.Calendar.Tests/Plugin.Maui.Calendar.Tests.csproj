@@ -24,8 +24,8 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
 
-  <!-- <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj" />
-  </ItemGroup> -->
+  </ItemGroup>
 
 </Project>

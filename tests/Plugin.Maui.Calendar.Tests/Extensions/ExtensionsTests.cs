@@ -95,7 +95,7 @@ public class ExtensionsTests
         var date = new DateTime(2024, 7, 25);
 
         // Act
-        var result = date.FirstDayOfMonth();
+        var result = date.StartDayOfMonth();
 
         // Assert
         result.Should().Be(new DateTime(2024, 7, 1));

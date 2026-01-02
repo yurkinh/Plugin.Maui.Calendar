@@ -29,7 +29,7 @@ public static class DateTimeExtensions
     public static int WeekOfMonth(this DateTime date, CultureInfo culture)
     {
         var weekOfYear = culture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay, culture.DateTimeFormat.FirstDayOfWeek);
-        var weekOfYearForFirstDayOfMonth = culture.Calendar.GetWeekOfYear(date.FirstDayOfMonth(), CalendarWeekRule.FirstDay, culture.DateTimeFormat.FirstDayOfWeek);
+        var weekOfYearForFirstDayOfMonth = culture.Calendar.GetWeekOfYear(date.StartDayOfMonth(), CalendarWeekRule.FirstDay, culture.DateTimeFormat.FirstDayOfWeek);
         var weekOfMonth = weekOfYear - weekOfYearForFirstDayOfMonth + 1;
         return weekOfMonth;
     }
