@@ -127,9 +127,11 @@ sealed partial class DayModel : ObservableObject
 	Color eventIndicatorSelectedColor;
 
 	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(TextColor))]
 	Color eventIndicatorTextColor;
 
 	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(TextColor))]
 	Color eventIndicatorSelectedTextColor;
 
 	[ObservableProperty]
