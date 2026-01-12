@@ -218,7 +218,14 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.TodayOutlineColor = TodayOutlineColor;
 			dayModel.TodayFillColor = TodayFillColor;
 			dayModel.DisabledColor = DisabledDayColor;
+		}
+	}
 
+	void UpdateDaysEventIndicatorColors()
+	{
+		foreach (var dayView in dayViews)
+		{
+			var dayModel = dayView.BindingContext as DayModel;
 			AssignIndicatorColors(ref dayModel);
 		}
 	}
