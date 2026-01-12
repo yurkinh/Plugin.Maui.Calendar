@@ -78,7 +78,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(DaysLabelStyle),
 		typeof(Style),
 		typeof(Calendar),
-		DefaultStyles.DefaultLabelStyle
+		DefaultStyles.DefaultLabelStyle,
+		propertyChanged: OnDaysLabelStyleChanged
 	);
 
 	/// <summary>
@@ -88,5 +89,13 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (Style)GetValue(DaysLabelStyleProperty);
 		set => SetValue(DaysLabelStyleProperty, value);
+	}
+
+	static void OnDaysLabelStyleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDays(true);
+		}
 	}
 }
