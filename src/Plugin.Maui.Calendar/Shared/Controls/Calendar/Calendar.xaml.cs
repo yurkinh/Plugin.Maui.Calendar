@@ -7,6 +7,11 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	public Calendar()
 	{
+		// Item 16: suppress all intermediate renders triggered by bindable-property
+		// callbacks that fire during construction.  One consolidated render executes
+		// after the control is fully configured.
+		isInitializing = true;
+
 		PrevLayoutUnitCommand = new Command(PrevUnit);
 		NextLayoutUnitCommand = new Command(NextUnit);
 		PrevYearCommand = new Command(PrevYear, CanExecutePrevYear);
@@ -17,11 +22,14 @@ public partial class Calendar : ContentView, IDisposable
 
 		InitializeViewLayoutEngine();
 		InitializeSelectionType();
+
+		isInitializing = false;
+
+		// Single consolidated render at end of construction.
 		UpdateSelectedDateLabel();
 		UpdateLayoutUnitLabel();
 		UpdateEvents();
 		RenderLayout();
-
 
 		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
 		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));

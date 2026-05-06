@@ -25,11 +25,12 @@ public partial class Calendar : ContentView, IDisposable
 		ShownDate = CurrentViewLayoutEngine.GetPreviousUnit(ShownDate);
 		var newMonth = DateOnly.FromDateTime(ShownDate);
 
-		MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
+		var args = new MonthChangedEventArgs(oldMonth, newMonth);
+		MonthChanged?.Invoke(this, args);
 
 		if (MonthChangedCommand?.CanExecute(null) == true)
 		{
-			MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+			MonthChangedCommand.Execute(args);
 		}
 	}
 
@@ -39,11 +40,12 @@ public partial class Calendar : ContentView, IDisposable
 		ShownDate = CurrentViewLayoutEngine.GetNextUnit(ShownDate);
 		var newMonth = DateOnly.FromDateTime(ShownDate);
 
-		MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
+		var args = new MonthChangedEventArgs(oldMonth, newMonth);
+		MonthChanged?.Invoke(this, args);
 
 		if (MonthChangedCommand?.CanExecute(null) == true)
 		{
-			MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+			MonthChangedCommand.Execute(args);
 		}
 	}
 
@@ -136,6 +138,11 @@ public partial class Calendar : ContentView, IDisposable
 
 	void RenderLayout()
 	{
+		// Item 16: skip during construction; the constructor performs one render at the end.
+		if (isInitializing)
+		{
+			return;
+		}
 
 		CurrentViewLayoutEngine = CalendarLayout switch
 		{
@@ -148,31 +155,23 @@ public partial class Calendar : ContentView, IDisposable
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
 
-		// Generate the new layout and populate the existing daysControl Grid
-		var generatedLayout = CurrentViewLayoutEngine.GenerateLayout(
+		// Item 3: GenerateLayout now populates daysControl directly, eliminating the
+		// intermediate Grid allocation and the O(n) copy loops.
+		CurrentViewLayoutEngine.GenerateLayout(
+			daysControl,
 			dayViews,
 			this,
 			nameof(DaysTitleLabelStyle),
 			DayTappedCommand
 		);
 
-		// Copy the generated layout structure to the existing daysControl Grid
-		foreach (var child in generatedLayout.Children)
-		{
-			daysControl.Children.Add(child);
-		}
+		// Item 13: cache the 7 day-of-week header Labels so UpdateDayTitles doesn't
+		// re-filter Children.OfType<Label>() on every culture/style change.
+		dayTitleLabels = daysControl.Children.OfType<Label>().ToArray();
 
-		foreach (var rowDef in generatedLayout.RowDefinitions)
-		{
-			daysControl.RowDefinitions.Add(rowDef);
-		}
-
-		foreach (var colDef in generatedLayout.ColumnDefinitions)
-		{
-			daysControl.ColumnDefinitions.Add(colDef);
-		}
-
-		UpdateDaysColors();
+		// Item 2: push global properties onto the freshly created DayModels before the
+		// per-day date render so UpdateDays only handles date-specific values.
+		UpdateDayGlobalProperties();
 		UpdateDayTitles();
 		UpdateDays();
 	}

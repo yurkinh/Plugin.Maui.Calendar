@@ -3,8 +3,19 @@
 namespace Plugin.Maui.Calendar.Models;
 
 /// <summary> 
-/// Calendar events collection, wraps <see cref="Dictionary{DateTime, ICollection}" />
+/// Calendar events collection, wraps <see cref="Dictionary{DateTime, ICollection}" />.
 /// </summary>
+/// <remarks>
+/// <para>
+/// This class inherits <see cref="Dictionary{TKey,TValue}"/> and shadows the base
+/// <c>Add</c>, <c>Remove</c>, <c>ContainsKey</c>, <c>TryGetValue</c> and the indexer
+/// using the <c>new</c> keyword rather than overrides, because
+/// <see cref="Dictionary{TKey,TValue}"/> does not declare those members as virtual.
+/// Callers that hold a reference typed as <c>Dictionary&lt;DateTime, ICollection&gt;</c>
+/// will bypass the change-notification logic.  Always use this type through its
+/// own declared type (i.e. <see cref="EventCollection"/>) to guarantee notifications.
+/// </para>
+/// </remarks>
 public class EventCollection : Dictionary<DateTime, ICollection>
 {
 	#region ctor
@@ -103,12 +114,13 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 	/// <returns></returns>
 	public bool TryGetValues(ICollection<DateTime> keys, out ICollection values)
 	{
-		var listToReturn = new List<object>();
+		List<object> listToReturn = null;
 
 		foreach (var currentDate in keys)
 		{
 			if (base.TryGetValue(currentDate, out var dayEvents))
 			{
+				listToReturn ??= [];
 				foreach (var singleEvent in dayEvents)
 				{
 					listToReturn.Add(singleEvent);
@@ -116,14 +128,14 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 			}
 		}
 
-		if (listToReturn.Count > 0)
+		if (listToReturn is not null && listToReturn.Count > 0)
 		{
 			values = listToReturn;
 			return true;
 		}
 		else
 		{
-			values = null;
+			values = new List<object>();
 			return false;
 		}
 	}
