@@ -32,7 +32,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>3.0.1</PackageVersion>
+		<PackageVersion>3.0.2</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -49,7 +49,7 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Updated to .NET 10 MAUI SR3
+                        * Updated to .NET 10 MAUI SR6
                         * Fixed calendar day colorization not working on initial load                                             
     </PackageReleaseNotes>
 	</PropertyGroup>	
