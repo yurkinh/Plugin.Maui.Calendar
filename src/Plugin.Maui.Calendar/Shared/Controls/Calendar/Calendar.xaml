@@ -5,10 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
     x:Name="calendar"
+    x:DataType="controls:Calendar"
     SwipedLeft="OnSwipedLeft"
     SwipedRight="OnSwipedRight"
-    SwipedUp="OnSwipedUp"
-    x:DataType="controls:Calendar">
+    SwipedUp="OnSwipedUp">
     <Grid
         Padding="0,15,0,0"
         IsClippedToBounds="True"
@@ -22,18 +22,20 @@
             <controls:DataTemplateView
                 BindingContext="{x:Reference calendar}"
                 IsVisible="{Binding HeaderSectionVisible}"
-                ItemTemplate="{Binding HeaderSectionTemplate}"/>
+                ItemTemplate="{Binding HeaderSectionTemplate}" />
             <Grid
                 x:Name="daysControl"
+                ColumnSpacing="{Binding ColumnSpacing}"
                 HorizontalOptions="Fill"
-                VerticalOptions="Fill"/>
+                RowSpacing="{Binding RowSpacing}"
+                VerticalOptions="Fill" />
         </VerticalStackLayout>
 
         <controls:DataTemplateView
             Grid.Row="1"
             BindingContext="{x:Reference calendar}"
             IsVisible="{Binding FooterSectionVisible, Source={x:Reference calendar}}"
-            ItemTemplate="{Binding FooterSectionTemplate}"/>
+            ItemTemplate="{Binding FooterSectionTemplate}" />
         <ScrollView
             x:Name="eventsScrollView"
             Grid.Row="2"
@@ -41,7 +43,7 @@
             <VerticalStackLayout
                 BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
                 BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
-                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"/>
+                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}" />
         </ScrollView>
     </Grid>
 </ContentView>

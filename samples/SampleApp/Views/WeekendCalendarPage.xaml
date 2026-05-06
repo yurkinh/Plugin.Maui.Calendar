@@ -65,8 +65,6 @@
         DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
         DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource TextColor}"
-        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextColor}"
-        EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
         Events="{Binding Events, Mode=OneWay}"
         FooterArrowVisible="False"
         HeaderSectionVisible="true"

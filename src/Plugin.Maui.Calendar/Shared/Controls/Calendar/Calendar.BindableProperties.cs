@@ -1,17 +1,8 @@
-﻿using System.Collections;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
-using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
-using Plugin.Maui.Calendar.Interfaces;
-using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Styles;
-using Plugin.Maui.Calendar.Shared.Extensions;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
 
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -601,4 +592,188 @@ public partial class Calendar : ContentView, IDisposable
 		get => (bool)GetValue(AllowDeselectingProperty);
 		set => SetValue(AllowDeselectingProperty, value);
 	}
+
+	public static readonly BindableProperty SeparatorStyleProperty = BindableProperty.Create
+	(
+		nameof(SeparatorStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultSeparatorStyle,
+		propertyChanged: OnSeparatorChanged
+	);
+
+	public Style SeparatorStyle
+	{
+		get => (Style)GetValue(SeparatorStyleProperty);
+		set => SetValue(SeparatorStyleProperty, value);
+	}
+
+	public static readonly BindableProperty SeparatorIsVisibleProperty = BindableProperty.Create
+	(
+		nameof(SeparatorIsVisible),
+		typeof(bool),
+		typeof(Calendar),
+		true,
+		propertyChanged: OnSeparatorChanged
+	);
+
+	public bool SeparatorIsVisible
+	{
+		get => (bool)GetValue(SeparatorIsVisibleProperty);
+		set => SetValue(SeparatorIsVisibleProperty, value);
+	}
+
+	static void OnSeparatorChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			foreach (var (_, separator) in calendar.weekSeparators)
+			{
+				separator.Style = calendar.SeparatorStyle;
+				separator.IsVisible = calendar.SeparatorIsVisible;
+			}
+
+			if (calendar.SeparatorIsVisible && calendar.weekSeparators.Count == 0)
+			{
+				calendar.RenderLayout();
+				return;
+			}
+
+			if (calendar.SeparatorIsVisible)
+			{
+				calendar.UpdateSeparatorVisibility();
+			}
+		}
+	}
+
+	public static readonly BindableProperty EventIndicatorDefaultColorProperty = BindableProperty.Create(
+		nameof(EventIndicatorDefaultColor),
+		typeof(Color),
+		typeof(Calendar),
+		Colors.DeepPink 
+	);
+
+	public Color EventIndicatorDefaultColor
+	{
+		get => (Color)GetValue(EventIndicatorDefaultColorProperty);
+		set => SetValue(EventIndicatorDefaultColorProperty, value);
+	}
+
+	public static readonly BindableProperty RowSpacingProperty = BindableProperty.Create(
+		nameof(RowSpacing),
+		typeof(double),
+		typeof(Calendar),
+		0d,
+		propertyChanged: OnRowSpacingChanged
+	);
+
+	public double RowSpacing
+	{
+		get => (double)GetValue(RowSpacingProperty);
+		set => SetValue(RowSpacingProperty, value);
+	}
+
+	static void OnRowSpacingChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.daysControl.RowSpacing = (double)newValue;
+		}
+	}
+
+	public static readonly BindableProperty ColumnSpacingProperty = BindableProperty.Create(
+		nameof(ColumnSpacing),
+		typeof(double),
+		typeof(Calendar),
+		0d,
+		propertyChanged: OnColumnSpacingChanged
+	);
+
+	public double ColumnSpacing
+	{
+		get => (double)GetValue(ColumnSpacingProperty);
+		set => SetValue(ColumnSpacingProperty, value);
+	}
+
+	static void OnColumnSpacingChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.daysControl.ColumnSpacing = (double)newValue;
+		}
+	}
+
+	public static readonly BindableProperty HeaderTitlesBackgroundStyleProperty = BindableProperty.Create
+	(
+		nameof(HeaderTitlesBackgroundStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultHeaderTitlesBackgroundStyle,
+		propertyChanged: OnHeaderTitlesBackgroundStyleChanged
+
+	);
+
+	public Style HeaderTitlesBackgroundStyle
+	{
+		get => (Style)GetValue(HeaderTitlesBackgroundStyleProperty);
+		set => SetValue(HeaderTitlesBackgroundStyleProperty, value);
+	}
+
+	static void OnHeaderTitlesBackgroundStyleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			var headerBorder = calendar.daysControl.Children
+				.OfType<Border>()
+				.FirstOrDefault(b => Grid.GetRow(b) == 0);
+
+			if (headerBorder != null)
+			{
+				headerBorder.Style = calendar.HeaderTitlesBackgroundStyle;
+			}
+		}
+	}
+
+	public static readonly BindableProperty HeaderTitlesSeparatorStyleProperty = BindableProperty.Create
+	(
+		nameof(HeaderTitlesSeparatorStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultHeaderTitlesSeparatorStyle,
+		propertyChanged: OnHeaderTitlesSeparatorChanged
+	);
+
+	public Style HeaderTitlesSeparatorStyle
+	{
+		get => (Style)GetValue(HeaderTitlesSeparatorStyleProperty);
+		set => SetValue(HeaderTitlesSeparatorStyleProperty, value);
+	}
+
+	public static readonly BindableProperty HeaderTitlesSeparatorIsVisibleProperty = BindableProperty.Create
+	(
+		nameof(HeaderTitlesSeparatorIsVisible),
+		typeof(bool),
+		typeof(Calendar),
+		true,
+		propertyChanged: OnHeaderTitlesSeparatorChanged
+	);
+
+	public bool HeaderTitlesSeparatorIsVisible
+	{
+		get => (bool)GetValue(HeaderTitlesSeparatorIsVisibleProperty);
+		set => SetValue(HeaderTitlesSeparatorIsVisibleProperty, value);
+	}
+
+	static void OnHeaderTitlesSeparatorChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			if (calendar.headerTitlesSeparator != null)
+			{
+				calendar.headerTitlesSeparator.Style = calendar.HeaderTitlesSeparatorStyle;
+				calendar.headerTitlesSeparator.IsVisible = calendar.HeaderTitlesSeparatorIsVisible;
+			}
+		}
+	}
+
 }

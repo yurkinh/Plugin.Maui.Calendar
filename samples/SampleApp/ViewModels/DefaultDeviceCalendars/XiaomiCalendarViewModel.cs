@@ -9,7 +9,7 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
     {
         Events = new EventCollection
         {
-            [DateTime.Now.AddDays(1)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green)
+            [DateTime.Now.AddDays(1)] = new DayEventCollection<AdvancedEventModel>()
             {
                 new() { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
                 new() { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
@@ -40,7 +40,7 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
             {
                 if (Events.TryGetValue(updatedEvent.Starting, out var existingCollection))
                 {
-                    var newEventCollection = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green);
+                    var newEventCollection = new DayEventCollection<AdvancedEventModel>(new EventIndicatorModel() { DotColor = Colors.Yellow  });
 
                     foreach (var item in existingCollection)
                     {
@@ -55,7 +55,7 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
                 }
                 else
                 {
-                    Events[updatedEvent.Starting] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Green) { updatedEvent };
+                    Events[updatedEvent.Starting] = new DayEventCollection<AdvancedEventModel>() { updatedEvent };
                 }
             }
         }

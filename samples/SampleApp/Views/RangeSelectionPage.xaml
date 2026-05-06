@@ -44,8 +44,6 @@
         DayTappedCommand="{Binding DayTappedCommand}"
         DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         EventsScrollViewVisible="True"
         SelectedDates="{Binding SelectedDates}"

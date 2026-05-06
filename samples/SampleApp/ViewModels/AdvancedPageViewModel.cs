@@ -18,7 +18,7 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         Events = new EventCollection
         {
             [DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
-            [DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
+            [DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>()
             {
                 new() { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
                 new() { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
@@ -26,9 +26,9 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         };
 
         //Adding a day with a different dot color
-        Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
-        Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
-        Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
+        Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) {  });
+        Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) {  });
+        Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) {  });
 
         // with add method
         Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));

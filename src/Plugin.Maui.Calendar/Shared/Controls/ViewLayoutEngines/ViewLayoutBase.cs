@@ -59,7 +59,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 
 		for (int i = 1; i <= numberOfWeeks; i++)
 		{
-			rowDefinition = new RowDefinition();
+			rowDefinition = new RowDefinition { Height = GridLength.Auto };
 			grid.RowDefinitions.Add(rowDefinition);
 
 			for (int ii = 0; ii < 7; ii++)

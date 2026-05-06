@@ -1,7 +1,5 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Maui.Layouts;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Styles;
 
@@ -18,10 +16,14 @@ sealed partial class DayModel : ObservableObject
 	string day;
 
 	[ObservableProperty]
-	Thickness dayViewBorderMargin = new(0, 0, 0, 0);
-	
+	[NotifyPropertyChangedFor(nameof(DayIndicatorViewMargin))] 
+	Thickness dayViewBorderMargin = new(8);
+
 	[ObservableProperty]
 	double dayViewSize;
+
+	[ObservableProperty]
+	double dayIndicatorViewSize;
 
 	[ObservableProperty]
 	float dayViewCornerRadius;
@@ -30,19 +32,49 @@ sealed partial class DayModel : ObservableObject
 	Style daysLabelStyle = DefaultStyles.DefaultLabelStyle;
 
 	[ObservableProperty]
+	[NotifyPropertyChangedFor(
+		nameof(BackgroundFullEventColor)
+	)]
+	bool eventDayBackgroundColorIsActive = false;
+
+	[ObservableProperty]
+	[NotifyPropertyChangedFor(
+		nameof(BackgroundFullEventColor)
+	)]
+	Color eventDayBackgroundColor;
+
+	[ObservableProperty]
+	Style eventIndicatorDotStyle = DefaultStyles.DefaultEventIndicatorDotStyle;
+
+	[ObservableProperty]
+	Style eventIndicatorTextContainerStyle = DefaultStyles.DefaultEventIndicatorTextContainerStyle;
+
+	[ObservableProperty]
+	Style eventIndicatorTextStyle = DefaultStyles.DefaultEventIndicatorTextStyle;
+
+	[ObservableProperty]
+	Style eventIndicatorImageStyle = DefaultStyles.DefaultEventIndicatorImageStyle;
+
+	[ObservableProperty]
 	ICommand dayTappedCommand;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
-		nameof(TextColor),
-		nameof(BackgroundColor),
-		nameof(BackgroundEventIndicator),
+		nameof(BackgroundColor), 
+		nameof(OutlineColor), 
 		nameof(BackgroundFullEventColor)
 	)]
+	[NotifyPropertyChangedFor(
+		nameof(BackgroundFullEventColor)
+	)] 
 	bool hasEvents;
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible))]
+	[NotifyPropertyChangedFor(
+		nameof(TextColor), 
+		nameof(IsVisible), 
+		nameof(IsControlVisible)
+	)]
 	bool isThisMonth;
 
 	[ObservableProperty]
@@ -85,7 +117,6 @@ sealed partial class DayModel : ObservableObject
 	[NotifyPropertyChangedFor(nameof(TextColor))]
 	Color otherMonthSelectedColor = Colors.Gray;
 
-
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
 	Color weekendDayColor = Colors.Transparent;
@@ -104,33 +135,13 @@ sealed partial class DayModel : ObservableObject
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
-		nameof(BackgroundEventIndicator),
-		nameof(BackgroundColor)
-	)]
-	EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
-
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
 		nameof(BackgroundColor),
-		nameof(BackgroundFullEventColor)
+		nameof(DayIndicatorViewVerticalOptions)
 	)]
-	Color eventIndicatorColor = Color.FromArgb("#FF4081");
+	EventIndicatorPlacementType eventIndicatorType = EventIndicatorPlacementType.Bottom;
 
 	[ObservableProperty]
-	List<Color> eventColors;
-
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(BackgroundColor),
-		nameof(BackgroundFullEventColor)
-	)]
-	Color eventIndicatorSelectedColor;
-
-	[ObservableProperty]
-	Color eventIndicatorTextColor;
-
-	[ObservableProperty]
-	Color eventIndicatorSelectedTextColor;
+	List<EventIndicatorModel> eventIndicators;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(OutlineColor))]
@@ -147,11 +158,24 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	Color disabledColor = Color.FromArgb("#ECECEC");
 
-	public FlexDirection EventLayoutDirection => (HasEvents && EventIndicatorType == EventIndicatorType.TopDot) ? FlexDirection.ColumnReverse : FlexDirection.Column;
+	public Thickness DayIndicatorViewMargin
+	{
+		get
+		{
+			double minMargin = 2.0;
 
-	public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
+			return new Thickness(
+				Math.Max(DayViewBorderMargin.Left / 4, minMargin),
+				Math.Max(DayViewBorderMargin.Top / 4, minMargin),
+				Math.Max(DayViewBorderMargin.Right / 4, minMargin),
+				Math.Max(DayViewBorderMargin.Bottom / 4, minMargin)
+			);
+		}
+	}
 
-	public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull ? EventIndicatorColor : Colors.Transparent;
+	public LayoutOptions DayIndicatorViewVerticalOptions =>  EventIndicatorType == EventIndicatorPlacementType.Top ? LayoutOptions.Start : LayoutOptions.End;
+
+	public Color BackgroundFullEventColor => HasEvents && EventDayBackgroundColorIsActive ? EventDayBackgroundColor : Colors.Transparent;
 
 	public Color OutlineColor => IsToday && !IsSelected ? TodayOutlineColor : Colors.Transparent;
 
@@ -164,13 +188,11 @@ sealed partial class DayModel : ObservableObject
 				return DeselectedBackgroundColor;
 			}
 
-			return (BackgroundEventIndicator, IsSelected, IsToday) switch
+			return (IsSelected, IsToday) switch
 			{
-				(true, false, _) => EventIndicatorColor,
-				(true, true, _) => EventIndicatorSelectedColor,
-				(false, true, _) => SelectedBackgroundColor,
-				(false, false, true) => TodayFillColor,
-				(_, _, _) => DeselectedBackgroundColor
+				(true, _) => SelectedBackgroundColor,
+				(false, true) => TodayFillColor,
+				(_, _) => DeselectedBackgroundColor
 			};
 		}
 	}
@@ -187,19 +209,13 @@ sealed partial class DayModel : ObservableObject
 			return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
 			{
 				(true, _, _, _, _, _) => DisabledColor,
-				(false, true, false, true, true, _)
-					=> SelectedTodayTextColor == Colors.Transparent
-						? SelectedTextColor
-						: SelectedTodayTextColor,
-				(false, true, false, true, false, _) => SelectedTextColor,
-				(false, true, true, true, _, _) => EventIndicatorSelectedTextColor,
-				(false, false, true, true, _, _) => EventIndicatorTextColor,
-				(false, false, _, false, _, _) => OtherMonthColor,
+				(false, true, _, true, true, _)	=> SelectedTodayTextColor == Colors.Transparent ? SelectedTextColor : SelectedTodayTextColor,
+				(false, true, _, true, false, _) => SelectedTextColor,
 				(false, true, _, false, _, _) => OtherMonthSelectedColor,
-				(false, false, false, true, true, _)
-					=> TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
+				(false, false, _, false, _, _) => OtherMonthColor,
+				(false, false, _, true, true, _) => TodayTextColor == Colors.Transparent ? DeselectedTextColor : TodayTextColor,
 				(false, _, _, _, _, true) => WeekendDayColor,
-				(false, false, false, true, false, _) => DeselectedTextColor,
+				_ => DeselectedTextColor
 			};
 		}
 	}
@@ -207,7 +223,7 @@ sealed partial class DayModel : ObservableObject
 	public bool IsVisible => IsThisMonth || OtherMonthIsVisible;
 
 	public bool IsControlVisible => IsThisMonth || OtherMonthWeekIsVisible;
-	
+
 	bool IsToday => Date.Date == DateTime.Today;
 
 	public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;

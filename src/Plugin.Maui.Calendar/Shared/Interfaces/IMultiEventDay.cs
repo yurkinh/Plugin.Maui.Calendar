@@ -1,6 +1,8 @@
-﻿namespace Plugin.Maui.Calendar.Interfaces;
+﻿using Plugin.Maui.Calendar.Models;
+
+namespace Plugin.Maui.Calendar.Interfaces;
 
 public interface IMultiEventDay
 {
-    IReadOnlyList<Color> Colors { get; }
+    IReadOnlyList<EventIndicatorModel> EventIndicators { get; }
 }

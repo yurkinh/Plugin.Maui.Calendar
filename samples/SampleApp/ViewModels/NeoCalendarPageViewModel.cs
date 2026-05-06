@@ -16,8 +16,17 @@ public partial class NeoCalendarPageViewModel : BasePageViewModel
             [DateTime.Now.AddDays(-3)] = new List<EventModel>(GenerateEvents(10, "Cool")),
             [DateTime.Now.AddDays(4)] = new List<EventModel>(GenerateEvents(2, "Simple2")),
             [DateTime.Now.AddDays(2)] = new List<EventModel>(GenerateEvents(1, "Simple1")),
-            [DateTime.Now.AddDays(1)] = new DayEventCollection<EventModel>(threeEventsTommorrow) { Colors = threeEventsTommorrow.Select(e => e.Color).ToArray() },
-        };
+			[DateTime.Now.AddDays(1)] = new DayEventCollection<EventModel>(threeEventsTommorrow)
+			{
+				// Hata buradaydı: Color dizisi yerine EventIndicator dizisi oluşturuyoruz
+				EventIndicators = threeEventsTommorrow.Select(e => new EventIndicatorModel
+				{
+					DotColor = e.IndicatorBackgroundColor,
+					Text = "!", // Test için metin ekleyebilirsin
+								// ImageSource = "icon.png" // Varsa resim ekleyebilirsin
+				}).ToArray()
+			},
+		};
 
         // with add method
         Events.Add(DateTime.Now.AddDays(-1), new List<EventModel>(GenerateEvents(5, "Cool")));
@@ -85,7 +94,7 @@ public partial class NeoCalendarPageViewModel : BasePageViewModel
         {
             Name = $"{name} event{x}",
             Description = $"This is {name} event{x}'s description!",
-            Color = Color.FromInt((int)(0xff000000 | Random.Shared.Next(0xffffff))),
-        });
+			IndicatorBackgroundColor = Color.FromInt((int)(0xff000000 | Random.Shared.Next(0xffffff))),
+		});
     }
 }

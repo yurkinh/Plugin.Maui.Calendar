@@ -5,57 +5,86 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:conv="clr-namespace:Plugin.Maui.Calendar.Converters"
     xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
+    xmlns:selectors="clr-namespace:Plugin.Maui.Calendar.Selectors"
     x:Name="dayView"
     x:DataType="models:DayModel"
-    IsVisible="{Binding IsControlVisible, Mode=OneWay}"
-    BackgroundColor="{Binding BackgroundFullEventColor}">
+    BackgroundColor="{Binding BackgroundFullEventColor}"
+    IsVisible="{Binding IsControlVisible, Mode=OneWay}">
+
     <ContentView.Resources>
         <ResourceDictionary>
-            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>
+
+            <conv:StrokeShapeConverter x:Key="StrokeShapeConverter" />
+
+            <DataTemplate x:Key="DotTemplate" x:DataType="models:EventIndicatorModel">
+                <Border
+                    BackgroundColor="{Binding DotColor}"
+                    Style="{Binding BindingContext.EventIndicatorDotStyle, Source={x:Reference dayView}}"
+                    VerticalOptions="{Binding BindingContext.DayIndicatorViewVerticalOptions, Mode=OneWay, Source={x:Reference dayView}}" />
+            </DataTemplate>
+
+            <DataTemplate x:Key="TextTemplate" x:DataType="models:EventIndicatorModel">
+                <Border Style="{Binding BindingContext.EventIndicatorTextContainerStyle, Source={x:Reference dayView}}" VerticalOptions="{Binding BindingContext.DayIndicatorViewVerticalOptions, Mode=OneWay, Source={x:Reference dayView}}">
+                    <Label Style="{Binding BindingContext.EventIndicatorTextStyle, Source={x:Reference dayView}}" Text="{Binding Text}" />
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ImageTemplate" x:DataType="models:EventIndicatorModel">
+                <Image
+                    Source="{Binding ImageSource}"
+                    Style="{Binding BindingContext.EventIndicatorImageStyle, Source={x:Reference dayView}}"
+                    VerticalOptions="{Binding BindingContext.DayIndicatorViewVerticalOptions, Mode=OneWay, Source={x:Reference dayView}}" />
+            </DataTemplate>
+
+            <selectors:EventIndicatorTemplateSelector
+                x:Key="IndicatorSelector"
+                DotTemplate="{StaticResource DotTemplate}"
+                ImageTemplate="{StaticResource ImageTemplate}"
+                TextTemplate="{StaticResource TextTemplate}" />
+
         </ResourceDictionary>
     </ContentView.Resources>
-    <Grid
-        Margin="0"
-        Padding="0"
-        HeightRequest="{Binding DayViewSize, Mode=OneWay}"
-        IsVisible="{Binding IsVisible, Mode=OneWay}"
-        WidthRequest="{Binding DayViewSize, Mode=OneWay}">
+
+    <Grid IsVisible="{Binding IsVisible, Mode=OneWay}">
+
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapped" />
+        </Grid.GestureRecognizers>
+
         <Border
-            Padding="0"
+            Grid.Row="0"
             Margin="{Binding DayViewBorderMargin, Mode=OneWay}"
+            Padding="0"
             BackgroundColor="{Binding BackgroundColor, Mode=OneWay}"
-            MaximumHeightRequest="{Binding DayViewSize, Mode=OneWay}"
-            HorizontalOptions="Fill"
+            HeightRequest="{Binding DayViewSize, Mode=OneWay}"
+            HorizontalOptions="Center"
             Stroke="{Binding OutlineColor, Mode=OneWay}"
             StrokeShape="{Binding DayViewCornerRadius, Converter={StaticResource StrokeShapeConverter}, Mode=OneWay}"
-            MaximumWidthRequest="{Binding DayViewSize, Mode=OneWay}"
-            VerticalOptions="Fill"/>
-        <FlexLayout
-            AlignItems="Center"
-            Direction="{Binding EventLayoutDirection}"
-            JustifyContent="Center">
-            <FlexLayout.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnTapped"/>
-            </FlexLayout.GestureRecognizers>
-            <Grid HeightRequest="4"/>
+            VerticalOptions="Center"
+            WidthRequest="{Binding DayViewSize, Mode=OneWay}">
+
             <Label
                 HorizontalTextAlignment="Center"
                 Style="{Binding DaysLabelStyle, Mode=OneWay}"
                 Text="{Binding Day, Mode=OneWay}"
-                TextColor="{Binding TextColor, Mode=OneWay}"/>
-            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding EventColors, Mode=OneWay}" HeightRequest="8">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="Color">
-                        <Border
-                            Padding="0"
-                            BackgroundColor="{Binding ., Mode=OneWay}"
-                            HeightRequest="8"
-                            StrokeShape="RoundRectangle 4"
-                            WidthRequest="8"/>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </HorizontalStackLayout>
-        </FlexLayout>
+                TextColor="{Binding TextColor, Mode=OneWay}" />
+        </Border>
+
+
+        <ContentView
+            Grid.Row="0"
+            Margin="{Binding DayIndicatorViewMargin, Mode=OneWay}"
+            IsClippedToBounds="True"
+            VerticalOptions="{Binding DayIndicatorViewVerticalOptions, Mode=OneWay}">
+            <HorizontalStackLayout
+                BindableLayout.ItemTemplateSelector="{StaticResource IndicatorSelector}"
+                BindableLayout.ItemsSource="{Binding EventIndicators, Mode=OneWay}"
+                HorizontalOptions="Center"
+                Spacing="3"
+                VerticalOptions="Center" />
+
+        </ContentView>
+
     </Grid>
 </ContentView>
 

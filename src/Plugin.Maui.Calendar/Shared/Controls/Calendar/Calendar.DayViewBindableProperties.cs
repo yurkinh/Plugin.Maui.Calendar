@@ -30,7 +30,7 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(DayViewBorderMargin),
 		typeof(Thickness),
 		typeof(Calendar),
-		default(Thickness)
+		new Thickness(8)
 	);
 
 	/// <summary>
@@ -98,4 +98,60 @@ public partial class Calendar : ContentView, IDisposable
 			calendar.UpdateDays(true);
 		}
 	}
+
+	public static readonly BindableProperty EventIndicatorDotStyleProperty = BindableProperty.Create(
+	nameof(EventIndicatorDotStyle),
+	typeof(Style),
+	typeof(Calendar),
+	DefaultStyles.DefaultEventIndicatorDotStyle,
+	propertyChanged: (b, o, n) => (b as Calendar)?.UpdateDays(true));
+
+	public Style EventIndicatorDotStyle
+	{
+		get => (Style)GetValue(EventIndicatorDotStyleProperty);
+		set => SetValue(EventIndicatorDotStyleProperty, value);
+	}
+
+	// EventIndicatorTextContainerStyle
+	public static readonly BindableProperty EventIndicatorTextContainerStyleProperty = BindableProperty.Create(
+		nameof(EventIndicatorTextContainerStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultEventIndicatorTextContainerStyle,
+		propertyChanged: (b, o, n) => (b as Calendar)?.UpdateDays(true));
+
+	public Style EventIndicatorTextContainerStyle
+	{
+		get => (Style)GetValue(EventIndicatorTextContainerStyleProperty);
+		set => SetValue(EventIndicatorTextContainerStyleProperty, value);
+	}
+
+	// EventIndicatorTextStyle
+	public static readonly BindableProperty EventIndicatorTextStyleProperty = BindableProperty.Create(
+		nameof(EventIndicatorTextStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultEventIndicatorTextStyle,
+		propertyChanged: (b, o, n) => (b as Calendar)?.UpdateDays(true));
+
+	public Style EventIndicatorTextStyle
+	{
+		get => (Style)GetValue(EventIndicatorTextStyleProperty);
+		set => SetValue(EventIndicatorTextStyleProperty, value);
+	}
+
+	// EventIndicatorImageStyle
+	public static readonly BindableProperty EventIndicatorImageStyleProperty = BindableProperty.Create(
+		nameof(EventIndicatorImageStyle),
+		typeof(Style),
+		typeof(Calendar),
+		DefaultStyles.DefaultEventIndicatorImageStyle,
+		propertyChanged: (b, o, n) => (b as Calendar)?.UpdateDays(true));
+
+	public Style EventIndicatorImageStyle
+	{
+		get => (Style)GetValue(EventIndicatorImageStyleProperty);
+		set => SetValue(EventIndicatorImageStyleProperty, value);
+	}
+	
 }

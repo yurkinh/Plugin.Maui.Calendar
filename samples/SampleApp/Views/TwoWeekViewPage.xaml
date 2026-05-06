@@ -51,7 +51,6 @@
         Day="{Binding Day}"
         DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
         Events="{Binding Events}"
         FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
         HorizontalOptions="Fill"
@@ -78,7 +77,7 @@
                     <Label
                         FontAttributes="Bold"
                         FontSize="16"
-                        Text="Name"/>
+                        Text="Name" />
                     <Label
                         FontSize="12"
                         LineBreakMode="WordWrap"
