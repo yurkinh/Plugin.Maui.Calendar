@@ -5,6 +5,9 @@ using Mopups.Hosting;
 using SampleApp.Helpers;
 using SampleApp.Services;
 using SampleApp.Views;
+#if DEBUG
+using Microsoft.Maui.DevFlow.Agent;
+#endif
 
 namespace SampleApp;
 
@@ -40,6 +43,7 @@ public static class MauiProgram
 						$"❗🧟❗{collectionTarget.Name} is a zombie!", "OK");
 				});
 			});
+        builder.AddMauiDevFlowAgent();
 #endif
 
         var app = builder.Build();
