@@ -31,7 +31,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (bindable is Calendar calendar)
 		{
-			calendar.UpdateDaysColors();
+			calendar.UpdateDayGlobalProperties();
 		}
 	}
 

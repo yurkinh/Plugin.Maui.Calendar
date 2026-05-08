@@ -7,15 +7,16 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 {
 	const int monthNumberOfWeeks = 6;
 
-	public Grid GenerateLayout(
+	public void GenerateLayout(
+		Grid targetGrid,
 		List<DayView> dayViews,
 		object bindingContext,
 		string daysTitleLabelStyleeBindingName,
 		ICommand dayTappedCommand
 	)
 	{
-
-		return GenerateWeekLayout(
+		GenerateWeekLayout(
+			targetGrid,
 			dayViews,
 			bindingContext,
 			daysTitleLabelStyleeBindingName,
@@ -85,8 +86,7 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 		}
 
 		long currentMonthIndex = (long)forDate.Year * 12 + (forDate.Month - 1);
-		long minMonthIndex = (long)DateTime.MinValue.Year * 12 + (DateTime.MinValue.Month - 1);
-		minMonthIndex = 0;
+		long minMonthIndex = 0;
 		long targetMonthIndex = currentMonthIndex - numberOfUnits;
 		if (targetMonthIndex < minMonthIndex)
 		{

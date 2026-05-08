@@ -413,7 +413,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(DayTappedCommand),
 		typeof(ICommand),
 		typeof(Calendar),
-		null
+		null,
+		propertyChanged: OnDayTappedCommandChanged
 	);
 
 	/// <summary>
@@ -423,6 +424,14 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (ICommand)GetValue(DayTappedCommandProperty);
 		set => SetValue(DayTappedCommandProperty, value);
+	}
+
+	static void OnDayTappedCommandChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDayGlobalProperties();
+		}
 	}
 
 
@@ -590,7 +599,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(AllowDeselecting),
 		typeof(bool),
 		typeof(Calendar),
-		true
+		true,
+		propertyChanged: OnAllowDeselectingChanged
 	);
 
 	/// <summary>
@@ -600,5 +610,13 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (bool)GetValue(AllowDeselectingProperty);
 		set => SetValue(AllowDeselectingProperty, value);
+	}
+
+	static void OnAllowDeselectingChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDayGlobalProperties();
+		}
 	}
 }

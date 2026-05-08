@@ -78,18 +78,10 @@ public partial class Calendar : ContentView, IDisposable
 		get => (ObservableCollection<DateTime>)GetValue(SelectedDatesProperty);
 		set
 		{
-			var oldCollection = SelectedDates;
-			if (oldCollection != null)
-			{
-				oldCollection.CollectionChanged -= OnSelectedDatesCollectionChanged;
-			}
-
+			// Subscription management for CollectionChanged lives exclusively in
+			// SelectedDatesChanged (the bindable-property callback) to avoid the
+			// risk of double-subscription when both the setter and the callback fire.
 			SetValue(SelectedDatesProperty, value);
-			if (value != null)
-			{
-				value.CollectionChanged += OnSelectedDatesCollectionChanged;
-			}
-
 			isSelectingDates = true;
 			SelectedDate = value?.Count > 0 ? value.First() : null;
 		}

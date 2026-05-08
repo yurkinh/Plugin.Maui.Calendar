@@ -9,6 +9,11 @@ public partial class Calendar : ContentView, IDisposable
 {
 	void UpdateEvents()
 	{
+		if (isInitializing)
+		{
+			return;
+		}
+
 		SelectedDayEvents = CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents) ? selectedEvents : null;
 
 		eventsScrollView.ScrollToAsync(0, 0, false);
@@ -63,9 +68,10 @@ public partial class Calendar : ContentView, IDisposable
 
 	void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
 	{
+		// Item 1: UpdateDays already calls AssignIndicatorColors per day, so a separate
+		// UpdateDaysColors pass would be a redundant second iteration.
 		UpdateEvents();
 		UpdateDays();
-		UpdateDaysColors();
 	}
 
 	void OnDayTappedHandler(DateTime value)
@@ -79,11 +85,14 @@ public partial class Calendar : ContentView, IDisposable
 
 				ShownDate = value;
 
-				MonthChanged?.Invoke(this, new MonthChangedEventArgs(oldMonth, newMonth));
+				// Item 6: construct MonthChangedEventArgs once and reuse for both the
+				// event and the command to avoid a second allocation.
+				var args = new MonthChangedEventArgs(oldMonth, newMonth);
+				MonthChanged?.Invoke(this, args);
 
 				if (MonthChangedCommand?.CanExecute(null) == true)
 				{
-					MonthChangedCommand.Execute(new MonthChangedEventArgs(oldMonth, newMonth));
+					MonthChangedCommand.Execute(args);
 				}
 			}
 		}
@@ -91,16 +100,19 @@ public partial class Calendar : ContentView, IDisposable
 		SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
 	}
 
+	// Item 13: cached references to the 7 day-of-week title labels created during
+	// RenderLayout.  UpdateDayTitles iterates this array rather than calling
+	// daysControl.Children.OfType<Label>() on every invocation.
 	void UpdateDayTitles()
 	{
-		var dayNumber = (int)FirstDayOfWeek;
-
-		if (daysControl is null)
+		if (dayTitleLabels is null)
 		{
 			return;
 		}
 
-		foreach (var dayLabel in daysControl.Children.OfType<Label>())
+		var dayNumber = (int)FirstDayOfWeek;
+
+		foreach (var dayLabel in dayTitleLabels)
 		{
 			string dayName;
 			if (UseAbbreviatedDayNames)
@@ -133,6 +145,13 @@ public partial class Calendar : ContentView, IDisposable
 	DateTime firstDate = DateTime.MinValue;
 	void UpdateDays(bool forceUpdate = false)
 	{
+		// Item 16: skip all work during construction; one consolidated render fires at the
+		// end of the Calendar() constructor.
+		if (isInitializing)
+		{
+			return;
+		}
+
 		int lastDayOfMonth = 0;
 		if (!forceUpdate && firstDate == CurrentViewLayoutEngine.GetFirstDate(ShownDate))
 		{
@@ -143,6 +162,10 @@ public partial class Calendar : ContentView, IDisposable
 		int addDays = 0;
 		var remainingDaysUntilMax = (DateTime.MaxValue.Date - firstDate.Date).Days + 1;
 		var safeOffsets = (int)Math.Min(dayViews.Count, Math.Max(0, remainingDaysUntilMax));
+
+		// Item 4: build a HashSet<DateTime> once so each per-day IsDisabled check is O(1)
+		// instead of O(n) with List.Contains.
+		var disabledSet = DisabledDates?.Count > 0 ? new HashSet<DateTime>(DisabledDates) : null;
 
 		foreach (var dayView in dayViews)
 		{
@@ -159,21 +182,16 @@ public partial class Calendar : ContentView, IDisposable
 
 				bool currentMonthOnLine = lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7;
 
+				// Item 2: only date-specific values are set here; global/color props are
+				// propagated by UpdateDayGlobalProperties so they don't need to be pushed
+				// on every date-change render.
 				dayModel.Date = currentDate.Date;
 				dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
-				dayModel.DayTappedCommand = DayTappedCommand;
-				dayModel.EventIndicatorType = EventIndicatorType;
-				dayModel.DayViewSize = DayViewSize;
-				dayModel.DayViewBorderMargin = DayViewBorderMargin;
-				dayModel.DayViewCornerRadius = DayViewCornerRadius;
-				dayModel.DaysLabelStyle = DaysLabelStyle;
 				dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
 				dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
 				dayModel.OtherMonthWeekIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
 				dayModel.HasEvents = Events.ContainsKey(currentDate);
-				dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (DisabledDates?.Contains(currentDate.Date) ?? false);
-				dayModel.AllowDeselect = AllowDeselecting;
-
+				dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (disabledSet?.Contains(currentDate.Date) ?? false);
 				dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date);
 				AssignIndicatorColors(ref dayModel);
 			}
@@ -183,30 +201,43 @@ public partial class Calendar : ContentView, IDisposable
 
 				dayModel.Date = DateTime.MaxValue.Date;
 				dayModel.Day = string.Empty;
-				dayModel.DayTappedCommand = DayTappedCommand;
-				dayModel.EventIndicatorType = EventIndicatorType;
-				dayModel.DayViewSize = DayViewSize;
-				dayModel.DayViewBorderMargin = DayViewBorderMargin;
-				dayModel.DayViewCornerRadius = DayViewCornerRadius;
-				dayModel.DaysLabelStyle = DaysLabelStyle;
 				dayModel.IsThisMonth = false;
 				dayModel.OtherMonthIsVisible = false;
 				dayModel.OtherMonthWeekIsVisible = false;
 				dayModel.HasEvents = false;
 				dayModel.IsDisabled = true;
-				dayModel.AllowDeselect = AllowDeselecting;
 				dayModel.IsSelected = false;
 				AssignIndicatorColors(ref dayModel);
 			}
 		}
 	}
 
-	void UpdateDaysColors()
+	/// <summary>
+	/// Pushes all global (calendar-wide, not per-day) property values onto every
+	/// <see cref="DayModel"/> in one pass.  This is called once after layout generation
+	/// and again whenever a global property changes, so <see cref="UpdateDays"/> only
+	/// needs to handle date-specific values.
+	/// </summary>
+	void UpdateDayGlobalProperties()
 	{
 		foreach (var dayView in dayViews)
 		{
 			var dayModel = dayView.BindingContext as DayModel;
+			if (dayModel is null)
+			{
+				continue;
+			}
 
+			// Structural global props
+			dayModel.DayTappedCommand = DayTappedCommand;
+			dayModel.EventIndicatorType = EventIndicatorType;
+			dayModel.DayViewSize = DayViewSize;
+			dayModel.DayViewBorderMargin = DayViewBorderMargin;
+			dayModel.DayViewCornerRadius = DayViewCornerRadius;
+			dayModel.DaysLabelStyle = DaysLabelStyle;
+			dayModel.AllowDeselect = AllowDeselecting;
+
+			// Color global props
 			dayModel.DeselectedTextColor = DeselectedDayTextColor;
 			dayModel.TodayTextColor = TodayTextColor;
 			dayModel.SelectedTextColor = SelectedDayTextColor;
@@ -219,7 +250,16 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.TodayFillColor = TodayFillColor;
 			dayModel.DisabledColor = DisabledDayColor;
 
+			// Indicator colors depend on per-day state (Events, IsSelected) so they must
+			// be recomputed even in a color-only update.
 			AssignIndicatorColors(ref dayModel);
 		}
 	}
+
+	/// <summary>
+	/// Updates day colors and event-indicator colors without recomputing date layout.
+	/// Delegates to <see cref="UpdateDayGlobalProperties"/>, the single authoritative
+	/// method for propagating all global properties to DayModels.
+	/// </summary>
+	void UpdateDaysColors() => UpdateDayGlobalProperties();
 }

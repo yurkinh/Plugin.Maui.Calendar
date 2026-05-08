@@ -6,7 +6,13 @@ namespace Plugin.Maui.Calendar.Interfaces;
 
 interface IViewLayoutEngine
 {
-	Grid GenerateLayout(
+	/// <summary>
+	/// Populates <paramref name="targetGrid"/> with the day-header row and all
+	/// <see cref="DayView"/> cells.  The caller is responsible for clearing the grid
+	/// before invoking this method.
+	/// </summary>
+	void GenerateLayout(
+		Grid targetGrid,
 		List<DayView> dayViews,
 		object bindingContext,
 		string daysTitleLabelStyleeBindingName,

@@ -6,7 +6,7 @@ using Plugin.Maui.Calendar.Shared.Extensions;
 
 namespace Plugin.Maui.Calendar.Shared.Controls.SelectionEngines;
 
-public class MultiSelectionEngine : ISelectionEngine
+internal class MultiSelectionEngine : ISelectionEngine
 {
 	readonly HashSet<DateTime> selectedDates;
 
@@ -17,16 +17,14 @@ public class MultiSelectionEngine : ISelectionEngine
 
 	public string GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
 	{
-		if (selectedDates?.Any(item => item > DateTime.MinValue) != true)
-		{
-			return string.Empty;
-		}
-		return selectedDates
+		var formatted = selectedDates
 			.Where(item => item > DateTime.MinValue)
-			.Select(item => isNativeDigits 
-							? item.ToNativeDigitString(selectedDateTextFormat, culture) 
+			.Select(item => isNativeDigits
+							? item.ToNativeDigitString(selectedDateTextFormat, culture)
 							: item.ToString(selectedDateTextFormat, culture))
-			.Aggregate((a, b) => $"{a}, {b}");
+			.ToList();
+
+		return formatted.Count == 0 ? string.Empty : string.Join(", ", formatted);
 	}
 
 	public bool TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
