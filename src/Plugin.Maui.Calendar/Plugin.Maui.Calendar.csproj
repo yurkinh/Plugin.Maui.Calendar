@@ -50,7 +50,7 @@
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
                         * Updated to .NET 10 MAUI SR6
-                        * Fixed calendar day colorization not working on initial load                                             
+                        * Performance improvements and bug fixes                                             
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
