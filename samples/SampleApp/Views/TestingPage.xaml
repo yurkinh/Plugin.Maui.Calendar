@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    xmlns:mtk="clr-namespace:MemoryToolkit.Maui;assembly=MemoryToolkit.Maui"
+    mtk:LeakMonitorBehavior.Cascade="True"
     Title="TestingPage"
     x:DataType="vm:TestingPageViewModel">
     <VerticalStackLayout Padding="10" Spacing="10">

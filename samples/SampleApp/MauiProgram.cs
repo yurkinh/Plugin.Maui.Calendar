@@ -34,16 +34,16 @@ public static class MauiProgram
 
 #if DEBUG
         builder.Logging.AddDebug();
-        builder.UseLeakDetection(collectionTarget =>
-            {
-				// This callback will run any time a leak is detected.
-				Application.Current?.Dispatcher.Dispatch(async () =>
-				{
-					await Shell.Current.DisplayAlertAsync("💦Leak Detected💦",
-						$"❗🧟❗{collectionTarget.Name} is a zombie!", "OK");
-				});
-			});
-        builder.AddMauiDevFlowAgent();
+		builder.UseMemoryToolkit(options =>
+	{
+		options.DefaultTearDownStrategy = TearDownStrategy.DisconnectHandlers;
+		options.OnLeaked = collectionTarget =>
+		{
+			// This callback will run any time a leak is detected.
+		};
+	});
+
+		builder.AddMauiDevFlowAgent();
 #endif
 
         var app = builder.Build();
