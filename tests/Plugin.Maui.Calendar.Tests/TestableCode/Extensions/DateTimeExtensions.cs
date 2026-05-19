@@ -14,6 +14,13 @@ public static class DateTimeExtensions
         return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
+    public static string NormalizeDayName(this string source, CultureInfo culture)
+    {
+        return culture.TwoLetterISOLanguageName is "ar" && source.StartsWith("ال", StringComparison.Ordinal)
+            ? source[2..]
+            : source;
+    }
+
     public static DateTime StartDayOfMonth(this DateTime dt) => new DateTime(dt.Year, dt.Month, 1);
 
     public static DateTime EndDayOfMonth(this DateTime dt) => dt.StartDayOfMonth().AddMonths(1).AddDays(-1);
