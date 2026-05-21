@@ -279,9 +279,7 @@ public partial class Calendar : ContentView, IDisposable
 		DateTime currentDate,
 		DateTime minimumDate,
 		DateTime maximumDate,
-#pragma warning disable CS8632 // nullable annotation only valid in #nullable context
-		HashSet<DateTime>? disabledSet)
-#pragma warning restore CS8632
+		HashSet<DateTime> disabledSet)
 		=> currentDate.Date < minimumDate.Date
 		|| currentDate.Date > maximumDate.Date
 		|| (disabledSet?.Contains(currentDate.Date) ?? false);
