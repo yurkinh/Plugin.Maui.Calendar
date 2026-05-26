@@ -21,9 +21,15 @@ public static class DateTimeExtensions
     /// </summary>
     public static string TruncateDayName(this string fullName, string abbreviatedName, int maxLength)
     {
+        // If the full name already fits within the requested limit, don't shorten it.
+        if (fullName.Length <= maxLength)
+        {
+            return fullName;
+        }
+
         return abbreviatedName.Length <= maxLength
             ? abbreviatedName
-            : fullName[..(maxLength > fullName.Length ? fullName.Length : maxLength)];
+            : fullName[..Math.Min(maxLength, fullName.Length)];
     }
 
     public static DateTime StartDayOfMonth(this DateTime dt) => new DateTime(dt.Year, dt.Month, 1);
