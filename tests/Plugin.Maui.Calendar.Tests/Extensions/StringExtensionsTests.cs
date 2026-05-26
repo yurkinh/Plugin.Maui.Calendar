@@ -136,6 +136,18 @@ public class StringExtensionsTests
     }
 
     [Theory]
+    [InlineData("月曜日", "月", 3, "月曜日")]
+    [InlineData("星期日", "周日", 3, "星期日")]
+    public void TruncateDayName_WhenFullNameFitsWithinMaxLength_ReturnsFullName(string fullName, string abbrev, int maxLen, string expected)
+    {
+        // Arrange & Act
+        var result = fullName.TruncateDayName(abbrev, maxLen);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
     [InlineData("Sunday", "Sun", 2, "Su")]
     [InlineData("Monday", "Mon", 2, "Mo")]
     public void TruncateDayName_WhenAbbreviationDoesNotFit_FallsBackToCharacterTruncation(string fullName, string abbrev, int maxLen, string expected)
