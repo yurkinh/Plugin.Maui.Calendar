@@ -23,9 +23,15 @@ static class Extensions
     /// </summary>
     internal static string TruncateDayName(this string fullName, string abbreviatedName, int maxLength)
     {
+        // If the full name already fits within the requested limit, don't shorten it.
+        if (fullName.Length <= maxLength)
+        {
+            return fullName;
+        }
+
         return abbreviatedName.Length <= maxLength
             ? abbreviatedName
-            : fullName[..(maxLength > fullName.Length ? fullName.Length : maxLength)];
+            : fullName[..Math.Min(maxLength, fullName.Length)];
     }
 
     internal static object CreateContent(this DataTemplate dataTemplate, object itemModel)
