@@ -124,7 +124,7 @@ public partial class Calendar : ContentView, IDisposable
 				var fullName = Culture.DateTimeFormat.DayNames[dayNumber];
 				dayName = DaysTitleMaximumLength == DaysTitleMaxLength.None
 						? fullName
-						: fullName[..((int)DaysTitleMaximumLength > fullName.Length ? fullName.Length : (int)DaysTitleMaximumLength)];
+						: fullName.TruncateDayName(Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber], (int)DaysTitleMaximumLength);
 			}
 
 			var titleText = DaysTitleLabelFirstUpperRestLower

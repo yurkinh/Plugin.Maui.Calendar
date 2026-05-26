@@ -14,6 +14,20 @@ static class Extensions
 		return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
+    /// <summary>
+    /// Returns the best display name for a weekday header given a character-count limit.
+    /// When the culture's official abbreviated day name fits within <paramref name="maxLength"/>,
+    /// it is preferred over plain character truncation of the full name — this avoids
+    /// non-standard results for languages such as Russian where the first N characters of the
+    /// full day name do not match the standard abbreviation (e.g. "пон" vs the correct "пн").
+    /// </summary>
+    internal static string TruncateDayName(this string fullName, string abbreviatedName, int maxLength)
+    {
+        return abbreviatedName.Length <= maxLength
+            ? abbreviatedName
+            : fullName[..(maxLength > fullName.Length ? fullName.Length : maxLength)];
+    }
+
     internal static object CreateContent(this DataTemplate dataTemplate, object itemModel)
     {
         if (dataTemplate is DataTemplateSelector templateSelector)

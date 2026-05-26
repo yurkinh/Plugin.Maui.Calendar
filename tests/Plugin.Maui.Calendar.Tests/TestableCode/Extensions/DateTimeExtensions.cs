@@ -14,6 +14,18 @@ public static class DateTimeExtensions
         return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
+    /// <summary>
+    /// Returns the best display name for a weekday header given a character-count limit.
+    /// When the official abbreviation fits within <paramref name="maxLength"/> it is preferred
+    /// over plain character truncation of the full name.
+    /// </summary>
+    public static string TruncateDayName(this string fullName, string abbreviatedName, int maxLength)
+    {
+        return abbreviatedName.Length <= maxLength
+            ? abbreviatedName
+            : fullName[..(maxLength > fullName.Length ? fullName.Length : maxLength)];
+    }
+
     public static DateTime StartDayOfMonth(this DateTime dt) => new DateTime(dt.Year, dt.Month, 1);
 
     public static DateTime EndDayOfMonth(this DateTime dt) => dt.StartDayOfMonth().AddMonths(1).AddDays(-1);
