@@ -7,7 +7,7 @@ public partial class Calendar : ContentView, IDisposable
 		typeof(DateTime),
 		typeof(Calendar),
 		DateTime.Today,
-		BindingMode.TwoWay
+		BindingMode.OneWayToSource
 	);
 
 	public static readonly BindableProperty VisibleStartDateProperty = VisibleStartDatePropertyKey.BindableProperty;
@@ -22,7 +22,7 @@ public partial class Calendar : ContentView, IDisposable
 		typeof(DateTime),
 		typeof(Calendar),
 		DateTime.Today,
-		BindingMode.TwoWay
+		BindingMode.OneWayToSource
 	);
 
 	public static readonly BindableProperty VisibleEndDateProperty = VisibleEndDatePropertyKey.BindableProperty;
