@@ -16,15 +16,39 @@ public partial class Calendar : ContentView, IDisposable
 
 	void UpdateLayoutUnitLabel()
 	{
+
+		string monthName = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
+
+
+		if (WeekViewUnit == WeekViewUnit.WeekNumberWithMontName )
+		{
+
+			int weekOfMonth = GetWeekOfMonth(ShownDate);
+			string longPattern = Culture.DateTimeFormat.LongDatePattern;
+
+			bool isYearOrMonthFirst = longPattern.IndexOf("M") < longPattern.IndexOf("d");
+
+			if (CalendarLayout == WeekLayout.Week)
+			{
+				LayoutUnitText = $"{weekOfMonth} / {monthName}";
+			}
+			else
+			{
+				LayoutUnitText = monthName;
+			}
+
+
+			return;
+		}
+
 		if (WeekViewUnit == WeekViewUnit.WeekNumber)
 		{
 			LayoutUnitText = GetWeekNumber(ShownDate).ToString();
 			return;
 		}
 
-		LayoutUnitText = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
+		LayoutUnitText = monthName;
 	}
-
 	void UpdateSelectedDateLabel() => SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture, UseNativeDigits);
 
 	void ShowHideCalendarSection()

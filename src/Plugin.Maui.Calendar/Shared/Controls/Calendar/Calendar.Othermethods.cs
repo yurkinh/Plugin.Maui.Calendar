@@ -22,6 +22,23 @@ public partial class Calendar : ContentView, IDisposable
 		);
 	}
 
+	int GetWeekOfMonth(DateTime date)
+	{
+		DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+
+		int firstWeekOfYear = Culture.Calendar.GetWeekOfYear(
+			firstDayOfMonth,
+			CalendarWeekRule.FirstFourDayWeek,
+			Culture.DateTimeFormat.FirstDayOfWeek
+		);
+
+		int currentWeekOfYear = GetWeekNumber(date);
+
+		int weekOfMonth = (currentWeekOfYear - firstWeekOfYear) + 1;
+
+		return weekOfMonth <= 0 ? 1 : weekOfMonth;
+	}
+
 	void PrevUnit()
 	{
 		var oldMonth = DateOnly.FromDateTime(ShownDate);

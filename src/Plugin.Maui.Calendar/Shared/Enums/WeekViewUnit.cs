@@ -14,4 +14,9 @@ public enum WeekViewUnit
     /// Set naming scheme to week number
     /// </summary>
     WeekNumber,
+
+	/// <summary>
+	/// Set naming scheme to week number of month
+	/// </summary>
+	WeekNumberWithMontName
 }
