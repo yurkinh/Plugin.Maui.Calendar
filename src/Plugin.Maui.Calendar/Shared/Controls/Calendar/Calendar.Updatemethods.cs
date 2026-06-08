@@ -114,17 +114,16 @@ public partial class Calendar : ContentView, IDisposable
 
 		foreach (var dayLabel in dayTitleLabels)
 		{
-			string dayName;
-			if (UseAbbreviatedDayNames)
+			var fullName = (UseAbbreviatedDayNames
+				? Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber]
+				: Culture.DateTimeFormat.DayNames[dayNumber]).NormalizeDayName(Culture);
+			var dayName = fullName;
+
+			if (!UseAbbreviatedDayNames)
 			{
-				dayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-			}
-			else
-			{
-				var fullName = Culture.DateTimeFormat.DayNames[dayNumber];
 				dayName = DaysTitleMaximumLength == DaysTitleMaxLength.None
 						? fullName
-						: fullName.TruncateDayName(Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber], (int)DaysTitleMaximumLength);
+						: fullName.TruncateDayName(Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber].NormalizeDayName(Culture), (int)DaysTitleMaximumLength);
 			}
 
 			var titleText = DaysTitleLabelFirstUpperRestLower

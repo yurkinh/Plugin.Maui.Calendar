@@ -34,6 +34,13 @@ static class Extensions
             : fullName[..Math.Min(maxLength, fullName.Length)];
     }
 
+    internal static string NormalizeDayName(this string source, CultureInfo culture)
+    {
+        return culture.TwoLetterISOLanguageName is "ar" && source.StartsWith("ال", StringComparison.Ordinal)
+            ? source[2..]
+            : source;
+    }
+
     internal static object CreateContent(this DataTemplate dataTemplate, object itemModel)
     {
         if (dataTemplate is DataTemplateSelector templateSelector)
