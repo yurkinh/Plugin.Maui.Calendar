@@ -24,16 +24,22 @@ public static class MauiProgram
             .InjectViewsAndViewModels()
             .ConfigureFonts(fonts =>
             {
+#if ANDROID
+				fonts.AddFont("opensans-regular.ttf", "OpenSansRegular");
+				fonts.AddFont("opensans-semibold.ttf", "OpenSansSemibold");
+				fonts.AddFont("font-awesome-6-free-solid.otf", "FontAwesomeSolid");
+				fonts.AddFont("font-awesome-6-free-regular.otf", "FontAwesomeRegular");
+#else
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("font-awesome-6-free-solid.otf", "FontAwesomeSolid");
                 fonts.AddFont("font-awesome-6-free-regular.otf", "FontAwesomeRegular");
-                fonts.AddFont("DarkerGrotesque-VariableFont_wght.ttf", "DarkerGrotesque");
-            });
+#endif
+			});
 
 
 #if DEBUG
-        builder.Logging.AddDebug();
+		builder.Logging.AddDebug();
 		builder.UseMemoryToolkit(options =>
 	{
 		options.DefaultTearDownStrategy = TearDownStrategy.DisconnectHandlers;
