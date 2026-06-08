@@ -49,6 +49,49 @@ public class StringExtensionsTests
         result.Should().Be("A");
     }
 
+    [Theory]
+    [InlineData("الأحد", "أحد")]
+    [InlineData("الاثنين", "اثنين")]
+    [InlineData("الأربعاء", "أربعاء")]
+    [InlineData("السبت", "سبت")]
+    public void NormalizeDayName_ShouldRemoveArabicDefiniteArticlePrefix(string input, string expected)
+    {
+        // Arrange
+        var culture = new CultureInfo("ar");
+
+        // Act
+        var result = input.NormalizeDayName(culture);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public void NormalizeDayName_ShouldPreserveArabicDayNameWithoutDefiniteArticlePrefix()
+    {
+        // Arrange
+        var culture = new CultureInfo("ar");
+
+        // Act
+        var result = "سبت".NormalizeDayName(culture);
+
+        // Assert
+        result.Should().Be("سبت");
+    }
+
+    [Fact]
+    public void NormalizeDayName_ShouldPreserveNonArabicCultures()
+    {
+        // Arrange
+        var culture = new CultureInfo("en-US");
+
+        // Act
+        var result = "الأحد".NormalizeDayName(culture);
+
+        // Assert
+        result.Should().Be("الأحد");
+    }
+
     [Fact]
     public void Capitalize_ShouldNotChangeNumbersOrSymbols()
     {
