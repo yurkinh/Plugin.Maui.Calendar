@@ -24,8 +24,8 @@ public static class MauiProgram
             .InjectViewsAndViewModels()
             .ConfigureFonts(fonts =>
 			{
-				fonts.AddFont("opensans-regular.ttf", "OpenSansRegular");
-				fonts.AddFont("opensans-semibold.ttf", "OpenSansSemibold");
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				fonts.AddFont("font-awesome-6-free-solid.otf", "FontAwesomeSolid");
 				fonts.AddFont("font-awesome-6-free-regular.otf", "FontAwesomeRegular");
 			});
