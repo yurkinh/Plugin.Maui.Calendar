@@ -8,6 +8,11 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	public event EventHandler<MonthChangedEventArgs> MonthChanged;
 
+	/// <summary>
+	/// Event that is triggered when the shown visible date range changes.
+	/// </summary>
+	public event EventHandler<ShownDatesChangedEventArgs> ShownDatesChanged;
+
 	public event EventHandler SwipedLeft;
 	public event EventHandler SwipedRight;
 	public event EventHandler SwipedUp;

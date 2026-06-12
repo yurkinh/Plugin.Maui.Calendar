@@ -9,6 +9,12 @@
     mtk:LeakMonitorBehavior.Cascade="True"
     Shell.TabBarIsVisible="False">
     <VerticalStackLayout>
-        <plugin:Calendar />
+        <Label
+            x:Name="ShownDatesLabel"
+            Margin="16,8"
+            FontSize="14" />
+        <plugin:Calendar
+            x:Name="CalendarControl"
+            ShownDatesChanged="OnShownDatesChanged" />
     </VerticalStackLayout>
 </ContentPage>
