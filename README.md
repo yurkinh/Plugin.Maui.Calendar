@@ -352,7 +352,7 @@ SwipeUpToHideEnabled="False"
 
 ##### Selection type of calendar
 
-You can either use the `Calender` class implementation for a single selection mode, multiselection mode or `RangeSelectionCalendar` for a range selection mode.
+You can either use the `Calender` class implementation for a single selection mode, multiselection mode, `RangeSelectionCalendar` for a range selection mode, or `WeekSelectionCalendar` for whole-week selection after tapping one day.
 
 ```xml
     <plugin:Calendar
@@ -374,6 +374,14 @@ On the `MultiselectionCalendar` you can select multiple separate dates
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}" >
+```
+
+On the `WeekSelectionCalendar`, tapping one day selects the entire week based on `FirstDayOfWeek`.
+
+```xml
+    <plugin:WeekSelectionCalendar
+        FirstDayOfWeek="Monday"
+        SelectedDates="{Binding SelectedDates}" />
 ```
 
 __Remark: Don't use both `SelectedDates` and `SelectedStartDate`/`SelectedEndDate`__
