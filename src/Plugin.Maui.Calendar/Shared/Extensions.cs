@@ -14,6 +14,26 @@ static class Extensions
 		return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
+    /// <summary>
+    /// Returns the best display name for a weekday header given a character-count limit.
+    /// When the culture's official abbreviated day name fits within <paramref name="maxLength"/>,
+    /// it is preferred over plain character truncation of the full name — this avoids
+    /// non-standard results for languages such as Russian where the first N characters of the
+    /// full day name do not match the standard abbreviation (e.g. "пон" vs the correct "пн").
+    /// </summary>
+    internal static string TruncateDayName(this string fullName, string abbreviatedName, int maxLength)
+    {
+        // If the full name already fits within the requested limit, don't shorten it.
+        if (fullName.Length <= maxLength)
+        {
+            return fullName;
+        }
+
+        return abbreviatedName.Length <= maxLength
+            ? abbreviatedName
+            : fullName[..Math.Min(maxLength, fullName.Length)];
+    }
+
     internal static string NormalizeDayName(this string source, CultureInfo culture)
     {
         return culture.TwoLetterISOLanguageName is "ar" && source.StartsWith("ال", StringComparison.Ordinal)

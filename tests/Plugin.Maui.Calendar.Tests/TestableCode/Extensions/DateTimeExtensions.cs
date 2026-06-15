@@ -14,6 +14,24 @@ public static class DateTimeExtensions
         return char.ToUpperInvariant(source[0]) + source[1..];
     }
 
+    /// <summary>
+    /// Returns the best display name for a weekday header given a character-count limit.
+    /// When the official abbreviation fits within <paramref name="maxLength"/> it is preferred
+    /// over plain character truncation of the full name.
+    /// </summary>
+    public static string TruncateDayName(this string fullName, string abbreviatedName, int maxLength)
+    {
+        // If the full name already fits within the requested limit, don't shorten it.
+        if (fullName.Length <= maxLength)
+        {
+            return fullName;
+        }
+
+        return abbreviatedName.Length <= maxLength
+            ? abbreviatedName
+            : fullName[..Math.Min(maxLength, fullName.Length)];
+    }
+
     public static string NormalizeDayName(this string source, CultureInfo culture)
     {
         return culture.TwoLetterISOLanguageName is "ar" && source.StartsWith("ال", StringComparison.Ordinal)
