@@ -114,17 +114,16 @@ public partial class Calendar : ContentView, IDisposable
 
 		foreach (var dayLabel in dayTitleLabels)
 		{
-			string dayName;
-			if (UseAbbreviatedDayNames)
+			var fullName = (UseAbbreviatedDayNames
+				? Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber]
+				: Culture.DateTimeFormat.DayNames[dayNumber]).NormalizeDayName(Culture);
+			var dayName = fullName;
+
+			if (!UseAbbreviatedDayNames)
 			{
-				dayName = Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber];
-			}
-			else
-			{
-				var fullName = Culture.DateTimeFormat.DayNames[dayNumber];
 				dayName = DaysTitleMaximumLength == DaysTitleMaxLength.None
 						? fullName
-						: fullName[..((int)DaysTitleMaximumLength > fullName.Length ? fullName.Length : (int)DaysTitleMaximumLength)];
+						: fullName.TruncateDayName(Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber].NormalizeDayName(Culture), (int)DaysTitleMaximumLength);
 			}
 
 			var titleText = DaysTitleLabelFirstUpperRestLower
@@ -196,7 +195,9 @@ public partial class Calendar : ContentView, IDisposable
 				dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
 				dayModel.OtherMonthWeekIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthWeekIsVisible || (OtherMonthDayIsVisible && currentMonthOnLine);
 				dayModel.HasEvents = Events.ContainsKey(currentDate);
-				dayModel.IsDisabled = currentDate < MinimumDate || currentDate > MaximumDate || (disabledSet?.Contains(currentDate.Date) ?? false);
+				// Normalise to date-only so a non-midnight MinimumDate/MaximumDate
+				// (e.g. DateTime.Now.AddDays(-7)) does not incorrectly disable the boundary day.
+				dayModel.IsDisabled = IsDateDisabled(currentDate, MinimumDate, MaximumDate, disabledSet);
 				dayModel.IsSelected = CurrentSelectionEngine.IsDateSelected(dayModel.Date);
 				AssignIndicatorColors(ref dayModel);
 			}
@@ -278,4 +279,23 @@ public partial class Calendar : ContentView, IDisposable
 	/// method for propagating all global properties to DayModels.
 	/// </summary>
 	void UpdateDaysColors() => UpdateDayGlobalProperties();
+
+	/// <summary>
+	/// Returns <see langword="true"/> when <paramref name="currentDate"/> falls outside the
+	/// [<paramref name="minimumDate"/>, <paramref name="maximumDate"/>] range or is present
+	/// in <paramref name="disabledSet"/>.
+	/// </summary>
+	/// <remarks>
+	/// Both bounds are compared using <see cref="DateTime.Date"/> so that a caller who
+	/// supplies <c>DateTime.Now.AddDays(-7)</c> (which carries a non-midnight time) does
+	/// not accidentally disable the boundary calendar day.
+	/// </remarks>
+	internal static bool IsDateDisabled(
+		DateTime currentDate,
+		DateTime minimumDate,
+		DateTime maximumDate,
+		HashSet<DateTime> disabledSet)
+		=> currentDate.Date < minimumDate.Date
+		|| currentDate.Date > maximumDate.Date
+		|| (disabledSet?.Contains(currentDate.Date) ?? false);
 }

@@ -71,11 +71,19 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<!-- Explicit Android font assets with lowercase links for robust asset resolution -->
+		<AndroidAsset Include="Resources\Fonts\OpenSans-Regular.ttf" Link="opensans-regular.ttf" />
+		<AndroidAsset Include="Resources\Fonts\OpenSans-Semibold.ttf" Link="opensans-semibold.ttf" />
+		<AndroidAsset Include="Resources\Fonts\font-awesome-6-free-solid.otf" Link="font-awesome-6-free-solid.otf" />
+		<AndroidAsset Include="Resources\Fonts\font-awesome-6-free-regular.otf" Link="font-awesome-6-free-regular.otf" />
+	</ItemGroup>
+
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />		
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.71" />		
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
 		<PackageReference Include="Mopups" Version="1.3.4" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="14.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
 		<PackageReference Include="AdamE.MemoryToolkit.Maui" Version="2.0.0" />
 	</ItemGroup>
 

@@ -25,20 +25,16 @@
                 Dark="#000000"
                 Light="#000000" />
 
-            <Style x:Key="LabelMainPageStyle" TargetType="Label">
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="30" />
-                <Setter Property="FontFamily" Value="DarkerGrotesque" />
+            <Style x:Key="LabelMainPageStyle" TargetType="Label">                
+                <Setter Property="FontSize" Value="30" />               
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelColor}" />
             </Style>
             <Style x:Key="ButtonMainPageStyle" TargetType="Button">
                 <Setter Property="HorizontalOptions" Value="Fill" />
                 <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
-                <Setter Property="FontSize" Value="22" />
-                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="22" />                
                 <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="FontFamily" Value="DarkerGrotesque" />
                 <Setter Property="Margin" Value="30,10" />
                 <Setter Property="Padding" Value="10" />
                 <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelButtonColor}" />
