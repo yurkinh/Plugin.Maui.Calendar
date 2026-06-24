@@ -37,6 +37,10 @@ public partial class MainPage : ContentPage
         await Shell.Current.GoToAsync(nameof(RangeSelectionPage));
 
 
+    async void WeekSelectionCalendar(object sender, EventArgs e) =>
+        await Shell.Current.GoToAsync(nameof(WeekSelectionPage));
+
+
     async void PickerPopup(object sender, EventArgs e) =>
         await MopupService.Instance.PushAsync(new CalendarPickerPopup(async (calendarPickerResult) =>
         {
