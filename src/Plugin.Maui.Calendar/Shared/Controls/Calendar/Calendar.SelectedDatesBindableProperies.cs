@@ -26,10 +26,11 @@ public partial class Calendar : ContentView, IDisposable
 		get => (DateTime?)GetValue(SelectedDateProperty);
 		set
 		{
-			SetValue(
-				SelectedDatesProperty,
-				value.HasValue ? new List<DateTime> { value.Value } : null
-			);
+			// Intentionally does NOT assign SelectedDates. Syncing it from
+			// SelectedDate is handled by OnSelectedDateChanged, which applies the
+			// multi-selection guard. Assigning it here would clobber an
+			// in-progress multi-selection with a single date, because this setter
+			// runs inside the SelectedDates setter (SelectedDate = value.First()).
 			SetValue(SelectedDateProperty, value);
 		}
 	}
@@ -47,7 +48,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			else
 			{
-				control.SetValue(SelectedDatesProperty, new List<DateTime>());
+				control.SetValue(SelectedDatesProperty, new ObservableCollection<DateTime>());
 			}
 		}
 		else
