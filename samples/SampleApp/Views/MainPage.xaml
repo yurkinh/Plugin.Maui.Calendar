@@ -76,6 +76,10 @@
                 Clicked="RangeCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar" />
+            <Button
+                Clicked="WeekSelectionCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Week Selection Calendar" />
 
             <Label Style="{StaticResource LabelMainPageStyle}" Text="Calendars from Devices" />
             <Button
