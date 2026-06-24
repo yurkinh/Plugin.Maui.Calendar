@@ -28,7 +28,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			SetValue(
 				SelectedDatesProperty,
-				value.HasValue ? new List<DateTime> { value.Value } : null
+				value.HasValue ? new ObservableCollection<DateTime> { value.Value } : null
 			);
 			SetValue(SelectedDateProperty, value);
 		}
@@ -47,7 +47,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			else
 			{
-				control.SetValue(SelectedDatesProperty, new List<DateTime>());
+				control.SetValue(SelectedDatesProperty, new ObservableCollection<DateTime>());
 			}
 		}
 		else
