@@ -9,12 +9,12 @@
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     
-    <!-- Enable Source Generators for XAML in .NET 10 -->
-    <MauiXamlInflator>SourceGen</MauiXamlInflator>
-    <!--  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
+		<!-- Enable Source Generators for XAML in .NET 10 -->
+		<MauiXamlInflator>SourceGen</MauiXamlInflator>
+		<!--  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
     
 		<!-- Enable trimming and AOT analyzers on all platforms -->
 		<!-- <IsAotCompatible>true</IsAotCompatible>
