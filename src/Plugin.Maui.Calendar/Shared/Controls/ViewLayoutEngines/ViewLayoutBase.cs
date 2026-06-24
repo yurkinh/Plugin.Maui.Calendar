@@ -14,6 +14,18 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	}
 
 	/// <summary>
+	/// Returns <see langword="true"/> when the grid column at <paramref name="column"/>
+	/// (0-based, measured from <paramref name="firstDayOfWeek"/>) falls on a Saturday or
+	/// Sunday. Used by <see cref="Calendar.UpdateWeekendBackground"/> to place the weekend
+	/// background boxes on the same columns as the Saturday/Sunday day-of-week titles.
+	/// </summary>
+	internal static bool IsWeekendColumn(DayOfWeek firstDayOfWeek, int column)
+	{
+		int dayNumber = ((int)firstDayOfWeek + column) % numberOfDaysInWeek;
+		return dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday;
+	}
+
+	/// <summary>
 	/// Populates <paramref name="targetGrid"/> with the day-of-week header row and
 	/// <paramref name="numberOfWeeks"/> × 7 <see cref="DayView"/> cells.
 	/// The caller must clear the grid's Children, RowDefinitions and ColumnDefinitions

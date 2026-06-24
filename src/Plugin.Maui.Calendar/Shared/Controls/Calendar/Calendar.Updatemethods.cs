@@ -1,4 +1,5 @@
-﻿using Plugin.Maui.Calendar.Enums;
+﻿using Microsoft.Maui.Controls.Shapes;
+using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Shared.Extensions;
 using System.Collections.ObjectModel;
@@ -263,6 +264,104 @@ public partial class Calendar : ContentView, IDisposable
 	/// method for propagating all global properties to DayModels.
 	/// </summary>
 	void UpdateDaysColors() => UpdateDayGlobalProperties();
+
+	/// <summary>
+	/// Synchronises the weekend-day background boxes with <see cref="WeekendDayBackgroundColor"/>
+	/// and <see cref="WeekendDayBackgroundCornerRadius"/>. The boxes are created lazily and only
+	/// while a visible (non-transparent) colour is set, so nothing is added to the visual tree
+	/// when the feature is unused (the default). Called once per layout regeneration and
+	/// whenever either property changes.
+	/// </summary>
+	internal void UpdateWeekendBackground()
+	{
+		// Start from a clean slate so a colour change can never leave stale boxes behind; they
+		// are rebuilt below only when a visible colour is set.
+		RemoveWeekendBands();
+
+		if (WeekendDayBackgroundColor is not { Alpha: > 0 })
+		{
+			return;
+		}
+
+		weekendBackgroundBands = CreateWeekendBands();
+
+		var cornerRadius = new CornerRadius(WeekendDayBackgroundCornerRadius);
+		foreach (var band in weekendBackgroundBands)
+		{
+			band.BackgroundColor = WeekendDayBackgroundColor;
+			band.StrokeShape = new RoundRectangle { CornerRadius = cornerRadius };
+		}
+	}
+
+	/// <summary>
+	/// Creates one input-transparent <see cref="Border"/> behind every weekend day cell (week
+	/// rows only, so the day-of-week title row stays uncovered) and inserts them at the front
+	/// of <c>daysControl</c> so they render behind the day cells. Each box bleeds half the row
+	/// spacing above and below (a negative vertical margin) so vertically-consecutive weekend
+	/// days touch with no gap. Weekend columns are derived from <see cref="FirstDayOfWeek"/>.
+	/// </summary>
+	Border[] CreateWeekendBands()
+	{
+		const int daysInWeek = 7;
+
+		int rowCount = daysControl.RowDefinitions.Count;
+		if (rowCount <= 1)
+		{
+			// Grid not built yet (or header only) — nothing to place boxes behind.
+			return [];
+		}
+
+		int numberOfWeeks = rowCount - 1;
+		double verticalBleed = daysControl.RowSpacing / 2d;
+
+		var bands = new List<Border>();
+		for (int col = 0; col < daysInWeek; col++)
+		{
+			if (!ViewLayoutEngines.ViewLayoutBase.IsWeekendColumn(FirstDayOfWeek, col))
+			{
+				continue;
+			}
+
+			for (int week = 1; week <= numberOfWeeks; week++)
+			{
+				var band = new Border
+				{
+					BackgroundColor = Colors.Transparent,
+					Stroke = Colors.Transparent,
+					StrokeThickness = 0,
+					Padding = 0,
+					Margin = new Thickness(0, -verticalBleed, 0, -verticalBleed),
+					InputTransparent = true,
+				};
+				Grid.SetColumn(band, col);
+				Grid.SetRow(band, week);
+
+				// Insert at the front so the box sits behind the titles and day cells.
+				daysControl.Children.Insert(bands.Count, band);
+				bands.Add(band);
+			}
+		}
+
+		return [.. bands];
+	}
+
+	/// <summary>
+	/// Detaches and forgets any weekend background boxes previously added to <c>daysControl</c>.
+	/// </summary>
+	void RemoveWeekendBands()
+	{
+		if (weekendBackgroundBands is null)
+		{
+			return;
+		}
+
+		foreach (var band in weekendBackgroundBands)
+		{
+			daysControl.Children.Remove(band);
+		}
+
+		weekendBackgroundBands = null;
+	}
 
 	/// <summary>
 	/// Returns <see langword="true"/> when <paramref name="currentDate"/> falls outside the

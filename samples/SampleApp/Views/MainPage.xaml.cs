@@ -25,6 +25,10 @@ public partial class MainPage : ContentPage
         await Shell.Current.GoToAsync(nameof(WeekendCalendarPage));
 
 
+    async void WeekendFilledCalendar(object sender, EventArgs e) =>
+        await Shell.Current.GoToAsync(nameof(WeekendFilledCalendarPage));
+
+
     async void MultiSelectionCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(MultiSelectionPage));
 

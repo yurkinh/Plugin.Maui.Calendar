@@ -174,6 +174,11 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
 		UpdateDays();
+
+		// (Re)create the weekend background boxes for the freshly built grid — but only when
+		// WeekendDayBackgroundColor is set. The grid was just cleared, so any boxes from the
+		// previous layout are already detached; RemoveWeekendBands clears the stale cache.
+		UpdateWeekendBackground();
 	}
 
 	internal void AssignIndicatorColors(ref DayModel dayModel)

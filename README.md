@@ -276,6 +276,20 @@ TodayTextColor="Yellow"
 OtherMonthSelectedDayColor="HotPink"
 ```
 
+##### Weekend column background
+
+`WeekendDayBackgroundColor` fills the background of each weekend (Saturday/Sunday) day cell.
+The day-of-week title row is left uncovered, and vertically-consecutive weekend days touch
+with no gap while remaining individual rounded boxes. It is opt-in and defaults to
+`Transparent`, so existing calendars are unaffected. The weekend columns are derived from
+`FirstDayOfWeek`. Use `WeekendDayBackgroundCornerRadius` to round each box.
+
+```xml
+<controls:Calendar
+    WeekendDayBackgroundColor="#EEF0F4"
+    WeekendDayBackgroundCornerRadius="12"/>
+```
+
 #### Available Styles
 | Style Key                       | Based On (`DefaultStyles`)                           |
 | ------------------------------- | ---------------------------------------------------- |

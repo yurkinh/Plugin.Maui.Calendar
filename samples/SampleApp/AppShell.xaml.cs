@@ -10,6 +10,7 @@ public partial class AppShell : Shell
 
 		Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
 		Routing.RegisterRoute(nameof(WeekendCalendarPage), typeof(WeekendCalendarPage));
+		Routing.RegisterRoute(nameof(WeekendFilledCalendarPage), typeof(WeekendFilledCalendarPage));
 		Routing.RegisterRoute(nameof(MultiSelectionPage), typeof(MultiSelectionPage));
 		Routing.RegisterRoute(nameof(AdvancedPage), typeof(AdvancedPage));
 		Routing.RegisterRoute(nameof(RangeSelectionPage), typeof(RangeSelectionPage));

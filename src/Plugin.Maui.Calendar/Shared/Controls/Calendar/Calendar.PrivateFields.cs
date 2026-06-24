@@ -26,6 +26,11 @@ public partial class Calendar : ContentView, IDisposable
 	// RenderLayout so UpdateDayTitles can iterate them directly.
 	Label[] dayTitleLabels;
 
+	// Weekend-day background boxes, created lazily by UpdateWeekendBackground only while
+	// WeekendDayBackgroundColor is set to a visible colour. Null when the feature is unused
+	// (the default), so nothing extra is added to the visual tree.
+	Border[] weekendBackgroundBands;
+
 	// Item 16: guard flag set during construction so that bindable-property callbacks
 	// that fire before the control is fully initialised skip expensive render passes.
 	// A single consolidated render executes at the end of the constructor.
