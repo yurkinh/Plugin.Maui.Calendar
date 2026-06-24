@@ -65,7 +65,6 @@
                 TodayTextColor="#1F2A4D"
                 WeekendDayBackgroundColor="#EEF0F4">
 
-                <!--  Custom header (1:1 with design): ‹ June 2026 ›  -->
                 <plugin:Calendar.HeaderSectionTemplate>
                     <DataTemplate>
                         <Grid
