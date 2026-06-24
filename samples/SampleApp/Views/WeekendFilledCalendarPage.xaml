@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.WeekendFilledCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="weekendFilledCalendarPage"
+    Title="Weekend Filled Calendar"
+    x:DataType="local:WeekendFilledCalendarPageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <local:WeekendFilledCalendarPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="0,8" Spacing="0">
+
+            <!--  Calendar / Schedule segment  -->
+            <Border
+                Margin="16,8"
+                Padding="4"
+                BackgroundColor="#EEF0F4"
+                Stroke="Transparent"
+                StrokeShape="RoundRectangle 12">
+                <Grid ColumnDefinitions="*,*">
+                    <Border
+                        Grid.Column="0"
+                        Padding="0,10"
+                        BackgroundColor="#1F2A4D"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 9">
+                        <Label
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            Text="Calendar"
+                            TextColor="White" />
+                    </Border>
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        Text="Schedule"
+                        TextColor="#6B7280"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <plugin:Calendar
+                x:Name="calendar"
+                Margin="8,4"
+                DayViewCornerRadius="5"
+                DaysTitleLabelFirstUpperRestLower="True"
+                EventIndicatorType="BottomDot"
+                Events="{Binding Events}"
+                EventsScrollViewVisible="False"
+                FooterSectionVisible="False"
+                SelectedDate="{Binding SelectedDate}"
+                SelectedDayBackgroundColor="Transparent"
+                SelectedDayTextColor="#1F2A4D"
+                TodayOutlineColor="#1F2A4D"
+                TodayTextColor="#1F2A4D"
+                WeekendDayBackgroundColor="#EEF0F4">
+
+                <!--  Custom header (1:1 with design): ‹ June 2026 ›  -->
+                <plugin:Calendar.HeaderSectionTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Padding="8,6,8,10"
+                            ColumnDefinitions="44,*,44"
+                            x:DataType="plugin:Calendar">
+                            <Button
+                                Grid.Column="0"
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding PrevLayoutUnitCommand}"
+                                FontSize="26"
+                                Text="‹"
+                                TextColor="#1F2A4D" />
+                            <HorizontalStackLayout
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Spacing="6"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="{Binding LayoutUnitText}"
+                                    TextColor="#1F2A4D"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="{Binding LocalizedYear}"
+                                    TextColor="#1F2A4D"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <Button
+                                Grid.Column="2"
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding NextLayoutUnitCommand}"
+                                FontSize="26"
+                                Text="›"
+                                TextColor="#1F2A4D" />
+                        </Grid>
+                    </DataTemplate>
+                </plugin:Calendar.HeaderSectionTemplate>
+
+            </plugin:Calendar>
+
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

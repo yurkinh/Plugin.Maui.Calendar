@@ -69,6 +69,10 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Weekend Calendar" />
             <Button
+                Clicked="WeekendFilledCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Weekend Filled Calendar" />
+            <Button
                 Clicked="AdvancedCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Advanced Event Calendar" />
