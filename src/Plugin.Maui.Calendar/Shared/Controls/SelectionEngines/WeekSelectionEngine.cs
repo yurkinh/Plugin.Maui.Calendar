@@ -73,7 +73,7 @@ class WeekSelectionEngine(Func<DayOfWeek> firstDayOfWeekProvider) : ISelectionEn
 
 	void ISelectionEngine.UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
-		var date = datesToSelect?.Select(d => d.Date).FirstOrDefault();
+		var date = datesToSelect?.Select(d => d.Date).FirstOrDefault() ?? default;
 
 		if (date == default)
 		{
