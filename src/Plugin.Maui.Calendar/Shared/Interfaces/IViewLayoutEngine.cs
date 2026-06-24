@@ -21,6 +21,8 @@ interface IViewLayoutEngine
 
 	DateTime GetFirstDate(DateTime dateToShow);
 
+	DateTime GetLastDate(DateTime dateToShow);
+
 	DateTime GetNextUnit(DateTime forDate);
 
 	DateTime GetNextUnit(DateTime forDate, int numberOfUnits);

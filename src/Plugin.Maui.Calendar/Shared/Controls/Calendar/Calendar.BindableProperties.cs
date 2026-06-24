@@ -593,6 +593,25 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
+	/// Bindable property for ShownDatesChangedCommand.
+	/// </summary>
+	public static readonly BindableProperty ShownDatesChangedCommandProperty = BindableProperty.Create(
+		nameof(ShownDatesChangedCommand),
+		typeof(ICommand),
+		typeof(Calendar),
+		null
+	);
+
+	/// <summary>
+	/// Command that is executed when the visible date range changes.
+	/// </summary>
+	public ICommand ShownDatesChangedCommand
+	{
+		get => (ICommand)GetValue(ShownDatesChangedCommandProperty);
+		set => SetValue(ShownDatesChangedCommandProperty, value);
+	}
+
+	/// <summary>
 	/// Bindable property for AllowDeselect
 	/// </summary>
 	public static readonly BindableProperty AllowDeselectingProperty = BindableProperty.Create(

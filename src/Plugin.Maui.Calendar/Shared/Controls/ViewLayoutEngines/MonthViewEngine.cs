@@ -30,6 +30,16 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 		return GetFirstDateOfWeek(new DateTime(dateToShow.Year, dateToShow.Month, 1));
 	}
 
+	public DateTime GetLastDate(DateTime dateToShow)
+	{
+		var firstDate = GetFirstDate(dateToShow).Date;
+		var daysUntilMax = (DateTime.MaxValue.Date - firstDate).Days;
+		var numberOfVisibleDays = monthNumberOfWeeks * 7;
+		var safeOffset = Math.Min(numberOfVisibleDays - 1, Math.Max(0, daysUntilMax));
+
+		return firstDate.AddDays(safeOffset);
+	}
+
 	public DateTime GetNextUnit(DateTime forDate)
 	{
 		if (forDate.Year == DateTime.MaxValue.Year && forDate.Month == DateTime.MaxValue.Month)

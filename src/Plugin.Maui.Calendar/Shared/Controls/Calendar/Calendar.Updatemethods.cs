@@ -158,6 +158,11 @@ public partial class Calendar : ContentView, IDisposable
 			return;
 		}
 		firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
+		var lastDate = CurrentViewLayoutEngine.GetLastDate(ShownDate);
+
+		var shownDatesChanged = VisibleStartDate != firstDate.Date || VisibleEndDate != lastDate.Date;
+		SetValue(VisibleStartDatePropertyKey, firstDate.Date);
+		SetValue(VisibleEndDatePropertyKey, lastDate.Date);
 
 		int addDays = 0;
 		var remainingDaysUntilMax = (DateTime.MaxValue.Date - firstDate.Date).Days + 1;
@@ -210,6 +215,17 @@ public partial class Calendar : ContentView, IDisposable
 				dayModel.IsDisabled = true;
 				dayModel.IsSelected = false;
 				AssignIndicatorColors(ref dayModel);
+			}
+		}
+
+		if (shownDatesChanged)
+		{
+			var args = new ShownDatesChangedEventArgs(VisibleStartDate, VisibleEndDate);
+			ShownDatesChanged?.Invoke(this, args);
+
+			if (ShownDatesChangedCommand?.CanExecute(args) == true)
+			{
+				ShownDatesChangedCommand.Execute(args);
 			}
 		}
 	}

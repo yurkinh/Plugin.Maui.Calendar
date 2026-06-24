@@ -35,6 +35,15 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 		return GetFirstDateOfWeek(dateToShow);
 	}
 
+	public DateTime GetLastDate(DateTime dateToShow)
+	{
+		var firstDate = GetFirstDate(dateToShow).Date;
+		var daysUntilMax = (DateTime.MaxValue.Date - firstDate).Days;
+		var safeOffset = Math.Min(unitSizeinDays - 1, Math.Max(0, daysUntilMax));
+
+		return firstDate.AddDays(safeOffset);
+	}
+
 	public DateTime GetNextUnit(DateTime forDate)
 	{
 		return GetNextUnit(forDate, 1);
