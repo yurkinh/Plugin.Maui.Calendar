@@ -112,6 +112,11 @@ Weekend calendar
 | ------- | ------ |
 | ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
 
+Weekend filled calendar — uses `WeekendDayBackgroundColor` to fill weekend cells, a transparent selected-day background and a custom header template.
+|  |
+| ------ |
+| ![Weekend filled calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendFilledCalendar.png) |
+
 ### Usage
 To get started just install the package via Nuget.
 You can take a look on the sample app to get started or continue reading.
