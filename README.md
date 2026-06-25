@@ -1,10 +1,20 @@
-+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/nuget.png" alt="Plugin.Maui.Calendar" width="130" />
+
 # Calendar Plugin for .NET MAUI
 
-This is a .NET MAUI port of the [lilcodelab](https://github.com/lilcodelab/) Xamarin.Forms  [Calendar Plugin](https://github.com/lilcodelab/Xamarin.Plugin.Calendar)
+**Highly customizable Calendar control for .NET MAUI** — events, localization, theming, range &amp; multi-selection.
 
- Available on NuGet: <https://www.nuget.org/packages/Plugin.Maui.Calendar> [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.Calendar.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.Calendar/)
+[![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.Calendar.svg?label=NuGet&logo=nuget)](https://www.nuget.org/packages/Plugin.Maui.Calendar/)
+[![Downloads](https://img.shields.io/nuget/dt/Plugin.Maui.Calendar.svg?color=blue&logo=nuget)](https://www.nuget.org/packages/Plugin.Maui.Calendar/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/LICENSE)
+[![.NET MAUI](https://img.shields.io/badge/.NET%20MAUI-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/apps/maui)
+[![Stars](https://img.shields.io/github/stars/yurkinh/Plugin.Maui.Calendar?style=flat&logo=github)](https://github.com/yurkinh/Plugin.Maui.Calendar/stargazers)
 
+</div>
+
+A .NET MAUI port of the [lilcodelab](https://github.com/lilcodelab/) Xamarin.Forms [Calendar Plugin](https://github.com/lilcodelab/Xamarin.Plugin.Calendar).
 
 Simple cross-platform plugin for Calendar control featuring:
 - Displaying events by binding EventCollection
@@ -83,17 +93,17 @@ V1.0.x
 ## Screenshots
 | Android | iOS | Win | Mac |
 | ------- | ------ | ------ | ------ |
-| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png" alt="Android Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png" alt="iPhone Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png" alt="Windiws Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png" alt="Mac Calendar Screenshot" height="400" /> |
+| ![Android Calendar Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/android.png) | ![iPhone Calendar Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/ios.png) | ![Windiws Calendar Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/win.png) | ![Mac Calendar Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/mac.png) |
 
 Theme support
 | Ligth | Dark | Settings |
 | ------- | ------ | ------ |
-| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png" alt="Light theme Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png" alt="Dark theme Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png" alt="Settings Page Screenshot" height="400" /> |
+| ![Light theme Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/LightTheme.png) | ![Dark theme Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/DarkTheme.png) | ![Settings Page Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/ThemeSettingPage.png) |
 
 Culture support
 | Android | iOS |
 | ------- | ------ |
-| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_android.png" alt="Android Culture Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_iOS.png" alt="iPhone Culture Screenshot" height="400" /> |
+| ![Android Culture Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/Culture_support_android.png) | ![iPhone Culture Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/Culture_support_iOS.png) |
 
 
 # New Samples
@@ -101,13 +111,13 @@ Culture support
 Windows 11 calendar
 | Win     | Mac    |
 | ------- | ------ |
-| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11_android.png" alt="Windiws 11 android Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11_ios.png" alt="Windiws 11 Calendar IOS Screenshot" height="400" /> |
+| ![Windiws 11 android Calendar Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/W11_android.png) | ![Windiws 11 Calendar IOS Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/W11_ios.png) |
 
 Weekend calendars — the `filled` variant uses `WeekendDayBackgroundColor` to fill weekend cells, a transparent selected-day background and a custom header template.
 
 | Weekend (Android) | Weekend (iOS) | Weekend filled |
 | ------- | ------ | ------ |
-| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png" alt="Weekend calendar Android Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png" alt="Weekend calendar IOS Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendFilledCalendar.png" alt="Weekend filled calendar Screenshot" height="400" /> |
+| ![Weekend calendar Android Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendCalendar_ios.png) | ![Weekend filled calendar Screenshot](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendFilledCalendar.png) |
 
 ### Usage
 To get started just install the package via Nuget.
