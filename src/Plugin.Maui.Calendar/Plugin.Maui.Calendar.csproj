@@ -32,7 +32,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>3.0.2</PackageVersion>
+		<PackageVersion>3.0.3</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -49,8 +49,15 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Updated to .NET 10 MAUI SR6
-                        * Performance improvements and bug fixes                                             
+                        * Updated to .NET 10 MAUI SR71                        
+                        * Normalize Arabic weekday headers before abbreviation/truncation by @yurkinh with @Copilot in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/250
+                        * Fix #135: boundary day incorrectly disabled when MinimumDate/MaximumDate has a non-midnight time by @yurkinh in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/251
+                        * fix: update package references and font handling for Maui by @yurkinh in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/256
+                        * Fix #227: use AbbreviatedDayNames when truncating weekday headers by @yurkinh with @Copilot in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/252
+                        * Analyzing open issues for easy fixes by @yurkinh with @Copilot in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/254
+                        * Added weekend day background color property by @MykhailoDav in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/258
+                        * Expose visible date range via `ShownDates` API on Calendar by @yurkinh with @Copilot in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/253
+                        * fix: stop Calendar emitting List→ObservableCollection binding warning by @MykhailoDav in https://github.com/yurkinh/Plugin.Maui.Calendar/pull/260                                             
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
