@@ -19,36 +19,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="0,8" Spacing="0">
 
-            <!--  Calendar / Schedule segment  -->
-            <Border
-                Margin="16,8"
-                Padding="4"
-                BackgroundColor="#EEF0F4"
-                Stroke="Transparent"
-                StrokeShape="RoundRectangle 12">
-                <Grid ColumnDefinitions="*,*">
-                    <Border
-                        Grid.Column="0"
-                        Padding="0,10"
-                        BackgroundColor="#1F2A4D"
-                        Stroke="Transparent"
-                        StrokeShape="RoundRectangle 9">
-                        <Label
-                            FontAttributes="Bold"
-                            HorizontalOptions="Center"
-                            Text="Calendar"
-                            TextColor="White" />
-                    </Border>
-                    <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        HorizontalOptions="Center"
-                        Text="Schedule"
-                        TextColor="#6B7280"
-                        VerticalOptions="Center" />
-                </Grid>
-            </Border>
-
             <plugin:Calendar
                 x:Name="calendar"
                 Margin="8,4"
