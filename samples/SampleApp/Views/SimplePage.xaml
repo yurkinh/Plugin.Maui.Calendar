@@ -60,7 +60,7 @@
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"
         MonthChangedCommand="{Binding MonthChangedCommand}"
-        OtherMonthSelectedDayColor="HotPink"
+        OtherMonthSelectedDayTextColor="HotPink"
         OtherMonthWeekIsVisible="False"
         SelectedDate="{Binding SelectedDate}"
         SwipeDetectionDisabled="False"

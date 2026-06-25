@@ -90,8 +90,42 @@ public partial class Calendar : ContentView, IDisposable
 
 
 	/// <summary>
+	/// Bindable property for OtherMonthSelectedDayTextColor
+	/// </summary>
+	public static readonly BindableProperty OtherMonthSelectedDayTextColorProperty = BindableProperty.Create(
+		nameof(OtherMonthSelectedDayTextColor),
+		typeof(Color),
+		typeof(Calendar),
+		Colors.Silver,
+		propertyChanged: OnOtherMonthSelectedDayTextColorChanged
+	);
+
+	/// <summary>
+	/// Specifies the text color of selected days belonging to a month other than the selected one
+	/// </summary>
+	public Color OtherMonthSelectedDayTextColor
+	{
+		get => (Color)GetValue(OtherMonthSelectedDayTextColorProperty);
+		set => SetValue(OtherMonthSelectedDayTextColorProperty, value);
+	}
+
+	static void OnOtherMonthSelectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			// Keep the deprecated alias in sync so existing bindings keep working.
+#pragma warning disable CS0618 // Type or member is obsolete
+			calendar.OtherMonthSelectedDayColor = (Color)newValue;
+#pragma warning restore CS0618
+			calendar.UpdateDaysColors();
+		}
+	}
+
+
+	/// <summary>
 	/// Bindable property for OtherMonthSelectedDayColor
 	/// </summary>
+	[Obsolete("Use OtherMonthSelectedDayTextColorProperty instead. This alias will be removed in a future release.")]
 	public static readonly BindableProperty OtherMonthSelectedDayColorProperty = BindableProperty.Create(
 		nameof(OtherMonthSelectedDayColor),
 		typeof(Color),
@@ -101,8 +135,9 @@ public partial class Calendar : ContentView, IDisposable
 	);
 
 	/// <summary>
-	/// Specifies the color of selected days belonging to a month other than the selected one
+	/// Specifies the text color of selected days belonging to a month other than the selected one.
 	/// </summary>
+	[Obsolete("Use OtherMonthSelectedDayTextColor instead. This alias will be removed in a future release.")]
 	public Color OtherMonthSelectedDayColor
 	{
 		get => (Color)GetValue(OtherMonthSelectedDayColorProperty);
@@ -113,6 +148,8 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (bindable is Calendar calendar)
 		{
+			// Forward to the canonical property so both names converge on the same value.
+			calendar.OtherMonthSelectedDayTextColor = (Color)newValue;
 			calendar.UpdateDaysColors();
 		}
 	}

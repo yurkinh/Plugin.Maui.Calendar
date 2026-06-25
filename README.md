@@ -26,6 +26,7 @@ V2.0.0
 * Added **OtherMonthWeekIsVisible** and **DayViewBorderMargin** properties
 * Added **AutoChangeMonthOnDayTap** property — allows automatically switching the displayed month when user taps on a day from another month (disabled by default)
 * Added **UseAbbreviatedDayNames** property — allows using built-in .NET AbbreviatedDayNames without trimming. When this property is enabled, **DaysTitleMaximumLength** is ignored.
+* Added **OtherMonthSelectedDayTextColor** property — sets the text color of a selected day that belongs to another month. Renamed from **OtherMonthSelectedDayColor** for naming consistency; the old name still works but is now deprecated and will be removed in a future release.
 
 
 ### Breaking  Changes
@@ -273,7 +274,7 @@ SelectedTodayTextColor="Green"
 TodayOutlineColor="Blue"
 TodayFillColor="Silver"
 TodayTextColor="Yellow"
-OtherMonthSelectedDayColor="HotPink"
+OtherMonthSelectedDayTextColor="HotPink"
 ```
 
 ##### Weekend column background

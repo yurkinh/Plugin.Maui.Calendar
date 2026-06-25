@@ -261,7 +261,7 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.SelectedTextColor = SelectedDayTextColor;
 			dayModel.SelectedTodayTextColor = SelectedTodayTextColor;
 			dayModel.OtherMonthColor = OtherMonthDayColor;
-			dayModel.OtherMonthSelectedColor = OtherMonthSelectedDayColor;
+			dayModel.OtherMonthSelectedColor = OtherMonthSelectedDayTextColor;
 			dayModel.WeekendDayColor = WeekendDayColor;
 			dayModel.SelectedBackgroundColor = SelectedDayBackgroundColor;
 			dayModel.TodayOutlineColor = TodayOutlineColor;
