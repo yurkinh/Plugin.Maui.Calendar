@@ -81,13 +81,9 @@ V1.0.x
 
 
 ## Screenshots
-| Android | iOS |
-| ------- | ------ |
-| ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png) | ![iPhone Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png) |
-
-| Win     | Mac    |
-| ------- | ------ |
-| ![Windiws Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png) | ![Mac Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png) |
+| Android | iOS | Win | Mac |
+| ------- | ------ | ------ | ------ |
+| ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png) | ![iPhone Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png) | ![Windiws Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png) | ![Mac Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png) |
 
 Theme support
 | Ligth | Dark | Settings |
@@ -115,7 +111,7 @@ Weekend calendar
 Weekend filled calendar — uses `WeekendDayBackgroundColor` to fill weekend cells, a transparent selected-day background and a custom header template.
 |  |
 | ------ |
-| ![Weekend filled calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendFilledCalendar.png) |
+| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendFilledCalendar.png" alt="Weekend filled calendar Screenshot" width="603" /> |
 
 ### Usage
 To get started just install the package via Nuget.
