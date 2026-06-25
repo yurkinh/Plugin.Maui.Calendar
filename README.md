@@ -83,17 +83,17 @@ V1.0.x
 ## Screenshots
 | Android | iOS | Win | Mac |
 | ------- | ------ | ------ | ------ |
-| ![Android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png) | ![iPhone Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png) | ![Windiws Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png) | ![Mac Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png) |
+| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/android.png" alt="Android Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ios.png" alt="iPhone Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/win.png" alt="Windiws Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/mac.png" alt="Mac Calendar Screenshot" height="400" /> |
 
 Theme support
 | Ligth | Dark | Settings |
 | ------- | ------ | ------ |
-| ![Light theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png) | ![Dark theme Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png) | ![Settings Page Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png) |
+| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/LightTheme.png" alt="Light theme Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/DarkTheme.png" alt="Dark theme Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/ThemeSettingPage.png" alt="Settings Page Screenshot" height="400" /> |
 
 Culture support
 | Android | iOS |
 | ------- | ------ |
-| ![Android Culture Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_android.png) | ![iPhone Culture Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_iOS.png) |
+| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_android.png" alt="Android Culture Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/Culture_support_iOS.png" alt="iPhone Culture Screenshot" height="400" /> |
 
 
 # New Samples
@@ -101,17 +101,13 @@ Culture support
 Windows 11 calendar
 | Win     | Mac    |
 | ------- | ------ |
-| ![Windiws 11 android Calendar Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11_android.png) | ![Windiws 11 Calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11_ios.png) |
+| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11_android.png" alt="Windiws 11 android Calendar Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/W11_ios.png" alt="Windiws 11 Calendar IOS Screenshot" height="400" /> |
 
-Weekend calendar
-| Android     | IOS    |
-| ------- | ------ |
-| ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
+Weekend calendars — the `filled` variant uses `WeekendDayBackgroundColor` to fill weekend cells, a transparent selected-day background and a custom header template.
 
-Weekend filled calendar — uses `WeekendDayBackgroundColor` to fill weekend cells, a transparent selected-day background and a custom header template.
-|  |
-| ------ |
-| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendFilledCalendar.png" alt="Weekend filled calendar Screenshot" width="603" /> |
+| Weekend (Android) | Weekend (iOS) | Weekend filled |
+| ------- | ------ | ------ |
+| <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png" alt="Weekend calendar Android Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png" alt="Weekend calendar IOS Screenshot" height="400" /> | <img src="https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendFilledCalendar.png" alt="Weekend filled calendar Screenshot" height="400" /> |
 
 ### Usage
 To get started just install the package via Nuget.
