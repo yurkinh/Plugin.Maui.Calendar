@@ -65,6 +65,7 @@ public static class MauiProgram
     static MauiAppBuilder InjectServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IThemeService, ThemeService>();
+        builder.Services.AddSingleton<ICalendarSettingsService, CalendarSettingsService>();
         return builder;
     }
 }
