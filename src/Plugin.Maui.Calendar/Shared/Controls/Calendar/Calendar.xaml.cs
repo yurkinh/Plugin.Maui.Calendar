@@ -36,5 +36,9 @@ public partial class Calendar : ContentView, IDisposable
 
 		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
 		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));
+
+		// Keeps IsToday current across midnight, but only while the calendar is on screen.
+		Loaded += OnCalendarLoaded;
+		Unloaded += OnCalendarUnloaded;
 	}
 }

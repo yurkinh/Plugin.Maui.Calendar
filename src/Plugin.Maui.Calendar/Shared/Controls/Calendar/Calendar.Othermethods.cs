@@ -240,6 +240,7 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				events.CollectionChanged -= OnEventsCollectionChanged;
 			}
+			StopTodayRefresh();
 			calendarSectionAnimateHide.Value.Dispose();
 			calendarSectionAnimateShow.Value.Dispose();
 		}

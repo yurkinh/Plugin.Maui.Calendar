@@ -174,6 +174,9 @@ public partial class Calendar : ContentView, IDisposable
 		// instead of O(n) with List.Contains.
 		var disabledSet = DisabledDates?.Count > 0 ? new HashSet<DateTime>(DisabledDates) : null;
 
+		// Read the clock once so every cell in this pass agrees on which day is today.
+		var today = DateTime.Today;
+
 		foreach (var dayView in dayViews)
 		{
 			var dayModel = dayView.BindingContext as DayModel;
@@ -193,6 +196,9 @@ public partial class Calendar : ContentView, IDisposable
 				// propagated by UpdateDayGlobalProperties so they don't need to be pushed
 				// on every date-change render.
 				dayModel.Date = currentDate.Date;
+				// A cell that keeps its date (e.g. the same month re-rendered after midnight)
+				// skips OnDateChanged, so IsToday is re-evaluated explicitly on every pass.
+				dayModel.RefreshIsToday(today);
 				dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
 				dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
 				dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
@@ -209,6 +215,7 @@ public partial class Calendar : ContentView, IDisposable
 				addDays++;
 
 				dayModel.Date = DateTime.MaxValue.Date;
+				dayModel.RefreshIsToday(today);
 				dayModel.Day = string.Empty;
 				dayModel.IsThisMonth = false;
 				dayModel.OtherMonthIsVisible = false;

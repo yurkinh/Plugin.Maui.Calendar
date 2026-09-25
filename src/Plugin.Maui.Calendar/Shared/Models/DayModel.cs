@@ -9,9 +9,13 @@ namespace Plugin.Maui.Calendar.Models;
 
 sealed partial class DayModel : ObservableObject
 {
+	// TextColor depends on IsToday and IsWeekend, both derived from Date, so it must be
+	// re-notified here: a reused cell can change date without any other TextColor input changing.
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
 	[NotifyPropertyChangedFor(nameof(OutlineColor))]
+	[NotifyPropertyChangedFor(nameof(TextColor))]
+	[NotifyPropertyChangedFor(nameof(IsToday))]
 	DateTime date;
 
 	[ObservableProperty]
@@ -219,12 +223,37 @@ sealed partial class DayModel : ObservableObject
 	// getters never call DateTime.Today more than once per Date assignment.
 	bool isToday;
 
+	// Runs before the generated setter raises PropertyChanged for Date and its dependents
+	// (including IsToday), so the cache is set silently here.
 	partial void OnDateChanged(DateTime value)
 	{
 		isToday = value.Date == DateTime.Today;
 	}
 
 	bool IsToday => isToday;
+
+	/// <summary>
+	/// Recomputes <see cref="IsToday"/> against <paramref name="today"/> and raises
+	/// PropertyChanged for it and every color that depends on it when the value changes.
+	/// Needed because the cache is otherwise only refreshed when <see cref="Date"/> changes,
+	/// so a cell that keeps its date across midnight would keep the previous day's state.
+	/// </summary>
+	/// <returns>Whether <see cref="IsToday"/> changed.</returns>
+	internal bool RefreshIsToday(DateTime today)
+	{
+		var value = Date.Date == today.Date;
+		if (isToday == value)
+		{
+			return false;
+		}
+
+		isToday = value;
+		OnPropertyChanged(nameof(IsToday));
+		OnPropertyChanged(nameof(BackgroundColor));
+		OnPropertyChanged(nameof(OutlineColor));
+		OnPropertyChanged(nameof(TextColor));
+		return true;
+	}
 
 	public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;
 }
