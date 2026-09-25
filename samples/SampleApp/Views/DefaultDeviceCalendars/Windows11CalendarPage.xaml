@@ -34,23 +34,26 @@
                 x:Key="MyDaysTitleLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
                 TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <controls:XamlSourceToolbarItem />
+    </ContentPage.ToolbarItems>
 
     <Grid>
         <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />
         <Border
             Margin="30"
-            BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+            BackgroundColor="{toolkit:AppThemeResource SurfaceColor}"
             HeightRequest="435"
             HorizontalOptions="End"
             Opacity="0.80"
@@ -68,21 +71,22 @@
             </Border.Shadow>
             <plugin:Calendar
                 x:Name="calendar"
-                BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+                BackgroundColor="{toolkit:AppThemeResource SurfaceColor}"
                 DaysLabelStyle="{StaticResource DaysLabelStyle}"
                 DaysTitleLabelFirstUpperRestLower="True"
                 DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
                 DaysTitleMaximumLength="TwoChars"
-                DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                DeselectedDayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
                 FooterSectionVisible="False"
                 Month="{Binding Month, Mode=TwoWay}"
                 SelectedDayBackgroundColor="{toolkit:AppThemeResource WindowsThemeColor}"
-                SelectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-                SelectedTodayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                SelectedDayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
+                SelectedTodayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
+                Style="{StaticResource SettingsCalendarStyle}"
                 TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
                 TodayOutlineColor="Transparent"
                 TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"
-                WeekendDayColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+                WeekendDayColor="{toolkit:AppThemeResource TextPrimaryColor}"
                 WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
                 Year="{Binding Year, Mode=TwoWay}">
 

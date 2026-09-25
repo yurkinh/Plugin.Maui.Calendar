@@ -11,12 +11,12 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
     x:DataType="vm:XiaomiCalendarViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+    BackgroundColor="{toolkit:AppThemeResource XiaomiBackgroundColor}"
     Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:AppThemeColor
-                x:Key="BackgroundColor"
+                x:Key="XiaomiBackgroundColor"
                 Dark="Black"
                 Light="#f5f5f5"/>
             <toolkit:AppThemeColor
@@ -44,7 +44,7 @@
                 Dark="#b43e3e"
                 Light="#a33b42"/>
             <toolkit:AppThemeColor
-                x:Key="ButtonColor"
+                x:Key="XiaomiButtonColor"
                 Dark="#3b3b3b"
                 Light="White"/>
 
@@ -53,7 +53,7 @@
                 <Setter Property="FontSize"
                         Value="18"/>
                 <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+                        Value="{toolkit:AppThemeResource TextPrimaryColor}"/>
                 <Setter Property="VerticalTextAlignment"
                         Value="Center"/>
                 <Setter Property="HorizontalTextAlignment"
@@ -85,7 +85,7 @@
                 <Setter Property="FontSize"
                         Value="12"/>
                 <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+                        Value="{toolkit:AppThemeResource TextPrimaryColor}"/>
             </Style>
             <Style
                 x:Key="MyWeekendTitleStyle"
@@ -94,17 +94,20 @@
                 <Setter Property="FontSize"
                         Value="12"/>
                 <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+                        Value="{toolkit:AppThemeResource TextPrimaryColor}"/>
             </Style>
             <Style
                 x:Key="MySelectedDateLabelStyle"
                 BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}"
                 TargetType="Label">
                 <Setter Property="TextColor"
-                        Value="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"/>
+                        Value="{toolkit:AppThemeResource TextPrimaryColor}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <controls:XamlSourceToolbarItem />
+    </ContentPage.ToolbarItems>
     <Grid
         ColumnDefinitions="*,Auto"
         RowDefinitions="*,Auto"
@@ -113,14 +116,13 @@
             x:Name="Calendar"
             Grid.RowSpan="2"
             Grid.ColumnSpan="2"
-            FirstDayOfWeek="Monday"
             AllowDeselecting="False"
             Day="{Binding Day}"
             DayViewCornerRadius="60"
             DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
             DayViewSize="50"
-            DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-            EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+            DeselectedDayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
+            EventIndicatorTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
             EventIndicatorType="TopDot"
             Events="{Binding Events}"
             EventsScrollViewVisible="True"
@@ -133,6 +135,7 @@
             SelectedDateLabelStyle="{StaticResource MySelectedDateLabelStyle}"
             SelectedDayBackgroundColor="{toolkit:AppThemeResource StrokeColor}"
             SelectedTodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
+            Style="{StaticResource SettingsCalendarStyle}"
             TodayOutlineColor="Transparent"
             TodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
             DaysTitleLabelStyle ="{StaticResource MyTitleLabelStyle}"
@@ -175,7 +178,7 @@
             Grid.Column="1"
             Margin="35"
             Padding="0,0,0,8"
-            BackgroundColor="{toolkit:AppThemeResource ButtonColor}"
+            BackgroundColor="{toolkit:AppThemeResource XiaomiButtonColor}"
             BorderColor="{toolkit:AppThemeResource StrokeColor}"
             BorderWidth="1"
             Command="{Binding AddEventCommand}"
