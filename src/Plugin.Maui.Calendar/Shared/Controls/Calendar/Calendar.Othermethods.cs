@@ -198,19 +198,33 @@ public partial class Calendar : ContentView, IDisposable
 				 ?? personalizableDay?.EventIndicatorTextColor
 				 ?? EventIndicatorSelectedTextColor;
 			}
-			if (dayEventCollection is IMultiEventDay multiEventDay)
+			// A multi-event day that provides no colors still shows the single indicator dot.
+			if (dayEventCollection is IMultiEventDay { Colors.Count: > 0 } multiEventDay)
 			{
-				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToList() ?? [];
+				SetEventColors(dayModel, multiEventDay.Colors.Take(5).ToList());
 			}
 			else
 			{
-				dayModel.EventColors = [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor];
+				SetEventColors(dayModel, [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor]);
 			}
 		}
 		else
 		{
-			dayModel.EventColors = [];
+			SetEventColors(dayModel, []);
 		}
+	}
+
+	// Every day update builds a new list, and the generated setter compares lists by reference,
+	// so without this check every event day would raise PropertyChanged for EventColors on every
+	// pass and make the event dots (a BindableLayout) be rebuilt although nothing changed.
+	static void SetEventColors(DayModel dayModel, List<Color> colors)
+	{
+		if (dayModel.EventColors is { } current && current.SequenceEqual(colors))
+		{
+			return;
+		}
+
+		dayModel.EventColors = colors;
 	}
 
 	void InitializeSelectionType()
