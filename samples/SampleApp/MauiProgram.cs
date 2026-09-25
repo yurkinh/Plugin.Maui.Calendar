@@ -45,6 +45,12 @@ public static class MauiProgram
 		builder.AddMauiDevFlowAgent();
 #endif
 
+#if IOS || MACCATALYST
+        // Pickers sit in settings rows and show the picked value as plain text, without a text field border
+        Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("NoBorder", (handler, _) =>
+            handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None);
+#endif
+
         var app = builder.Build();
 
         //we must initialize our service helper before using it
