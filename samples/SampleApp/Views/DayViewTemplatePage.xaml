@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.DayViewTemplatePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:interfaces="clr-namespace:Plugin.Maui.Calendar.Interfaces;assembly=Plugin.Maui.Calendar"
+    xmlns:local="clr-namespace:SampleApp.ViewModels"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="dayViewTemplatePage"
+    Title="Day Template Calendar"
+    x:DataType="local:DayViewTemplatePageViewModel"
+    BackgroundColor="{toolkit:AppThemeResource DtPageColor}"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="DtAccent">#16A34A</Color>
+            <Color x:Key="DtAccentBright">#22C55E</Color>
+
+            <!--  EventCount is 0 for a day without events: hide the badge then  -->
+            <toolkit:IntToBoolConverter x:Key="HasCountConverter" />
+
+            <toolkit:AppThemeColor
+                x:Key="DtPageColor"
+                Dark="#0B120E"
+                Light="#F1F8F3" />
+            <toolkit:AppThemeColor
+                x:Key="DtCardColor"
+                Dark="#131C17"
+                Light="#FFFFFF" />
+            <toolkit:AppThemeColor
+                x:Key="DtSurfaceColor"
+                Dark="#1A261F"
+                Light="#F3FAF5" />
+            <toolkit:AppThemeColor
+                x:Key="DtPrimaryText"
+                Dark="#ECFDF3"
+                Light="#10231A" />
+            <toolkit:AppThemeColor
+                x:Key="DtSecondaryText"
+                Dark="#86A393"
+                Light="#6B8577" />
+            <toolkit:AppThemeColor
+                x:Key="DtAccentSoft"
+                Dark="#183A26"
+                Light="#DCFCE7" />
+            <toolkit:AppThemeColor
+                x:Key="DtAccentText"
+                Dark="#4ADE80"
+                Light="#15803D" />
+            <toolkit:AppThemeColor
+                x:Key="DtDivider"
+                Dark="#223029"
+                Light="#E6F2EA" />
+
+            <Style x:Key="DtDaysTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CharacterSpacing" Value="1.2" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,4,0,6" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtSecondaryText}" />
+            </Style>
+
+            <Style
+                x:Key="DtWeekendTitleStyle"
+                BasedOn="{StaticResource DtDaysTitleStyle}"
+                TargetType="Label">
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtAccentText}" />
+            </Style>
+
+            <Style x:Key="DtArrowButtonStyle" TargetType="Button">
+                <Setter Property="WidthRequest" Value="40" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="FontSize" Value="22" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DtAccentSoft}" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtAccentText}" />
+            </Style>
+
+            <Style x:Key="DtSegmentStyle" TargetType="Button">
+                <Setter Property="HeightRequest" Value="34" />
+                <Setter Property="CornerRadius" Value="17" />
+                <Setter Property="Padding" Value="14,0" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtSecondaryText}" />
+            </Style>
+
+            <!--  Legend chips: which ICalendarDay member drives what in the active template  -->
+            <Style x:Key="DtChipStyle" TargetType="Border">
+                <Setter Property="Margin" Value="0,0,6,6" />
+                <Setter Property="Padding" Value="9,4" />
+                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DtCardColor}" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+                <Setter Property="StrokeThickness" Value="0" />
+            </Style>
+
+            <Style x:Key="DtChipLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtSecondaryText}" />
+            </Style>
+
+            <Style x:Key="DtLegendStyle" TargetType="FlexLayout">
+                <Setter Property="AlignContent" Value="Start" />
+                <Setter Property="AlignItems" Value="Center" />
+                <Setter Property="Direction" Value="Row" />
+                <Setter Property="JustifyContent" Value="Start" />
+                <Setter Property="Wrap" Value="Wrap" />
+            </Style>
+
+            <!--
+                Template 1 · "Photo"
+                Selected day reveals a picture, today gets a soft green tile,
+                weekend digits are green (IsWeekend), event days show one dot
+                per event color (EventColors).
+            -->
+            <DataTemplate x:Key="PhotoDayTemplate" x:DataType="interfaces:ICalendarDay">
+                <Border
+                    Margin="3"
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="0">
+                    <Border.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsThisMonth}"
+                            TargetType="Border"
+                            Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsDisabled}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="Opacity" Value="0.35" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsToday}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DtAccentSoft}" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsSelected}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="Stroke" Value="{StaticResource DtAccentBright}" />
+                            <Setter Property="StrokeThickness" Value="2" />
+                            <Setter Property="Opacity" Value="1" />
+                        </DataTrigger>
+                    </Border.Triggers>
+
+                    <Grid>
+                        <Image
+                            Aspect="AspectFill"
+                            IsVisible="{Binding IsSelected}"
+                            Source="monkey.png" />
+                        <BoxView IsVisible="{Binding IsSelected}">
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="#1016A34A" />
+                                    <GradientStop Offset="1" Color="#C0064E2B" />
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
+
+                        <Grid Padding="0,4,0,6" RowDefinitions="*,Auto">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                HorizontalOptions="Center"
+                                Text="{Binding Day}"
+                                TextColor="{toolkit:AppThemeResource DtPrimaryText}"
+                                VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsDisabled}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                                    </DataTrigger>
+                                    <!--  Later triggers win: today and selection override the weekend color  -->
+                                    <DataTrigger
+                                        Binding="{Binding IsWeekend}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtAccentText}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsToday}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtAccentText}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsSelected}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="FontSize" Value="17" />
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <HorizontalStackLayout
+                                Grid.Row="1"
+                                BindableLayout.ItemsSource="{Binding EventColors}"
+                                HeightRequest="5"
+                                HorizontalOptions="Center"
+                                Spacing="3">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="Color">
+                                        <Ellipse
+                                            Fill="{Binding .}"
+                                            HeightRequest="5"
+                                            WidthRequest="5" />
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!--
+                Template 2 · "Tiles"
+                A completely different cell built from the same ICalendarDay data:
+                weekday from Date, soft green weekend tiles (IsWeekend), solid green
+                tile when HasEvents, a count badge (EventCount), lock when IsDisabled.
+            -->
+            <DataTemplate x:Key="TileDayTemplate" x:DataType="interfaces:ICalendarDay">
+                <Grid>
+                    <!--  On the root, so the badge fades together with the tile  -->
+                    <Grid.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsThisMonth}"
+                            TargetType="Grid"
+                            Value="False">
+                            <Setter Property="Opacity" Value="0.25" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsDisabled}"
+                            TargetType="Grid"
+                            Value="True">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+
+                    <Border
+                        Margin="3"
+                        Padding="0,4"
+                        BackgroundColor="{toolkit:AppThemeResource DtSurfaceColor}"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 12"
+                        StrokeThickness="0">
+                        <Border.Triggers>
+                            <!--  Later triggers win: an event day stays solid green on a weekend too  -->
+                            <DataTrigger
+                                Binding="{Binding IsWeekend}"
+                                TargetType="Border"
+                                Value="True">
+                                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DtAccentSoft}" />
+                            </DataTrigger>
+                            <DataTrigger
+                                Binding="{Binding HasEvents}"
+                                TargetType="Border"
+                                Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource DtAccent}" />
+                            </DataTrigger>
+                            <DataTrigger
+                                Binding="{Binding IsToday}"
+                                TargetType="Border"
+                                Value="True">
+                                <Setter Property="Stroke" Value="{toolkit:AppThemeResource DtAccentText}" />
+                                <Setter Property="StrokeThickness" Value="2" />
+                                <Setter Property="StrokeDashArray" Value="3,2" />
+                            </DataTrigger>
+                            <DataTrigger
+                                Binding="{Binding IsSelected}"
+                                TargetType="Border"
+                                Value="True">
+                                <Setter Property="Stroke" Value="{toolkit:AppThemeResource DtPrimaryText}" />
+                                <Setter Property="StrokeThickness" Value="2" />
+                                <Setter Property="StrokeDashArray" Value="{x:Null}" />
+                            </DataTrigger>
+                        </Border.Triggers>
+
+                        <Grid RowDefinitions="Auto,*" RowSpacing="0">
+                            <Label
+                                Grid.Row="0"
+                                CharacterSpacing="0.5"
+                                FontAttributes="Bold"
+                                FontSize="9"
+                                HorizontalOptions="Center"
+                                Text="{Binding Date, StringFormat='{0:ddd}'}"
+                                TextColor="{toolkit:AppThemeResource DtSecondaryText}"
+                                TextTransform="Uppercase">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsWeekend}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtAccentText}" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding HasEvents}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="TextColor" Value="#C8F7D8" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label
+                                Grid.Row="1"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                Text="{Binding Day}"
+                                TextColor="{toolkit:AppThemeResource DtPrimaryText}"
+                                VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding HasEvents}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="TextColor" Value="White" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsDisabled}"
+                                        TargetType="Label"
+                                        Value="True">
+                                        <Setter Property="Text" Value="🔒" />
+                                        <Setter Property="FontSize" Value="13" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Grid>
+                    </Border>
+
+                    <!--  Number of events that day (EventCount), pinned to the tile's corner  -->
+                    <Border
+                        Padding="4,0"
+                        BackgroundColor="{toolkit:AppThemeResource DtPrimaryText}"
+                        HeightRequest="16"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding EventCount, Converter={StaticResource HasCountConverter}}"
+                        MinimumWidthRequest="16"
+                        Stroke="{toolkit:AppThemeResource DtCardColor}"
+                        StrokeShape="RoundRectangle 8"
+                        StrokeThickness="1.5"
+                        VerticalOptions="End">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="9"
+                            HorizontalOptions="Center"
+                            Text="{Binding EventCount}"
+                            TextColor="{toolkit:AppThemeResource DtCardColor}"
+                            VerticalOptions="Center" />
+                    </Border>
+                </Grid>
+            </DataTemplate>
+
+            <!--
+                Template 3 · "Agenda"
+                Writes the day's event names inside the cell (Events), each chip
+                tinted with its event's own color, like a wall calendar.
+            -->
+            <DataTemplate x:Key="AgendaDayTemplate" x:DataType="interfaces:ICalendarDay">
+                <Border
+                    Margin="2"
+                    Padding="3,2"
+                    BackgroundColor="{toolkit:AppThemeResource DtSurfaceColor}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0">
+                    <Border.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsToday}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource DtAccentSoft}" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsSelected}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="Stroke" Value="{StaticResource DtAccentBright}" />
+                            <Setter Property="StrokeThickness" Value="2" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsThisMonth}"
+                            TargetType="Border"
+                            Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsDisabled}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="Opacity" Value="0.35" />
+                        </DataTrigger>
+                    </Border.Triggers>
+
+                    <VerticalStackLayout IsClippedToBounds="True" Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="11"
+                            Text="{Binding Day}"
+                            TextColor="{toolkit:AppThemeResource DtPrimaryText}">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding IsToday}"
+                                    TargetType="Label"
+                                    Value="True">
+                                    <Setter Property="TextColor" Value="{toolkit:AppThemeResource DtAccentText}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+
+                        <!--  One chip per event object stored for the day  -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Events}" Spacing="2">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:EventModel">
+                                    <Border
+                                        Padding="3,0"
+                                        BackgroundColor="{Binding Color}"
+                                        StrokeShape="RoundRectangle 3"
+                                        StrokeThickness="0">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="8"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="1"
+                                            Text="{Binding Name}"
+                                            TextColor="White" />
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <local:DayViewTemplatePageViewModel />
+    </ContentPage.BindingContext>
+
+    <!--  Scrolls on small phones, so the agenda under the calendar is always reachable  -->
+    <ScrollView>
+        <VerticalStackLayout Padding="16,12,16,16" Spacing="12">
+
+            <!--  Intro  -->
+            <VerticalStackLayout Spacing="8">
+                <Border
+                    Padding="10,4"
+                    BackgroundColor="{toolkit:AppThemeResource DtAccentSoft}"
+                    HorizontalOptions="Start"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0">
+                    <Label
+                        CharacterSpacing="1"
+                        FontAttributes="Bold"
+                        FontSize="11"
+                        Text="NEW · DAYVIEWTEMPLATE"
+                        TextColor="{toolkit:AppThemeResource DtAccentText}" />
+                </Border>
+                <Label
+                    FontSize="13"
+                    Text="Draw every day cell yourself. The template binds to ICalendarDay, so it can react to the day's date, selection, events and state. The chips show which members the active template uses."
+                    TextColor="{toolkit:AppThemeResource DtSecondaryText}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="10">
+                <!--  Template switcher: DayViewTemplate can be swapped at runtime  -->
+                <Border
+                    Padding="4"
+                    BackgroundColor="{toolkit:AppThemeResource DtCardColor}"
+                    HorizontalOptions="Start"
+                    StrokeShape="RoundRectangle 21"
+                    StrokeThickness="0">
+                    <HorizontalStackLayout Spacing="4">
+                        <Button
+                            x:Name="photoSegment"
+                            Clicked="OnPhotoTemplateClicked"
+                            Style="{StaticResource DtSegmentStyle}"
+                            Text="📸  Photo" />
+                        <Button
+                            x:Name="tileSegment"
+                            Clicked="OnTileTemplateClicked"
+                            Style="{StaticResource DtSegmentStyle}"
+                            Text="🟩  Tiles" />
+                        <Button
+                            x:Name="agendaSegment"
+                            Clicked="OnAgendaTemplateClicked"
+                            Style="{StaticResource DtSegmentStyle}"
+                            Text="📝  Agenda" />
+                        <Button
+                            x:Name="defaultSegment"
+                            Clicked="OnDefaultTemplateClicked"
+                            Style="{StaticResource DtSegmentStyle}"
+                            Text="Built-in" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!--  Legend: the ICalendarDay members the active template binds to (switched in code-behind)  -->
+                <FlexLayout
+                    x:Name="photoLegend"
+                    Style="{StaticResource DtLegendStyle}">
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsSelected → photo" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsToday → green tile" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsWeekend → green digits" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="EventColors → dots" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsDisabled → strike" />
+                    </Border>
+                </FlexLayout>
+                <FlexLayout
+                    x:Name="tileLegend"
+                    IsVisible="False"
+                    Style="{StaticResource DtLegendStyle}">
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="Date → weekday" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsWeekend → tint" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="HasEvents → fill" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="EventCount → badge" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsDisabled → lock" />
+                    </Border>
+                </FlexLayout>
+                <FlexLayout
+                    x:Name="agendaLegend"
+                    IsVisible="False"
+                    Style="{StaticResource DtLegendStyle}">
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="Events → names in the cell" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsToday → green tile" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="IsSelected → outline" />
+                    </Border>
+                </FlexLayout>
+                <FlexLayout
+                    x:Name="builtInLegend"
+                    IsVisible="False"
+                    Style="{StaticResource DtLegendStyle}">
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="DayViewTemplate = null" />
+                    </Border>
+                    <Border Style="{StaticResource DtChipStyle}">
+                        <Label Style="{StaticResource DtChipLabelStyle}" Text="Calendar color properties apply" />
+                    </Border>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!--  Calendar card  -->
+            <Border
+                Padding="14,4,14,14"
+                BackgroundColor="{toolkit:AppThemeResource DtCardColor}"
+                StrokeShape="RoundRectangle 28"
+                StrokeThickness="0">
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#16A34A"
+                        Opacity="0.14"
+                        Radius="30"
+                        Offset="0,12" />
+                </Border.Shadow>
+
+                <plugin:Calendar
+                    x:Name="calendar"
+                    DayViewSize="50"
+                    DaysTitleLabelStyle="{StaticResource DtDaysTitleStyle}"
+                    DeselectedDayTextColor="{toolkit:AppThemeResource DtPrimaryText}"
+                    DisabledDayColor="{toolkit:AppThemeResource DtDivider}"
+                    EventIndicatorTextColor="{toolkit:AppThemeResource DtPrimaryText}"
+                    EventIndicatorSelectedTextColor="White"
+                    OtherMonthDayColor="{toolkit:AppThemeResource DtSecondaryText}"
+                    WeekendDayColor="{toolkit:AppThemeResource DtAccentText}"
+                    DisabledDates="{Binding DisabledDates, Mode=OneWay}"
+                    Events="{Binding Events, Mode=OneWay}"
+                    EventsScrollViewVisible="True"
+                    HorizontalOptions="Fill"
+                    Month="{Binding Month}"
+                    SelectedDate="{Binding SelectedDate}"
+                    SelectedDateTextFormat="dddd, d MMMM"
+                    SelectedDayBackgroundColor="{StaticResource DtAccent}"
+                    TodayOutlineColor="{StaticResource DtAccentBright}"
+                    TodayTextColor="{toolkit:AppThemeResource DtAccentText}"
+                    VerticalOptions="Fill"
+                    WeekendTitleStyle="{StaticResource DtWeekendTitleStyle}"
+                    Year="{Binding Year}">
+
+                    <plugin:Calendar.HeaderSectionTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Padding="4,4,4,10"
+                                x:DataType="plugin:Calendar"
+                                ColumnDefinitions="*,Auto,Auto"
+                                ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="26"
+                                        Text="{Binding LayoutUnitText}"
+                                        TextColor="{toolkit:AppThemeResource DtPrimaryText}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding LocalizedYear}"
+                                        TextColor="{toolkit:AppThemeResource DtAccentText}" />
+                                </VerticalStackLayout>
+                                <Button
+                                    Grid.Column="1"
+                                    Command="{Binding PrevLayoutUnitCommand}"
+                                    Style="{StaticResource DtArrowButtonStyle}"
+                                    Text="‹"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Grid.Column="2"
+                                    Command="{Binding NextLayoutUnitCommand}"
+                                    Style="{StaticResource DtArrowButtonStyle}"
+                                    Text="›"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </plugin:Calendar.HeaderSectionTemplate>
+
+                    <plugin:Calendar.FooterSectionTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout
+                                Padding="4,6,4,4"
+                                x:DataType="plugin:Calendar"
+                                Spacing="10">
+                                <BoxView HeightRequest="1" Color="{toolkit:AppThemeResource DtDivider}" />
+                                <VerticalStackLayout>
+                                    <Label
+                                        CharacterSpacing="1"
+                                        FontAttributes="Bold"
+                                        FontSize="11"
+                                        Text="AGENDA"
+                                        TextColor="{toolkit:AppThemeResource DtSecondaryText}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="{Binding SelectedDateText}"
+                                        TextColor="{toolkit:AppThemeResource DtPrimaryText}" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </plugin:Calendar.FooterSectionTemplate>
+
+                    <plugin:Calendar.EventTemplate>
+                        <DataTemplate x:DataType="model:EventModel">
+                            <Border
+                                Margin="4,4"
+                                Padding="0"
+                                BackgroundColor="{toolkit:AppThemeResource DtSurfaceColor}"
+                                StrokeShape="RoundRectangle 16"
+                                StrokeThickness="0">
+                                <Grid ColumnDefinitions="6,*" ColumnSpacing="12">
+                                    <BoxView Grid.Column="0" Color="{Binding Color}" />
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Padding="0,12,12,12"
+                                        Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            Text="{Binding Name}"
+                                            TextColor="{toolkit:AppThemeResource DtPrimaryText}" />
+                                        <Label
+                                            FontSize="13"
+                                            Text="{Binding Description}"
+                                            TextColor="{toolkit:AppThemeResource DtSecondaryText}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </plugin:Calendar.EventTemplate>
+
+                    <plugin:Calendar.EmptyTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout Padding="0,24" Spacing="6">
+                                <Label
+                                    FontSize="32"
+                                    HorizontalOptions="Center"
+                                    Text="🌿" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    HorizontalOptions="Center"
+                                    Text="Nothing planned"
+                                    TextColor="{toolkit:AppThemeResource DtPrimaryText}" />
+                                <Label
+                                    FontSize="13"
+                                    HorizontalOptions="Center"
+                                    Text="Pick a day with a dot to see its events."
+                                    TextColor="{toolkit:AppThemeResource DtSecondaryText}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </plugin:Calendar.EmptyTemplate>
+                </plugin:Calendar>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

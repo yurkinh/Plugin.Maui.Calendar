@@ -77,6 +77,10 @@
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Advanced Event Calendar" />
             <Button
+                Clicked="DayViewTemplateCalendar"
+                Style="{StaticResource ButtonMainPageStyle}"
+                Text="Day Template Calendar" />
+            <Button
                 Clicked="RangeCalendar"
                 Style="{StaticResource ButtonMainPageStyle}"
                 Text="Range Event Calendar" />
