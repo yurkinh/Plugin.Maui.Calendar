@@ -83,22 +83,21 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         {
             Name = $"{name} event{x}",
             Description = $"This is {name} event{x}'s description!",
-            Starting = new DateTime(2000, 1, 1, (x * 2) % 24, (x * 3) % 60, 0)
+            Starting = new DateTime(2000, 1, 1, x * 2 % 24, x * 3 % 60, 0)
         });
     }
 
     public EventCollection Events { get; }
 
-    [ObservableProperty]
-    DateTime shownDate = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime ShownDate { get; set; } = DateTime.Today;
 
-    [ObservableProperty]
-    WeekLayout calendarLayout = WeekLayout.Month;
+	[ObservableProperty]
+	public partial WeekLayout CalendarLayout { get; set; } = WeekLayout.Month;
+	[ObservableProperty]
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
 
-    [ObservableProperty]
-    DateTime? selectedDate = DateTime.Today;
-
-    [RelayCommand]
+	[RelayCommand]
     static async Task DayTapped(DateTime date)
     {
         var message = $"Received tap event from date: {date}";

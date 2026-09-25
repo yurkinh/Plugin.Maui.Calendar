@@ -53,16 +53,16 @@ public partial class DayViewTemplatePageViewModel : BasePageViewModel
 	];
 
 	[ObservableProperty]
-	int day = DateTime.Today.Day;
+	public partial int Day { get; set; } = DateTime.Today.Day;
 
 	[ObservableProperty]
-	int month = DateTime.Today.Month;
+	public partial int Month { get; set; } = DateTime.Today.Month;
 
 	[ObservableProperty]
-	int year = DateTime.Today.Year;
+	public partial int Year { get; set; } = DateTime.Today.Year;
 
 	[ObservableProperty]
-	DateTime? selectedDate = DateTime.Today;
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
 
 	[RelayCommand]
 	void Today()

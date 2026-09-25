@@ -8,25 +8,23 @@ public partial class CalendarRangePickerPopupViewModel : BasePageViewModel
 
     public event Action<CalendarRangePickerResult> Closed;
 
-    [ObservableProperty]
-    DateTime maximumDate = DateTime.Today.AddYears(1);
+	[ObservableProperty]
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddYears(1);
 
-    [ObservableProperty]
-    DateTime minimumDate = DateTime.Today.AddYears(-1);
+	[ObservableProperty]
+	public partial DateTime MinimumDate { get; set; } = DateTime.Today.AddYears(-1);
+	[ObservableProperty]
+	public partial DateTime ShownDate { get; set; } = DateTime.Today;
 
-    [ObservableProperty]
-    DateTime shownDate = DateTime.Today;
+	[ObservableProperty]
+	public partial WeekLayout CalendarLayout { get; set; } = WeekLayout.Month;
+	[ObservableProperty]
+	public partial DateTime? SelectedStartDate { get; set; } = DateTime.Today.AddDays(-5);
 
-    [ObservableProperty]
-    WeekLayout calendarLayout = WeekLayout.Month;
+	[ObservableProperty]
+	public partial DateTime? SelectedEndDate { get; set; } = DateTime.Today.AddDays(5);
 
-    [ObservableProperty]
-    DateTime? selectedStartDate = DateTime.Today.AddDays(-5);
-
-    [ObservableProperty]
-    DateTime? selectedEndDate = DateTime.Today.AddDays(5);
-
-    [RelayCommand]
+	[RelayCommand]
     async Task Cancel()
     {
         Closed?.Invoke(new CalendarRangePickerResult() { IsSuccess = false });

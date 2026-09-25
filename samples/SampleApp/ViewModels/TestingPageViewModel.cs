@@ -8,14 +8,13 @@ namespace SampleApp.ViewModels;
 public partial class TestingPageViewModel : BasePageViewModel
 {
 	[ObservableProperty]
-	CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+	public partial CultureInfo Culture { get; set; } = CultureInfo.CreateSpecificCulture("en-US");
 
 	[ObservableProperty]
-	DaysTitleMaxLength daysTitleMaxLength = DaysTitleMaxLength.None;
+	public partial DaysTitleMaxLength DaysTitleMaxLength { get; set; } = DaysTitleMaxLength.None;
 
 	[ObservableProperty]
-	bool useAbbreviatedDayNames = true;
-
+	public partial bool UseAbbreviatedDayNames { get; set; } = true;
 	public ObservableCollection<CultureInfo> AvailableCultures { get; } =
 	[
 		new CultureInfo("en-US"), // English (US)
@@ -30,5 +29,5 @@ public partial class TestingPageViewModel : BasePageViewModel
         new CultureInfo("zh-CN"), // Chinese (Simplified)
     ];
 
-	public Array DaysTitleMaxLengthOptions => Enum.GetValues(typeof(DaysTitleMaxLength));
+	public Array DaysTitleMaxLengthOptions => Enum.GetValues<DaysTitleMaxLength>();
 }

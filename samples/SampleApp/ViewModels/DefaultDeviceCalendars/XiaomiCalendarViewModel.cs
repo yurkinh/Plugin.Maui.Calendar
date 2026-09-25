@@ -19,20 +19,18 @@ public partial class XiaomiCalendarViewModel : BasePageViewModel, IQueryAttribut
 
     public EventCollection Events { get; set; }
 
-    [ObservableProperty]
-    int day = DateTime.Today.Day;
+	[ObservableProperty]
+	public partial int Day { get; set; } = DateTime.Today.Day;
 
-    [ObservableProperty]
-    int month = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Month { get; set; } = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Year { get; set; } = DateTime.Today.Year;
 
-    [ObservableProperty]
-    int year = DateTime.Today.Year;
+	[ObservableProperty]
+	public partial DateTime SelectedDate { get; set; } = DateTime.Today;
 
-    [ObservableProperty]
-    DateTime selectedDate = DateTime.Today;
-
-
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
+	public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue("Isbackwardnavigation", out var isBackwardNavigation) && (bool)isBackwardNavigation)
         {

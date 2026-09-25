@@ -16,7 +16,7 @@ public partial class NeoCalendarPageViewModel : BasePageViewModel
             [DateTime.Now.AddDays(-3)] = new List<EventModel>(GenerateEvents(10, "Cool")),
             [DateTime.Now.AddDays(4)] = new List<EventModel>(GenerateEvents(2, "Simple2")),
             [DateTime.Now.AddDays(2)] = new List<EventModel>(GenerateEvents(1, "Simple1")),
-            [DateTime.Now.AddDays(1)] = new DayEventCollection<EventModel>(threeEventsTommorrow) { Colors = threeEventsTommorrow.Select(e => e.Color).ToArray() },
+            [DateTime.Now.AddDays(1)] = new DayEventCollection<EventModel>(threeEventsTommorrow) { Colors = [.. threeEventsTommorrow.Select(e => e.Color)] },
         };
 
         // with add method
@@ -28,31 +28,28 @@ public partial class NeoCalendarPageViewModel : BasePageViewModel
 
     public EventCollection Events { get; }
 
-    [ObservableProperty]
-    int day = DateTime.Today.Day;
+	[ObservableProperty]
+	public partial int Day { get; set; } = DateTime.Today.Day;
 
-    [ObservableProperty]
-    int month = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Month { get; set; } = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Year { get; set; } = DateTime.Today.Year;
 
-    [ObservableProperty]
-    int year = DateTime.Today.Year;
+	[ObservableProperty]
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime MinimumDate { get; set; } = new(2019, 4, 29);
 
-    [ObservableProperty]
-    DateTime? selectedDate = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddMonths(5);
+	[ObservableProperty]
+	public partial string Name { get; set; }
 
-    [ObservableProperty]
-    DateTime minimumDate = new(2019, 4, 29);
+	[ObservableProperty]
+	public partial string Description { get; set; }
 
-    [ObservableProperty]
-    DateTime maximumDate = DateTime.Today.AddMonths(5);
-
-    [ObservableProperty]
-    string name;
-
-    [ObservableProperty]
-    string description;
-
-    [RelayCommand]
+	[RelayCommand]
     void Today()
     {
         Year = DateTime.Today.Year;

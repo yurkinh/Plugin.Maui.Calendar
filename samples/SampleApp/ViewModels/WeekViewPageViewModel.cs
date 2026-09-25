@@ -41,36 +41,33 @@ public partial class WeekViewPageViewModel : BasePageViewModel
     }
     public EventCollection Events { get; }
 
-    [ObservableProperty]
-    int day = DateTime.Today.Day;
+	[ObservableProperty]
+	public partial int Day { get; set; } = DateTime.Today.Day;
 
-    [ObservableProperty]
-    int month = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Month { get; set; } = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Year { get; set; } = DateTime.Today.Year;
 
-    [ObservableProperty]
-    int year = DateTime.Today.Year;
+	[ObservableProperty]
+	public partial DateTime ShownDate { get; set; } = DateTime.Today;
+	[ObservableProperty]
+	public partial WeekLayout CalendarLayout { get; set; } = WeekLayout.Week;
 
-    [ObservableProperty]
-    DateTime shownDate = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime MinimumDate { get; set; } = DateTime.Today.AddYears(-2).AddMonths(-5);
 
-    [ObservableProperty]
-    WeekLayout calendarLayout = WeekLayout.Week;
+	[ObservableProperty]
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddMonths(5);
+	[ObservableProperty]
+	public partial string Name { get; set; }
 
-    [ObservableProperty]
-    DateTime? selectedDate = DateTime.Today;
+	[ObservableProperty]
+	public partial string Description { get; set; }
 
-    [ObservableProperty]
-    DateTime minimumDate = DateTime.Today.AddYears(-2).AddMonths(-5);
-
-    [ObservableProperty]
-    DateTime maximumDate = DateTime.Today.AddMonths(5);
-
-    [ObservableProperty]
-    string name;
-
-    [ObservableProperty]
-    string description;
-    static IEnumerable<EventModel> GenerateEvents(int count, string name)
+	static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new EventModel
         {

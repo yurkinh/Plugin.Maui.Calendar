@@ -14,31 +14,29 @@ public partial class UserSettingViewModel : ObservableObject
         this.themeService = themeService;
         this.calendarSettingsService = calendarSettingsService;
         InitializeTheme();
-
-        selectedCulture = calendarSettingsService.Culture;
-        selectedFirstDayOfWeek = calendarSettingsService.FirstDayOfWeek;
+		SelectedCulture = calendarSettingsService.Culture;
+		SelectedFirstDayOfWeek = calendarSettingsService.FirstDayOfWeek;
     }
 
-    [ObservableProperty]
-    bool isCheckedLight;
+	[ObservableProperty]
+	public partial bool IsCheckedLight { get; set; }
 
-    [ObservableProperty]
-    bool isCheckedDark;
+	[ObservableProperty]
+	public partial bool IsCheckedDark { get; set; }
+	[ObservableProperty]
+	public partial bool IsCheckedSystem { get; set; }
 
-    [ObservableProperty]
-    bool isCheckedSystem;
-
-    public IReadOnlyList<CultureInfo> Cultures => calendarSettingsService.AvailableCultures;
+	public IReadOnlyList<CultureInfo> Cultures => calendarSettingsService.AvailableCultures;
 
     public IReadOnlyList<DayOfWeek> FirstDaysOfWeek => calendarSettingsService.AvailableFirstDaysOfWeek;
 
-    [ObservableProperty]
-    CultureInfo selectedCulture;
+	[ObservableProperty]
+	public partial CultureInfo SelectedCulture { get; set; }
 
-    [ObservableProperty]
-    DayOfWeek selectedFirstDayOfWeek;
+	[ObservableProperty]
+	public partial DayOfWeek SelectedFirstDayOfWeek { get; set; }
 
-    partial void OnIsCheckedLightChanged(bool value) =>
+	partial void OnIsCheckedLightChanged(bool value) =>
      themeService.SetTheme(value ? AppTheme.Light : themeService.UserAppTheme);
 
     partial void OnIsCheckedDarkChanged(bool value) =>

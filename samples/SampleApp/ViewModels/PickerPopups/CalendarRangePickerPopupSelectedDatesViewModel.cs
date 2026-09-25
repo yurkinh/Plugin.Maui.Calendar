@@ -18,19 +18,19 @@ public partial class CalendarRangePickerPopupSelectedDatesViewModel : BasePageVi
 	public event Action<CalendarRangePickerResult> Closed;
 
 	[ObservableProperty]
-	DateTime maximumDate = DateTime.Today.AddYears(1);
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddYears(1);
 
 	[ObservableProperty]
-	DateTime minimumDate = DateTime.Today.AddYears(-1);
+	public partial DateTime MinimumDate { get; set; } = DateTime.Today.AddYears(-1);
 
 	[ObservableProperty]
-	DateTime shownDate = DateTime.Today;
+	public partial DateTime ShownDate { get; set; } = DateTime.Today;
 
 	[ObservableProperty]
-	ObservableCollection<DateTime> selectedDates = null;
+	public partial ObservableCollection<DateTime> SelectedDates { get; set; } = null;
 
 	[ObservableProperty]
-	WeekLayout calendarLayout = WeekLayout.Month;
+	public partial WeekLayout CalendarLayout { get; set; } = WeekLayout.Month;
 
 	[RelayCommand]
 	async Task Cancel()

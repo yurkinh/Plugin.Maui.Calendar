@@ -16,7 +16,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 			[DateTime.Now.AddDays(-3)] = new List<EventModel>(GenerateEvents(10, "Cool")),
 			[DateTime.Now.AddDays(4)] = new List<EventModel>(GenerateEvents(2, "Simple2")),
 			[DateTime.Now.AddDays(2)] = new List<EventModel>(GenerateEvents(1, "Simple1")),
-			[DateTime.Now.AddDays(1)] = new DayEventCollection<EventModel>(threeEventsTommorrow) { Colors = threeEventsTommorrow.Select(e => e.Color).ToArray() },
+			[DateTime.Now.AddDays(1)] = new DayEventCollection<EventModel>(threeEventsTommorrow) { Colors = [.. threeEventsTommorrow.Select(e => e.Color)] },
 		};
 
 		// with add method
@@ -24,8 +24,7 @@ public partial class SimplePageViewModel : BasePageViewModel
 
 		// with indexer
 		Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
-
-		selectedDates =
+		SelectedDates =
 		[
 			DateTime.Today,
 			DateTime.Today.AddDays(1),
@@ -48,31 +47,31 @@ public partial class SimplePageViewModel : BasePageViewModel
 	public EventCollection Events { get; }
 
 	[ObservableProperty]
-	int day = DateTime.Today.Day;
+	public partial int Day { get; set; } = DateTime.Today.Day;
 
 	[ObservableProperty]
-	int month = DateTime.Today.Month;
+	public partial int Month { get; set; } = DateTime.Today.Month;
 
 	[ObservableProperty]
-	int year = DateTime.Today.Year;
+	public partial int Year { get; set; } = DateTime.Today.Year;
 
 	[ObservableProperty]
-	DateTime? selectedDate = DateTime.Today;
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
 
 	[ObservableProperty]
-	DateTime minimumDate = new(2019, 4, 29);
+	public partial DateTime MinimumDate { get; set; } = new(2019, 4, 29);
 
 	[ObservableProperty]
-	DateTime maximumDate = DateTime.Today.AddMonths(5);
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddMonths(5);
 
 	[ObservableProperty]
-	ObservableCollection<DateTime> selectedDates = [];
+	public partial ObservableCollection<DateTime> SelectedDates { get; set; } = [];
 
 	[ObservableProperty]
-	string name;
+	public partial string Name { get; set; }
 
 	[ObservableProperty]
-	string description;
+	public partial string Description { get; set; }
 
 	[RelayCommand]
 	void Today()
