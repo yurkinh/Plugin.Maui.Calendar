@@ -50,7 +50,8 @@ public class RangeSelectionCalendar : Calendar
 		nameof(SelectedDatesRangeBackgroundColor),
 		typeof(Color),
 		typeof(RangeSelectionCalendar),
-		null
+		null,
+		propertyChanged: static (bindable, oldValue, newValue) => ((RangeSelectionCalendar)bindable).UpdateDateColors()
 	);
 
 	/// <summary>
@@ -96,6 +97,11 @@ public class RangeSelectionCalendar : Calendar
 			{
 				SelectedDates = new ObservableCollection<DateTime>(first);
 			}
+
+			// OnSelectedEndDateChanged only clears the flag when SelectedEndDate actually changed;
+			// a range extended at its start keeps its end, which left the flag set and made the
+			// next programmatic SelectedStartDate/SelectedEndDate assignment be ignored.
+			isSelectionDatesChanging = false;
 		}
 
 		UpdateDateColors();
@@ -131,12 +137,28 @@ public class RangeSelectionCalendar : Calendar
 		rangeSelectionCalendar.UpdateDateColors();
 	}
 
+	// Day cells are reused on navigation and UpdateDayGlobalProperties resets every cell's
+	// SelectedBackgroundColor, so the range colors and boundaries are re-applied after each pass.
+	private protected override void OnDaysUpdated() => UpdateDateColors();
+
 	void UpdateDateColors()
 	{
+		// The selection engine also drives IsSelected, so the boundaries are taken from it rather
+		// than from SelectedStartDate/SelectedEndDate, which keep their last value after the
+		// selection is cleared. selectionEngine is still null while the base constructor renders.
+		var rangeStart = selectionEngine?.RangeSelectionStartDate;
+		var rangeEnd = selectionEngine?.RangeSelectionEndDate;
+		var hasRange = rangeStart.HasValue && rangeEnd.HasValue;
+
 		foreach (var dayView in dayViews)
 		{
 			if (dayView.BindingContext is DayModel dayModel)
 			{
+				// Assigned on every cell (not only selected ones) so a reused cell never keeps
+				// the boundary flags of the date it showed before.
+				dayModel.IsRangeStart = hasRange && dayModel.IsSelected && dayModel.Date == rangeStart.Value.Date;
+				dayModel.IsRangeEnd = hasRange && dayModel.IsSelected && dayModel.Date == rangeEnd.Value.Date;
+
 				if (SelectedDates?.Contains(dayModel.Date) == true)
 				{
 					dayModel.SelectedBackgroundColor = SelectedDatesRangeBackgroundColor;

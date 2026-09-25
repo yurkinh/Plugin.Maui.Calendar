@@ -227,6 +227,8 @@ public partial class Calendar : ContentView, IDisposable
 			}
 		}
 
+		OnDaysUpdated();
+
 		if (shownDatesChanged)
 		{
 			var args = new ShownDatesChangedEventArgs(VisibleStartDate, VisibleEndDate);
@@ -281,7 +283,17 @@ public partial class Calendar : ContentView, IDisposable
 			// be recomputed even in a color-only update.
 			AssignIndicatorColors(ref dayModel);
 		}
+
+		OnDaysUpdated();
 	}
+
+	/// <summary>
+	/// Called after <see cref="UpdateDays"/> or <see cref="UpdateDayGlobalProperties"/> has
+	/// refreshed the day models, so a derived calendar can re-apply per-day state that those
+	/// passes reset or that depends on the dates now assigned to the reused cells (for example
+	/// the range colors and range boundaries of <see cref="RangeSelectionCalendar"/>).
+	/// </summary>
+	private protected virtual void OnDaysUpdated() { }
 
 	/// <summary>
 	/// Updates day colors and event-indicator colors without recomputing date layout.
