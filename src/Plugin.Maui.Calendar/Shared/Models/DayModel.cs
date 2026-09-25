@@ -18,25 +18,25 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 	[NotifyPropertyChangedFor(nameof(TextColor))]
 	[NotifyPropertyChangedFor(nameof(IsToday))]
 	[NotifyPropertyChangedFor(nameof(IsWeekend))]
-	DateTime date;
+	public partial DateTime Date { get; set; }
 
 	[ObservableProperty]
-	string day;
+	public partial string Day { get; set; }
 
 	[ObservableProperty]
-	Thickness dayViewBorderMargin = new(0, 0, 0, 0);
-	
+	public partial Thickness DayViewBorderMargin { get; set; } = new(0, 0, 0, 0);
+
 	[ObservableProperty]
 	double dayViewSize;
 
 	[ObservableProperty]
-	float dayViewCornerRadius;
+	public partial float DayViewCornerRadius { get; set; }
 
 	[ObservableProperty]
-	Style daysLabelStyle = DefaultStyles.DefaultLabelStyle;
+	public partial Style DaysLabelStyle { get; set; } = DefaultStyles.DefaultLabelStyle;
 
 	[ObservableProperty]
-	ICommand dayTappedCommand;
+	public partial ICommand DayTappedCommand { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
@@ -45,23 +45,23 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 		nameof(BackgroundEventIndicator),
 		nameof(BackgroundFullEventColor)
 	)]
-	bool hasEvents;
+	public partial bool HasEvents { get; set; }
 
 	[ObservableProperty]
-	int eventCount;
+	public partial int EventCount { get; set; }
 
 	[ObservableProperty]
-	IReadOnlyList<object> events = [];
+	public partial IReadOnlyList<object> Events { get; set; } = [];
 
 	[ObservableProperty]
-	bool isRangeStart;
+	public partial bool IsRangeStart { get; set; }
 
 	[ObservableProperty]
-	bool isRangeEnd;
+	public partial bool IsRangeEnd { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible), nameof(BackgroundFullEventColor))]
-	bool isThisMonth;
+	public partial bool IsThisMonth { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
@@ -70,55 +70,54 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 		nameof(OutlineColor),
 		nameof(BackgroundFullEventColor)
 	)]
-	bool isSelected;
+	public partial bool IsSelected { get; set; }
 
 	[ObservableProperty]
-	bool allowDeselect;
+	public partial bool AllowDeselect { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(IsVisible), nameof(BackgroundFullEventColor))]
-	bool otherMonthIsVisible;
+	public partial bool OtherMonthIsVisible { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(IsControlVisible))]
-	bool otherMonthWeekIsVisible;
+	public partial bool OtherMonthWeekIsVisible { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	bool isDisabled;
+	public partial bool IsDisabled { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color selectedTextColor = Colors.White;
+	public partial Color SelectedTextColor { get; set; } = Colors.White;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color selectedTodayTextColor = Colors.Transparent;
+	public partial Color SelectedTodayTextColor { get; set; } = Colors.Transparent;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color otherMonthColor = Colors.Silver;
+	public partial Color OtherMonthColor { get; set; } = Colors.Silver;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color otherMonthSelectedColor = Colors.Gray;
-
-
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color weekendDayColor = Colors.Transparent;
+	public partial Color OtherMonthSelectedColor { get; set; } = Colors.Gray;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color deselectedTextColor = Colors.Transparent;
+	public partial Color WeekendDayColor { get; set; } = Colors.Transparent;
+
+	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(TextColor))]
+	public partial Color DeselectedTextColor { get; set; } = Colors.Transparent;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	Color selectedBackgroundColor = Color.FromArgb("#2196F3");
+	public partial Color SelectedBackgroundColor { get; set; } = Color.FromArgb("#2196F3");
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	Color deselectedBackgroundColor = Colors.Transparent;
+	public partial Color DeselectedBackgroundColor { get; set; } = Colors.Transparent;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
@@ -127,45 +126,45 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 		nameof(BackgroundFullEventColor),
 		nameof(EventLayoutDirection)
 	)]
-	EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
+	public partial EventIndicatorType EventIndicatorType { get; set; } = EventIndicatorType.BottomDot;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
 		nameof(BackgroundColor),
 		nameof(BackgroundFullEventColor)
 	)]
-	Color eventIndicatorColor = Color.FromArgb("#FF4081");
+	public partial Color EventIndicatorColor { get; set; } = Color.FromArgb("#FF4081");
 
 	[ObservableProperty]
-	IReadOnlyList<Color> eventColors;
+	public partial IReadOnlyList<Color> EventColors { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
 		nameof(BackgroundColor),
 		nameof(BackgroundFullEventColor)
 	)]
-	Color eventIndicatorSelectedColor;
+	public partial Color EventIndicatorSelectedColor { get; set; }
 
 	[ObservableProperty]
-	Color eventIndicatorTextColor;
+	public partial Color EventIndicatorTextColor { get; set; }
 
 	[ObservableProperty]
-	Color eventIndicatorSelectedTextColor;
+	public partial Color EventIndicatorSelectedTextColor { get; set; }
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(OutlineColor))]
-	Color todayOutlineColor = Color.FromArgb("#FF4081");
+	public partial Color TodayOutlineColor { get; set; } = Color.FromArgb("#FF4081");
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
-	Color todayTextColor = Colors.Transparent;
+	public partial Color TodayTextColor { get; set; } = Colors.Transparent;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	Color todayFillColor = Colors.Transparent;
+	public partial Color TodayFillColor { get; set; } = Colors.Transparent;
 
 	[ObservableProperty]
-	Color disabledColor = Color.FromArgb("#ECECEC");
+	public partial Color DisabledColor { get; set; } = Color.FromArgb("#ECECEC");
 
 	// Applies to every cell, not only to days with events: the (possibly empty) dot row then sits
 	// above the day number in all cells, so the numbers stay aligned across the grid.
