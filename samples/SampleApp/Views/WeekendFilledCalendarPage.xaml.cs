@@ -3,9 +3,9 @@ namespace SampleApp.Views;
 
 public partial class WeekendFilledCalendarPage : ContentPage
 {
-    public WeekendFilledCalendarPage()
+    public WeekendFilledCalendarPage(WeekendFilledCalendarPageViewModel vm)
     {
         InitializeComponent();
-
+        BindingContext = vm;
     }
 }

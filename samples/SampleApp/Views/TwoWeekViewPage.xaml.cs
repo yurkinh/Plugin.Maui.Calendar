@@ -3,8 +3,9 @@
 
 public partial class TwoWeekViewPage : ContentPage
 {
-    public TwoWeekViewPage()
+    public TwoWeekViewPage(TwoWeekViewPageViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 }

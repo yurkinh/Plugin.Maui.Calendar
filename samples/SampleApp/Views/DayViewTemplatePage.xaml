@@ -456,9 +456,6 @@
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
 
-    <ContentPage.BindingContext>
-        <local:DayViewTemplatePageViewModel />
-    </ContentPage.BindingContext>
 
     <!--  Scrolls on small phones, so the agenda under the calendar is always reachable  -->
     <ScrollView>

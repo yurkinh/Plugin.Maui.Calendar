@@ -3,9 +3,10 @@
 
 public partial class WeekViewPage : ContentPage
 {
-    public WeekViewPage()
+    public WeekViewPage(WeekViewPageViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
     private void Switch_Toggled(object sender, ToggledEventArgs e)
     {

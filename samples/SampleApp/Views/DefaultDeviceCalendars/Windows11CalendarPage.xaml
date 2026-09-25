@@ -45,9 +45,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.BindingContext>
-        <local:Windows11CalendarViewModel />
-    </ContentPage.BindingContext>
 
     <Grid>
         <Image Aspect="AspectFill" Source="{toolkit:AppThemeResource Walpaper}" />

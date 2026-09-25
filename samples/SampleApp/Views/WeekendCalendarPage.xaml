@@ -56,9 +56,6 @@
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
     </ContentPage.ToolbarItems>
 
-    <ContentPage.BindingContext>
-        <local:WeekendCalendarPageViewModel />
-    </ContentPage.BindingContext>
     <plugin:Calendar
         x:Name="calendar"
         Padding="10,0"

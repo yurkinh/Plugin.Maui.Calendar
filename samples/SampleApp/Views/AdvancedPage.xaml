@@ -46,9 +46,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.BindingContext>
-        <local:AdvancedPageViewModel />
-    </ContentPage.BindingContext>
 
 
     <plugin:Calendar

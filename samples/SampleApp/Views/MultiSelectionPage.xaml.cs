@@ -2,8 +2,9 @@
 
 public partial class MultiSelectionPage : ContentPage
 {
-	public MultiSelectionPage()
+	public MultiSelectionPage(SimplePageViewModel vm)
 	{
 		InitializeComponent();
+		BindingContext = vm;
 	}
 }

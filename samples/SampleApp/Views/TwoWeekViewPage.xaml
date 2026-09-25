@@ -40,9 +40,6 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
-    <ContentPage.BindingContext>
-        <local:TwoWeekViewPageViewModel />
-    </ContentPage.BindingContext>
 
     <plugin:Calendar
         x:Name="calendar"

@@ -34,9 +34,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.BindingContext>
-        <local:RangeSelectionPageViewModel />
-    </ContentPage.BindingContext>
 
     <plugin:RangeSelectionCalendar
         x:Name="rangedCalendar"

@@ -12,9 +12,6 @@
     BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
 
-    <ContentPage.BindingContext>
-        <local:WeekendFilledCalendarPageViewModel />
-    </ContentPage.BindingContext>
 
     <ScrollView>
         <VerticalStackLayout Padding="0,8" Spacing="0">

@@ -3,9 +3,9 @@
 
 public partial class WeekendCalendarPage : ContentPage
 {
-    public WeekendCalendarPage()
+    public WeekendCalendarPage(WeekendCalendarPageViewModel vm)
     {
         InitializeComponent();
-
+        BindingContext = vm;
     }
 }
