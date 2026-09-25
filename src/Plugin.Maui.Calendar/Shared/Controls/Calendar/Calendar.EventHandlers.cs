@@ -104,4 +104,14 @@ public partial class Calendar : ContentView, IDisposable
 		//all this should be done automaticall or not needed
 		Dispose();
 	}
+
+	// Idempotent, so it can run whether or not Events is already observed.
+	void ObserveEvents()
+	{
+		if (Events is EventCollection events)
+		{
+			events.CollectionChanged -= OnEventsCollectionChanged;
+			events.CollectionChanged += OnEventsCollectionChanged;
+		}
+	}
 }

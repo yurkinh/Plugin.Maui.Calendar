@@ -25,6 +25,9 @@ public partial class Calendar : ContentView, IDisposable
 
 		isInitializing = false;
 
+		// OnEventsChanged only observes a collection that is assigned, not the default one.
+		ObserveEvents();
+
 		// Single consolidated render at end of construction.
 		UpdateSelectedDateLabel();
 		UpdateLayoutUnitLabel();

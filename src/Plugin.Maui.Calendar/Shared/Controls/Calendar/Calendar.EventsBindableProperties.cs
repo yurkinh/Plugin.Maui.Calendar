@@ -179,8 +179,11 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(Events),
 		typeof(EventCollection),
 		typeof(Calendar),
-		new EventCollection(),
-		propertyChanged: OnEventsChanged
+		null,
+		propertyChanged: OnEventsChanged,
+		// Each calendar gets its own default collection (a single shared instance would leak events
+		// added to it into every other calendar); the constructor starts observing it.
+		defaultValueCreator: static _ => new EventCollection()
 	);
 
 	/// <summary>
