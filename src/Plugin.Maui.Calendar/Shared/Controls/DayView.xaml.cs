@@ -195,11 +195,28 @@ public sealed partial class DayView : ContentView
 				return;
 			}
 
+			// Resolved before DayTappedCommand runs: the command may rebuild the layout (e.g. switch
+			// CalendarLayout), which takes this cell out of its calendar.
+			var owner = FindOwningCalendar();
+
 			dayModel.IsSelected = !dayModel.IsSelected;
 			dayModel.DayTappedCommand?.Execute(dayModel.Date);
 			// Source lets only the calendar that owns this cell handle the tap; the message is
 			// broadcast to every calendar that is on screen.
-			WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date) { Source = this });
+			WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date) { Source = owner });
 		}
+	}
+
+	Calendar FindOwningCalendar()
+	{
+		for (var element = Parent; element is not null; element = element.Parent)
+		{
+			if (element is Calendar calendar)
+			{
+				return calendar;
+			}
+		}
+
+		return null;
 	}
 }

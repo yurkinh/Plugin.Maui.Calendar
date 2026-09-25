@@ -759,6 +759,21 @@ public class DayViewTemplateTests
     }
 
     [Fact]
+    public void TappingCell_DayTappedCommandThatRebuildsTheLayout_StillSelectsTheDay()
+    {
+        // DayTappedCommand runs before the tap message is handled. Switching CalendarLayout there
+        // replaces every cell, so the tapped one no longer belongs to the calendar's current cells.
+        var date = new DateTime(2025, 5, 12);
+        var calendar = new TestCalendar { ShownDate = May15 };
+        calendar.DayTappedCommand = new Command(() => calendar.CalendarLayout = WeekLayout.Week);
+
+        calendar.WithTapHandling(calendar.CellFor(date).Tap);
+
+        calendar.CalendarLayout.Should().Be(WeekLayout.Week);
+        calendar.SelectedDate.Should().Be(date, "the calendar that owned the tapped cell must still handle its tap");
+    }
+
+    [Fact]
     public void DayTappedMessageSentByOtherCode_StillHandledByEveryCalendar()
     {
         var date = new DateTime(2025, 5, 12);

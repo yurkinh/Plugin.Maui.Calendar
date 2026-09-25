@@ -121,7 +121,7 @@ public partial class Calendar : ContentView, IDisposable
 	// calendar that owns the tapped cell (a message without a source is handled by all, as before).
 	void OnDayTappedMessage(DayTappedMessage message)
 	{
-		if (message.Source is DayView dayView && !dayViews.Contains(dayView))
+		if (message.Source is Calendar owner && owner != this)
 		{
 			return;
 		}
