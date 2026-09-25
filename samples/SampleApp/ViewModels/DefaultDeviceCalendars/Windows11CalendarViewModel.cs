@@ -6,12 +6,11 @@ public partial class Windows11CalendarViewModel : BasePageViewModel
     {
 
     }
-    [ObservableProperty]
-    int month = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Month { get; set; } = DateTime.Today.Month;
 
-    [ObservableProperty]
-    int year = DateTime.Today.Year;
-
-    [ObservableProperty]
-    DateTime? selectedDate = DateTime.Today;
+	[ObservableProperty]
+	public partial int Year { get; set; } = DateTime.Today.Year;
+	[ObservableProperty]
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
 }

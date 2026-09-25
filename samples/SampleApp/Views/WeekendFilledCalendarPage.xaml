@@ -3,18 +3,17 @@
     x:Class="SampleApp.Views.WeekendFilledCalendarPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="weekendFilledCalendarPage"
     Title="Weekend Filled Calendar"
     x:DataType="local:WeekendFilledCalendarPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
-
-    <ContentPage.BindingContext>
-        <local:WeekendFilledCalendarPageViewModel />
-    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <controls:XamlSourceToolbarItem />
+    </ContentPage.ToolbarItems>
 
     <ScrollView>
         <VerticalStackLayout Padding="0,8" Spacing="0">
@@ -22,6 +21,7 @@
             <plugin:Calendar
                 x:Name="calendar"
                 Margin="8,4"
+                Padding="0"
                 DayViewCornerRadius="5"
                 DaysTitleLabelFirstUpperRestLower="True"
                 EventIndicatorType="BottomDot"
@@ -29,18 +29,21 @@
                 EventsScrollViewVisible="False"
                 FooterSectionVisible="False"
                 SelectedDate="{Binding SelectedDate}"
-                SelectedDayBackgroundColor="Transparent"
-                SelectedDayTextColor="#1F2A4D"
-                TodayOutlineColor="#1F2A4D"
-                TodayTextColor="#1F2A4D"
-                WeekendDayBackgroundColor="#EEF0F4">
+                EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
+                SelectedDayBackgroundColor="{toolkit:AppThemeResource AccentSoftColor}"
+                SelectedDayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
+                SelectedTodayTextColor="{toolkit:AppThemeResource AccentColor}"
+                Style="{StaticResource SampleCalendarStyle}"
+                SwipeUpToHideEnabled="False"
+                WeekendDayBackgroundColor="{toolkit:AppThemeResource SurfaceVariantColor}"
+                WeekendTitleStyle="{StaticResource SampleDaysTitleLabelStyle}">
 
                 <plugin:Calendar.HeaderSectionTemplate>
                     <DataTemplate>
                         <Grid
                             Padding="8,6,8,10"
-                            ColumnDefinitions="44,*,44"
-                            x:DataType="plugin:Calendar">
+                            x:DataType="plugin:Calendar"
+                            ColumnDefinitions="44,*,44">
                             <Button
                                 Grid.Column="0"
                                 Padding="0"
@@ -49,7 +52,7 @@
                                 Command="{Binding PrevLayoutUnitCommand}"
                                 FontSize="26"
                                 Text="‹"
-                                TextColor="#1F2A4D" />
+                                TextColor="{toolkit:AppThemeResource TextPrimaryColor}" />
                             <HorizontalStackLayout
                                 Grid.Column="1"
                                 HorizontalOptions="Center"
@@ -59,13 +62,11 @@
                                     FontAttributes="Bold"
                                     FontSize="18"
                                     Text="{Binding LayoutUnitText}"
-                                    TextColor="#1F2A4D"
                                     VerticalOptions="Center" />
                                 <Label
                                     FontAttributes="Bold"
                                     FontSize="18"
                                     Text="{Binding LocalizedYear}"
-                                    TextColor="#1F2A4D"
                                     VerticalOptions="Center" />
                             </HorizontalStackLayout>
                             <Button
@@ -76,14 +77,12 @@
                                 Command="{Binding NextLayoutUnitCommand}"
                                 FontSize="26"
                                 Text="›"
-                                TextColor="#1F2A4D" />
+                                TextColor="{toolkit:AppThemeResource TextPrimaryColor}" />
                         </Grid>
                     </DataTemplate>
                 </plugin:Calendar.HeaderSectionTemplate>
 
             </plugin:Calendar>
-
-
 
         </VerticalStackLayout>
     </ScrollView>

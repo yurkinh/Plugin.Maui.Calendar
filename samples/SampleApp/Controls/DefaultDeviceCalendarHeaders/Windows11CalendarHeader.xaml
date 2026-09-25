@@ -49,7 +49,7 @@
             FontAttributes="Bold"
             FontSize="14"
             HorizontalOptions="Start"
-            TextColor="{toolkit:AppThemeResource DaysTitleLabelTextColorMinimalistic}"
+            TextColor="{toolkit:AppThemeResource TextPrimaryColor}"
             VerticalOptions="Center">
             <Label.FormattedText>
                 <FormattedString>

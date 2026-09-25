@@ -3,8 +3,9 @@
 
 public partial class RangeSelectionPage : ContentPage
 {
-    public RangeSelectionPage()
+    public RangeSelectionPage(RangeSelectionPageViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 }

@@ -12,22 +12,20 @@ public partial class CalendarPickerPopupViewModel : BasePageViewModel
 
     public event Action<CalendarPickerResult> Closed;
 
-    [ObservableProperty]
-    DateTime shownDate = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime ShownDate { get; set; } = DateTime.Today;
 
-    [ObservableProperty]
-    WeekLayout calendarLayout = WeekLayout.Month;
+	[ObservableProperty]
+	public partial WeekLayout CalendarLayout { get; set; } = WeekLayout.Month;
+	[ObservableProperty]
+	public partial DateTime? SelectedDate { get; set; }
 
-    [ObservableProperty]
-    DateTime? selectedDate;
+	[ObservableProperty]
+	public partial DateTime MinimumDate { get; set; } = new(1900, 1, 1);
+	[ObservableProperty]
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddDays(3);
 
-    [ObservableProperty]
-    DateTime minimumDate = new(1900, 1, 1);
-
-    [ObservableProperty]
-    DateTime maximumDate = DateTime.Today.AddDays(3);
-
-    [RelayCommand]
+	[RelayCommand]
     void Clear()
     {
         SelectedDate = null;

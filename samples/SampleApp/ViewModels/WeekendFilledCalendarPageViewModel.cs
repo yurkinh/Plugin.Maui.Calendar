@@ -57,7 +57,7 @@ public partial class WeekendFilledCalendarPageViewModel : BasePageViewModel
             {
                 var dayEvents = new DayEventCollection<EventModel>
                 {
-                    Colors = day.Select(s => s.Color).ToList(),
+                    Colors = [.. day.Select(s => s.Color)],
                 };
 
                 dayEvents.AddRange(day.Select(s => new EventModel

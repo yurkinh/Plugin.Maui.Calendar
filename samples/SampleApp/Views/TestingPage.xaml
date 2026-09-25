@@ -3,30 +3,47 @@
     x:Class="SampleApp.Views.TestingPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
+    xmlns:mtk="clr-namespace:MemoryToolkit.Maui;assembly=MemoryToolkit.Maui"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:vm="clr-namespace:SampleApp.ViewModels"
-    xmlns:mtk="clr-namespace:MemoryToolkit.Maui;assembly=MemoryToolkit.Maui"
+    Title="Testing Page"
     mtk:LeakMonitorBehavior.Cascade="True"
-    Title="TestingPage"
-    x:DataType="vm:TestingPageViewModel">
-    <VerticalStackLayout Padding="10" Spacing="10">
-        <plugin:Calendar
-            Culture="{Binding Culture}"
-            DaysTitleMaximumLength="{Binding DaysTitleMaxLength}"
-            UseAbbreviatedDayNames="{Binding UseAbbreviatedDayNames}" />
+    x:DataType="vm:TestingPageViewModel"
+    Shell.TabBarIsVisible="False">
+    <ContentPage.ToolbarItems>
+        <controls:XamlSourceToolbarItem />
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+        <VerticalStackLayout Padding="0,0,0,24" Spacing="12">
+            <!--  Culture is set here on purpose: it overrides the language chosen in Settings  -->
+            <plugin:Calendar
+                Culture="{Binding Culture}"
+                DaysTitleMaximumLength="{Binding DaysTitleMaxLength}"
+                Style="{StaticResource SampleCalendarStyle}"
+                UseAbbreviatedDayNames="{Binding UseAbbreviatedDayNames}" />
 
-        <Picker
-            Title="Select Language"
-            ItemDisplayBinding="{Binding DisplayName}"
-            ItemsSource="{Binding AvailableCultures}"
-            SelectedItem="{Binding Culture}" />
-        <Picker
-            Title="Select Day Title Length"
-            ItemsSource="{Binding DaysTitleMaxLengthOptions}"
-            SelectedItem="{Binding DaysTitleMaxLength}" />
-        <HorizontalStackLayout Spacing="10">
-            <Label Text="Use Abbreviated Day Names" VerticalOptions="Center" />
-            <Switch IsToggled="{Binding UseAbbreviatedDayNames}" />
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+            <Border Margin="16,0" Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Padding="16,8" Spacing="4">
+                    <Picker
+                        Title="Select Language"
+                        ItemDisplayBinding="{Binding DisplayName, x:DataType=globalization:CultureInfo}"
+                        ItemsSource="{Binding AvailableCultures}"
+                        SelectedItem="{Binding Culture}" />
+                    <Picker
+                        Title="Select Day Title Length"
+                        ItemsSource="{Binding DaysTitleMaxLengthOptions}"
+                        SelectedItem="{Binding DaysTitleMaxLength}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Style="{StaticResource BodyLabelStyle}"
+                            Text="Use Abbreviated Day Names"
+                            VerticalOptions="Center" />
+                        <Switch Grid.Column="1" IsToggled="{Binding UseAbbreviatedDayNames}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

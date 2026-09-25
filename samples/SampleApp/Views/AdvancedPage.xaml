@@ -7,88 +7,40 @@
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="advancedCalendarPage"
     Title="Advanced Calendar"
     x:DataType="local:AdvancedPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize"
-                        Value="16"/>
-                <Setter Property="LineBreakMode" Value="WordWrap" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Margin" Value="5,2" />
-            </Style>
-            <Style
-                x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="Orange" />
-            </Style>
-            <Style
-                x:Key="MyWeekendTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="Orange" />
-            </Style>
-            <Style
-                x:Key="MySelectedDateLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="Red" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <ContentPage.BindingContext>
-        <local:AdvancedPageViewModel />
-    </ContentPage.BindingContext>
-
+    <ContentPage.ToolbarItems>
+        <controls:XamlSourceToolbarItem />
+    </ContentPage.ToolbarItems>
 
     <plugin:Calendar
         x:Name="calendar"
-        Padding="10,0"
         CalendarLayout="{Binding CalendarLayout}"
-        Culture="{Binding Culture}"
         DayTappedCommand="{Binding DayTappedCommand}"
-        DayViewCornerRadius="3"
+        DayViewCornerRadius="10"
         DayViewSize="40"
-        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
         DaysTitleMaximumLength="ThreeChars"
-        DeselectedDayTextColor="Blue"
-        EventIndicatorColor="Red"
-        EventIndicatorSelectedColor="IndianRed"
-        EventIndicatorSelectedTextColor="AliceBlue"
-        EventIndicatorTextColor="WhiteSmoke"
+        EmptyTemplate="{StaticResource NoEventsTemplate}"
+        EventIndicatorColor="{toolkit:AppThemeResource AccentSoftColor}"
+        EventIndicatorSelectedColor="{toolkit:AppThemeResource AccentColor}"
+        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource OnAccentColor}"
+        EventIndicatorTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
         EventIndicatorType="Background"
         Events="{Binding Events}"
         EventsScrollViewVisible="True"
-        HeaderSectionVisible="True"
-        HorizontalOptions="Fill"
-        OtherMonthDayColor="Gray"
         OtherMonthDayIsVisible="False"
         SelectedDate="{Binding SelectedDate}"
-        SelectedDateLabelStyle="{StaticResource MySelectedDateLabelStyle}"
         SelectedDateTextFormat="ddd, dd MMM yyyy"
-        SelectedDayBackgroundColor="DarkCyan"
-        SelectedDayTextColor="Cyan"
-        SelectedTodayTextColor="Green"
         ShownDate="{Binding ShownDate}"
+        Style="{StaticResource SampleCalendarStyle}"
         SwipeDetectionDisabled="False"
         SwipeToChangeMonthEnabled="False"
         SwipeUpToHideEnabled="False"
-        TodayFillColor="Silver"
-        TodayOutlineColor="Blue"
-        TodayTextColor="Yellow"
-        VerticalOptions="Fill"
-        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}">
+        TodayFillColor="{toolkit:AppThemeResource SurfaceVariantColor}"
+        TodayOutlineColor="Transparent">
 
         <plugin:Calendar.HeaderSectionTemplate>
             <controls:CalendarHeader />
@@ -102,18 +54,8 @@
 
         <plugin:Calendar.EventTemplate>
             <DataTemplate x:DataType="model:AdvancedEventModel">
-                <controls:CalendarEvent CalendarEventCommand="{Binding EventSelectedCommand, Source={x:Reference advancedCalendarPage}, x:DataType=local:AdvancedPageViewModel}" />
+                <controls:CalendarEvent CalendarEventCommand="{Binding EventSelectedCommand, Source={RelativeSource AncestorType={x:Type local:AdvancedPageViewModel}}, x:DataType=local:AdvancedPageViewModel}" />
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
-        <plugin:Calendar.EmptyTemplate>
-            <DataTemplate>
-                <VerticalStackLayout>
-                    <Label
-                        Margin="0,5,0,5"
-                        HorizontalTextAlignment="Center"
-                        Text="NO EVENTS FOR THE SELECTED DATE" />
-                </VerticalStackLayout>
-            </DataTemplate>
-        </plugin:Calendar.EmptyTemplate>
     </plugin:Calendar>
 </ContentPage>

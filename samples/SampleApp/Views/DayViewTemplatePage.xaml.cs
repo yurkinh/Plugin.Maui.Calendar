@@ -2,9 +2,10 @@ namespace SampleApp.Views;
 
 public partial class DayViewTemplatePage : ContentPage
 {
-	public DayViewTemplatePage()
+	public DayViewTemplatePage(DayViewTemplatePageViewModel vm)
 	{
 		InitializeComponent();
+		BindingContext = vm;
 		ApplyTemplate((DataTemplate)Resources["PhotoDayTemplate"], photoSegment, photoLegend);
 	}
 

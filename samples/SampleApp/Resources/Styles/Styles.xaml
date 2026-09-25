@@ -3,61 +3,267 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar">
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <!--  App chrome  -->
+
+    <Style ApplyToDerivedTypes="True" TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource PageBackgroundColor}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
+
+    <Style TargetType="Switch">
+        <Setter Property="OnColor" Value="{toolkit:AppThemeResource AccentColor}" />
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="TitleColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="PlaceholderColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="PlaceholderColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <!--  Typography  -->
+
+    <Style x:Key="SectionHeaderStyle" TargetType="Label">
+        <Setter Property="Margin" Value="20,24,20,8" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CharacterSpacing" Value="0.6" />
+        <Setter Property="TextTransform" Value="Uppercase" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <Style x:Key="TitleLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
+
+    <Style x:Key="BodyLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
+
+    <Style x:Key="CaptionLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <Style x:Key="IconLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource AccentColor}" />
+    </Style>
+
+    <!--  Surfaces  -->
+
+    <Style x:Key="CardStyle" TargetType="Border">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Stroke" Value="{toolkit:AppThemeResource DividerColor}" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource SurfaceColor}" />
+    </Style>
+
+    <Style x:Key="DividerStyle" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+        <Setter Property="Color" Value="{toolkit:AppThemeResource DividerColor}" />
+    </Style>
+
+    <!--  Buttons  -->
+
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="44" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource AccentColor}" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource OnAccentColor}" />
+    </Style>
 
     <Style
-        x:Key="SampleLabelStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultLabelStyle}"
-        TargetType="Label" />
+        x:Key="SecondaryButtonStyle"
+        BasedOn="{StaticResource PrimaryButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource SurfaceVariantColor}" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
 
     <Style
-        x:Key="SampleMonthLabelStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
-        TargetType="Label" />
+        x:Key="TextButtonStyle"
+        BasedOn="{StaticResource PrimaryButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource AccentColor}" />
+    </Style>
 
-    <Style
-        x:Key="SampleYearLabelStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
-        TargetType="Label" />
+    <Style x:Key="IconButtonStyle" TargetType="Button">
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource SurfaceVariantColor}" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
 
-    <Style
-        x:Key="SamplePreviousMonthArrowButtonStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultPreviousMonthArrowButtonStyle}"
-        TargetType="Button" />
+    <!--
+        Calendar styles. Pages set SampleCalendarStyle and then override only the
+        properties their sample is about.
+    -->
 
-    <Style
-        x:Key="SampleNextMonthArrowButtonStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultNextMonthArrowButtonStyle}"
-        TargetType="Button" />
+    <Style x:Key="SampleDaysLabelStyle" TargetType="Label">
+        <Setter Property="Margin" Value="5,2" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="LineBreakMode" Value="NoWrap" />
+    </Style>
 
-    <Style
-        x:Key="SamplePreviousYearArrowButtonStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultPreviousYearArrowButtonStyle}"
-        TargetType="Button" />
-
-    <Style
-        x:Key="SampleNextYearArrowButtonStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultNextYearArrowButtonStyle}"
-        TargetType="Button" />
-
-    <Style
-        x:Key="SampleFooterArrowLabelStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowLabelStyle}"
-        TargetType="Label" />
-
-    <Style
-        x:Key="SampleSelectedDateLabelStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultSelectedDateLabelStyle}"
-        TargetType="Label" />
-
-    <Style
-        x:Key="SampleDaysTitleLabelStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
-        TargetType="Label" />
+    <Style x:Key="SampleDaysTitleLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
 
     <Style
         x:Key="SampleWeekendTitleStyle"
-        BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
-        TargetType="Label" />
+        BasedOn="{StaticResource SampleDaysTitleLabelStyle}"
+        TargetType="Label">
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource WeekendColor}" />
+    </Style>
 
+    <Style x:Key="SampleMonthLabelStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
+
+    <Style
+        x:Key="SampleYearLabelStyle"
+        BasedOn="{StaticResource SampleMonthLabelStyle}"
+        TargetType="Label">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <Style x:Key="SampleSelectedDateLabelStyle" TargetType="Label">
+        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="LineBreakMode" Value="TailTruncation" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
+
+    <Style x:Key="SampleFooterArrowLabelStyle" TargetType="Label">
+        <Setter Property="Margin" Value="0,0,8,0" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="Text" Value="↑" />
+        <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+    </Style>
+
+    <Style
+        x:Key="SamplePreviousArrowButtonStyle"
+        BasedOn="{StaticResource IconButtonStyle}"
+        TargetType="Button">
+        <Setter Property="Text" Value="&#xf053;" />
+    </Style>
+
+    <Style
+        x:Key="SampleNextArrowButtonStyle"
+        BasedOn="{StaticResource IconButtonStyle}"
+        TargetType="Button">
+        <Setter Property="Text" Value="&#xf054;" />
+    </Style>
+
+    <!--
+        Only the choices from the Settings tab: every calendar in the app uses at least this style.
+        ICalendarSettingsService publishes both resources and replaces them when the user changes them.
+    -->
+    <Style x:Key="SettingsCalendarStyle" TargetType="plugin:Calendar">
+        <Setter Property="Culture" Value="{DynamicResource CalendarCulture}" />
+        <Setter Property="FirstDayOfWeek" Value="{DynamicResource CalendarFirstDayOfWeek}" />
+    </Style>
+
+    <Style
+        x:Key="SampleCalendarStyle"
+        BasedOn="{StaticResource SettingsCalendarStyle}"
+        TargetType="plugin:Calendar">
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="DaysLabelStyle" Value="{StaticResource SampleDaysLabelStyle}" />
+        <Setter Property="DaysTitleLabelStyle" Value="{StaticResource SampleDaysTitleLabelStyle}" />
+        <Setter Property="WeekendTitleStyle" Value="{StaticResource SampleWeekendTitleStyle}" />
+        <Setter Property="MonthLabelStyle" Value="{StaticResource SampleMonthLabelStyle}" />
+        <Setter Property="YearLabelStyle" Value="{StaticResource SampleYearLabelStyle}" />
+        <Setter Property="SelectedDateLabelStyle" Value="{StaticResource SampleSelectedDateLabelStyle}" />
+        <Setter Property="FooterArrowLabelStyle" Value="{StaticResource SampleFooterArrowLabelStyle}" />
+        <Setter Property="PreviousMonthArrowButtonStyle" Value="{StaticResource SamplePreviousArrowButtonStyle}" />
+        <Setter Property="NextMonthArrowButtonStyle" Value="{StaticResource SampleNextArrowButtonStyle}" />
+        <Setter Property="PreviousYearArrowButtonStyle" Value="{StaticResource SamplePreviousArrowButtonStyle}" />
+        <Setter Property="NextYearArrowButtonStyle" Value="{StaticResource SampleNextArrowButtonStyle}" />
+        <Setter Property="DeselectedDayTextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="WeekendDayColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="OtherMonthDayColor" Value="{toolkit:AppThemeResource TextDisabledColor}" />
+        <Setter Property="OtherMonthSelectedDayColor" Value="{toolkit:AppThemeResource OnAccentColor}" />
+        <Setter Property="DisabledDayColor" Value="{toolkit:AppThemeResource TextDisabledColor}" />
+        <Setter Property="SelectedDayBackgroundColor" Value="{toolkit:AppThemeResource AccentColor}" />
+        <Setter Property="SelectedDayTextColor" Value="{toolkit:AppThemeResource OnAccentColor}" />
+        <Setter Property="SelectedTodayTextColor" Value="{toolkit:AppThemeResource OnAccentColor}" />
+        <Setter Property="TodayOutlineColor" Value="{toolkit:AppThemeResource AccentColor}" />
+        <Setter Property="TodayTextColor" Value="{toolkit:AppThemeResource AccentColor}" />
+        <Setter Property="EventIndicatorColor" Value="{toolkit:AppThemeResource AccentColor}" />
+        <Setter Property="EventIndicatorSelectedColor" Value="{toolkit:AppThemeResource OnAccentColor}" />
+        <Setter Property="EventIndicatorTextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="EventIndicatorSelectedTextColor" Value="{toolkit:AppThemeResource OnAccentColor}" />
+    </Style>
+
+    <!--  EmptyTemplate of the sample calendars that list the selected day's events  -->
+    <DataTemplate x:Key="NoEventsTemplate">
+        <Label
+            Padding="16,20"
+            HorizontalTextAlignment="Center"
+            Style="{StaticResource CaptionLabelStyle}"
+            Text="No events on this day" />
+    </DataTemplate>
+
+    <Style
+        x:Key="SampleRangeCalendarStyle"
+        BasedOn="{StaticResource SampleCalendarStyle}"
+        TargetType="plugin:RangeSelectionCalendar">
+        <Setter Property="SelectedDayBackgroundColor" Value="{toolkit:AppThemeResource RangeEdgeColor}" />
+        <Setter Property="SelectedDatesRangeBackgroundColor" Value="{toolkit:AppThemeResource AccentSoftColor}" />
+        <Setter Property="SelectedDayTextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="SelectedTodayTextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+        <Setter Property="OtherMonthSelectedDayColor" Value="{toolkit:AppThemeResource TextSecondaryColor}" />
+        <Setter Property="EventIndicatorSelectedColor" Value="{toolkit:AppThemeResource AccentColor}" />
+        <Setter Property="EventIndicatorSelectedTextColor" Value="{toolkit:AppThemeResource TextPrimaryColor}" />
+    </Style>
 </ResourceDictionary>

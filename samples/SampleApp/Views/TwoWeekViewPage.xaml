@@ -7,61 +7,29 @@
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="twoWeekViewCalendarPage"
-    Title="Two Week Calendar"
+    Title="Two Weeks"
     x:DataType="local:TwoWeekViewPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style
-                x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
-            </Style>
-            <Style
-                x:Key="MyWeekendTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
-            </Style>
-            <Style
-                x:Key="MyFooterArrowLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultFooterArrowLabelStyle}"
-                TargetType="Label">
-                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <controls:XamlSourceToolbarItem />
     </ContentPage.ToolbarItems>
-    <ContentPage.BindingContext>
-        <local:TwoWeekViewPageViewModel />
-    </ContentPage.BindingContext>
 
     <plugin:Calendar
         x:Name="calendar"
-        Padding="10,0"
         CalendarLayout="{Binding CalendarLayout}"
         Day="{Binding Day}"
-        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
-        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EmptyTemplate="{StaticResource NoEventsTemplate}"
         Events="{Binding Events}"
-        FooterArrowLabelStyle="{StaticResource MyFooterArrowLabelStyle}"
-        HorizontalOptions="Fill"
+        EventsScrollViewVisible="True"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"
         SelectedDate="{Binding SelectedDate}"
         ShownDate="{Binding ShownDate}"
-        VerticalOptions="Fill"
-        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
+        Style="{StaticResource SampleCalendarStyle}"
         Year="{Binding Year}">
 
         <plugin:Calendar.HeaderSectionTemplate>
@@ -70,26 +38,7 @@
 
         <plugin:Calendar.EventTemplate>
             <DataTemplate x:DataType="models:EventModel">
-                <VerticalStackLayout
-                    Padding="15,0,0,0"
-                    HorizontalOptions="Fill"
-                    Spacing="6"
-                    VerticalOptions="Fill">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        Text="Name"/>
-                    <Label
-                        FontSize="12"
-                        LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer
-                            x:DataType="local:TwoWeekViewPageViewModel"
-                            Command="{Binding EventSelectedCommand, Source={x:Reference twoWeekViewCalendarPage}}"
-                            CommandParameter="{Binding .}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
+                <controls:EventRow Command="{Binding EventSelectedCommand, Source={RelativeSource AncestorType={x:Type local:TwoWeekViewPageViewModel}}, x:DataType=local:TwoWeekViewPageViewModel}" />
             </DataTemplate>
         </plugin:Calendar.EventTemplate>
     </plugin:Calendar>

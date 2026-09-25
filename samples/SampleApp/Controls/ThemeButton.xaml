@@ -4,107 +4,76 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SampleApp.Controls"
-    x:DataType="local:ThemeButton"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:Name="This">
+    x:Name="This"
+    x:DataType="local:ThemeButton">
     <ContentView.Resources>
         <ControlTemplate x:Key="RadioButtonTemplate">
-            <Grid Margin="4"
-                  WidthRequest="100">
-                <ContentPresenter/>
-            </Grid>
+            <ContentPresenter />
         </ControlTemplate>
 
         <Style TargetType="RadioButton">
-            <Setter Property="ControlTemplate"
-                    Value="{StaticResource RadioButtonTemplate}"/>
+            <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}" />
         </Style>
 
-        <toolkit:AppThemeColor
-            x:Key="CheeckedColor"
-            Dark="{StaticResource FrenchPassc}"
-            Light="{StaticResource LimedSpruce}"/>
-        <toolkit:AppThemeColor
-            x:Key="UncheckedColor"
-            Dark="{StaticResource LimedSpruce}"
-            Light="{StaticResource FoggyGray}"/>
+        <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="0,14" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+        </Style>
     </ContentView.Resources>
 
-    <RadioButton GroupName="{Binding GroupName, Source={x:Reference This}}"
-                 IsChecked="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}">
+    <!--
+        Both looks are laid out and IsChecked only switches which one is visible: DataTrigger
+        setters with AppThemeResource colors are not reverted reliably once the app theme changes.
+    -->
+    <RadioButton GroupName="{Binding GroupName, Source={x:Reference This}}" IsChecked="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}">
         <RadioButton.Content>
-            <Border
-                HeightRequest="100"
-                StrokeShape="RoundRectangle 10"
-                StrokeThickness="1">
-                <VerticalStackLayout HorizontalOptions="Center">
-                    <Label
-                        Margin="0,10"
-                        FontFamily="FontAwesomeSolid"
-                        FontSize="30"
-                        HorizontalOptions="Center"
-                        Text="{Binding Icon, Source={x:Reference This}}">
-                        <Label.Triggers>
-                            <DataTrigger
-                                Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
-                                TargetType="Label"
-                                Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{toolkit:AppThemeResource UncheckedColor}"/>
-                            </DataTrigger>
-                            <DataTrigger
-                                Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
-                                TargetType="Label"
-                                Value="False">
-                                <Setter Property="TextColor"
-                                        Value="{toolkit:AppThemeResource CheeckedColor}"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Label
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        Text="{Binding Title, Source={x:Reference This}}"
-                        TextColor="{toolkit:AppThemeResource TextColor}">
-                        <Label.Triggers>
-                            <DataTrigger
-                                Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
-                                TargetType="Label"
-                                Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{toolkit:AppThemeResource UncheckedColor}"/>
-                            </DataTrigger>
-                            <DataTrigger
-                                Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
-                                TargetType="Label"
-                                Value="False">
-                                <Setter Property="TextColor"
-                                        Value="{toolkit:AppThemeResource CheeckedColor}"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </VerticalStackLayout>
-                <Border.Triggers>
-                    <DataTrigger
-                        Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
-                        TargetType="Border"
-                        Value="True">
-                        <Setter Property="Stroke"
-                                Value="{toolkit:AppThemeResource CheeckedColor}"/>
-                        <Setter Property="BackgroundColor"
-                                Value="{toolkit:AppThemeResource CheeckedColor}"/>
-                    </DataTrigger>
-                    <DataTrigger
-                        Binding="{Binding IsChecked, Source={x:Reference This}, Mode=TwoWay}"
-                        TargetType="Border"
-                        Value="False">
-                        <Setter Property="Stroke"
-                                Value="{toolkit:AppThemeResource CheeckedColor}"/>
-                        <Setter Property="BackgroundColor"
-                                Value="{toolkit:AppThemeResource UncheckedColor}"/>
-                    </DataTrigger>
-                </Border.Triggers>
-            </Border>
+            <Grid>
+                <Border
+                    BackgroundColor="{toolkit:AppThemeResource SurfaceColor}"
+                    IsVisible="{Binding IsChecked, Source={x:Reference This}, Converter={StaticResource InvertedBoolConverter}}"
+                    Stroke="{toolkit:AppThemeResource DividerColor}"
+                    StrokeThickness="1"
+                    Style="{StaticResource CardStyle}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Label
+                            FontFamily="FontAwesomeSolid"
+                            FontSize="22"
+                            HorizontalOptions="Center"
+                            Text="{Binding Icon, Source={x:Reference This}}"
+                            TextColor="{toolkit:AppThemeResource TextSecondaryColor}" />
+                        <Label
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="{Binding Title, Source={x:Reference This}}"
+                            TextColor="{toolkit:AppThemeResource TextPrimaryColor}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border
+                    BackgroundColor="{toolkit:AppThemeResource AccentSoftColor}"
+                    IsVisible="{Binding IsChecked, Source={x:Reference This}}"
+                    Stroke="{toolkit:AppThemeResource AccentColor}"
+                    StrokeThickness="2"
+                    Style="{StaticResource CardStyle}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Label
+                            FontFamily="FontAwesomeSolid"
+                            FontSize="22"
+                            HorizontalOptions="Center"
+                            Text="{Binding Icon, Source={x:Reference This}}"
+                            TextColor="{toolkit:AppThemeResource AccentColor}" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="{Binding Title, Source={x:Reference This}}"
+                            TextColor="{toolkit:AppThemeResource AccentColor}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
         </RadioButton.Content>
     </RadioButton>
 </ContentView>

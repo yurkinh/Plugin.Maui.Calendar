@@ -167,7 +167,7 @@ public partial class Calendar : ContentView, IDisposable
 			DayViewTemplate
 		);
 
-		dayTitleLabels = daysControl.Children.OfType<Label>().ToArray();
+		dayTitleLabels = [.. daysControl.Children.OfType<Label>()];
 
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
@@ -211,7 +211,7 @@ public partial class Calendar : ContentView, IDisposable
 			// A multi-event day that provides no colors still shows the single indicator dot.
 			if (dayEventCollection is IMultiEventDay { Colors.Count: > 0 } multiEventDay)
 			{
-				SetEventColors(dayModel, multiEventDay.Colors.Take(5).ToList());
+				SetEventColors(dayModel, [.. multiEventDay.Colors.Take(5)]);
 			}
 			else
 			{

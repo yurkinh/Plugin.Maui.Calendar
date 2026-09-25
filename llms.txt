@@ -1,0 +1,23 @@
+# Plugin.Maui.Calendar
+
+> A NuGet calendar control for .NET MAUI (Android, iOS, Mac Catalyst, Windows), built from MAUI views only. It has month, two-week and week layouts; single, multi, range and whole-week selection; events shown as dots or backgrounds with an event list; localization through CultureInfo; colors and styles for every part; and custom header, footer, event and day-cell templates.
+
+Install with `dotnet add package Plugin.Maui.Calendar` (3.x needs .NET 10). No registration in MauiProgram.cs is needed. XAML namespace: `xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"`.
+
+Before writing code with this package, read llms-full.txt: it lists every property with its default, the behavior rules that cause most bugs (for example `Culture` defaults to InvariantCulture and `SelectedDates` is replaced after every tap), and the APIs that do not exist.
+
+## Docs
+
+- [llms-full.txt](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/llms-full.txt): complete reference for AI coding assistants: API, behavior, recipes, removed and non-existent APIs, version availability
+- [README](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/README.md): documentation for people, with screenshots
+- [CHANGELOG](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/CHANGELOG.md): changes of every version, including the 2.0 breaking changes
+
+## Samples
+
+- [Sample app pages](https://github.com/yurkinh/Plugin.Maui.Calendar/tree/main/samples/SampleApp/Views): a working page for every feature
+- [Sample styles](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/samples/SampleApp/Resources/Styles/Styles.xaml): a complete light and dark calendar style (`SampleCalendarStyle`)
+
+## Optional
+
+- [Calendar source](https://github.com/yurkinh/Plugin.Maui.Calendar/tree/main/src/Plugin.Maui.Calendar/Shared/Controls/Calendar): the bindable properties with XML documentation
+- [Issues](https://github.com/yurkinh/Plugin.Maui.Calendar/issues)

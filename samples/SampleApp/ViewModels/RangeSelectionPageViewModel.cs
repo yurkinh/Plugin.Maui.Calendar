@@ -36,22 +36,19 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
         };
     }
 
-    [ObservableProperty]
-    DateTime? selectedEndDate = DateTime.Today.AddDays(2);
+	[ObservableProperty]
+	public partial DateTime? SelectedEndDate { get; set; } = DateTime.Today.AddDays(2);
 
-    [ObservableProperty]
-    DateTime shownDate = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime ShownDate { get; set; } = DateTime.Today;
+	[ObservableProperty]
+	public partial WeekLayout CalendarLayout { get; set; } = WeekLayout.Month;
 
-    [ObservableProperty]
-    WeekLayout calendarLayout = WeekLayout.Month;
-
-    [ObservableProperty]
-    ObservableCollection<DateTime> selectedDates = [];
-
-    [ObservableProperty]
-    DateTime? selectedStartDate = DateTime.Today.AddDays(-9);
-
-    public EventCollection Events { get; }
+	[ObservableProperty]
+	public partial ObservableCollection<DateTime> SelectedDates { get; set; } = [];
+	[ObservableProperty]
+	public partial DateTime? SelectedStartDate { get; set; } = DateTime.Today.AddDays(-9);
+	public EventCollection Events { get; }
 
     [RelayCommand]
     static async Task EventSelected(object item)
@@ -81,7 +78,7 @@ public partial class RangeSelectionPageViewModel : BasePageViewModel
         {
             Name = $"{name} event{x}",
             Description = $"This is {name} event{x}'s description!",
-            Starting = new DateTime(timeOfEvent.Year, timeOfEvent.Month, timeOfEvent.Day, (x * 2) % 24, (x * 3) % 60, 0)
+            Starting = new DateTime(timeOfEvent.Year, timeOfEvent.Month, timeOfEvent.Day, x * 2 % 24, x * 3 % 60, 0)
         });
     }
 }

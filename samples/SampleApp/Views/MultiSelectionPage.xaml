@@ -3,100 +3,51 @@
     x:Class="SampleApp.Views.MultiSelectionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="multiCalendarPage"
-    Title="Multi Selection Calendar"
+    Title="Multi Selection"
     x:DataType="local:SimplePageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="LineBreakMode" Value="WordWrap" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Margin" Value="5,2" />
-            </Style>
-            <Style
-                x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
-                TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
-            </Style>
-            <Style
-                x:Key="MyWeekendTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
-                TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <controls:XamlSourceToolbarItem />
     </ContentPage.ToolbarItems>
-    <ContentPage.BindingContext>
-        <local:SimplePageViewModel />
-    </ContentPage.BindingContext>
     <ScrollView>
-        <VerticalStackLayout>
-
+        <VerticalStackLayout Padding="0,0,0,24">
             <plugin:MultiSelectionCalendar
                 x:Name="calendar"
-                Padding="10,0"
-                DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-                DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
-                DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
                 Events="{Binding Events}"
-                HorizontalOptions="Fill"
                 MaximumDate="{Binding MaximumDate}"
                 MinimumDate="{Binding MinimumDate}"
                 Month="{Binding Month}"
                 SelectedDate="{Binding SelectedDate}"
                 SelectedDates="{Binding SelectedDates, Mode=TwoWay}"
-                VerticalOptions="Fill"
-                WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
+                Style="{StaticResource SampleCalendarStyle}"
                 Year="{Binding Year}">
-                <plugin:Calendar.EventTemplate>
-                    <DataTemplate x:DataType="models:EventModel">
-                        <VerticalStackLayout
-                            Padding="15,0,0,0"
-                            HorizontalOptions="Fill"
-                            Spacing="6"
-                            VerticalOptions="Fill">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="16"
-                                Text="{Binding Name}" />
-                            <Label
-                                FontSize="12"
-                                LineBreakMode="WordWrap"
-                                Text="{Binding Description}" />
-                            <VerticalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer
-                                    x:DataType="local:SimplePageViewModel"
-                                    Command="{Binding EventSelectedCommand, Source={x:Reference multiCalendarPage}}"
-                                    CommandParameter="{Binding .}" />
-                            </VerticalStackLayout.GestureRecognizers>
-                        </VerticalStackLayout>
+                <!--  The footer lists every selected date: CalendarFooter cuts the list at the screen edge  -->
+                <plugin:MultiSelectionCalendar.FooterSectionTemplate>
+                    <DataTemplate>
+                        <controls:CalendarFooter />
                     </DataTemplate>
-                </plugin:Calendar.EventTemplate>
+                </plugin:MultiSelectionCalendar.FooterSectionTemplate>
             </plugin:MultiSelectionCalendar>
 
-            <Button
-                Margin="150,50"
-                Padding="10"
-                BackgroundColor="{toolkit:AppThemeResource ButtonColor}"
-                Command="{Binding ClearSelectedDatesCommand}"
-                CornerRadius="10"
-                Text="Clear Selection" />
+            <Grid
+                Margin="16,8,16,0"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="12">
+                <Label
+                    Style="{StaticResource CaptionLabelStyle}"
+                    Text="{Binding SelectedDates.Count, StringFormat='{0} days selected'}"
+                    VerticalOptions="Center" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ClearSelectedDatesCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Text="Clear Selection" />
+            </Grid>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

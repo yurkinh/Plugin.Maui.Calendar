@@ -9,12 +9,12 @@
              x:Name="toDoCalendarPage"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
+             BackgroundColor="{toolkit:AppThemeResource XiaomiBackgroundColor}"
              x:Class="SampleApp.Views.EditEventPage">
         <ContentPage.Resources>
                 <ResourceDictionary>
                         <toolkit:AppThemeColor
-                                x:Key="BackgroundColor"
+                                x:Key="XiaomiBackgroundColor"
                                 Dark="Black"
                                 Light="#f5f5f5"/>
                         <toolkit:AppThemeColor
@@ -42,7 +42,7 @@
                                 Dark="#b43e3e"
                                 Light="#a33b42"/>
                         <toolkit:AppThemeColor
-                                x:Key="ButtonColor"
+                                x:Key="XiaomiButtonColor"
                                 Dark="#3b3b3b"
                                 Light="#ffffff"/>
                         <toolkit:AppThemeColor
@@ -90,7 +90,7 @@
                         FontFamily="FontAwesomeSolid"
                         Command="{Binding CancelCommand}"
                         BackgroundColor="Transparent"
-                        TextColor="{toolkit:AppThemeResource TextColor}"/>
+                        TextColor="{toolkit:AppThemeResource TextPrimaryColor}"/>
                 <Button Text="&#xf00c;"
                         Grid.Column="1"
                         FontSize="30"
@@ -99,20 +99,20 @@
                         FontFamily="FontAwesomeSolid"
                         Command="{Binding AddEditEventCommand}"
                         BackgroundColor="Transparent"
-                        TextColor="{toolkit:AppThemeResource TextColor}"/>
+                        TextColor="{toolkit:AppThemeResource TextPrimaryColor}"/>
                 <Entry Placeholder="Event Name"
                        Grid.Row="1"
                        BackgroundColor="{toolkit:AppThemeResource EntryBackgroundColor}"
                        Grid.ColumnSpan="2"
                        Text="{Binding Name}"
-                       TextColor="{toolkit:AppThemeResource TextColor}"
+                       TextColor="{toolkit:AppThemeResource TextPrimaryColor}"
                        Margin="20"/>
                 <Editor Text="{Binding Description}"
                         Grid.Row="2"
                         Grid.ColumnSpan="2"
                         AutoSize="TextChanges"
                         Placeholder="Event Description"
-                        TextColor="{toolkit:AppThemeResource TextColor}"
+                        TextColor="{toolkit:AppThemeResource TextPrimaryColor}"
                         BackgroundColor="{toolkit:AppThemeResource EntryBackgroundColor}"
                         Margin="20"/>
         </Grid>

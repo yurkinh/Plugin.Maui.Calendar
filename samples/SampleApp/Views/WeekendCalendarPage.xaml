@@ -5,81 +5,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="weekendCalendarPage"
     Title="Weekend Calendar"
     x:DataType="local:WeekendCalendarPageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Margin" Value="5,2" />
-            </Style>
-            <Style
-                x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
-                TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource TextColor}" />
-            </Style>
-            <Style
-                x:Key="MyWeekendTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
-                TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="TextColor" Value="Red" />
-            </Style>
-            <Style
-                x:Key="MyMonthLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultMonthLabelStyle}"
-                TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-            </Style>
-            <Style
-                x:Key="MyYearLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultYearLabelStyle}"
-                TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
+        <controls:XamlSourceToolbarItem />
     </ContentPage.ToolbarItems>
 
-    <ContentPage.BindingContext>
-        <local:WeekendCalendarPageViewModel />
-    </ContentPage.BindingContext>
+    <!--  SampleCalendarStyle already paints the weekend titles in WeekendColor  -->
     <plugin:Calendar
         x:Name="calendar"
-        Padding="10,0"
-        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
-        DeselectedDayTextColor="{toolkit:AppThemeResource TextColor}"
-        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource TextColor}"
-        EventIndicatorTextColor="{toolkit:AppThemeResource TextColor}"
         Events="{Binding Events, Mode=OneWay}"
         FooterArrowVisible="False"
-        HeaderSectionVisible="true"
-        HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate, Mode=OneWay}"
         MinimumDate="{Binding MinimumDate, Mode=OneWay}"
         Month="{Binding Month}"
-        MonthLabelStyle="{StaticResource MyMonthLabelStyle}"
         SelectedDate="{Binding SelectedDate, Mode=OneWay}"
-        TodayTextColor="{toolkit:AppThemeResource TextColor}"
-        VerticalOptions="Fill"
-        WeekendDayColor="Red"
-        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
-        Year="{Binding Year}"
-        YearLabelStyle="{StaticResource MyYearLabelStyle}" />
+        Style="{StaticResource SampleCalendarStyle}"
+        WeekendDayColor="{toolkit:AppThemeResource WeekendColor}"
+        Year="{Binding Year}" />
 </ContentPage>

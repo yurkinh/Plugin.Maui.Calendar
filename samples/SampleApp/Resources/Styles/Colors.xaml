@@ -1,81 +1,99 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
+<!--
+    Design tokens of the sample app. Pages and controls reference these keys only
+    (through toolkit:AppThemeResource), so every screen follows the light/dark theme.
+    The device look-alike pages (Windows 11, Xiaomi) and the Day Template page keep
+    their own palettes on purpose: they imitate a specific design.
+-->
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
-    <Color x:Key="EmGreen">#33A78F</Color>
-    <Color x:Key="Transparent">Transparent</Color>
-    <Color x:Key="RadioButtonColor">#33A78F</Color>
-    <Color x:Key="Locust">#FF829169</Color>
-    <Color x:Key="LimedSpruce">#2F3E46</Color>
-    <Color x:Key="FoggyGray">#FFCDD1B3</Color>
-    <Color x:Key="Casablanca">#F7B548</Color>
-    <Color x:Key="MineShaft">#212121</Color>
-    <Color x:Key="Mystic">#edf2f4</Color>
-    <Color x:Key="Tasman">#CAD2C5</Color>
-    <Color x:Key="FrenchPassc">#B3FCF8</Color>
+    <!--  Surfaces  -->
+    <toolkit:AppThemeColor
+        x:Key="PageBackgroundColor"
+        Dark="#111412"
+        Light="#F5F6F1" />
+    <toolkit:AppThemeColor
+        x:Key="SurfaceColor"
+        Dark="#1A1E1B"
+        Light="#FFFFFF" />
+    <toolkit:AppThemeColor
+        x:Key="SurfaceVariantColor"
+        Dark="#252B27"
+        Light="#ECEEE6" />
+    <toolkit:AppThemeColor
+        x:Key="DividerColor"
+        Dark="#2D3430"
+        Light="#E1E4DA" />
+    <toolkit:AppThemeColor
+        x:Key="ScrimColor"
+        Dark="#99000000"
+        Light="#66000000" />
 
+    <!--  Text  -->
+    <toolkit:AppThemeColor
+        x:Key="TextPrimaryColor"
+        Dark="#E7EBE5"
+        Light="#1B211D" />
+    <toolkit:AppThemeColor
+        x:Key="TextSecondaryColor"
+        Dark="#9AA59E"
+        Light="#5F6B63" />
+    <toolkit:AppThemeColor
+        x:Key="TextDisabledColor"
+        Dark="#58615B"
+        Light="#A9B0AA" />
 
+    <!--  Accent: the one brand color (sage green)  -->
     <toolkit:AppThemeColor
-        x:Key="DaysLabelTextColor"
-        Dark="Orange"
-        Light="Red"/>
+        x:Key="AccentColor"
+        Dark="#A7C28A"
+        Light="#4E6B3A" />
     <toolkit:AppThemeColor
-        x:Key="DeselectedDayLabelTextColor"
-        Dark="White"
-        Light="Black"/>
+        x:Key="OnAccentColor"
+        Dark="#16200F"
+        Light="#FFFFFF" />
     <toolkit:AppThemeColor
-        x:Key="DaysTitleLabelTextColor"
-        Dark="{StaticResource Casablanca}"
-        Light="Black"/>
+        x:Key="AccentSoftColor"
+        Dark="#2A3823"
+        Light="#E2EAD8" />
+    <!--
+        Edges of a selected range. RangeSelectionCalendar paints all selected days with one
+        text color, so the edges need a tone that TextPrimaryColor reads on, like AccentSoftColor.
+    -->
     <toolkit:AppThemeColor
-        x:Key="DaysTitleLabelTextColorMinimalistic"
-        Dark="White"
-        Light="Black"/>
+        x:Key="RangeEdgeColor"
+        Dark="#4E6B3A"
+        Light="#A9C08F" />
+
+    <!--  Semantic  -->
     <toolkit:AppThemeColor
-        x:Key="TodayDayLabelTextColor"
-        Dark="ForestGreen"
-        Light="Black"/>
+        x:Key="WeekendColor"
+        Dark="#E8877E"
+        Light="#B94A48" />
+
+    <!--  Syntax colors of the XAML viewer  -->
     <toolkit:AppThemeColor
-        x:Key="OtherMonthDaysLabelTextColor"
-        Dark="DimGray"
-        Light="Silver"/>
+        x:Key="CodeBackgroundColor"
+        Dark="#161A17"
+        Light="#F0F2EC" />
     <toolkit:AppThemeColor
-        x:Key="EventIndicatorColor"
-        Dark="Green"
-        Light="Red"/>
+        x:Key="CodeTagColor"
+        Dark="#A7C28A"
+        Light="#3F5A2C" />
     <toolkit:AppThemeColor
-        x:Key="WeekendDaysLabelTextColor"
-        Dark="Red"
-        Light="Red"/>
+        x:Key="CodeAttributeColor"
+        Dark="#8FB8DE"
+        Light="#2F5F8A" />
     <toolkit:AppThemeColor
-        x:Key="BackgroundColor"
-        Dark="{StaticResource MineShaft}"
-        Light="White"/>
+        x:Key="CodeValueColor"
+        Dark="#E3B27A"
+        Light="#9A5418" />
     <toolkit:AppThemeColor
-        x:Key="BackgroundPageColor"
-        Dark="{StaticResource LimedSpruce}"
-        Light="{StaticResource Mystic}"/>
-    <toolkit:AppThemeColor
-        x:Key="ButtonColor"
-        Dark="{StaticResource Tasman}"
-        Light="{StaticResource Locust}"/>
-    <toolkit:AppThemeColor
-        x:Key="PopupBackgroundColor"
-        Dark="{StaticResource MineShaft}"
-        Light="{StaticResource Mystic}"/>
-    <toolkit:AppThemeColor
-        x:Key="BackgroundColorfullPageColor"
-        Dark="{StaticResource LimedSpruce}"
-        Light="{StaticResource FoggyGray}"/>
-    <toolkit:AppThemeColor
-        x:Key="TextColor"
-        Dark="{StaticResource Locust}"
-        Light="{StaticResource LimedSpruce}"/>
-    <toolkit:AppThemeColor
-        x:Key="ShellColor"
-        Dark="#FF243138"
-        Light="#FFE2E3D4"/>
+        x:Key="CodeCommentColor"
+        Dark="#6B766F"
+        Light="#8A938C" />
 </ResourceDictionary>

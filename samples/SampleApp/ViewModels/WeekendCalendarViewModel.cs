@@ -23,22 +23,20 @@ public partial class WeekendCalendarPageViewModel : BasePageViewModel
 
     public EventCollection Events { get; }
 
-    [ObservableProperty]
-    int month = DateTime.Today.Month;
+	[ObservableProperty]
+	public partial int Month { get; set; } = DateTime.Today.Month;
 
-    [ObservableProperty]
-    int year = DateTime.Today.Year;
+	[ObservableProperty]
+	public partial int Year { get; set; } = DateTime.Today.Year;
+	[ObservableProperty]
+	public partial DateTime? SelectedDate { get; set; } = DateTime.Today;
 
-    [ObservableProperty]
-    DateTime? selectedDate = DateTime.Today;
+	[ObservableProperty]
+	public partial DateTime MinimumDate { get; set; } = new(2019, 4, 29);
+	[ObservableProperty]
+	public partial DateTime MaximumDate { get; set; } = DateTime.Today.AddMonths(5);
 
-    [ObservableProperty]
-    DateTime minimumDate = new(2019, 4, 29);
-
-    [ObservableProperty]
-    DateTime maximumDate = DateTime.Today.AddMonths(5);
-
-    static IEnumerable<EventModel> GenerateEvents(int count, string name)
+	static IEnumerable<EventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new EventModel
         {

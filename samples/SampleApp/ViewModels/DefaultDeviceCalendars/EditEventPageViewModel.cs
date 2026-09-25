@@ -9,13 +9,13 @@ public partial class EditEventPageViewModel : BasePageViewModel, IQueryAttributa
 	AdvancedEventModel @event;
 
 	[ObservableProperty]
-	DateTime startingDate = DateTime.Now;
+	public partial DateTime StartingDate { get; set; } = DateTime.Now;
 
 	[ObservableProperty]
-	string name = string.Empty;
+	public partial string Name { get; set; } = string.Empty;
 
 	[ObservableProperty]
-	string description = string.Empty;
+	public partial string Description { get; set; } = string.Empty;
 
 	public void ApplyQueryAttributes(IDictionary<string, object> query)
 	{

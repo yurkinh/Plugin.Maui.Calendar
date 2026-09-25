@@ -1,25 +1,42 @@
-﻿using SampleApp.Services;
+﻿using System.Globalization;
+using SampleApp.Services;
 
 namespace SampleApp.ViewModels;
 public partial class UserSettingViewModel : ObservableObject
 {
+    const string repositoryUrl = "https://github.com/yurkinh/Plugin.Maui.Calendar";
+
     readonly IThemeService themeService;
-    public UserSettingViewModel(IThemeService themeService)
+    readonly ICalendarSettingsService calendarSettingsService;
+
+    public UserSettingViewModel(IThemeService themeService, ICalendarSettingsService calendarSettingsService)
     {
         this.themeService = themeService;
+        this.calendarSettingsService = calendarSettingsService;
         InitializeTheme();
+		SelectedCulture = calendarSettingsService.Culture;
+		SelectedFirstDayOfWeek = calendarSettingsService.FirstDayOfWeek;
     }
 
-    [ObservableProperty]
-    bool isCheckedLight;
+	[ObservableProperty]
+	public partial bool IsCheckedLight { get; set; }
 
-    [ObservableProperty]
-    bool isCheckedDark;
+	[ObservableProperty]
+	public partial bool IsCheckedDark { get; set; }
+	[ObservableProperty]
+	public partial bool IsCheckedSystem { get; set; }
 
-    [ObservableProperty]
-    bool isCheckedSystem;
+	public IReadOnlyList<CultureInfo> Cultures => calendarSettingsService.AvailableCultures;
 
-    partial void OnIsCheckedLightChanged(bool value) =>
+    public IReadOnlyList<DayOfWeek> FirstDaysOfWeek => calendarSettingsService.AvailableFirstDaysOfWeek;
+
+	[ObservableProperty]
+	public partial CultureInfo SelectedCulture { get; set; }
+
+	[ObservableProperty]
+	public partial DayOfWeek SelectedFirstDayOfWeek { get; set; }
+
+	partial void OnIsCheckedLightChanged(bool value) =>
      themeService.SetTheme(value ? AppTheme.Light : themeService.UserAppTheme);
 
     partial void OnIsCheckedDarkChanged(bool value) =>
@@ -27,6 +44,21 @@ public partial class UserSettingViewModel : ObservableObject
 
     partial void OnIsCheckedSystemChanged(bool value) =>
         themeService.SetTheme(value ? AppTheme.Unspecified : themeService.UserAppTheme);
+
+    // The Picker clears its selection (null) while its items are reset
+    partial void OnSelectedCultureChanged(CultureInfo value)
+    {
+        if (value is not null)
+        {
+            calendarSettingsService.Culture = value;
+        }
+    }
+
+    partial void OnSelectedFirstDayOfWeekChanged(DayOfWeek value) =>
+        calendarSettingsService.FirstDayOfWeek = value;
+
+    [RelayCommand]
+    static Task OpenRepository() => Launcher.Default.OpenAsync(repositoryUrl);
 
     void InitializeTheme()
     {

@@ -69,6 +69,9 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<!-- Page sources for the in-app XAML viewer (Helpers\XamlSnippet.cs); .txt keeps them out of any XAML tooling -->
+		<MauiAsset Include="Views\**\*.xaml" LogicalName="XamlSources\%(Filename).xaml.txt" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">

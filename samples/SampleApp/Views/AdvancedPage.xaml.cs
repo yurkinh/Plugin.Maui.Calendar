@@ -3,8 +3,9 @@
 
 public partial class AdvancedPage : ContentPage
 {
-    public AdvancedPage()
+    public AdvancedPage(AdvancedPageViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
     }
 }

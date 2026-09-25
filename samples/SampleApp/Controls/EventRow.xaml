@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="SampleApp.Controls.EventRow"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:SampleApp.Model"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="models:EventModel">
+    <Grid
+        Padding="16,10"
+        ColumnDefinitions="Auto,*"
+        ColumnSpacing="12">
+        <!--  The event's own color covers the accent; events without a color keep the accent  -->
+        <Grid WidthRequest="4">
+            <BoxView CornerRadius="2" Color="{toolkit:AppThemeResource AccentColor}" />
+            <BoxView CornerRadius="2" Color="{Binding Color}" />
+        </Grid>
+        <VerticalStackLayout Grid.Column="1" Spacing="2">
+            <Label
+                FontAttributes="Bold"
+                FontSize="15"
+                Text="{Binding Name}" />
+            <Label
+                LineBreakMode="WordWrap"
+                Style="{StaticResource CaptionLabelStyle}"
+                Text="{Binding Description}" />
+        </VerticalStackLayout>
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapped" />
+        </Grid.GestureRecognizers>
+    </Grid>
+</ContentView>

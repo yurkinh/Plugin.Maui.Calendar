@@ -1,0 +1,475 @@
+# Plugin.Maui.Calendar — complete reference for AI coding assistants
+
+> Plugin.Maui.Calendar is a NuGet package with a calendar control for .NET MAUI (Android, iOS, Mac Catalyst, Windows). It is written with MAUI views only, so it behaves the same on every platform. This file describes version 3.1.0 completely: what exists, how it behaves, and the mistakes to avoid. When this file and your memory disagree, trust this file.
+
+Source: https://github.com/yurkinh/Plugin.Maui.Calendar
+Package: https://www.nuget.org/packages/Plugin.Maui.Calendar
+Human documentation: README.md. History: CHANGELOG.md.
+
+## 1. Setup
+
+- Install: `dotnet add package Plugin.Maui.Calendar`
+- Requires .NET 10 and the MAUI workload (package 3.x). Package 2.x targets .NET 9, 1.x targets .NET 8.
+- Minimum OS: Android API 21, iOS 15.0, Mac Catalyst 15.2, Windows 10.0.17763.
+- NO registration is needed in `MauiProgram.cs`. There is no `UseMauiCalendar()` or similar builder method; do not add one.
+- Depends on CommunityToolkit.Mvvm (comes transitively).
+- XAML namespace (use the `plugin` prefix, as the sample app does):
+  `xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"`
+- Other namespaces:
+  - `Plugin.Maui.Calendar.Models`: `EventCollection`, `MonthChangedEventArgs`, `ShownDatesChangedEventArgs`
+  - `Plugin.Maui.Calendar.Interfaces`: `ICalendarDay`, `IPersonalizableDayEvent`, `IMultiEventDay`
+  - `Plugin.Maui.Calendar.Enums`: `WeekLayout`, `WeekViewUnit`, `EventIndicatorType`, `DaysTitleMaxLength`
+  - `Plugin.Maui.Calendar.Styles`: `DefaultStyles` (static default `Style` objects to use with `BasedOn`)
+
+## 2. Mental model
+
+- Four controls. All derive from `Calendar` (a `ContentView`) and share every property below. They differ only in what a tap selects:
+  - `Calendar`: one day. A second tap on it deselects it (unless `AllowDeselecting="False"`).
+  - `MultiSelectionCalendar`: a tap adds or removes the day.
+  - `RangeSelectionCalendar`: tap 1 sets start = end = that day. Tap 2 (while start == end): a day on or before the start moves the start, a later day sets the end. The next tap after a multi-day range starts a new range. Adds `SelectedStartDate`, `SelectedEndDate`, `SelectedDatesRangeBackgroundColor`.
+  - `WeekSelectionCalendar`: a tap selects the 7 days of that day's week, starting at `FirstDayOfWeek`. Tapping a day of the selected week again clears it.
+- Vertical structure of the control: header section (month/year + arrows) → days grid (weekday titles + day cells) → footer section (selected date text + show/hide arrow) → optional event list.
+- The shown period is `ShownDate` (its month, or its week in the week layouts). `Day`, `Month`, `Year` mirror `ShownDate`.
+- The selection is `SelectedDates` (`ObservableCollection<DateTime>`); `SelectedDate` is its first item.
+- Events are an `EventCollection` (date → your own event collection). The calendar reads it to mark days and to fill the event list with the selected days' events.
+- Header and footer templates get the `Calendar` itself as `BindingContext`.
+- A custom day cell template (`DayViewTemplate`) gets an `ICalendarDay` as `BindingContext`.
+
+## 3. Properties
+
+All are bindable properties of `Calendar` (inherited by the other three controls) unless noted. "Two-way" = default binding mode TwoWay.
+
+### Dates and navigation
+| Property | Type | Default | Notes |
+| --- | --- | --- | --- |
+| ShownDate | DateTime | today | Two-way. The month (or week) shown |
+| Day / Month / Year | int | today | Two-way parts of ShownDate. Month outside 1..12 throws ArgumentException |
+| MinimumDate | DateTime | DateTime.MinValue | Earlier days disabled. Date part only |
+| MaximumDate | DateTime | DateTime.MaxValue | Later days disabled. Date part only |
+| DisabledDates | List<DateTime> | new empty list per calendar | Two-way. Not observed: assign a NEW list to change it. Entries must be dates without time |
+| VisibleStartDate | DateTime | read-only | First date on screen (includes other-month days) |
+| VisibleEndDate | DateTime | read-only | Last date on screen |
+| AutoChangeMonthOnDayTap | bool | false | Tapping a previous/next-month day shows that month and raises MonthChanged |
+| OnShownDateChangedCommand | ICommand | null | Executed with the new ShownDate (DateTime) on every ShownDate change, including changes from code |
+| MonthChangedCommand | ICommand | null | Executed with MonthChangedEventArgs after user navigation only (see 5) |
+| ShownDatesChangedCommand | ICommand | null | Executed with ShownDatesChangedEventArgs when VisibleStartDate/VisibleEndDate change |
+
+### Selection
+| Property | Type | Default | Notes |
+| --- | --- | --- | --- |
+| SelectedDate | DateTime? | null | Two-way. First date of SelectedDates |
+| SelectedDates | ObservableCollection<DateTime> | new empty collection | Two-way. The calendar ASSIGNS A NEW collection after every tap. Adding/removing items in the bound collection from code is observed |
+| AllowDeselecting | bool | true | false: a tap on a selected day is ignored (DayTappedCommand not executed either) |
+| DayTappedCommand | ICommand | null | Parameter: the tapped DateTime. Runs before the selection changes. Not run for disabled or hidden days |
+| SelectedStartDate | DateTime? | null | RangeSelectionCalendar only. Two-way |
+| SelectedEndDate | DateTime? | null | RangeSelectionCalendar only. Two-way |
+
+### Events
+| Property | Type | Default | Notes |
+| --- | --- | --- | --- |
+| Events | EventCollection | new empty collection per calendar | See 6 |
+| EventsScrollViewVisible | bool | false | Shows the event list under the footer |
+| EventTemplate | DataTemplate | null | One event of the list; BindingContext = your event object. Null → each event shown via ToString() |
+| EmptyTemplate | DataTemplate | null | Shown in the list when the selected days have no events |
+| SelectedDayEvents | ICollection | set by the calendar | Events of the selected day(s). Bind with Mode=OneWayToSource to use it elsewhere |
+| EventIndicatorType | EventIndicatorType | BottomDot | BottomDot, TopDot, Background (day background), BackgroundFull (whole cell) |
+| EventIndicatorColor | Color | #FF4081 | Dot / background color |
+| EventIndicatorSelectedColor | Color | #FF4081 | Same, on a selected day |
+| EventIndicatorTextColor | Color | Black | Number color of a day with events (overrides TodayTextColor and WeekendDayColor) |
+| EventIndicatorSelectedTextColor | Color | Black | Number color of a selected day with events |
+
+### Layout, sections and cells
+| Property | Type | Default | Notes |
+| --- | --- | --- | --- |
+| CalendarLayout | WeekLayout | Month | Month, TwoWeek, Week. Arrows/swipes then move by that unit |
+| WeekViewUnit | WeekViewUnit | MonthName | Header text: MonthName or WeekNumber (FirstFourDayWeek rule, Culture's first day of week) |
+| FirstDayOfWeek | DayOfWeek | Sunday | Independent of Culture |
+| OtherMonthDayIsVisible | bool | true | Month layout: show previous/next-month days |
+| OtherMonthWeekIsVisible | bool | true | Month layout: show rows made only of other-month days |
+| HeaderSectionVisible | bool | true | |
+| FooterSectionVisible | bool | true | |
+| CalendarSectionShown | bool | true | Whether the days grid is shown (animated). Toggled by ShowHideCalendarCommand, the default footer tap and swipe up |
+| ShowMonthPicker | bool | true | Month row of the DEFAULT header |
+| ShowYearPicker | bool | true | Year row of the DEFAULT header |
+| FooterArrowVisible | bool | true | Arrow of the DEFAULT footer (tapping the footer still toggles) |
+| HeaderSectionTemplate | DataTemplate | built-in header | BindingContext = the Calendar |
+| FooterSectionTemplate | DataTemplate | built-in footer | BindingContext = the Calendar |
+| DayViewTemplate | DataTemplate | null | Custom day cell, BindingContext = ICalendarDay. Also accepts DataTemplateSelector. See 9 |
+| DayViewSize | double | 40 | Cell width and height |
+| DayViewCornerRadius | float | 20 | Corner radius of selection/today/event backgrounds |
+| DayViewBorderMargin | Thickness | 0 | Inset of those backgrounds |
+| WeekendDayBackgroundColor | Color | Transparent | Box behind every Saturday/Sunday cell (not the title row) |
+| WeekendDayBackgroundCornerRadius | float | 0 | Corner radius of those boxes |
+
+### Culture and text
+| Property | Type | Default | Notes |
+| --- | --- | --- | --- |
+| Culture | CultureInfo | CultureInfo.InvariantCulture | Two-way. Month/day names, number and date formats. SET IT (default shows English names) |
+| UseNativeDigits | bool | false | Numbers in the culture's native digits |
+| DaysTitleMaximumLength | DaysTitleMaxLength | ThreeChars | OneChar=1, TwoChars=2, ThreeChars=3, None=0. Prefers the culture's abbreviation when it fits |
+| UseAbbreviatedDayNames | bool | false | Titles = culture AbbreviatedDayNames as they are; DaysTitleMaximumLength ignored |
+| DaysTitleLabelFirstUpperRestLower | bool | false | "Mon" instead of the default upper case "MON" |
+| SelectedDateTextFormat | string | "d MMM yyyy" | Format of SelectedDateText |
+| SelectedDateText | string | set by the calendar | Single: one date. Range/week: "start - end". Multi: comma-separated |
+| LayoutUnitText | string | set by the calendar | Month name (capitalized) or week number |
+| LocalizedYear | string | read-only CLR property | ShownDate.Year formatted with Culture / native digits |
+
+### Colors (built-in day cell)
+| Property | Default | Applies to |
+| --- | --- | --- |
+| DeselectedDayTextColor | Black | Any other day number |
+| SelectedDayTextColor | White | Selected day number |
+| SelectedDayBackgroundColor | #2196F3 | Selected day background |
+| SelectedTodayTextColor | White | Selected today (Transparent → SelectedDayTextColor) |
+| TodayTextColor | Black | Today (Transparent → DeselectedDayTextColor) |
+| TodayOutlineColor | #FF4081 | Outline of today when not selected |
+| TodayFillColor | Transparent | Background of today when not selected |
+| WeekendDayColor | Black | Saturday/Sunday numbers (Transparent → DeselectedDayTextColor) |
+| OtherMonthDayColor | Silver | Previous/next-month days |
+| OtherMonthSelectedDayColor | Silver | A selected previous/next-month day |
+| DisabledDayColor | #ECECEC | Days outside MinimumDate/MaximumDate and in DisabledDates |
+| SelectedDatesRangeBackgroundColor | null → SelectedDayBackgroundColor | RangeSelectionCalendar: days between the ends |
+
+Day number color resolution (first match wins): disabled → DisabledDayColor; other-month day selected → OtherMonthSelectedDayColor; other-month day → OtherMonthDayColor; selected with events → EventIndicatorSelectedTextColor; selected today → SelectedTodayTextColor; selected → SelectedDayTextColor; has events → EventIndicatorTextColor; today → TodayTextColor; Saturday/Sunday → WeekendDayColor; else DeselectedDayTextColor. In the Week/TwoWeek layouts no day counts as other-month.
+
+Day background: selected → SelectedDayBackgroundColor (range middle → SelectedDatesRangeBackgroundColor); with EventIndicatorType=Background and events → EventIndicatorColor / EventIndicatorSelectedColor; today not selected → TodayFillColor plus TodayOutlineColor outline.
+
+A RangeSelectionCalendar paints ALL selected days (ends and middle) with the same text color (SelectedDayTextColor / EventIndicatorSelectedTextColor). Choose SelectedDayBackgroundColor and SelectedDatesRangeBackgroundColor that both contrast with it.
+
+### Styles
+All are `Style` properties. Base custom styles on `DefaultStyles.*` (x:Static) to keep the other setters.
+| Property | TargetType | Default | Styles |
+| --- | --- | --- | --- |
+| DaysLabelStyle | Label | DefaultStyles.DefaultLabelStyle | Day numbers. TextColor in it is IGNORED (colors come from the color properties) |
+| DaysTitleLabelStyle | Label | DefaultStyles.DefaultDaysTitleLabelStyle | Weekday titles |
+| WeekendTitleStyle | Label | DefaultStyles.DefaultWeekendTitleStyle | Saturday and Sunday titles (replaces DaysTitleLabelStyle there) |
+| MonthLabelStyle | Label | DefaultStyles.DefaultMonthLabelStyle | Default header month |
+| YearLabelStyle | Label | DefaultStyles.DefaultYearLabelStyle | Default header year |
+| PreviousMonthArrowButtonStyle | Button | DefaultStyles.DefaultPreviousMonthArrowButtonStyle | Default header, previous month/week |
+| NextMonthArrowButtonStyle | Button | DefaultStyles.DefaultNextMonthArrowButtonStyle | Default header, next month/week |
+| PreviousYearArrowButtonStyle | Button | DefaultStyles.DefaultPreviousYearArrowButtonStyle | Default header, previous year |
+| NextYearArrowButtonStyle | Button | DefaultStyles.DefaultNextYearArrowButtonStyle | Default header, next year |
+| SelectedDateLabelStyle | Label | DefaultStyles.DefaultSelectedDateLabelStyle | Default footer text |
+| FooterArrowLabelStyle | Label | DefaultStyles.DefaultFooterArrowLabelStyle | Default footer arrow (Text "↑"; the footer switches it to "↓" when hidden) |
+
+Defaults are for a LIGHT background: black text, #2196F3 header labels, white arrow buttons with a black border.
+
+### Swipes
+| Property | Type | Default | Notes |
+| --- | --- | --- | --- |
+| SwipeToChangeMonthEnabled | bool | true | Swipe left/right = next/previous unit (raises MonthChanged) |
+| SwipeUpToHideEnabled | bool | true | Swipe up toggles CalendarSectionShown |
+| SwipeLeftCommand / SwipeRightCommand / SwipeUpCommand | ICommand | null | Executed (parameter null) together with the default action |
+| SwipeDetectionDisabled | bool | false | No swipe recognizers at all. Read when the handler attaches: set it in XAML/before showing |
+
+## 4. Commands, events, methods (non-bindable members)
+
+- `PrevLayoutUnitCommand`, `NextLayoutUnitCommand` (ICommand): previous/next month, or week in week layouts. Raise MonthChanged.
+- `PrevYearCommand`, `NextYearCommand` (ICommand): ShownDate ± 1 year. Do NOT raise MonthChanged.
+- `ShowHideCalendarCommand` (ICommand): toggles CalendarSectionShown.
+- `event EventHandler<MonthChangedEventArgs> MonthChanged` — `OldMonth`, `NewMonth` (DateOnly; the shown dates before/after).
+- `event EventHandler<ShownDatesChangedEventArgs> ShownDatesChanged` — `VisibleStartDate`, `VisibleEndDate` (DateTime).
+- `event EventHandler SwipedLeft, SwipedRight, SwipedUp, SwipedDown`. SwipedDown has no default action.
+- `void ClearSelection()`: clears SelectedDate and SelectedDates.
+- `void Dispose()`: stops observing Events and the midnight timer. Called automatically when the handler disconnects; the calendar re-attaches itself when shown again. You normally never call it.
+
+## 5. Behavior rules (these cause most bugs)
+
+1. `Culture` defaults to InvariantCulture. For localized names bind it (e.g. `CultureInfo.CurrentCulture`).
+2. `FirstDayOfWeek` defaults to Sunday regardless of Culture. Use `Culture.DateTimeFormat.FirstDayOfWeek` if the culture's first day is wanted.
+3. `SelectedDates` gets a new `ObservableCollection` instance after every tap. Bind it Two-way; never cache the old instance or subscribe once to its CollectionChanged.
+4. Bind `SelectedDates` to `ObservableCollection<DateTime>`, never `List<DateTime>`.
+5. On `RangeSelectionCalendar` bind either SelectedStartDate/SelectedEndDate or SelectedDates, not both.
+6. `DisabledDates` is a non-observable `List<DateTime>`: assign a new list to apply changes, store `.Date` values (a time component makes the entry never match).
+7. `EventCollection` notifies the calendar only through its own `Add`, `Remove`, `this[date]` setter and `Clear`. A variable typed `Dictionary<DateTime, ICollection>` bypasses notifications. Mutating the collection stored for a day does NOT update the day's dots/count: reassign `Events[date] = collection`.
+8. `MonthChanged`/`MonthChangedCommand` fire only for user navigation (month/week arrows, swipes, AutoChangeMonthOnDayTap), never for ShownDate/Month/Year set from code and never for the year arrows. Use `OnShownDateChangedCommand` or `ShownDatesChanged` to see every change.
+9. `ShownDatesChanged` can fire for the initial range during construction, before XAML handlers/commands are attached. Read `VisibleStartDate`/`VisibleEndDate` after the calendar is loaded for the first range.
+10. Swipe up hides the days. If the footer is hidden (`FooterSectionVisible="False"`) or replaced by a template without `ShowHideCalendarCommand`, set `SwipeUpToHideEnabled="False"` — otherwise the user cannot bring the days back.
+11. "Weekend" is always Saturday + Sunday (WeekendDayColor, WeekendTitleStyle, WeekendDayBackgroundColor, ICalendarDay.IsWeekend), independent of culture and FirstDayOfWeek.
+12. Dark theme: the defaults are light-only. Set every relevant color with `AppThemeBinding`, including `EventIndicatorTextColor`, `WeekendDayColor`, `DisabledDayColor`, and restyle the default header/footer (or replace them with templates).
+13. `DaysLabelStyle` cannot color day numbers; use the color properties.
+14. Two calendars on one page are independent (a tap only affects its own calendar).
+15. `Month` must be 1..12; a binding that pushes 0 throws.
+16. A disabled day ignores taps; `DayTappedCommand` receives only enabled, visible days.
+
+## 6. Events data
+
+```csharp
+using Plugin.Maui.Calendar.Models;
+
+public EventCollection Events { get; } = new()
+{
+    [DateTime.Today] = new List<MyEvent> { new("Design review"), new("Lunch") },
+    [DateTime.Today.AddDays(3)] = new List<MyEvent> { new("Release") },
+};
+
+Events.Add(date, new List<MyEvent> { ... });   // new day
+Events[date] = new List<MyEvent> { ... };      // replace a day (also use this to refresh a changed day)
+Events.Remove(date);
+Events.Clear();
+```
+- Keys: only the date part is used. Values: any `ICollection` of your own objects (`List<T>`, `ObservableCollection<T>`, your own collection class).
+- Per-day colors: make the day's collection implement `IPersonalizableDayEvent` (Color properties `EventIndicatorColor`, `EventIndicatorSelectedColor`, `EventIndicatorTextColor`, `EventIndicatorSelectedTextColor`; null → calendar color; a null selected color falls back to the day's non-selected color first) and/or `IMultiEventDay` (`IReadOnlyList<Color> Colors`, max 5 dots used). With `Colors` null or empty, one dot in the indicator color is shown.
+- The package does NOT contain a class implementing these. `DayEventCollection<T>` exists only in the sample app; define it yourself:
+
+```csharp
+using Plugin.Maui.Calendar.Interfaces;
+
+public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent, IMultiEventDay
+{
+    public DayEventCollection() { }
+    public DayEventCollection(IEnumerable<T> events) : base(events) { }
+
+    public Color EventIndicatorColor { get; set; }
+    public Color EventIndicatorSelectedColor { get; set; }
+    public Color EventIndicatorTextColor { get; set; }
+    public Color EventIndicatorSelectedTextColor { get; set; }
+    public IReadOnlyList<Color> Colors { get; set; }
+}
+```
+
+## 7. Recipes
+
+View model code below uses CommunityToolkit.Mvvm 8.4+, the style of the sample app: `[ObservableProperty]` on `public partial` properties, not on fields (the toolkit's analyzers, MVVMTK0045/MVVMTK0056, suggest partial properties, and Native AOT on Windows needs them), and `[RelayCommand]` on methods. The calendar works with any `INotifyPropertyChanged` implementation.
+
+### Single date with events list
+```xml
+<plugin:Calendar
+    Culture="{Binding Culture}"
+    Events="{Binding Events}"
+    EventsScrollViewVisible="True"
+    SelectedDate="{Binding SelectedDate}">
+    <plugin:Calendar.EventTemplate>
+        <DataTemplate x:DataType="models:MyEvent">
+            <Label Padding="16,8" Text="{Binding Name}" />
+        </DataTemplate>
+    </plugin:Calendar.EventTemplate>
+    <plugin:Calendar.EmptyTemplate>
+        <DataTemplate>
+            <Label Padding="16" HorizontalTextAlignment="Center" Text="No events" />
+        </DataTemplate>
+    </plugin:Calendar.EmptyTemplate>
+</plugin:Calendar>
+```
+
+### Tap on an event in the list → view model command
+The event template's BindingContext is the event; reach the page view model with RelativeSource:
+```xml
+<DataTemplate x:DataType="models:MyEvent">
+    <Label Text="{Binding Name}">
+        <Label.GestureRecognizers>
+            <TapGestureRecognizer
+                Command="{Binding OpenEventCommand, Source={RelativeSource AncestorType={x:Type vm:MyPageViewModel}}, x:DataType=vm:MyPageViewModel}"
+                CommandParameter="{Binding .}" />
+        </Label.GestureRecognizers>
+    </Label>
+</DataTemplate>
+```
+
+### Date range
+```xml
+<plugin:RangeSelectionCalendar
+    MinimumDate="{Binding Today}"
+    SelectedEndDate="{Binding CheckOut}"
+    SelectedStartDate="{Binding CheckIn}"
+    SelectedDatesRangeBackgroundColor="#DDEBFF"
+    SelectedDayBackgroundColor="#7FA7E0"
+    SelectedDayTextColor="Black" />
+```
+(Text color is shared by the ends and the middle, see the Colors note.)
+
+### Several separate days
+```xml
+<plugin:MultiSelectionCalendar SelectedDates="{Binding SelectedDates, Mode=TwoWay}" />
+```
+```csharp
+[ObservableProperty]
+public partial ObservableCollection<DateTime> SelectedDates { get; set; } = [];   // replaced by the calendar on each tap
+```
+
+### Load events for the visible range
+```xml
+<plugin:Calendar Events="{Binding Events}" ShownDatesChangedCommand="{Binding LoadRangeCommand}" />
+```
+```csharp
+[RelayCommand]
+async Task LoadRange(ShownDatesChangedEventArgs range)
+{
+    foreach (var (date, items) in await service.GetAsync(range.VisibleStartDate, range.VisibleEndDate))
+        Events[date] = items;   // indexer notifies the calendar
+}
+```
+Load the first range yourself (e.g. in OnAppearing) from the calendar's VisibleStartDate/VisibleEndDate (rule 9).
+
+### Week strip with a toggle to month
+```xml
+<plugin:Calendar CalendarLayout="{Binding Layout}" />   <!-- WeekLayout.Week / WeekLayout.Month -->
+```
+
+### Localized, Monday first, native digits
+```xml
+<plugin:Calendar
+    Culture="{Binding Culture}"
+    DaysTitleMaximumLength="TwoChars"
+    FirstDayOfWeek="Monday"
+    SelectedDateTextFormat="dddd, d MMMM"
+    UseNativeDigits="True" />
+```
+
+### Disable dates
+```csharp
+DisabledDates = [DateTime.Today.AddDays(2), DateTime.Today.AddDays(9)];   // assign a new list to change
+```
+```xml
+<plugin:Calendar DisabledDates="{Binding DisabledDates}" MaximumDate="{Binding MaxDate}" MinimumDate="{Binding MinDate}" />
+```
+
+### Theme-aware style shared by all calendars
+```xml
+<Style x:Key="ThemedCalendarStyle" TargetType="plugin:Calendar">
+    <Setter Property="DeselectedDayTextColor" Value="{AppThemeBinding Light=#1B211D, Dark=#E7EBE5}" />
+    <Setter Property="WeekendDayColor" Value="{AppThemeBinding Light=#1B211D, Dark=#E7EBE5}" />
+    <Setter Property="TodayTextColor" Value="{AppThemeBinding Light=#4E6B3A, Dark=#A7C28A}" />
+    <Setter Property="TodayOutlineColor" Value="{AppThemeBinding Light=#4E6B3A, Dark=#A7C28A}" />
+    <Setter Property="SelectedDayBackgroundColor" Value="{AppThemeBinding Light=#4E6B3A, Dark=#A7C28A}" />
+    <Setter Property="SelectedDayTextColor" Value="{AppThemeBinding Light=White, Dark=#16200F}" />
+    <Setter Property="SelectedTodayTextColor" Value="{AppThemeBinding Light=White, Dark=#16200F}" />
+    <Setter Property="OtherMonthDayColor" Value="{AppThemeBinding Light=#A9B0AA, Dark=#58615B}" />
+    <Setter Property="DisabledDayColor" Value="{AppThemeBinding Light=#A9B0AA, Dark=#58615B}" />
+    <Setter Property="EventIndicatorColor" Value="{AppThemeBinding Light=#4E6B3A, Dark=#A7C28A}" />
+    <Setter Property="EventIndicatorSelectedColor" Value="{AppThemeBinding Light=White, Dark=#16200F}" />
+    <Setter Property="EventIndicatorTextColor" Value="{AppThemeBinding Light=#1B211D, Dark=#E7EBE5}" />
+    <Setter Property="EventIndicatorSelectedTextColor" Value="{AppThemeBinding Light=White, Dark=#16200F}" />
+</Style>
+```
+Apply with `Style="{StaticResource ThemedCalendarStyle}"` (works for the derived controls too). Also restyle DaysTitleLabelStyle, WeekendTitleStyle and, if the defaults are kept, the header/footer styles. For RangeSelectionCalendar add a style with TargetType="plugin:RangeSelectionCalendar" BasedOn this one.
+
+### Custom header and footer
+```xml
+<plugin:Calendar.HeaderSectionTemplate>
+    <DataTemplate x:DataType="plugin:Calendar">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <Button Command="{Binding PrevLayoutUnitCommand}" Text="‹" />
+            <Label Grid.Column="1" HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding LayoutUnitText}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding LocalizedYear}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Button Grid.Column="2" Command="{Binding NextLayoutUnitCommand}" Text="›" />
+        </Grid>
+    </DataTemplate>
+</plugin:Calendar.HeaderSectionTemplate>
+<plugin:Calendar.FooterSectionTemplate>
+    <DataTemplate x:DataType="plugin:Calendar">
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="{Binding SelectedDateText}" />
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
+            </Grid.GestureRecognizers>
+        </Grid>
+    </DataTemplate>
+</plugin:Calendar.FooterSectionTemplate>
+```
+Keep `ShowHideCalendarCommand` in a custom footer, or set `SwipeUpToHideEnabled="False"` (rule 10). Available on the context: PrevLayoutUnitCommand, NextLayoutUnitCommand, PrevYearCommand, NextYearCommand, ShowHideCalendarCommand, LayoutUnitText, LocalizedYear, SelectedDateText, CalendarSectionShown, ShownDate, and every other Calendar property.
+
+### Calendar in a popup (picker)
+Hide what a picker does not need, and keep the days from being swiped away:
+```xml
+<plugin:Calendar FooterSectionVisible="False" SelectedDate="{Binding SelectedDate}" SwipeUpToHideEnabled="False" />
+```
+
+## 8. ICalendarDay (BindingContext of DayViewTemplate)
+
+`INotifyPropertyChanged`; all members read-only and raise PropertyChanged.
+| Member | Type | Meaning |
+| --- | --- | --- |
+| Date | DateTime | The cell's date |
+| Day | string | Day-of-month text, formatted with Culture/UseNativeDigits |
+| IsSelected | bool | Selected; in a range true for every day of it, ends included |
+| IsToday | bool | Today; moves at midnight while shown and is rechecked on app resume |
+| IsWeekend | bool | Saturday or Sunday (not culture-dependent) |
+| IsThisMonth | bool | In the shown month; always true in Week/TwoWeek layouts |
+| IsDisabled | bool | Outside MinimumDate/MaximumDate or in DisabledDates |
+| HasEvents | bool | Events has an entry for the day (even empty) |
+| EventCount | int | Items in that entry (0 if none) |
+| Events | IReadOnlyList<object> | Snapshot of the day's event objects |
+| EventColors | IReadOnlyList<Color> | Up to 5 IMultiEventDay colors, else the single indicator color; empty without events |
+| IsRangeStart | bool | First day of the range (RangeSelectionCalendar only) |
+| IsRangeEnd | bool | Last day of the range (RangeSelectionCalendar only); a one-day range has both true |
+
+## 9. DayViewTemplate rules
+
+- The template root must be a `View` (Grid, Border, Label, …); anything else throws InvalidOperationException.
+- Cells are reused across months/weeks: bind to ICalendarDay members or use DataTriggers; never read them once in code.
+- The calendar still sizes cells to DayViewSize, hides other-month days per OtherMonthDayIsVisible/OtherMonthWeekIsVisible, handles taps and selection (DayTappedCommand, AllowDeselecting, AutoChangeMonthOnDayTap) and draws WeekendDayBackgroundColor.
+- Ignored with a template: DaysLabelStyle, DayViewCornerRadius, DayViewBorderMargin, EventIndicatorType, SelectedDayBackgroundColor, SelectedDayTextColor, SelectedTodayTextColor, DeselectedDayTextColor, TodayOutlineColor, TodayFillColor, TodayTextColor, WeekendDayColor, OtherMonthDayColor, OtherMonthSelectedDayColor, DisabledDayColor, EventIndicatorTextColor, EventIndicatorSelectedTextColor, SelectedDatesRangeBackgroundColor. EventIndicatorColor/EventIndicatorSelectedColor still feed EventColors.
+- Children that handle input (Button, CheckBox, own gesture recognizers) swallow the tap: set InputTransparent="True" on them if the tap should select the day.
+- Can be switched at runtime; null restores the built-in cell; selection and shown month are kept.
+- DataTemplateSelector: receives the ICalendarDay as item and the cell as container; asked again for every cell on each update; return the same template instances (a different instance recreates the cell content); null → built-in cell for that day.
+- DataTrigger setters whose Value is a binding (AppThemeBinding, toolkit:AppThemeResource) on reused cells may not revert reliably after a theme change; prefer plain values in triggers, or switch IsVisible between two static layers.
+
+```xml
+<plugin:Calendar DayViewSize="50">
+    <plugin:Calendar.DayViewTemplate>
+        <DataTemplate x:DataType="interfaces:ICalendarDay">
+            <Border StrokeShape="RoundRectangle 12" StrokeThickness="0">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                        <Setter Property="BackgroundColor" Value="#4E6B3A" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Label HorizontalOptions="Center" Text="{Binding Day}" VerticalOptions="Center" />
+            </Border>
+        </DataTemplate>
+    </plugin:Calendar.DayViewTemplate>
+</plugin:Calendar>
+```
+(`xmlns:interfaces="clr-namespace:Plugin.Maui.Calendar.Interfaces;assembly=Plugin.Maui.Calendar"`)
+
+## 10. APIs that do NOT exist (do not generate them)
+
+- `BottomSectionTemplate`, `WeekdayTitleStyle`, `CalendarBottom`, `CalenderEvent`, `MultiselectionCalendar` (correct: `MultiSelectionCalendar`), `Calender` (correct: `Calendar`).
+- A `DayEventCollection` type in the package (it is sample-app code; see 6).
+- Builder extensions such as `UseMauiCalendar()` / `UsePluginCalendar()`.
+- Removed in 2.0 (use the style properties instead): `DayViewFontSize` → DaysLabelStyle; `MonthLabelColor` → MonthLabelStyle; `YearLabelColor` → YearLabelStyle; `ArrowsBackgroundColor`, `ArrowsBorderColor`, `ArrowsBorderWidth`, `ArrowsFontAttribute`, `ArrowsFontSize`, `ArrowsFontFamily`, `ArrowsColor`, `ArrowsSymbolPrev`, `ArrowsSymbolNext` → the four arrow button styles and FooterArrowLabelStyle; `SelectedDateColor` → SelectedDateLabelStyle; `DaysTitleHeight`, `DaysTitleColor` → DaysTitleLabelStyle; `DaysTitleWeekendColor` → WeekendTitleStyle.
+- `SelectedDates` of type `List<DateTime>` (it is `ObservableCollection<DateTime>`).
+- `DayTappedCommand` parameter types other than `DateTime`.
+
+## 11. Version availability
+
+| Feature | Since |
+| --- | --- |
+| DayViewTemplate, ICalendarDay | 3.1.0 |
+| WeekSelectionCalendar, WeekendDayBackgroundColor(+CornerRadius), VisibleStartDate/VisibleEndDate, ShownDatesChanged(+Command) | 3.0.3 |
+| .NET 10 / XAML source generator support | 3.0.0 |
+| UseAbbreviatedDayNames | 2.0.10 |
+| AutoChangeMonthOnDayTap | 2.0.8 |
+| UseNativeDigits | 2.0.4 |
+| Style properties, WeekendTitleStyle, OtherMonthWeekIsVisible, DayViewBorderMargin | 2.0.0 |
+| SelectedDatesRangeBackgroundColor | 1.2.6 |
+| AllowDeselecting | 1.2.5 |
+| MonthChanged, MonthChangedCommand | 1.2.4 |
+| Multiple event dots (IMultiEventDay) | 1.2.3 |
+| FirstDayOfWeek | 1.2.2 |
+| OtherMonthSelectedDayColor | 1.2.0 |
+| OnShownDateChangedCommand, ClearSelection(), Dispose() | 1.1.9 |
+
+Check the installed version (the PackageReference in the .csproj) before using a feature.
+
+## 12. Sample app (working code for every feature)
+
+https://github.com/yurkinh/Plugin.Maui.Calendar/tree/main/samples/SampleApp — each page in `Views/`:
+- CalendarPage.xaml: control with defaults, ShownDatesChanged
+- SimplePage.xaml: events list, date limits, MonthChangedCommand
+- AdvancedPage.xaml: custom header/footer/event templates, EventIndicatorType=Background, per-day colors
+- MultiSelectionPage.xaml, RangeSelectionPage.xaml, WeekSelectionPage.xaml: selection modes
+- WeekendCalendarPage.xaml, WeekendFilledCalendarPage.xaml: weekend colors and columns
+- DayViewTemplatePage.xaml: three day templates switched at runtime
+- WeekViewPage.xaml, TwoWeekViewPage.xaml: week layouts and a month toggle
+- PickerPopups/*.xaml: calendars in popups
+- DefaultDeviceCalendars/Windows11CalendarPage.xaml: a heavily restyled calendar
+- Resources/Styles/Styles.xaml: `SampleCalendarStyle`, a complete light/dark calendar style; `Controls/CalendarHeader.xaml`, `Controls/CalendarFooter.xaml`: reusable header/footer templates

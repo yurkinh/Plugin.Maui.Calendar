@@ -1,31 +1,36 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentView
     x:Class="SampleApp.Controls.CalendarEvent"
-    xmlns:models="clr-namespace:SampleApp.Model"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    x:DataType="models:AdvancedEventModel"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <VerticalStackLayout
-        Padding="15,0,0,0"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill">
-        <Label FontAttributes="Bold"
-               FontSize="16">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="{Binding Starting, StringFormat='{0:MM/dd HH\\:mm}'}"
-                          TextColor="Black"/>
-                    <Span Text=" - "/>
-                    <Span Text="{Binding Name}"/>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-        <Label
-            FontSize="12"
-            LineBreakMode="WordWrap"
-            Text="{Binding Description}"/>
-        <VerticalStackLayout.GestureRecognizers>
-            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
-        </VerticalStackLayout.GestureRecognizers>
-    </VerticalStackLayout>
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:SampleApp.Model"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="models:AdvancedEventModel">
+    <Grid
+        Padding="16,10"
+        ColumnDefinitions="Auto,*"
+        ColumnSpacing="12">
+        <BoxView
+            CornerRadius="2"
+            WidthRequest="4"
+            Color="{toolkit:AppThemeResource AccentColor}" />
+        <VerticalStackLayout Grid.Column="1" Spacing="2">
+            <Label FontAttributes="Bold" FontSize="15">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Starting, StringFormat='{0:HH\\:mm}'}" TextColor="{toolkit:AppThemeResource AccentColor}" />
+                        <Span Text="  " />
+                        <Span Text="{Binding Name}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
+                LineBreakMode="WordWrap"
+                Style="{StaticResource CaptionLabelStyle}"
+                Text="{Binding Description}" />
+        </VerticalStackLayout>
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+        </Grid.GestureRecognizers>
+    </Grid>
 </ContentView>
