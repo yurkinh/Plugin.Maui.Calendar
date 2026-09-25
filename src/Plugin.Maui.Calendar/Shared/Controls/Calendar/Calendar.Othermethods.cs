@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections;
+using System.Globalization;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
@@ -207,17 +208,50 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				SetEventColors(dayModel, [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor]);
 			}
+
+			dayModel.EventCount = dayEventCollection?.Count ?? 0;
+			SetEvents(dayModel, dayEventCollection);
 		}
 		else
 		{
 			SetEventColors(dayModel, []);
+			dayModel.EventCount = 0;
+			SetEvents(dayModel, null);
 		}
+	}
+
+	// Events is a snapshot, so a template sees items added before the entry was assigned again.
+	// It is replaced only when the items differ, for the same reason as SetEventColors.
+	static void SetEvents(DayModel dayModel, ICollection dayEventCollection)
+	{
+		if (dayEventCollection is null || dayEventCollection.Count == 0)
+		{
+			if (dayModel.Events.Count > 0)
+			{
+				dayModel.Events = [];
+			}
+			return;
+		}
+
+		if (dayModel.Events.Count == dayEventCollection.Count
+			&& dayModel.Events.SequenceEqual(dayEventCollection.Cast<object>()))
+		{
+			return;
+		}
+
+		var snapshot = new List<object>(dayEventCollection.Count);
+		foreach (var item in dayEventCollection)
+		{
+			snapshot.Add(item);
+		}
+
+		dayModel.Events = snapshot;
 	}
 
 	// Every day update builds a new list, and the generated setter compares lists by reference,
 	// so without this check every event day would raise PropertyChanged for EventColors on every
 	// pass and make the event dots (a BindableLayout) be rebuilt although nothing changed.
-	static void SetEventColors(DayModel dayModel, List<Color> colors)
+	static void SetEventColors(DayModel dayModel, IReadOnlyList<Color> colors)
 	{
 		if (dayModel.EventColors is { } current && current.SequenceEqual(colors))
 		{

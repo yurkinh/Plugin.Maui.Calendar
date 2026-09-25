@@ -72,7 +72,7 @@ public partial class Calendar : ContentView, IDisposable
 		// Item 1: UpdateDays already calls AssignIndicatorColors per day, so a separate
 		// UpdateDaysColors pass would be a redundant second iteration. The update must be
 		// forced: the shown dates did not change, so a plain UpdateDays() would return early
-		// and leave HasEvents and EventColors stale.
+		// and leave HasEvents, EventCount and EventColors stale.
 		UpdateEvents();
 		UpdateDays(forceUpdate: true);
 	}

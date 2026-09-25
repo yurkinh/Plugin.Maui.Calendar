@@ -3,19 +3,21 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.Layouts;
 using Plugin.Maui.Calendar.Enums;
+using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Styles;
 
 namespace Plugin.Maui.Calendar.Models;
 
-sealed partial class DayModel : ObservableObject
+sealed partial class DayModel : ObservableObject, ICalendarDay
 {
-	// TextColor depends on IsToday and IsWeekend, both derived from Date, so it must be
+	// TextColor depends on IsToday and IsWeekendColored, both derived from Date, so it must be
 	// re-notified here: a reused cell can change date without any other TextColor input changing.
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
 	[NotifyPropertyChangedFor(nameof(OutlineColor))]
 	[NotifyPropertyChangedFor(nameof(TextColor))]
 	[NotifyPropertyChangedFor(nameof(IsToday))]
+	[NotifyPropertyChangedFor(nameof(IsWeekend))]
 	DateTime date;
 
 	[ObservableProperty]
@@ -44,6 +46,18 @@ sealed partial class DayModel : ObservableObject
 		nameof(BackgroundFullEventColor)
 	)]
 	bool hasEvents;
+
+	[ObservableProperty]
+	int eventCount;
+
+	[ObservableProperty]
+	IReadOnlyList<object> events = [];
+
+	[ObservableProperty]
+	bool isRangeStart;
+
+	[ObservableProperty]
+	bool isRangeEnd;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible), nameof(BackgroundFullEventColor))]
@@ -123,7 +137,7 @@ sealed partial class DayModel : ObservableObject
 	Color eventIndicatorColor = Color.FromArgb("#FF4081");
 
 	[ObservableProperty]
-	List<Color> eventColors;
+	IReadOnlyList<Color> eventColors;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
@@ -194,7 +208,7 @@ sealed partial class DayModel : ObservableObject
 				return OtherMonthColor;
 			}
 
-			return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
+			return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekendColored) switch
 			{
 				(true, _, _, _, _, _) => DisabledColor,
 				(false, true, false, true, true, _)
@@ -230,7 +244,7 @@ sealed partial class DayModel : ObservableObject
 		isToday = value.Date == DateTime.Today;
 	}
 
-	bool IsToday => isToday;
+	public bool IsToday => isToday;
 
 	/// <summary>
 	/// Recomputes <see cref="IsToday"/> against <paramref name="today"/> and raises
@@ -255,5 +269,9 @@ sealed partial class DayModel : ObservableObject
 		return true;
 	}
 
-	public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;
+	public bool IsWeekend => Date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+
+	// Drives the WeekendDayColor branch of TextColor: a weekend day is only coloured
+	// differently when a visible WeekendDayColor has been set.
+	public bool IsWeekendColored => IsWeekend && WeekendDayColor != Colors.Transparent;
 }
