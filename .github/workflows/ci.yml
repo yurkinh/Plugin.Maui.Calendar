@@ -21,7 +21,10 @@ jobs:
     - name: Install .NET MAUI
       run: dotnet workload install maui
     - name: Build
-      run: msbuild Plugin.Maui.Calendar.slnx -r -property:Configuration=Release
+      # Only the library: the root solution also holds the sample app, which cannot be built for
+      # iOS/Mac Catalyst on Windows (ci-sample.yml builds it for Android and Windows). The test
+      # project is built by the next step.
+      run: msbuild src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj -r -property:Configuration=Release
     - name: Run Unit Tests
       run: dotnet test tests\Plugin.Maui.Calendar.Tests\Plugin.Maui.Calendar.Tests.csproj --configuration Release --logger trx --collect:"XPlat Code Coverage"
     - name: Upload Test Results
