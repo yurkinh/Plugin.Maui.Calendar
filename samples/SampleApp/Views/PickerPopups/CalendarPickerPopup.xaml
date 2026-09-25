@@ -35,7 +35,8 @@
                     MaximumDate="{Binding MaximumDate}"
                     MinimumDate="{Binding MinimumDate}"
                     SelectedDate="{Binding SelectedDate}"
-                    Style="{StaticResource SampleCalendarStyle}" />
+                    Style="{StaticResource SampleCalendarStyle}"
+                    SwipeUpToHideEnabled="False" />
                 <Grid
                     Margin="12,8,12,0"
                     ColumnDefinitions="Auto,*,Auto,Auto"

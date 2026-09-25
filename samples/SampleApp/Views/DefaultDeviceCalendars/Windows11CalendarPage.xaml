@@ -83,6 +83,7 @@
                 SelectedDayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
                 SelectedTodayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
                 Style="{StaticResource SettingsCalendarStyle}"
+                SwipeUpToHideEnabled="False"
                 TodayFillColor="{toolkit:AppThemeResource WindowsThemeColor}"
                 TodayOutlineColor="Transparent"
                 TodayTextColor="{toolkit:AppThemeResource TodayDayLabelTextColor}"

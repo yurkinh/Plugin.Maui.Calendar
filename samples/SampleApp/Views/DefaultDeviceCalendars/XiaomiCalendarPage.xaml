@@ -136,6 +136,7 @@
             SelectedDayBackgroundColor="{toolkit:AppThemeResource StrokeColor}"
             SelectedTodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
             Style="{StaticResource SettingsCalendarStyle}"
+            SwipeUpToHideEnabled="False"
             TodayOutlineColor="Transparent"
             TodayTextColor="{toolkit:AppThemeResource TodayDayTextColor}"
             DaysTitleLabelStyle ="{StaticResource MyTitleLabelStyle}"

@@ -38,7 +38,8 @@
                     SelectedEndDate="{Binding SelectedEndDate}"
                     SelectedStartDate="{Binding SelectedStartDate}"
                     ShownDate="{Binding ShownDate}"
-                    Style="{StaticResource SampleRangeCalendarStyle}">
+                    Style="{StaticResource SampleRangeCalendarStyle}"
+                    SwipeUpToHideEnabled="False">
                     <plugin:Calendar.HeaderSectionTemplate>
                         <controls:CalendarHeader />
                     </plugin:Calendar.HeaderSectionTemplate>

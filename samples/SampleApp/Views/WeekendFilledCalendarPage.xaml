@@ -34,6 +34,7 @@
                 SelectedDayTextColor="{toolkit:AppThemeResource TextPrimaryColor}"
                 SelectedTodayTextColor="{toolkit:AppThemeResource AccentColor}"
                 Style="{StaticResource SampleCalendarStyle}"
+                SwipeUpToHideEnabled="False"
                 WeekendDayBackgroundColor="{toolkit:AppThemeResource SurfaceVariantColor}"
                 WeekendTitleStyle="{StaticResource SampleDaysTitleLabelStyle}">
 
