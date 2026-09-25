@@ -228,6 +228,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		OnDaysUpdated();
+		RefreshDayTemplateSelection();
 
 		if (shownDatesChanged)
 		{
@@ -285,6 +286,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		OnDaysUpdated();
+		RefreshDayTemplateSelection();
 	}
 
 	/// <summary>
@@ -294,6 +296,24 @@ public partial class Calendar : ContentView, IDisposable
 	/// the range colors and range boundaries of <see cref="RangeSelectionCalendar"/>).
 	/// </summary>
 	private protected virtual void OnDaysUpdated() { }
+
+	/// <summary>
+	/// Asks a <see cref="DataTemplateSelector"/> set as <see cref="DayViewTemplate"/> again for every
+	/// cell, once the whole pass has assigned the new state of every day (including the range state
+	/// set by <see cref="OnDaysUpdated"/>). Cells only replace their content when the choice changes.
+	/// </summary>
+	void RefreshDayTemplateSelection()
+	{
+		if (DayViewTemplate is not DataTemplateSelector)
+		{
+			return;
+		}
+
+		foreach (var dayView in dayViews)
+		{
+			dayView.RefreshTemplateSelection();
+		}
+	}
 
 	/// <summary>
 	/// Updates day colors and event-indicator colors without recomputing date layout.

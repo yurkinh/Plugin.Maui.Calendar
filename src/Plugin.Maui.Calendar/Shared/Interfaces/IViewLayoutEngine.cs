@@ -7,8 +7,11 @@ namespace Plugin.Maui.Calendar.Interfaces;
 interface IViewLayoutEngine
 {
 	/// <summary>
-	/// Populates <paramref name="targetGrid"/> with the day-header row and all
-	/// <see cref="DayView"/> cells.  The caller is responsible for clearing the grid
+	/// Populates <paramref name="targetGrid"/> with the day-header row and the rows and columns
+	/// for the day cells, and fills <paramref name="dayViews"/> with the <see cref="DayView"/>
+	/// cells (created with <paramref name="dayViewTemplate"/>), each already assigned its grid row
+	/// and column. The cells are not added to <paramref name="targetGrid"/>; the caller adds them
+	/// after populating their day models. The caller is responsible for clearing the grid
 	/// before invoking this method.
 	/// </summary>
 	void GenerateLayout(
@@ -16,7 +19,8 @@ interface IViewLayoutEngine
 		List<DayView> dayViews,
 		object bindingContext,
 		string daysTitleLabelStyleeBindingName,
-		ICommand dayTappedCommand
+		ICommand dayTappedCommand,
+		DataTemplate dayViewTemplate
 	);
 
 	DateTime GetFirstDate(DateTime dateToShow);

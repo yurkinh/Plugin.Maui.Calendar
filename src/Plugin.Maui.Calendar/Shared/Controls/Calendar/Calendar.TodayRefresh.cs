@@ -114,13 +114,20 @@ public partial class Calendar : ContentView, IDisposable
 	internal void RefreshToday()
 	{
 		var today = DateTime.Today;
+		var changed = false;
 
 		foreach (var dayView in dayViews)
 		{
 			if (dayView.BindingContext is DayModel dayModel)
 			{
-				dayModel.RefreshIsToday(today);
+				changed |= dayModel.RefreshIsToday(today);
 			}
+		}
+
+		// A DataTemplateSelector may choose by IsToday.
+		if (changed)
+		{
+			RefreshDayTemplateSelection();
 		}
 	}
 

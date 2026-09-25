@@ -163,14 +163,23 @@ public partial class Calendar : ContentView, IDisposable
 			dayViews,
 			this,
 			nameof(DaysTitleLabelStyle),
-			DayTappedCommand
+			DayTappedCommand,
+			DayViewTemplate
 		);
 
 		dayTitleLabels = daysControl.Children.OfType<Label>().ToArray();
 
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
-		UpdateDays();
+		UpdateDays(forceUpdate: true);
+
+		// The cells join the grid only now that their models hold real data. On a calendar that is
+		// already on screen they are rendered (and their DayViewTemplate content, including a
+		// selector's choice, is created) once, for the right day, instead of first for empty models.
+		foreach (var dayView in dayViews)
+		{
+			daysControl.Add(dayView);
+		}
 
 		UpdateWeekendBackground();
 	}
