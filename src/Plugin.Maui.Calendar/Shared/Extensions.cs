@@ -41,18 +41,34 @@ static class Extensions
             : source;
     }
 
-    internal static object CreateContent(this DataTemplate dataTemplate, object itemModel)
+    /// <summary>
+    /// Returns the template to use for <paramref name="item"/>: the choice of a
+    /// <see cref="DataTemplateSelector"/>, which receives <paramref name="container"/> (the view
+    /// that will host the content), or <paramref name="dataTemplate"/> itself otherwise.
+    /// Returns <see langword="null"/> when the selector chooses no template.
+    /// </summary>
+    internal static DataTemplate SelectDataTemplate(this DataTemplate dataTemplate, object item, BindableObject container)
     {
-        if (dataTemplate is DataTemplateSelector templateSelector)
-        {
-            var template = templateSelector.SelectTemplate(itemModel, null);
-            template.SetValue(BindableObject.BindingContextProperty, itemModel);
+        return dataTemplate is DataTemplateSelector templateSelector
+            ? templateSelector.SelectTemplate(item, container)
+            : dataTemplate;
+    }
 
-            return template.CreateContent();
-        }
-
-        dataTemplate.SetValue(BindableObject.BindingContextProperty, itemModel);
-        return dataTemplate.CreateContent();
+    /// <summary>
+    /// Creates the content of <paramref name="dataTemplate"/> for <paramref name="item"/> (resolving a
+    /// <see cref="DataTemplateSelector"/> first), to be shown in <paramref name="container"/>.
+    /// Returns <see langword="null"/> when the selector chooses no template.
+    /// </summary>
+    /// <remarks>
+    /// The template is never modified. Templates are usually shared resources, and a value set on
+    /// one (<see cref="DataTemplate.SetValue"/>) is applied to every view it creates afterwards, so
+    /// setting the item there would leak it into other views and keep it alive. The created content
+    /// gets its binding context by inheritance when it is added to <paramref name="container"/>,
+    /// whose binding context is <paramref name="item"/>.
+    /// </remarks>
+    internal static object CreateContent(this DataTemplate dataTemplate, object item, BindableObject container)
+    {
+        return dataTemplate.SelectDataTemplate(item, container)?.CreateContent();
     }
 
     internal static DateTime StartDayOfMonth(this DateTime dt) => new DateTime(dt.Year, dt.Month, 1);

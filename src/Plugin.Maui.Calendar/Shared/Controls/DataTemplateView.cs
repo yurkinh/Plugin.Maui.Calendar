@@ -34,7 +34,8 @@ public class DataTemplateView : ContentView
 			return;
 		}
 
-		var itemContent = ItemTemplate?.CreateContent(BindingContext);
+		// The content inherits BindingContext from this view once it becomes its Content.
+		var itemContent = ItemTemplate?.CreateContent(BindingContext, this);
 
         Content = itemContent as View;
     }

@@ -70,9 +70,11 @@ public partial class Calendar : ContentView, IDisposable
 	void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
 	{
 		// Item 1: UpdateDays already calls AssignIndicatorColors per day, so a separate
-		// UpdateDaysColors pass would be a redundant second iteration.
+		// UpdateDaysColors pass would be a redundant second iteration. The update must be
+		// forced: the shown dates did not change, so a plain UpdateDays() would return early
+		// and leave HasEvents, EventCount and EventColors stale.
 		UpdateEvents();
-		UpdateDays();
+		UpdateDays(forceUpdate: true);
 	}
 
 	void OnDayTappedHandler(DateTime value)
@@ -172,6 +174,9 @@ public partial class Calendar : ContentView, IDisposable
 		// instead of O(n) with List.Contains.
 		var disabledSet = DisabledDates?.Count > 0 ? new HashSet<DateTime>(DisabledDates) : null;
 
+		// Read the clock once so every cell in this pass agrees on which day is today.
+		var today = DateTime.Today;
+
 		foreach (var dayView in dayViews)
 		{
 			var dayModel = dayView.BindingContext as DayModel;
@@ -191,6 +196,9 @@ public partial class Calendar : ContentView, IDisposable
 				// propagated by UpdateDayGlobalProperties so they don't need to be pushed
 				// on every date-change render.
 				dayModel.Date = currentDate.Date;
+				// A cell that keeps its date (e.g. the same month re-rendered after midnight)
+				// skips OnDateChanged, so IsToday is re-evaluated explicitly on every pass.
+				dayModel.RefreshIsToday(today);
 				dayModel.Day = UseNativeDigits ? currentDate.Day.ToNativeDigitString(Culture) : currentDate.Day.ToString(Culture);
 				dayModel.IsThisMonth = CalendarLayout != WeekLayout.Month || currentDate.Month == ShownDate.Month;
 				dayModel.OtherMonthIsVisible = CalendarLayout != WeekLayout.Month || OtherMonthDayIsVisible;
@@ -207,6 +215,7 @@ public partial class Calendar : ContentView, IDisposable
 				addDays++;
 
 				dayModel.Date = DateTime.MaxValue.Date;
+				dayModel.RefreshIsToday(today);
 				dayModel.Day = string.Empty;
 				dayModel.IsThisMonth = false;
 				dayModel.OtherMonthIsVisible = false;
@@ -217,6 +226,9 @@ public partial class Calendar : ContentView, IDisposable
 				AssignIndicatorColors(ref dayModel);
 			}
 		}
+
+		OnDaysUpdated();
+		RefreshDayTemplateSelection();
 
 		if (shownDatesChanged)
 		{
@@ -271,6 +283,35 @@ public partial class Calendar : ContentView, IDisposable
 			// Indicator colors depend on per-day state (Events, IsSelected) so they must
 			// be recomputed even in a color-only update.
 			AssignIndicatorColors(ref dayModel);
+		}
+
+		OnDaysUpdated();
+		RefreshDayTemplateSelection();
+	}
+
+	/// <summary>
+	/// Called after <see cref="UpdateDays"/> or <see cref="UpdateDayGlobalProperties"/> has
+	/// refreshed the day models, so a derived calendar can re-apply per-day state that those
+	/// passes reset or that depends on the dates now assigned to the reused cells (for example
+	/// the range colors and range boundaries of <see cref="RangeSelectionCalendar"/>).
+	/// </summary>
+	private protected virtual void OnDaysUpdated() { }
+
+	/// <summary>
+	/// Asks a <see cref="DataTemplateSelector"/> set as <see cref="DayViewTemplate"/> again for every
+	/// cell, once the whole pass has assigned the new state of every day (including the range state
+	/// set by <see cref="OnDaysUpdated"/>). Cells only replace their content when the choice changes.
+	/// </summary>
+	void RefreshDayTemplateSelection()
+	{
+		if (DayViewTemplate is not DataTemplateSelector)
+		{
+			return;
+		}
+
+		foreach (var dayView in dayViews)
+		{
+			dayView.RefreshTemplateSelection();
 		}
 	}
 

@@ -37,6 +37,10 @@ public partial class MainPage : ContentPage
         await Shell.Current.GoToAsync(nameof(AdvancedPage));
 
 
+    async void DayViewTemplateCalendar(object sender, EventArgs e) =>
+        await Shell.Current.GoToAsync(nameof(DayViewTemplatePage));
+
+
     async void RangeCalendar(object sender, EventArgs e) =>
         await Shell.Current.GoToAsync(nameof(RangeSelectionPage));
 

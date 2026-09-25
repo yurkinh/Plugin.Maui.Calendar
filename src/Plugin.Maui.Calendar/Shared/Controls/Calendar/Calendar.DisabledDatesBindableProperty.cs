@@ -6,8 +6,12 @@ public partial class Calendar : ContentView, IDisposable
 		  nameof(DisabledDates),
 		  typeof(List<DateTime>),
 		  typeof(Calendar),
-		  defaultValue: new List<DateTime>(),
-		  BindingMode.TwoWay
+		  defaultValue: null,
+		  BindingMode.TwoWay,
+		  propertyChanged: OnDisabledDatesChanged,
+		  // Each calendar gets its own default list, so adding to one calendar's list never
+		  // disables days in another calendar.
+		  defaultValueCreator: static _ => new List<DateTime>()
 	  );
 
 	public List<DateTime> DisabledDates
@@ -30,6 +34,16 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (Color)GetValue(DisabledDayColorProperty);
 		set => SetValue(DisabledDayColorProperty, value);
+	}
+
+	// The shown dates do not change, so the update is forced; otherwise UpdateDays returns early
+	// and the visible cells keep their old IsDisabled state.
+	static void OnDisabledDatesChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar)
+		{
+			calendar.UpdateDays(forceUpdate: true);
+		}
 	}
 
 	static void OnDisabledDayColorChanged(BindableObject bindable, object oldValue, object newValue)

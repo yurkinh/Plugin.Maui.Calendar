@@ -3,15 +3,21 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.Layouts;
 using Plugin.Maui.Calendar.Enums;
+using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Styles;
 
 namespace Plugin.Maui.Calendar.Models;
 
-sealed partial class DayModel : ObservableObject
+sealed partial class DayModel : ObservableObject, ICalendarDay
 {
+	// TextColor depends on IsToday and IsWeekendColored, both derived from Date, so it must be
+	// re-notified here: a reused cell can change date without any other TextColor input changing.
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
 	[NotifyPropertyChangedFor(nameof(OutlineColor))]
+	[NotifyPropertyChangedFor(nameof(TextColor))]
+	[NotifyPropertyChangedFor(nameof(IsToday))]
+	[NotifyPropertyChangedFor(nameof(IsWeekend))]
 	DateTime date;
 
 	[ObservableProperty]
@@ -42,7 +48,19 @@ sealed partial class DayModel : ObservableObject
 	bool hasEvents;
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible))]
+	int eventCount;
+
+	[ObservableProperty]
+	IReadOnlyList<object> events = [];
+
+	[ObservableProperty]
+	bool isRangeStart;
+
+	[ObservableProperty]
+	bool isRangeEnd;
+
+	[ObservableProperty]
+	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible), nameof(BackgroundFullEventColor))]
 	bool isThisMonth;
 
 	[ObservableProperty]
@@ -58,7 +76,7 @@ sealed partial class DayModel : ObservableObject
 	bool allowDeselect;
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(IsVisible))]
+	[NotifyPropertyChangedFor(nameof(IsVisible), nameof(BackgroundFullEventColor))]
 	bool otherMonthIsVisible;
 
 	[ObservableProperty]
@@ -105,7 +123,9 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
 		nameof(BackgroundEventIndicator),
-		nameof(BackgroundColor)
+		nameof(BackgroundColor),
+		nameof(BackgroundFullEventColor),
+		nameof(EventLayoutDirection)
 	)]
 	EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
@@ -117,7 +137,7 @@ sealed partial class DayModel : ObservableObject
 	Color eventIndicatorColor = Color.FromArgb("#FF4081");
 
 	[ObservableProperty]
-	List<Color> eventColors;
+	IReadOnlyList<Color> eventColors;
 
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
@@ -147,11 +167,15 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	Color disabledColor = Color.FromArgb("#ECECEC");
 
-	public FlexDirection EventLayoutDirection => (HasEvents && EventIndicatorType == EventIndicatorType.TopDot) ? FlexDirection.ColumnReverse : FlexDirection.Column;
+	// Applies to every cell, not only to days with events: the (possibly empty) dot row then sits
+	// above the day number in all cells, so the numbers stay aligned across the grid.
+	public FlexDirection EventLayoutDirection => EventIndicatorType == EventIndicatorType.TopDot ? FlexDirection.ColumnReverse : FlexDirection.Column;
 
 	public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
-	public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull ? EventIndicatorColor : Colors.Transparent;
+	// Painted on the whole cell (the DayView), which stays visible for a hidden other-month day,
+	// so a hidden day must not paint its event color either.
+	public Color BackgroundFullEventColor => IsVisible && HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull ? EventIndicatorColor : Colors.Transparent;
 
 	public Color OutlineColor => IsToday && !IsSelected ? TodayOutlineColor : Colors.Transparent;
 
@@ -184,7 +208,7 @@ sealed partial class DayModel : ObservableObject
 				return OtherMonthColor;
 			}
 
-			return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekend) switch
+			return (IsDisabled, IsSelected, HasEvents, IsThisMonth, IsToday, IsWeekendColored) switch
 			{
 				(true, _, _, _, _, _) => DisabledColor,
 				(false, true, false, true, true, _)
@@ -213,12 +237,41 @@ sealed partial class DayModel : ObservableObject
 	// getters never call DateTime.Today more than once per Date assignment.
 	bool isToday;
 
+	// Runs before the generated setter raises PropertyChanged for Date and its dependents
+	// (including IsToday), so the cache is set silently here.
 	partial void OnDateChanged(DateTime value)
 	{
 		isToday = value.Date == DateTime.Today;
 	}
 
-	bool IsToday => isToday;
+	public bool IsToday => isToday;
 
-	public bool IsWeekend => (Date.DayOfWeek == DayOfWeek.Saturday || Date.DayOfWeek == DayOfWeek.Sunday) && WeekendDayColor != Colors.Transparent;
+	/// <summary>
+	/// Recomputes <see cref="IsToday"/> against <paramref name="today"/> and raises
+	/// PropertyChanged for it and every color that depends on it when the value changes.
+	/// Needed because the cache is otherwise only refreshed when <see cref="Date"/> changes,
+	/// so a cell that keeps its date across midnight would keep the previous day's state.
+	/// </summary>
+	/// <returns>Whether <see cref="IsToday"/> changed.</returns>
+	internal bool RefreshIsToday(DateTime today)
+	{
+		var value = Date.Date == today.Date;
+		if (isToday == value)
+		{
+			return false;
+		}
+
+		isToday = value;
+		OnPropertyChanged(nameof(IsToday));
+		OnPropertyChanged(nameof(BackgroundColor));
+		OnPropertyChanged(nameof(OutlineColor));
+		OnPropertyChanged(nameof(TextColor));
+		return true;
+	}
+
+	public bool IsWeekend => Date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+
+	// Drives the WeekendDayColor branch of TextColor: a weekend day is only coloured
+	// differently when a visible WeekendDayColor has been set.
+	public bool IsWeekendColored => IsWeekend && WeekendDayColor != Colors.Transparent;
 }

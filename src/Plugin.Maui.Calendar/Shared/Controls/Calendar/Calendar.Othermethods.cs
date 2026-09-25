@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections;
+using System.Globalization;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
@@ -162,22 +163,24 @@ public partial class Calendar : ContentView, IDisposable
 			dayViews,
 			this,
 			nameof(DaysTitleLabelStyle),
-			DayTappedCommand
+			DayTappedCommand,
+			DayViewTemplate
 		);
 
-		// Item 13: cache the 7 day-of-week header Labels so UpdateDayTitles doesn't
-		// re-filter Children.OfType<Label>() on every culture/style change.
 		dayTitleLabels = daysControl.Children.OfType<Label>().ToArray();
 
-		// Item 2: push global properties onto the freshly created DayModels before the
-		// per-day date render so UpdateDays only handles date-specific values.
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
-		UpdateDays();
+		UpdateDays(forceUpdate: true);
 
-		// (Re)create the weekend background boxes for the freshly built grid — but only when
-		// WeekendDayBackgroundColor is set. The grid was just cleared, so any boxes from the
-		// previous layout are already detached; RemoveWeekendBands clears the stale cache.
+		// The cells join the grid only now that their models hold real data. On a calendar that is
+		// already on screen they are rendered (and their DayViewTemplate content, including a
+		// selector's choice, is created) once, for the right day, instead of first for empty models.
+		foreach (var dayView in dayViews)
+		{
+			daysControl.Add(dayView);
+		}
+
 		UpdateWeekendBackground();
 	}
 
@@ -205,19 +208,66 @@ public partial class Calendar : ContentView, IDisposable
 				 ?? personalizableDay?.EventIndicatorTextColor
 				 ?? EventIndicatorSelectedTextColor;
 			}
-			if (dayEventCollection is IMultiEventDay multiEventDay)
+			// A multi-event day that provides no colors still shows the single indicator dot.
+			if (dayEventCollection is IMultiEventDay { Colors.Count: > 0 } multiEventDay)
 			{
-				dayModel.EventColors = multiEventDay.Colors?.Take(5).ToList() ?? [];
+				SetEventColors(dayModel, multiEventDay.Colors.Take(5).ToList());
 			}
 			else
 			{
-				dayModel.EventColors = [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor];
+				SetEventColors(dayModel, [dayModel.IsSelected ? dayModel.EventIndicatorSelectedColor : dayModel.EventIndicatorColor]);
 			}
+
+			dayModel.EventCount = dayEventCollection?.Count ?? 0;
+			SetEvents(dayModel, dayEventCollection);
 		}
 		else
 		{
-			dayModel.EventColors = [];
+			SetEventColors(dayModel, []);
+			dayModel.EventCount = 0;
+			SetEvents(dayModel, null);
 		}
+	}
+
+	// Events is a snapshot, so a template sees items added before the entry was assigned again.
+	// It is replaced only when the items differ, for the same reason as SetEventColors.
+	static void SetEvents(DayModel dayModel, ICollection dayEventCollection)
+	{
+		if (dayEventCollection is null || dayEventCollection.Count == 0)
+		{
+			if (dayModel.Events.Count > 0)
+			{
+				dayModel.Events = [];
+			}
+			return;
+		}
+
+		if (dayModel.Events.Count == dayEventCollection.Count
+			&& dayModel.Events.SequenceEqual(dayEventCollection.Cast<object>()))
+		{
+			return;
+		}
+
+		var snapshot = new List<object>(dayEventCollection.Count);
+		foreach (var item in dayEventCollection)
+		{
+			snapshot.Add(item);
+		}
+
+		dayModel.Events = snapshot;
+	}
+
+	// Every day update builds a new list, and the generated setter compares lists by reference,
+	// so without this check every event day would raise PropertyChanged for EventColors on every
+	// pass and make the event dots (a BindableLayout) be rebuilt although nothing changed.
+	static void SetEventColors(DayModel dayModel, IReadOnlyList<Color> colors)
+	{
+		if (dayModel.EventColors is { } current && current.SequenceEqual(colors))
+		{
+			return;
+		}
+
+		dayModel.EventColors = colors;
 	}
 
 	void InitializeSelectionType()
@@ -233,6 +283,7 @@ public partial class Calendar : ContentView, IDisposable
 			{
 				events.CollectionChanged -= OnEventsCollectionChanged;
 			}
+			StopTodayRefresh();
 			calendarSectionAnimateHide.Value.Dispose();
 			calendarSectionAnimateShow.Value.Dispose();
 		}

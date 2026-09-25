@@ -26,8 +26,11 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	}
 
 	/// <summary>
-	/// Populates <paramref name="targetGrid"/> with the day-of-week header row and
-	/// <paramref name="numberOfWeeks"/> × 7 <see cref="DayView"/> cells.
+	/// Populates <paramref name="targetGrid"/> with the day-of-week header row and the rows and
+	/// columns for <paramref name="numberOfWeeks"/> × 7 day cells, and fills
+	/// <paramref name="dayViews"/> with those <see cref="DayView"/> cells, each already assigned its
+	/// grid row and column. The cells are not added to <paramref name="targetGrid"/>: the caller adds
+	/// them once their day models hold real data (see <c>Calendar.RenderLayout</c>).
 	/// The caller must clear the grid's Children, RowDefinitions and ColumnDefinitions
 	/// before calling this method.
 	/// </summary>
@@ -37,6 +40,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 			object bindingContext,
 			string daysTitleLabelStyleeBindingName,
 			ICommand dayTappedCommand,
+			DataTemplate dayViewTemplate,
 			int numberOfWeeks
 	)
 	{
@@ -71,13 +75,14 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 
 			for (int col = 0; col < numberOfDaysInWeek; col++)
 			{
-				var dayView = new DayView();
+				var dayView = new DayView(dayViewTemplate);
 				var dayModel = new DayModel();
 				dayView.BindingContext = dayModel;
 				dayModel.DayTappedCommand = dayTappedCommand;
 
+				Grid.SetColumn(dayView, col);
+				Grid.SetRow(dayView, i);
 				dayViews.Add(dayView);
-				targetGrid.Add(dayView, col, i);
 			}
 		}
 	}

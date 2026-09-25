@@ -25,6 +25,9 @@ public partial class Calendar : ContentView, IDisposable
 
 		isInitializing = false;
 
+		// OnEventsChanged only observes a collection that is assigned, not the default one.
+		ObserveEvents();
+
 		// Single consolidated render at end of construction.
 		UpdateSelectedDateLabel();
 		UpdateLayoutUnitLabel();
@@ -33,5 +36,9 @@ public partial class Calendar : ContentView, IDisposable
 
 		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
 		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));
+
+		// Keeps IsToday current across midnight, but only while the calendar is on screen.
+		Loaded += OnCalendarLoaded;
+		Unloaded += OnCalendarUnloaded;
 	}
 }

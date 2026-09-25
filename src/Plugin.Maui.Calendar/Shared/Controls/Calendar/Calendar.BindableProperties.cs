@@ -342,7 +342,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (bindable is Calendar calendar)
 		{
-			calendar.UpdateDays();
+			calendar.UpdateDays(forceUpdate: true);
 		}
 	}
 
@@ -371,7 +371,8 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (bindable is Calendar calendar)
 		{
-			calendar.UpdateDays();
+			// Forced: the shown dates do not change, so a plain UpdateDays would return early.
+			calendar.UpdateDays(forceUpdate: true);
 		}
 	}
 
@@ -471,7 +472,8 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (bindable is Calendar calendar)
 		{
-			calendar.UpdateDays(); ;
+			// Forced: the shown dates do not change, so a plain UpdateDays would return early.
+			calendar.UpdateDays(forceUpdate: true);
 		}
 	}
 
@@ -502,8 +504,8 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			calendar.CalendarLayout = layout;
 
+			// RenderLayout already runs a forced UpdateDays for the new cells.
 			calendar.RenderLayout();
-			calendar.UpdateDays(true);
 		}
 	}
 
