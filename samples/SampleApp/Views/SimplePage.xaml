@@ -3,68 +3,41 @@
     x:Class="SampleApp.Views.SimplePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
-    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
-    xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Calendar"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:SampleApp.Model"
     xmlns:mtk="clr-namespace:MemoryToolkit.Maui;assembly=MemoryToolkit.Maui"
-    mtk:LeakMonitorBehavior.Cascade="True"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     x:Name="simpleCalendarPage"
     Title="Simple Calendar"
+    mtk:LeakMonitorBehavior.Cascade="True"
     x:DataType="local:SimplePageViewModel"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColor}"
     Shell.TabBarIsVisible="False">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="MyDaysLabelStyle" TargetType="Label">
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="LineBreakMode" Value="WordWrap" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Margin" Value="5,2" />
-            </Style>
-            <Style
-                x:Key="MyDaysTitleLabelStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultDaysTitleLabelStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource DaysTitleLabelTextColor}" />
-            </Style>
-            <Style
-                x:Key="MyWeekendTitleStyle"
-                BasedOn="{x:Static styles:DefaultStyles.DefaultWeekendTitleStyle}"
-                TargetType="Label">
-                <Setter Property="TextColor" Value="Red" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+        <controls:XamlSourceToolbarItem />
     </ContentPage.ToolbarItems>
     <plugin:Calendar
         x:Name="calendar"
-        Padding="10,0"
         AllowDeselecting="False"
         Day="{Binding Day}"
         DayViewBorderMargin="6,4,6,8"
-        DaysLabelStyle="{StaticResource MyDaysLabelStyle}"
-        DaysTitleLabelStyle="{StaticResource MyDaysTitleLabelStyle}"
-        DeselectedDayTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        EventIndicatorSelectedTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
-        EventIndicatorTextColor="{toolkit:AppThemeResource DeselectedDayLabelTextColor}"
+        EmptyTemplate="{StaticResource NoEventsTemplate}"
         Events="{Binding Events}"
         EventsScrollViewVisible="True"
-        FirstDayOfWeek="Monday"
-        HorizontalOptions="Fill"
         MaximumDate="{Binding MaximumDate}"
         MinimumDate="{Binding MinimumDate}"
         Month="{Binding Month}"
         MonthChangedCommand="{Binding MonthChangedCommand}"
-        OtherMonthSelectedDayColor="HotPink"
         OtherMonthWeekIsVisible="False"
         SelectedDate="{Binding SelectedDate}"
+        Style="{StaticResource SampleCalendarStyle}"
         SwipeDetectionDisabled="False"
-        VerticalOptions="Fill"
-        WeekendTitleStyle="{StaticResource MyWeekendTitleStyle}"
-        Year="{Binding Year}" />
+        Year="{Binding Year}">
+        <plugin:Calendar.EventTemplate>
+            <DataTemplate x:DataType="models:EventModel">
+                <controls:EventRow Command="{Binding EventSelectedCommand, Source={RelativeSource AncestorType={x:Type local:SimplePageViewModel}}, x:DataType=local:SimplePageViewModel}" />
+            </DataTemplate>
+        </plugin:Calendar.EventTemplate>
+    </plugin:Calendar>
 </ContentPage>

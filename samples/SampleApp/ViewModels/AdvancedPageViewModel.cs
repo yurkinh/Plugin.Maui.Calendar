@@ -1,7 +1,5 @@
 ﻿using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
-using System.Collections.ObjectModel;
-using System.Globalization;
 
 namespace SampleApp.ViewModels;
 
@@ -12,23 +10,22 @@ public partial class AdvancedPageViewModel : BasePageViewModel
         //uncoment if want to show alert when page is loaded
         //MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
 
-        Culture = CultureInfo.CreateSpecificCulture("en-GB");
         // testing all kinds of adding events
         // when initializing collection
         Events = new EventCollection
         {
             [DateTime.Now.AddDays(-3)] = new List<AdvancedEventModel>(GenerateEvents(10, "Cool")),
-            [DateTime.Now.AddDays(-6)] = new DayEventCollection<AdvancedEventModel>(Colors.Purple, Colors.Purple)
-            {
+            [DateTime.Now.AddDays(-6)] = ColoredDay(
+            [
                 new() { Name = "Cool event1", Description = "This is Cool event1's description!", Starting= new DateTime() },
                 new() { Name = "Cool event2", Description = "This is Cool event2's description!", Starting= new DateTime() }
-            }
+            ], purple)
         };
 
-        //Adding a day with a different dot color
-        Events.Add(DateTime.Now.AddDays(-2), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Blue, EventIndicatorSelectedColor = Colors.Blue });
-        Events.Add(DateTime.Now.AddDays(-4), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Green, EventIndicatorSelectedColor = Colors.White });
-        Events.Add(DateTime.Now.AddDays(-5), new DayEventCollection<AdvancedEventModel>(GenerateEvents(10, "Cool")) { EventIndicatorColor = Colors.Orange, EventIndicatorSelectedColor = Colors.Orange });
+        //Adding days with their own background color (EventIndicatorType is Background on this page)
+        Events.Add(DateTime.Now.AddDays(-2), ColoredDay(GenerateEvents(10, "Cool"), blue));
+        Events.Add(DateTime.Now.AddDays(-4), ColoredDay(GenerateEvents(10, "Cool"), green));
+        Events.Add(DateTime.Now.AddDays(-5), ColoredDay(GenerateEvents(10, "Cool"), orange));
 
         // with add method
         Events.Add(DateTime.Now.AddDays(-1), new List<AdvancedEventModel>(GenerateEvents(5, "Cool")));
@@ -65,6 +62,21 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 
     }
 
+    // Mid tones: white text stays readable on them in the light and the dark theme
+    static readonly Color purple = Color.FromArgb("#7C5CBF");
+    static readonly Color blue = Color.FromArgb("#3F7AD1");
+    static readonly Color green = Color.FromArgb("#2E8B57");
+    static readonly Color orange = Color.FromArgb("#C26A1B");
+
+    static DayEventCollection<AdvancedEventModel> ColoredDay(IEnumerable<AdvancedEventModel> events, Color color) =>
+        new(events)
+        {
+            EventIndicatorColor = color,
+            EventIndicatorSelectedColor = color,
+            EventIndicatorTextColor = Colors.White,
+            EventIndicatorSelectedTextColor = Colors.White,
+        };
+
     static IEnumerable<AdvancedEventModel> GenerateEvents(int count, string name)
     {
         return Enumerable.Range(1, count).Select(x => new AdvancedEventModel
@@ -85,9 +97,6 @@ public partial class AdvancedPageViewModel : BasePageViewModel
 
     [ObservableProperty]
     DateTime? selectedDate = DateTime.Today;
-
-    [ObservableProperty]
-    CultureInfo culture = CultureInfo.InvariantCulture;
 
     [RelayCommand]
     static async Task DayTapped(DateTime date)
