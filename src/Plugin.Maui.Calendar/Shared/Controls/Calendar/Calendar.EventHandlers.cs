@@ -64,6 +64,17 @@ public partial class Calendar : ContentView, IDisposable
 		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
 		WeakReferenceMessenger.Default.Register<DayTappedMessage>(this, (r, m) => OnDayTappedHandler(m.Value));
 
+		// DetachHandler disposes the calendar, which stops observing Events. A calendar that gets a
+		// handler again (for example a cached page that is shown again) observes Events again and
+		// catches up with the changes made while it had no handler.
+		ObserveEvents();
+		if (isHandlerDetached)
+		{
+			isHandlerDetached = false;
+			UpdateEvents();
+			UpdateDays(forceUpdate: true);
+		}
+
 		if (!SwipeDetectionDisabled)
 		{
 			leftSwipeGesture = new() { Direction = SwipeDirection.Left };
@@ -103,6 +114,7 @@ public partial class Calendar : ContentView, IDisposable
 		//Todo remove later/when all event and properties will be refactored
 		//all this should be done automaticall or not needed
 		Dispose();
+		isHandlerDetached = true;
 	}
 
 	// Idempotent, so it can run whether or not Events is already observed.

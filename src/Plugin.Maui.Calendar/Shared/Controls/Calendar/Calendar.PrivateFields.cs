@@ -35,4 +35,8 @@ public partial class Calendar : ContentView, IDisposable
 	// that fire before the control is fully initialised skip expensive render passes.
 	// A single consolidated render executes at the end of the constructor.
 	bool isInitializing;
+
+	// Set when the handler is removed (DetachHandler disposes the calendar and stops observing
+	// Events), so that AttachHandler knows the day cells may have missed Events changes.
+	bool isHandlerDetached;
 }

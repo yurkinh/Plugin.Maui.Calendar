@@ -70,9 +70,11 @@ public partial class Calendar : ContentView, IDisposable
 	void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
 	{
 		// Item 1: UpdateDays already calls AssignIndicatorColors per day, so a separate
-		// UpdateDaysColors pass would be a redundant second iteration.
+		// UpdateDaysColors pass would be a redundant second iteration. The update must be
+		// forced: the shown dates did not change, so a plain UpdateDays() would return early
+		// and leave HasEvents and EventColors stale.
 		UpdateEvents();
-		UpdateDays();
+		UpdateDays(forceUpdate: true);
 	}
 
 	void OnDayTappedHandler(DateTime value)
