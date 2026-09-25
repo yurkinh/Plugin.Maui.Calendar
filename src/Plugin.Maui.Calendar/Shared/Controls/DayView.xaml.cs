@@ -21,7 +21,9 @@ public sealed partial class DayView : ContentView
 
             dayModel.IsSelected = !dayModel.IsSelected;
             dayModel.DayTappedCommand?.Execute(dayModel.Date);
-			WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date));
+			// Source lets only the calendar that owns this cell handle the tap; the message is
+			// broadcast to every calendar that is on screen.
+			WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date) { Source = this });
         }
     }
 }

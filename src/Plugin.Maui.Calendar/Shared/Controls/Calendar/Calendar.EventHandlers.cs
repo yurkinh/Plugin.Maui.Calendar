@@ -62,7 +62,7 @@ public partial class Calendar : ContentView, IDisposable
 	void AttachHandler()
 	{
 		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
-		WeakReferenceMessenger.Default.Register<DayTappedMessage>(this, (r, m) => OnDayTappedHandler(m.Value));
+		WeakReferenceMessenger.Default.Register<Calendar, DayTappedMessage>(this, static (calendar, message) => calendar.OnDayTappedMessage(message));
 
 		// DetachHandler disposes the calendar, which stops observing Events. A calendar that gets a
 		// handler again (for example a cached page that is shown again) observes Events again and
@@ -115,6 +115,18 @@ public partial class Calendar : ContentView, IDisposable
 		//all this should be done automaticall or not needed
 		Dispose();
 		isHandlerDetached = true;
+	}
+
+	// Every calendar on screen receives every DayTappedMessage, so a tap is only handled by the
+	// calendar that owns the tapped cell (a message without a source is handled by all, as before).
+	void OnDayTappedMessage(DayTappedMessage message)
+	{
+		if (message.Source is DayView dayView && !dayViews.Contains(dayView))
+		{
+			return;
+		}
+
+		OnDayTappedHandler(message.Value);
 	}
 
 	// Idempotent, so it can run whether or not Events is already observed.
