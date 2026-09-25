@@ -20,9 +20,24 @@ Simple cross-platform plugin for Calendar control featuring:
 - Displaying events by binding EventCollection
 - Localization support with System.Globalization.CultureInfo
 - Customizable colors, day view sizes/label styles, custom Header/Footer template support
+- Custom day cells with `DayViewTemplate`
 - UI reactive to EventCollection, Culture, and other changes 
 
 ### What's new
+V3.1.0
+* Added **DayViewTemplate** property — draw every day cell with your own `DataTemplate` or `DataTemplateSelector` (check the [DayViewTemplate](#dayviewtemplate) section)
+* Added the **ICalendarDay** interface, the binding context of a day template: `Date`, `Day`, `IsSelected`, `IsToday`, `IsWeekend`, `IsThisMonth`, `IsDisabled`, `HasEvents`, `EventCount`, `Events`, `EventColors`, `IsRangeStart`, `IsRangeEnd`
+* Added a Day Template sample page
+* Fixed: the today highlight now moves to the new day at midnight while the calendar is shown
+* Fixed: adding, replacing or removing entries of the `EventCollection` at runtime now updates the day cells right away, also after the calendar's page was shown again
+* Fixed: changing `DisabledDates`, `MinimumDate`, `MaximumDate`, `OtherMonthDayIsVisible` or `OtherMonthWeekIsVisible` at runtime (or through a binding) now updates the visible days
+* Fixed: `EventIndicatorType="TopDot"` now draws the event dots above the day number (they were always drawn below it)
+* Fixed: `EventIndicatorType="BackgroundFull"` no longer paints hidden other-month days, and follows a runtime change of `EventIndicatorType`
+* Fixed: with two calendars on screen, tapping a day in one no longer selects that date in the other
+* Fixed: calendars no longer share one default `Events` collection and one default `DisabledDates` list
+* Fixed: a day whose event collection implements `IMultiEventDay` without providing `Colors` shows its event dot again (in the indicator color)
+* Fixed: `RangeSelectionCalendar` keeps `SelectedDatesRangeBackgroundColor` on the range after a color, theme or layout change, and applies a new `SelectedDatesRangeBackgroundColor` right away
+
 V2.0.0
 * Updated to .NET 9
 * Optimized startup time: iOS 20 % / Android 40 % 
@@ -328,9 +343,9 @@ You can set the layout of the calendar with the property `CalendarLayout`
 
 - Available layouts are: 
 
-    `OneWeek` - only one week is shown
+    `Week` - only one week is shown
 
-    `TwoWeeks` - two weeks are shown
+    `TwoWeek` - two weeks are shown
 
     `Month` - the whole month is shown (default value)
 
@@ -472,3 +487,144 @@ Customize what to show in case the selected date has no events. Example from Adv
     </DataTemplate>
 </plugin:Calendar.EmptyTemplate>
 ```
+
+##### Day templates
+This template provides full customization over how each individual day cell is rendered.
+
+###### DayViewTemplate
+Set `DayViewTemplate` to draw every day cell yourself. The template's `BindingContext` is an `ICalendarDay` (namespace `Plugin.Maui.Calendar.Interfaces`), so the cell can react to the day's date, selection, events and state.
+
+The example below is a trimmed version of the "Photo" template from the sample app's `DayViewTemplatePage.xaml`: the selected day shows a picture, today gets a tinted tile, weekend numbers are green, disabled days are struck out and event days get one dot per event color. `monkey.png` is an image in the app's `Resources/Images` folder.
+```xml
+xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+xmlns:interfaces="clr-namespace:Plugin.Maui.Calendar.Interfaces;assembly=Plugin.Maui.Calendar"
+...
+<plugin:Calendar x:Name="calendar" DayViewSize="50">
+    <plugin:Calendar.DayViewTemplate>
+        <DataTemplate x:DataType="interfaces:ICalendarDay">
+            <Border Margin="3" Stroke="Transparent" StrokeShape="RoundRectangle 16" StrokeThickness="0">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsThisMonth}" Value="False">
+                        <Setter Property="Opacity" Value="0.3" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsToday}" Value="True">
+                        <Setter Property="BackgroundColor" Value="#DCFCE7" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                        <Setter Property="Stroke" Value="#22C55E" />
+                        <Setter Property="StrokeThickness" Value="2" />
+                        <Setter Property="Opacity" Value="1" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Grid>
+                    <!-- the picture and a dark overlay are only shown on the selected day -->
+                    <Image Aspect="AspectFill" IsVisible="{Binding IsSelected}" Source="monkey.png" />
+                    <BoxView IsVisible="{Binding IsSelected}" Color="#80064E2B" />
+                    <Grid Padding="0,4,0,6" RowDefinitions="*,Auto">
+                        <Label FontAttributes="Bold" HorizontalOptions="Center" Text="{Binding Day}" VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsDisabled}" Value="True">
+                                    <Setter Property="TextDecorations" Value="Strikethrough" />
+                                </DataTrigger>
+                                <!-- later triggers win: the selection overrides the weekend color -->
+                                <DataTrigger TargetType="Label" Binding="{Binding IsWeekend}" Value="True">
+                                    <Setter Property="TextColor" Value="#15803D" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="TextColor" Value="White" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <!-- one dot per event color -->
+                        <HorizontalStackLayout Grid.Row="1" BindableLayout.ItemsSource="{Binding EventColors}"
+                                               HeightRequest="5" HorizontalOptions="Center" Spacing="3">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="Color">
+                                    <Ellipse Fill="{Binding .}" HeightRequest="5" WidthRequest="5" />
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </plugin:Calendar.DayViewTemplate>
+</plugin:Calendar>
+```
+
+The sample page also has a "Tiles" template (weekday name from `Date`, weekend tint from `IsWeekend`, an `EventCount` badge, a lock on disabled days), an "Agenda" template that writes the day's event names inside the cell (`Events`), and switches between the templates at runtime.
+
+**Showing the day's events inside the cell**
+
+`Events` holds the objects you stored for the day, so a template can write their text right in the cell:
+```xml
+<DataTemplate x:DataType="interfaces:ICalendarDay">
+    <VerticalStackLayout Padding="2" Spacing="1">
+        <Label FontAttributes="Bold" HorizontalOptions="Center" Text="{Binding Day}" />
+        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Events}" Spacing="1">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="model:EventModel">
+                    <Label FontSize="8" LineBreakMode="TailTruncation" MaxLines="1" Text="{Binding Name}" />
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</DataTemplate>
+```
+
+**`ICalendarDay` members**
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `Date` | `DateTime` | The date the cell shows |
+| `Day` | `string` | The day-of-month text (`"1"`..`"31"`), formatted with `Culture` and `UseNativeDigits` |
+| `IsSelected` | `bool` | The day is selected. In a `RangeSelectionCalendar` this is `true` for every day of the range, both ends included |
+| `IsToday` | `bool` | The day is today. Moves to the new day at midnight while the calendar is shown |
+| `IsWeekend` | `bool` | The day is a Saturday or a Sunday. Does not depend on `WeekendDayColor` or `FirstDayOfWeek` |
+| `IsThisMonth` | `bool` | The day belongs to the shown month. Always `true` in the `Week` and `TwoWeek` layouts |
+| `IsDisabled` | `bool` | The day is before `MinimumDate`, after `MaximumDate` or in `DisabledDates`. Disabled days can't be selected |
+| `HasEvents` | `bool` | `Events` has an entry for the day (even an empty one) |
+| `EventCount` | `int` | The number of events in the day's `Events` entry; `0` when there is none. Changes inside that entry's own collection are not observed: assign the entry again (`Events[date] = dayEvents`) to refresh the count |
+| `Events` | `IReadOnlyList<object>` | The day's events: the objects stored in its `Events` entry, in order, or an empty list. Use it to show event text inside the cell. Like `EventCount`, assign the entry again to refresh it after changing the entry's own collection |
+| `EventColors` | `IReadOnlyList<Color>` | The day's event indicator colors: up to five from an event collection that implements `IMultiEventDay` and provides colors, otherwise the single indicator color. Empty when the day has no events |
+| `IsRangeStart` | `bool` | The day is the first day of the selected range. Only set by `RangeSelectionCalendar`, `false` in the other calendars |
+| `IsRangeEnd` | `bool` | The day is the last day of the selected range. Only set by `RangeSelectionCalendar`, `false` in the other calendars. For a one-day range both `IsRangeStart` and `IsRangeEnd` are `true` |
+
+Day cells are reused: navigating to another month or week gives the same cells new dates. The calendar assigns the members whenever it updates its days, and every member raises `PropertyChanged` when it changes, so bind to the members (or use triggers) instead of reading them once in code.
+
+**Switching templates at runtime**
+
+`DayViewTemplate` can be changed at any time. Only the content of each cell is replaced; the shown month and the selection are kept. Setting it to `null` restores the built-in cell.
+```csharp
+calendar.DayViewTemplate = (DataTemplate)Resources["TileDayTemplate"];
+
+// back to the built-in day cell
+calendar.DayViewTemplate = null;
+```
+
+**DataTemplateSelector**
+
+`DayViewTemplate` also accepts a `DataTemplateSelector`. The selector receives the `ICalendarDay` as `item` and the day cell as `container`:
+```csharp
+public class EventDayTemplateSelector : DataTemplateSelector
+{
+    public DataTemplate PlainDayTemplate { get; set; }
+    public DataTemplate EventDayTemplate { get; set; }
+
+    protected override DataTemplate OnSelectTemplate(object item, BindableObject container) =>
+        ((ICalendarDay)item).HasEvents ? EventDayTemplate : PlainDayTemplate;
+}
+```
+* The selector is asked when a cell is created and again for every cell each time the calendar updates its days: after navigating, and when the selection, the events, the disabled dates, the minimum or maximum date or today (at midnight) change.
+* It always sees the complete, current state of the day, so it can choose by any `ICalendarDay` member.
+* A cell only replaces its content when the selector returns a different template instance. Return the same instances every time (like the properties above) and keep the selector cheap.
+* Returning `null` shows the built-in cell for that day.
+
+**Good to know**
+* The root of the template must be a `View`, such as a `Grid`, `Border` or `Label`. Any other root (for example a `ViewCell`) throws an `InvalidOperationException` when the cell is created.
+* The calendar still sizes every cell to `DayViewSize` (the template fills that square), hides the days that `OtherMonthDayIsVisible` and `OtherMonthWeekIsVisible` hide, selects a day when its cell is tapped (`DayTappedCommand`, `AllowDeselecting` and `AutoChangeMonthOnDayTap` work as usual) and draws `WeekendDayBackgroundColor` behind the cells.
+* `EventIndicatorColor` and `EventIndicatorSelectedColor` still provide `EventColors` for days whose events don't set their own colors.
+* These properties only style the built-in cell and are **ignored** when a template is set: `DaysLabelStyle`, `DayViewCornerRadius`, `DayViewBorderMargin`, `EventIndicatorType` (including the `BackgroundFull` cell background), `SelectedDayBackgroundColor`, `SelectedDayTextColor`, `SelectedTodayTextColor`, `DeselectedDayTextColor`, `TodayOutlineColor`, `TodayFillColor`, `TodayTextColor`, `WeekendDayColor`, `OtherMonthDayColor`, `OtherMonthSelectedDayColor`, `DisabledDayColor`, `EventIndicatorTextColor`, `EventIndicatorSelectedTextColor`, and `SelectedDatesRangeBackgroundColor` on `RangeSelectionCalendar`. Draw these states in the template from the `ICalendarDay` members.
+* Taps are handled by the cell around the template. A child that handles input itself, such as a `Button`, a `CheckBox` or a view with its own gesture recognizers, takes the tap and the day is not selected. Set `InputTransparent="True"` on such a child if tapping it should select the day.
+* In the `Week` and `TwoWeek` layouts `IsThisMonth` is always `true`, so a template that fades other-month days shows every day normally there.
+* In a `RangeSelectionCalendar`, style the whole range with `IsSelected` and its first and last days with `IsRangeStart` and `IsRangeEnd`.
