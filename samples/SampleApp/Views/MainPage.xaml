@@ -5,118 +5,97 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    Title="Calendar Plugin for .NET MAUI"
-    BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
-    Shell.BackgroundColor="{toolkit:AppThemeResource BackgroundColorfullPageColor}"
-    Shell.TitleColor="{toolkit:AppThemeResource TextColor}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <toolkit:AppThemeColor
-                x:Key="LabelColor"
-                Dark="#CAD2C5"
-                Light="#000000" />
-            <toolkit:AppThemeColor
-                x:Key="LabelButtonColor"
-                Dark="#000000"
-                Light="#000000" />
-
-            <Style x:Key="LabelMainPageStyle" TargetType="Label">                
-                <Setter Property="FontSize" Value="30" />               
-                <Setter Property="HorizontalOptions" Value="Center" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelColor}" />
-            </Style>
-            <Style x:Key="ButtonMainPageStyle" TargetType="Button">
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="BackgroundColor" Value="{toolkit:AppThemeResource ButtonColor}" />
-                <Setter Property="FontSize" Value="22" />                
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Margin" Value="30,10" />
-                <Setter Property="Padding" Value="10" />
-                <Setter Property="TextColor" Value="{toolkit:AppThemeResource LabelButtonColor}" />
-                <Setter Property="VerticalOptions" Value="Center" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    Title="Samples"
+    x:DataType="vm:MainPageViewModel">
     <ScrollView>
-        <VerticalStackLayout HorizontalOptions="Fill" Spacing="6">
-            <Button
-                Margin="30,30,30,0"
-                Clicked="TestingCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Testing Page" />
+        <VerticalStackLayout Padding="0,0,0,32">
+            <VerticalStackLayout Margin="20,8,20,0" Spacing="4">
+                <Label
+                    FontSize="26"
+                    Style="{StaticResource TitleLabelStyle}"
+                    Text="Plugin.Maui.Calendar" />
+                <Label Style="{StaticResource CaptionLabelStyle}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Tap a sample to open it. On a sample page, " />
+                            <Span
+                                FontFamily="FontAwesomeSolid"
+                                Text="&#xf121;"
+                                TextColor="{toolkit:AppThemeResource AccentColor}" />
+                            <Span Text=" shows the XAML of its calendar." />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </VerticalStackLayout>
 
-            <Button
-                Clicked="DefaultCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Default Calendar" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Groups}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="model:DemoGroup">
+                        <VerticalStackLayout>
+                            <Label Style="{StaticResource SectionHeaderStyle}" Text="{Binding Title}" />
+                            <Border Margin="16,0" Style="{StaticResource CardStyle}">
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="model:DemoItem">
+                                            <Grid
+                                                Padding="14,0,0,0"
+                                                AutomationId="{Binding Title}"
+                                                ColumnDefinitions="Auto,*,Auto"
+                                                ColumnSpacing="14"
+                                                RowDefinitions="*,Auto"
+                                                SemanticProperties.Description="{Binding Title}">
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding OpenCommand}" />
+                                                </Grid.GestureRecognizers>
 
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Event Calendars" />
-            <Button
-                Clicked="SimpleCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Simple Event Calendar" />
-            <Button
-                Clicked="MultiSelectionCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="MultiSelection Event Calendar" />
-            <Button
-                Clicked="WeekendCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Weekend Calendar" />
-            <Button
-                Clicked="WeekendFilledCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Weekend Filled Calendar" />
-            <Button
-                Clicked="AdvancedCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Advanced Event Calendar" />
-            <Button
-                Clicked="DayViewTemplateCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Day Template Calendar" />
-            <Button
-                Clicked="RangeCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Range Event Calendar" />
-            <Button
-                Clicked="WeekSelectionCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Week Selection Calendar" />
+                                                <Border
+                                                    Padding="0"
+                                                    BackgroundColor="{toolkit:AppThemeResource AccentSoftColor}"
+                                                    HeightRequest="38"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    StrokeThickness="0"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="38">
+                                                    <Label Style="{StaticResource IconLabelStyle}" Text="{Binding Glyph}" />
+                                                </Border>
 
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Calendars from Devices" />
-            <Button
-                Clicked="Windows11Calendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Windows 11 Calendar" />
-            <Button
-                Clicked="XiaomiCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Xiaomi Calendar (todo)" />
+                                                <VerticalStackLayout
+                                                    Grid.Column="1"
+                                                    Padding="0,12"
+                                                    Spacing="2"
+                                                    VerticalOptions="Center">
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        Style="{StaticResource BodyLabelStyle}"
+                                                        Text="{Binding Title}" />
+                                                    <Label Style="{StaticResource CaptionLabelStyle}" Text="{Binding Description}" />
+                                                </VerticalStackLayout>
 
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Picker Popup" />
-            <Button
-                Clicked="PickerPopup"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Single Select Calendar" />
-            <Button
-                Clicked="RangePickerPopup"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Range Selection Calendar" />
-            <Button
-                Clicked="RangeStartEndDatePickerPopup"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Range Start-End Selection Calendar" />
+                                                <Label
+                                                    Grid.Column="2"
+                                                    Margin="0,0,16,0"
+                                                    FontFamily="FontAwesomeSolid"
+                                                    FontSize="12"
+                                                    Text="&#xf054;"
+                                                    TextColor="{toolkit:AppThemeResource TextDisabledColor}"
+                                                    VerticalOptions="Center" />
 
-            <Label Style="{StaticResource LabelMainPageStyle}" Text="Week View Calendars" />
-            <Button
-                Clicked="WeekViewCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Single Week View Calendar" />
-            <Button
-                Clicked="TwoWeekViewCalendar"
-                Style="{StaticResource ButtonMainPageStyle}"
-                Text="Two Weeks View Calendar" />
+                                                <BoxView
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Grid.ColumnSpan="2"
+                                                    IsVisible="{Binding ShowDivider}"
+                                                    Style="{StaticResource DividerStyle}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

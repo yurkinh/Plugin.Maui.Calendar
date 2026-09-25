@@ -54,6 +54,7 @@ public static class MauiProgram
     }
     static MauiAppBuilder InjectViewsAndViewModels(this MauiAppBuilder builder)
     {
+		builder.Services.AddTransient<MainPage, MainPageViewModel>();
 		builder.Services.AddTransientWithShellRoute<UserSettingPage, UserSettingViewModel>(nameof(UserSettingPage));
 		builder.Services.AddTransientWithShellRoute<SimplePage, SimplePageViewModel>(nameof(SimplePage));
 		builder.Services.AddTransientWithShellRoute<XiaomiCalendarPage, XiaomiCalendarViewModel>(nameof(XiaomiCalendarPage));
