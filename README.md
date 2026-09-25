@@ -479,6 +479,12 @@ A swipe up hides the days (see [Swipe gestures](#swipe-gestures)), and a tap on 
 
 Set `DayViewTemplate` to draw every day cell yourself. The template's `BindingContext` is an `ICalendarDay` (namespace `Plugin.Maui.Calendar.Interfaces`), so the cell can react to the day's date, selection, events and state.
 
+The Day Template page of the sample app switches between three templates at runtime:
+
+| Photo | Tiles | Agenda | Photo, dark theme |
+| ----- | ----- | ------ | ----------------- |
+| ![Photo template: the selected day shows a picture, weekend numbers are green and event days get one dot per event color](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/DayTemplate_photo.png) | ![Tiles template: every day is a tile with its weekday name, event count badge and a lock on disabled days](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/DayTemplate_tiles.png) | ![Agenda template: each cell lists the names of the day's events](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/DayTemplate_agenda.png) | ![Photo template in the dark theme](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/DayTemplate_dark.png) |
+
 The example below is a trimmed version of the "Photo" template from the sample app's [DayViewTemplatePage.xaml](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/samples/SampleApp/Views/DayViewTemplatePage.xaml): the selected day shows a picture, today gets a tinted tile, weekend numbers are green, disabled days are struck out and event days get one dot per event color. `monkey.png` is an image in the app's `Resources/Images` folder.
 ```xml
 xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
