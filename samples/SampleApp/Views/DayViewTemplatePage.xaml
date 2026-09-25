@@ -3,13 +3,14 @@
     x:Class="SampleApp.Views.DayViewTemplatePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
     xmlns:interfaces="clr-namespace:Plugin.Maui.Calendar.Interfaces;assembly=Plugin.Maui.Calendar"
     xmlns:local="clr-namespace:SampleApp.ViewModels"
     xmlns:model="clr-namespace:SampleApp.Model"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Name="dayViewTemplatePage"
-    Title="Day Template Calendar"
+    Title="Day Template"
     x:DataType="local:DayViewTemplatePageViewModel"
     BackgroundColor="{toolkit:AppThemeResource DtPageColor}"
     Shell.TabBarIsVisible="False">
@@ -454,8 +455,8 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand, Mode=OneWay}" Text="Today" />
+        <controls:XamlSourceToolbarItem />
     </ContentPage.ToolbarItems>
-
 
     <!--  Scrolls on small phones, so the agenda under the calendar is always reachable  -->
     <ScrollView>
@@ -613,6 +614,7 @@
                     SelectedDate="{Binding SelectedDate}"
                     SelectedDateTextFormat="dddd, d MMMM"
                     SelectedDayBackgroundColor="{StaticResource DtAccent}"
+                    Style="{StaticResource SettingsCalendarStyle}"
                     TodayOutlineColor="{StaticResource DtAccentBright}"
                     TodayTextColor="{toolkit:AppThemeResource DtAccentText}"
                     VerticalOptions="Fill"
