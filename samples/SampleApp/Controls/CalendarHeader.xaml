@@ -4,81 +4,31 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="plugin:Calendar">
     <Grid
-        Margin="0,2"
-        Padding="0"
-        ColumnDefinitions="1*,3*,1*"
-        HorizontalOptions="Fill"
-        IsVisible="{Binding ShowMonthPicker}"
-        RowDefinitions="Auto"
-        VerticalOptions="Start">
-        <Border
-            Grid.Column="0"
-            Padding="0"
-            BackgroundColor="White"
-            HeightRequest="36"
-            HorizontalOptions="Center"
-            Stroke="Orange"
-            StrokeShape="RoundRectangle 18"
-            VerticalOptions="Center"
-            WidthRequest="36">
-            <Label
-                FontAttributes="Bold"
-                FontFamily="FontAwesomeSolid"
-                FontSize="25"
-                HorizontalOptions="Center"
-                HorizontalTextAlignment="Center"
-                InputTransparent="True"
-                Text="&#xf060;"
-                TextColor="Black"
-                VerticalOptions="Center"
-                VerticalTextAlignment="Center" />
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding PrevLayoutUnitCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
+        Padding="4,4,4,10"
+        ColumnDefinitions="Auto,*,Auto"
+        IsVisible="{Binding ShowMonthPicker}">
+        <Button
+            Command="{Binding PrevLayoutUnitCommand}"
+            SemanticProperties.Description="Previous"
+            Style="{StaticResource SamplePreviousArrowButtonStyle}" />
 
-        <Label
-            Grid.Column="1"
-            FontAttributes="Bold"
-            FontSize="16"
-            HorizontalOptions="Center"
-            TextColor="#2196F3"
-            VerticalOptions="Center">
+        <Label Grid.Column="1" Style="{StaticResource SampleMonthLabelStyle}">
             <Label.FormattedText>
                 <FormattedString>
-                    <Span Text="{Binding LayoutUnitText, Mode=TwoWay}" />
-                    <Span Text=", " />
-                    <Span Text="{Binding LocalizedYear}" />
+                    <Span Text="{Binding LayoutUnitText}" />
+                    <Span Text=" " />
+                    <Span Text="{Binding LocalizedYear}" TextColor="{toolkit:AppThemeResource TextSecondaryColor}" />
                 </FormattedString>
             </Label.FormattedText>
         </Label>
 
-        <Border
+        <Button
             Grid.Column="2"
-            Padding="0"
-            BackgroundColor="White"
-            HeightRequest="36"
-            HorizontalOptions="Center"
-            Stroke="Orange"
-            StrokeShape="RoundRectangle 18"
-            VerticalOptions="Center"
-            WidthRequest="36">
-            <Label
-                FontAttributes="Bold"
-                FontFamily="FontAwesomeSolid"
-                FontSize="25"
-                HorizontalOptions="Center"
-                HorizontalTextAlignment="Center"
-                InputTransparent="True"
-                Text="&#xf061;"
-                TextColor="Black"
-                VerticalOptions="Center"
-                VerticalTextAlignment="Center" />
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NextLayoutUnitCommand}" />
-            </Border.GestureRecognizers>
-        </Border>
+            Command="{Binding NextLayoutUnitCommand}"
+            SemanticProperties.Description="Next"
+            Style="{StaticResource SampleNextArrowButtonStyle}" />
     </Grid>
 </DataTemplate>

@@ -4,44 +4,34 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="plugin:Calendar">
     <Grid
-        HeightRequest="40"
-        RowSpacing="6"
-        HorizontalOptions="Fill"
-        VerticalOptions="Fill"
-        ColumnDefinitions="Auto,*">
-        <Label
-            Grid.Column="0"
-            Style="{Binding SelectedDateLabelStyle}"
-            Text="{Binding SelectedDateText}"/>
+        Padding="4,0"
+        ColumnDefinitions="*,Auto"
+        HeightRequest="44">
+        <Label Style="{Binding SelectedDateLabelStyle}" Text="{Binding SelectedDateText}" />
 
         <Label
-            x:Name="showHideLabel"
             Grid.Column="1"
-            Margin="0,0,15,0"
-            BackgroundColor="Transparent"
-            FontAttributes="Bold"
+            Margin="0,0,8,0"
             FontFamily="FontAwesomeSolid"
-            FontSize="25"
-            HorizontalOptions="End"
+            FontSize="14"
             IsVisible="{Binding FooterArrowVisible}"
-            Text="&#xf062;"
-            TextColor="DarkCyan"
-            VerticalOptions="Center"
-            VerticalTextAlignment="Center">
+            Text="&#xf077;"
+            TextColor="{toolkit:AppThemeResource TextSecondaryColor}"
+            VerticalOptions="Center">
             <Label.Triggers>
                 <DataTrigger
                     Binding="{Binding CalendarSectionShown}"
                     TargetType="Label"
                     Value="False">
-                    <Setter Property="Text"
-                            Value="&#xf063;"/>
+                    <Setter Property="Text" Value="&#xf078;" />
                 </DataTrigger>
             </Label.Triggers>
         </Label>
         <Grid.GestureRecognizers>
-            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}"/>
+            <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
         </Grid.GestureRecognizers>
     </Grid>
 </ContentView>
