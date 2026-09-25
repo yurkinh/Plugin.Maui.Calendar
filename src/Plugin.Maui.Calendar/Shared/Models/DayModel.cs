@@ -42,7 +42,7 @@ sealed partial class DayModel : ObservableObject
 	bool hasEvents;
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible))]
+	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible), nameof(BackgroundFullEventColor))]
 	bool isThisMonth;
 
 	[ObservableProperty]
@@ -58,7 +58,7 @@ sealed partial class DayModel : ObservableObject
 	bool allowDeselect;
 
 	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(IsVisible))]
+	[NotifyPropertyChangedFor(nameof(IsVisible), nameof(BackgroundFullEventColor))]
 	bool otherMonthIsVisible;
 
 	[ObservableProperty]
@@ -105,7 +105,9 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	[NotifyPropertyChangedFor(
 		nameof(BackgroundEventIndicator),
-		nameof(BackgroundColor)
+		nameof(BackgroundColor),
+		nameof(BackgroundFullEventColor),
+		nameof(EventLayoutDirection)
 	)]
 	EventIndicatorType eventIndicatorType = EventIndicatorType.BottomDot;
 
@@ -147,11 +149,15 @@ sealed partial class DayModel : ObservableObject
 	[ObservableProperty]
 	Color disabledColor = Color.FromArgb("#ECECEC");
 
-	public FlexDirection EventLayoutDirection => (HasEvents && EventIndicatorType == EventIndicatorType.TopDot) ? FlexDirection.ColumnReverse : FlexDirection.Column;
+	// Applies to every cell, not only to days with events: the (possibly empty) dot row then sits
+	// above the day number in all cells, so the numbers stay aligned across the grid.
+	public FlexDirection EventLayoutDirection => EventIndicatorType == EventIndicatorType.TopDot ? FlexDirection.ColumnReverse : FlexDirection.Column;
 
 	public bool BackgroundEventIndicator => HasEvents && EventIndicatorType == EventIndicatorType.Background;
 
-	public Color BackgroundFullEventColor => HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull ? EventIndicatorColor : Colors.Transparent;
+	// Painted on the whole cell (the DayView), which stays visible for a hidden other-month day,
+	// so a hidden day must not paint its event color either.
+	public Color BackgroundFullEventColor => IsVisible && HasEvents && EventIndicatorType == EventIndicatorType.BackgroundFull ? EventIndicatorColor : Colors.Transparent;
 
 	public Color OutlineColor => IsToday && !IsSelected ? TodayOutlineColor : Colors.Transparent;
 
