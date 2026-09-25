@@ -94,5 +94,7 @@
 	<ItemGroup>
 		<None Include="..\..\nuget.png" PackagePath="nuget.png" Pack="true" />
 		<None Include="..\..\README.md" PackagePath="README.md" Pack="true" />
+		<!-- Reference for AI coding assistants, shipped so it matches the installed version -->
+		<None Include="..\..\llms-full.txt" PackagePath="llms-full.txt" Pack="true" />
 	</ItemGroup>	
 </Project>
