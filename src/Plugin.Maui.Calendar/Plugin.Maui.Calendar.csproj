@@ -49,20 +49,20 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Added DayViewTemplate: draw every day cell with your own DataTemplate or DataTemplateSelector (null restores the built-in cell; the template can be switched at runtime) by @MykhailoDav
-                        * Added the public ICalendarDay interface, the binding context of DayViewTemplate: Date, Day, IsSelected, IsToday, IsWeekend, IsThisMonth, IsDisabled, HasEvents, EventCount, Events, EventColors, IsRangeStart, IsRangeEnd by @MykhailoDav
-                        * Added Day Template sample page by @MykhailoDav
-                        * Fix: the today highlight now moves to the new day at midnight while the calendar is shown, and is re-checked when the app resumes by @MykhailoDav
-                        * Fix: adding, replacing or removing entries of the EventCollection at runtime now refreshes the day cells (event dots and colors) right away, also after the calendar's page was shown again by @MykhailoDav
-                        * Fix: changing DisabledDates, MinimumDate, MaximumDate, OtherMonthDayIsVisible or OtherMonthWeekIsVisible at runtime (or through a binding) now updates the visible days by @MykhailoDav
-                        * Fix: EventIndicatorType TopDot now draws the event dots above the day number (they were always drawn below it) by @MykhailoDav
-                        * Fix: EventIndicatorType BackgroundFull no longer paints hidden other-month days and follows a runtime change of EventIndicatorType by @MykhailoDav
-                        * Fix: with two calendars on screen, tapping a day in one no longer selects that date in the other by @MykhailoDav
-                        * Fix: calendars no longer share one default Events collection and one default DisabledDates list by @MykhailoDav
-                        * Fix: a day whose event collection implements IMultiEventDay without providing Colors shows its event dot again (in the indicator color) by @MykhailoDav
-                        * Fix: RangeSelectionCalendar keeps SelectedDatesRangeBackgroundColor on the range after a color, theme or layout change, and applies a new SelectedDatesRangeBackgroundColor right away by @MykhailoDav
-                        * Fix: RangeSelectionCalendar no longer ignores SelectedStartDate/SelectedEndDate set from code after the range was extended at its start by @MykhailoDav
-                        * Fix: HeaderSectionTemplate/FooterSectionTemplate are no longer modified when their content is created (the template kept a reference to the Calendar), and a BindingContext set on the template root is now kept by @MykhailoDav
+                        * Added DayViewTemplate: draw every day cell with your own DataTemplate or DataTemplateSelector (null restores the built-in cell; the template can be switched at runtime) 
+                        * Added the public ICalendarDay interface, the binding context of DayViewTemplate: Date, Day, IsSelected, IsToday, IsWeekend, IsThisMonth, IsDisabled, HasEvents, EventCount, Events, EventColors, IsRangeStart, IsRangeEnd 
+                        * Added Day Template sample page 
+                        * Fix: the today highlight now moves to the new day at midnight while the calendar is shown, and is re-checked when the app resumes 
+                        * Fix: adding, replacing or removing entries of the EventCollection at runtime now refreshes the day cells (event dots and colors) right away, also after the calendar's page was shown again 
+                        * Fix: changing DisabledDates, MinimumDate, MaximumDate, OtherMonthDayIsVisible or OtherMonthWeekIsVisible at runtime (or through a binding) now updates the visible days 
+                        * Fix: EventIndicatorType TopDot now draws the event dots above the day number (they were always drawn below it) 
+                        * Fix: EventIndicatorType BackgroundFull no longer paints hidden other-month days and follows a runtime change of EventIndicatorType 
+                        * Fix: with two calendars on screen, tapping a day in one no longer selects that date in the other 
+                        * Fix: calendars no longer share one default Events collection and one default DisabledDates list 
+                        * Fix: a day whose event collection implements IMultiEventDay without providing Colors shows its event dot again (in the indicator color) 
+                        * Fix: RangeSelectionCalendar keeps SelectedDatesRangeBackgroundColor on the range after a color, theme or layout change, and applies a new SelectedDatesRangeBackgroundColor right away 
+                        * Fix: RangeSelectionCalendar no longer ignores SelectedStartDate/SelectedEndDate set from code after the range was extended at its start 
+                        * Fix: HeaderSectionTemplate/FooterSectionTemplate are no longer modified when their content is created (the template kept a reference to the Calendar), and a BindingContext set on the template root is now kept 
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
