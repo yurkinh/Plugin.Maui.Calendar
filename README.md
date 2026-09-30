@@ -50,9 +50,7 @@ A calendar control built from .NET MAUI views only, with no platform-specific co
 
 ## Screenshots
 
-| Android | iOS | Windows | Mac |
-| ------- | --- | ------- | --- |
-| ![Android calendar](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/android.png) | ![iPhone calendar](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/ios.png) | ![Windows calendar](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/win.png) | ![Mac calendar](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/mac.png) |
+![The calendar on Android, iOS, Windows and Mac](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/platforms.png)
 
 The sample app in a light and a dark theme, and its settings:
 
