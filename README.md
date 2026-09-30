@@ -80,6 +80,12 @@ A look-alike of the Google Calendar app with its Month, Week, Day and Schedule v
 | -------- | --------------------- | ----- | ------ |
 | ![Google Calendar look-alike: the Schedule view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_schedule.png) | ![Google Calendar look-alike: the month under the title of the Schedule view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_schedule_month.png) | ![Google Calendar look-alike: an event](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_event.png) | ![Google Calendar look-alike: the drawer with the views and the calendars](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_drawer.png) |
 
+Calendars in popups: a date picker and two range pickers, one returning every date of the range and one its start and end:
+
+| Date picker | Range picker: selected dates | Range picker: start and end |
+| ----------- | ---------------------------- | --------------------------- |
+| ![A date picker in a popup](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/PickerPopup_date.png) | ![A range picker in a popup that returns every date of the range](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/PickerPopup_range_dates.png) | ![A range picker in a popup that returns the start and end dates](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/PickerPopup_range_start_end.png) |
+
 ## Getting started
 
 ### Requirements
