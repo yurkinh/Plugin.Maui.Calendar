@@ -76,6 +76,7 @@ public static class MauiProgram
 		builder.Services.AddTransientWithShellRoute<WeekViewPage, WeekViewPageViewModel>(nameof(WeekViewPage));
 		builder.Services.AddTransientWithShellRoute<TwoWeekViewPage, TwoWeekViewPageViewModel>(nameof(TwoWeekViewPage));
 		builder.Services.AddTransientWithShellRoute<Windows11CalendarPage, Windows11CalendarViewModel>(nameof(Windows11CalendarPage));
+		builder.Services.AddTransientWithShellRoute<GoogleCalendarPage, GoogleCalendarViewModel>(nameof(GoogleCalendarPage));
 		builder.Services.AddTransientWithShellRoute<TestingPage, TestingPageViewModel>(nameof(TestingPage));
 
 		return builder;

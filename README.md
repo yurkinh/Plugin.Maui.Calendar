@@ -768,7 +768,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 | Styling | Weekend colors, shaded weekend columns, custom day cells (`DayViewTemplate`) |
 | Week view | One week, two weeks |
 | Picker popups | A date picker and two range pickers in a popup |
-| Device look-alikes | The Windows 11 calendar flyout |
+| Device look-alikes | The Windows 11 calendar flyout, the Google Calendar app (Schedule, Day, Week and Month views) |
 
 Every sample page has a `</>` button that shows the XAML of its calendar, and the Settings tab switches the theme, the language and the first day of the week of all samples. Open `Plugin.Maui.Calendar.slnx` and run the SampleApp project, or run it from the command line:
 
