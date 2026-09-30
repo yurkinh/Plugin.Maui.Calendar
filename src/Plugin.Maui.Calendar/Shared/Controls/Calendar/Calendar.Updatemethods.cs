@@ -262,6 +262,7 @@ public partial class Calendar : ContentView, IDisposable
 			dayModel.DayTappedCommand = DayTappedCommand;
 			dayModel.EventIndicatorType = EventIndicatorType;
 			dayModel.DayViewSize = DayViewSize;
+			dayModel.DayViewHeight = DayViewHeight < 0 ? DayViewSize : DayViewHeight;
 			dayModel.DayViewBorderMargin = DayViewBorderMargin;
 			dayModel.DayViewCornerRadius = DayViewCornerRadius;
 			dayModel.DaysLabelStyle = DaysLabelStyle;

@@ -26,6 +26,29 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
+	/// Bindable property for DayViewHeight
+	/// </summary>
+	public static readonly BindableProperty DayViewHeightProperty = BindableProperty.Create(
+		nameof(DayViewHeight),
+		typeof(double),
+		typeof(Calendar),
+		-1.0,
+		propertyChanged: OnDayViewGlobalPropertyChanged
+	);
+
+	/// <summary>
+	/// Height of the day cells, while <see cref="DayViewSize"/> stays their width. The default, -1,
+	/// makes square cells (<see cref="DayViewSize"/> high). Taller cells can show more, for example the
+	/// events of the day in a <see cref="DayViewTemplate"/>; the built-in cell keeps its
+	/// <see cref="DayViewSize"/> background, centered.
+	/// </summary>
+	public double DayViewHeight
+	{
+		get => (double)GetValue(DayViewHeightProperty);
+		set => SetValue(DayViewHeightProperty, value);
+	}
+
+	/// <summary>
 	/// Bindable property for DayViewBorderMargin
 	/// </summary>
 	public static readonly BindableProperty DayViewBorderMarginProperty = BindableProperty.Create(
@@ -111,7 +134,7 @@ public partial class Calendar : ContentView, IDisposable
 	/// </para>
 	/// <para>
 	/// The template replaces what is drawn inside the cell. The calendar still sizes every cell to
-	/// <see cref="DayViewSize"/>, hides the days that <see cref="OtherMonthDayIsVisible"/> and
+	/// <see cref="DayViewSize"/> (and <see cref="DayViewHeight"/>), hides the days that <see cref="OtherMonthDayIsVisible"/> and
 	/// <see cref="OtherMonthWeekIsVisible"/> hide, and selects a day when its cell is tapped.
 	/// The properties that style the built-in cell are not applied to a templated cell:
 	/// <see cref="DaysLabelStyle"/>, <see cref="DayViewCornerRadius"/>,

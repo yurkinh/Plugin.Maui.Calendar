@@ -29,6 +29,12 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 	[ObservableProperty]
 	double dayViewSize;
 
+	/// <summary>
+	/// Height of the cell: <see cref="Controls.Calendar.DayViewHeight"/>, or <see cref="DayViewSize"/> when that is -1.
+	/// </summary>
+	[ObservableProperty]
+	public partial double DayViewHeight { get; set; }
+
 	[ObservableProperty]
 	public partial float DayViewCornerRadius { get; set; }
 
