@@ -3,7 +3,7 @@
 <!--
     Design tokens of the sample app. Pages and controls reference these keys only
     (through toolkit:AppThemeResource), so every screen follows the light/dark theme.
-    The device look-alike pages (Windows 11, Xiaomi) and the Day Template page keep
+    The device look-alike pages (Windows 11) and the Day Template page keep
     their own palettes on purpose: they imitate a specific design.
 -->
 <ResourceDictionary

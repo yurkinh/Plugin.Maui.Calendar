@@ -48,7 +48,6 @@ public class MainPageViewModel : BasePageViewModel
         groups.Add(new("Developer",
         [
             new("Testing Page", "Culture, day title length and abbreviated day names", "\uf0c3", () => GoTo(nameof(TestingPage))),
-            new("Xiaomi Calendar", "Work in progress", "\uf3cf", () => GoTo(nameof(XiaomiCalendarPage))),
         ]));
 #endif
 
