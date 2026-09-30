@@ -69,6 +69,14 @@ public partial class Calendar : ContentView, IDisposable
 
 	void OnEventsCollectionChanged(object sender, EventCollection.EventCollectionChangedArgs e)
 	{
+		// A day's ObservableCollection may be filled from a background thread (e.g. after an
+		// await with ConfigureAwait(false)), and the day cells may only be updated on the UI thread.
+		if (Dispatcher.IsDispatchRequired)
+		{
+			Dispatcher.Dispatch(() => OnEventsCollectionChanged(sender, e));
+			return;
+		}
+
 		// Item 1: UpdateDays already calls AssignIndicatorColors per day, so a separate
 		// UpdateDaysColors pass would be a redundant second iteration. The update must be
 		// forced: the shown dates did not change, so a plain UpdateDays() would return early

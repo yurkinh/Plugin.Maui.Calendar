@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Specialized;
 
 namespace Plugin.Maui.Calendar.Models;
 
@@ -15,9 +16,18 @@ namespace Plugin.Maui.Calendar.Models;
 /// will bypass the change-notification logic.  Always use this type through its
 /// own declared type (i.e. <see cref="EventCollection"/>) to guarantee notifications.
 /// </para>
+/// <para>
+/// A day's collection that implements <see cref="INotifyCollectionChanged"/> (for example an
+/// <see cref="System.Collections.ObjectModel.ObservableCollection{T}"/>) is observed too, so adding,
+/// removing or replacing events inside it updates the calendar without assigning the day again.
+/// </para>
 /// </remarks>
 public class EventCollection : Dictionary<DateTime, ICollection>
 {
+	// The observed day collections, each with the number of days that store it, so that a
+	// collection stored for several days is subscribed to once and until its last day is removed.
+	readonly Dictionary<INotifyCollectionChanged, int> observedDayCollections = new(ReferenceEqualityComparer.Instance);
+
 	#region ctor
 
 	/// <summary>
@@ -49,10 +59,11 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 	/// <returns>true if the element is successfully found and removed; otherwise, false. This method returns false if key is not found in the System.Collections.Generic.Dictionary`2.</returns>
 	public new bool Remove(DateTime key)
 	{
-		var removed = base.Remove(key.Date);
+		var removed = base.Remove(key.Date, out var dayEvents);
 
 		if (removed)
 		{
+			StopObservingDayCollection(dayEvents);
 			CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = key.Date, Type = EventCollectionChangedType.Remove });
 		}
 
@@ -67,6 +78,7 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 	public new void Add(DateTime key, ICollection value)
 	{
 		base.Add(key.Date, value);
+		ObserveDayCollection(value);
 		CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = key.Date, Type = EventCollectionChangedType.Add });
 	}
 
@@ -80,7 +92,13 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 		get => base[key.Date];
 		set
 		{
+			base.TryGetValue(key.Date, out var replaced);
 			base[key.Date] = value;
+
+			// Also right when the same collection is assigned again: it stays observed once.
+			StopObservingDayCollection(replaced);
+			ObserveDayCollection(value);
+
 			CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = key.Date, Type = EventCollectionChangedType.Set });
 		}
 	}
@@ -145,6 +163,12 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 	/// </summary>
 	public new void Clear()
 	{
+		foreach (var dayCollection in observedDayCollections.Keys)
+		{
+			dayCollection.CollectionChanged -= OnDayCollectionChanged;
+		}
+		observedDayCollections.Clear();
+
 		if (base.Count == 0)
 		{
 			return;
@@ -153,6 +177,45 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 		base.Clear();
 		CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = default, Type = EventCollectionChangedType.Clear });
 	}
+
+	void ObserveDayCollection(ICollection dayEvents)
+	{
+		if (dayEvents is not INotifyCollectionChanged dayCollection)
+		{
+			return;
+		}
+
+		if (observedDayCollections.TryGetValue(dayCollection, out var dayCount))
+		{
+			observedDayCollections[dayCollection] = dayCount + 1;
+			return;
+		}
+
+		observedDayCollections[dayCollection] = 1;
+		dayCollection.CollectionChanged += OnDayCollectionChanged;
+	}
+
+	void StopObservingDayCollection(ICollection dayEvents)
+	{
+		if (dayEvents is not INotifyCollectionChanged dayCollection
+			|| !observedDayCollections.TryGetValue(dayCollection, out var dayCount))
+		{
+			return;
+		}
+
+		if (dayCount > 1)
+		{
+			observedDayCollections[dayCollection] = dayCount - 1;
+			return;
+		}
+
+		observedDayCollections.Remove(dayCollection);
+		dayCollection.CollectionChanged -= OnDayCollectionChanged;
+	}
+
+	// Item is left unset: the collection can be stored for more than one day.
+	void OnDayCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) =>
+		CollectionChanged?.Invoke(this, new EventCollectionChangedArgs { Item = default, Type = EventCollectionChangedType.DayCollectionChanged });
 
 	internal event EventHandler<EventCollectionChangedArgs> CollectionChanged;
 
@@ -167,6 +230,8 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 		Add,
 		Set,
 		Remove,
-		Clear
+		Clear,
+		/// <summary>The events inside a day's own collection changed.</summary>
+		DayCollectionChanged
 	}
 }
