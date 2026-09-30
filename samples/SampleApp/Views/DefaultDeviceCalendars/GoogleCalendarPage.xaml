@@ -1,0 +1,1318 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.GoogleCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SampleApp.Controls"
+    xmlns:interfaces="clr-namespace:Plugin.Maui.Calendar.Interfaces;assembly=Plugin.Maui.Calendar"
+    xmlns:model="clr-namespace:SampleApp.Model"
+    xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SampleApp.ViewModels"
+    Title="Google Calendar"
+    x:DataType="vm:GoogleCalendarViewModel"
+    BackgroundColor="{toolkit:AppThemeResource GcBackgroundColor}"
+    SafeAreaEdges="None"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--  Material 3 colors of the Google apps  -->
+            <toolkit:AppThemeColor
+                x:Key="GcBackgroundColor"
+                Dark="#1F1F1F"
+                Light="#FFFFFF" />
+            <toolkit:AppThemeColor
+                x:Key="GcDrawerColor"
+                Dark="#282A2C"
+                Light="#F8FAFD" />
+            <toolkit:AppThemeColor
+                x:Key="GcFabColor"
+                Dark="#E3E3E3"
+                Light="#E9EEF6" />
+            <Color x:Key="GcOnFabColor">#1F1F1F</Color>
+            <!--  Month view: the days are tiles, darker than the page in the dark theme  -->
+            <toolkit:AppThemeColor
+                x:Key="GcMonthDayColor"
+                Dark="#131313"
+                Light="#F0F4F9" />
+            <toolkit:AppThemeColor
+                x:Key="GcMonthStripSelectedColor"
+                Dark="#484848"
+                Light="#D3D7DC" />
+            <toolkit:AppThemeColor
+                x:Key="GcTodayPillColor"
+                Dark="#FFFFFF"
+                Light="#0B57D0" />
+            <toolkit:AppThemeColor
+                x:Key="GcOnTodayPillColor"
+                Dark="#1F1F1F"
+                Light="#FFFFFF" />
+            <toolkit:AppThemeColor
+                x:Key="GcAccountRingColor"
+                Dark="#7CACF8"
+                Light="#0B57D0" />
+            <toolkit:AppThemeColor
+                x:Key="GcOnSurfaceColor"
+                Dark="#E3E3E3"
+                Light="#1F1F1F" />
+            <toolkit:AppThemeColor
+                x:Key="GcOnSurfaceVariantColor"
+                Dark="#C4C7C5"
+                Light="#444746" />
+            <toolkit:AppThemeColor
+                x:Key="GcDividerColor"
+                Dark="#444746"
+                Light="#E1E3E1" />
+            <toolkit:AppThemeColor
+                x:Key="GcPrimaryColor"
+                Dark="#A8C7FA"
+                Light="#0B57D0" />
+            <toolkit:AppThemeColor
+                x:Key="GcOnPrimaryColor"
+                Dark="#062E6F"
+                Light="#FFFFFF" />
+            <toolkit:AppThemeColor
+                x:Key="GcPrimaryContainerColor"
+                Dark="#004A77"
+                Light="#D3E3FD" />
+            <toolkit:AppThemeColor
+                x:Key="GcOnPrimaryContainerColor"
+                Dark="#C2E7FF"
+                Light="#041E49" />
+            <toolkit:AppThemeColor
+                x:Key="GcNowColor"
+                Dark="#F28B82"
+                Light="#EA4335" />
+
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+
+            <!--  Google's medium weight: Roboto Medium on Android, bold elsewhere  -->
+            <Style x:Key="GcMediumLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="{OnPlatform Android=sans-serif-medium}" />
+                <Setter Property="FontAttributes" Value="{OnPlatform Android=None, Default=Bold}" />
+            </Style>
+
+            <Style x:Key="GcIconStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="FontAwesomeSolid" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+            </Style>
+
+            <Style x:Key="GcIconButtonStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="48" />
+                <Setter Property="WidthRequest" Value="48" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
+            <Style x:Key="GcDaysTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+            </Style>
+
+            <!--  The Month view draws its own weekday row, to highlight today's weekday  -->
+            <Style x:Key="GcHiddenTitleStyle" TargetType="Label">
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+
+            <Style x:Key="GcDividerStyle" TargetType="BoxView">
+                <Setter Property="HeightRequest" Value="1" />
+                <Setter Property="Margin" Value="16,8" />
+                <Setter Property="Color" Value="{toolkit:AppThemeResource GcDividerColor}" />
+            </Style>
+
+            <Style x:Key="GcDrawerItemStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="56" />
+                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="ColumnSpacing" Value="12" />
+            </Style>
+
+            <Style x:Key="GcDetailsRowStyle" TargetType="Grid">
+                <Setter Property="ColumnSpacing" Value="16" />
+            </Style>
+
+            <Style x:Key="GcDetailsTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{toolkit:AppThemeResource GcOnSurfaceColor}" />
+            </Style>
+
+            <!--
+                A day of the drop-down month: today in a filled circle, the selected day in a light one,
+                a dot under the days that have events.
+            -->
+            <DataTemplate x:Key="GcDayTemplate" x:DataType="interfaces:ICalendarDay">
+                <Grid>
+                    <BoxView
+                        CornerRadius="16"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsSelected}"
+                        VerticalOptions="Start"
+                        WidthRequest="32"
+                        Color="{toolkit:AppThemeResource GcPrimaryContainerColor}" />
+                    <Label
+                        FontSize="13"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        Text="{Binding Day}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                        VerticalOptions="Start"
+                        VerticalTextAlignment="Center" />
+                    <!--  Today covers the layers above, selected or not  -->
+                    <BoxView
+                        CornerRadius="16"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsToday}"
+                        VerticalOptions="Start"
+                        WidthRequest="32"
+                        Color="{toolkit:AppThemeResource GcPrimaryColor}" />
+                    <Label
+                        FontSize="13"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsToday}"
+                        Style="{StaticResource GcMediumLabelStyle}"
+                        Text="{Binding Day}"
+                        TextColor="{toolkit:AppThemeResource GcOnPrimaryColor}"
+                        VerticalOptions="Start"
+                        VerticalTextAlignment="Center" />
+                    <BoxView
+                        Margin="0,0,0,2"
+                        CornerRadius="2"
+                        HeightRequest="4"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding HasEvents}"
+                        VerticalOptions="End"
+                        WidthRequest="4"
+                        Color="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+                </Grid>
+            </DataTemplate>
+
+            <!--  Week view: a date of the week strip, today in a filled circle  -->
+            <DataTemplate x:Key="GcWeekDayTemplate" x:DataType="interfaces:ICalendarDay">
+                <Grid>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="{Binding Day}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                        VerticalOptions="Center" />
+                    <BoxView
+                        CornerRadius="17"
+                        HeightRequest="34"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsToday}"
+                        VerticalOptions="Center"
+                        WidthRequest="34"
+                        Color="{toolkit:AppThemeResource GcPrimaryColor}" />
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsToday}"
+                        Style="{StaticResource GcMediumLabelStyle}"
+                        Text="{Binding Day}"
+                        TextColor="{toolkit:AppThemeResource GcOnPrimaryColor}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </DataTemplate>
+
+            <!--  Day and Week views: an hour line with its time  -->
+            <DataTemplate x:Key="GcHourTemplate" x:DataType="x:String">
+                <Grid ColumnDefinitions="48,*" HeightRequest="{x:Static vm:GoogleCalendarViewModel.HourHeight}">
+                    <Label
+                        Margin="0,0,8,0"
+                        FontSize="10"
+                        HorizontalOptions="End"
+                        Text="{Binding .}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                        TranslationY="-7"
+                        VerticalOptions="Start" />
+                    <BoxView
+                        Grid.Column="1"
+                        HeightRequest="1"
+                        VerticalOptions="Start"
+                        Color="{toolkit:AppThemeResource GcDividerColor}" />
+                </Grid>
+            </DataTemplate>
+
+            <!--  Day view: a timed event on the hours, "Title, 10:00 – 11:00" and its place  -->
+            <DataTemplate x:Key="GcDayBlockTemplate" x:DataType="model:EventBlock">
+                <Border
+                    Padding="8,3"
+                    AbsoluteLayout.LayoutBounds="{Binding Bounds}"
+                    AbsoluteLayout.LayoutFlags="XProportional,WidthProportional"
+                    BackgroundColor="{Binding Event.Color}"
+                    Stroke="{toolkit:AppThemeResource GcBackgroundColor}"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenEventCommand, Source={RelativeSource AncestorType={x:Type vm:GoogleCalendarViewModel}}, x:DataType=vm:GoogleCalendarViewModel}" CommandParameter="{Binding Event}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout>
+                        <Label FontSize="12" TextColor="{Binding Event.TextColor}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span
+                                        FontAttributes="{OnPlatform Android=None, Default=Bold}"
+                                        FontFamily="{OnPlatform Android=sans-serif-medium}"
+                                        Text="{Binding Event.Title}" />
+                                    <Span Text=", " />
+                                    <Span Text="{Binding Event.TimeText}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label
+                            FontSize="12"
+                            IsVisible="{Binding Event.HasLocation}"
+                            LineBreakMode="TailTruncation"
+                            MaxLines="1"
+                            Text="{Binding Event.Location}"
+                            TextColor="{Binding Event.TextColor}" />
+                    </VerticalStackLayout>
+                </Border>
+            </DataTemplate>
+
+            <!--  Day view: an all-day event next to the date  -->
+            <DataTemplate x:Key="GcDayAllDayTemplate" x:DataType="model:GoogleEvent">
+                <Border
+                    Padding="8,0"
+                    BackgroundColor="{Binding Color}"
+                    HeightRequest="26"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenEventCommand, Source={RelativeSource AncestorType={x:Type vm:GoogleCalendarViewModel}}, x:DataType=vm:GoogleCalendarViewModel}" CommandParameter="{Binding .}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="12"
+                        LineBreakMode="TailTruncation"
+                        MaxLines="1"
+                        Style="{StaticResource GcMediumLabelStyle}"
+                        Text="{Binding Title}"
+                        TextColor="{Binding TextColor}"
+                        VerticalOptions="Center" />
+                </Border>
+            </DataTemplate>
+
+            <!--  Week view: a timed event on the hours  -->
+            <DataTemplate x:Key="GcWeekBlockTemplate" x:DataType="model:EventBlock">
+                <Border
+                    Padding="3,1"
+                    AbsoluteLayout.LayoutBounds="{Binding Bounds}"
+                    AbsoluteLayout.LayoutFlags="XProportional,WidthProportional"
+                    BackgroundColor="{Binding Event.Color}"
+                    Stroke="{toolkit:AppThemeResource GcBackgroundColor}"
+                    StrokeShape="RoundRectangle 5"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenEventCommand, Source={RelativeSource AncestorType={x:Type vm:GoogleCalendarViewModel}}, x:DataType=vm:GoogleCalendarViewModel}" CommandParameter="{Binding Event}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout>
+                        <Label
+                            FontSize="10"
+                            Style="{StaticResource GcMediumLabelStyle}"
+                            Text="{Binding Event.Title}"
+                            TextColor="{Binding Event.TextColor}" />
+                        <Label
+                            FontSize="9"
+                            Text="{Binding Event.TimeText}"
+                            TextColor="{Binding Event.TextColor}" />
+                    </VerticalStackLayout>
+                </Border>
+            </DataTemplate>
+
+            <!--  Week view: a day on the hours, with the current time line on today  -->
+            <DataTemplate x:Key="GcWeekColumnTemplate" x:DataType="model:DayColumn">
+                <Grid Grid.Column="{Binding Column}">
+                    <BoxView
+                        HorizontalOptions="Start"
+                        WidthRequest="1"
+                        Color="{toolkit:AppThemeResource GcDividerColor}" />
+                    <AbsoluteLayout
+                        Margin="1,0"
+                        BindableLayout.ItemTemplate="{StaticResource GcWeekBlockTemplate}"
+                        BindableLayout.ItemsSource="{Binding Blocks}" />
+                    <Grid
+                        Margin="{Binding NowLineMargin}"
+                        ColumnDefinitions="Auto,*"
+                        HeightRequest="10"
+                        InputTransparent="True"
+                        IsVisible="{Binding IsToday}"
+                        VerticalOptions="Start">
+                        <BoxView
+                            Margin="-5,0,0,0"
+                            CornerRadius="5"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Color="{toolkit:AppThemeResource GcNowColor}" />
+                        <BoxView
+                            Grid.Column="1"
+                            HeightRequest="2"
+                            VerticalOptions="Center"
+                            Color="{toolkit:AppThemeResource GcNowColor}" />
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+
+            <!--  Week view: the all-day events of a day, under the week strip  -->
+            <DataTemplate x:Key="GcAllDayColumnTemplate" x:DataType="model:DayColumn">
+                <VerticalStackLayout
+                    Grid.Column="{Binding Column}"
+                    Padding="1,0"
+                    BindableLayout.ItemsSource="{Binding AllDayEvents}"
+                    Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="model:GoogleEvent">
+                            <Border
+                                Padding="3,0"
+                                BackgroundColor="{Binding Color}"
+                                HeightRequest="18"
+                                StrokeShape="RoundRectangle 4"
+                                StrokeThickness="0">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenEventCommand, Source={RelativeSource AncestorType={x:Type vm:GoogleCalendarViewModel}}, x:DataType=vm:GoogleCalendarViewModel}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Label
+                                    FontSize="10"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1"
+                                    Style="{StaticResource GcMediumLabelStyle}"
+                                    Text="{Binding Title}"
+                                    TextColor="{Binding TextColor}"
+                                    VerticalOptions="Center" />
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+            <!--
+                Month view: a day as a rounded tile with its date (today in a pill) and its events.
+                The cell is DayViewSize wide (its column) and DayViewHeight tall (its share of the
+                screen height), both set in code-behind.
+            -->
+            <DataTemplate x:Key="GcMonthDayTemplate" x:DataType="interfaces:ICalendarDay">
+                <Border
+                    Margin="1.5,0"
+                    Padding="0,4,0,0"
+                    BackgroundColor="{toolkit:AppThemeResource GcMonthDayColor}"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="0">
+                    <Grid RowDefinitions="17,*" RowSpacing="4">
+                        <Label
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                            Style="{StaticResource GcMediumLabelStyle}"
+                            Text="{Binding Day}"
+                            TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                            VerticalOptions="Center" />
+                        <Border
+                            Padding="7,0"
+                            BackgroundColor="{toolkit:AppThemeResource GcTodayPillColor}"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsToday}"
+                            StrokeShape="RoundRectangle 8"
+                            StrokeThickness="0">
+                            <Label
+                                FontSize="13"
+                                Style="{StaticResource GcMediumLabelStyle}"
+                                Text="{Binding Day}"
+                                TextColor="{toolkit:AppThemeResource GcOnTodayPillColor}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <!--  MonthEvents holds MonthChip lines: as many as fit, then "+2"  -->
+                        <VerticalStackLayout
+                            Grid.Row="1"
+                            BindableLayout.ItemsSource="{Binding Events}"
+                            IsClippedToBounds="True"
+                            Spacing="2.5">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:MonthChip">
+                                    <Grid HeightRequest="12">
+                                        <Border
+                                            Margin="1,0"
+                                            Padding="3,0"
+                                            BackgroundColor="{Binding Event.Color}"
+                                            IsVisible="{Binding IsEvent}"
+                                            StrokeShape="RoundRectangle 3"
+                                            StrokeThickness="0">
+                                            <!--  Wider than the chip, which cuts it off at its edge like Google Calendar does  -->
+                                            <Label
+                                                FontSize="9.5"
+                                                HorizontalOptions="Start"
+                                                LineBreakMode="NoWrap"
+                                                Text="{Binding Text}"
+                                                TextColor="{Binding Event.TextColor}"
+                                                VerticalOptions="Center"
+                                                WidthRequest="300" />
+                                        </Border>
+                                        <Label
+                                            Margin="4,0"
+                                            FontSize="9.5"
+                                            IsVisible="{Binding IsMore}"
+                                            Text="{Binding Text}"
+                                            TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!--  Month view: a weekday over the days, today's one highlighted  -->
+            <!--  Month view: a month of the strip under the title (the shown one in a pill), or a year  -->
+            <DataTemplate x:Key="GcMonthStripItemTemplate" x:DataType="model:MonthStripItem">
+                <Grid HeightRequest="30" WidthRequest="55">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowMonthCommand, Source={RelativeSource AncestorType={x:Type vm:GoogleCalendarViewModel}}, x:DataType=vm:GoogleCalendarViewModel}" CommandParameter="{Binding .}" />
+                    </Grid.GestureRecognizers>
+                    <Border
+                        BackgroundColor="{toolkit:AppThemeResource GcMonthDayColor}"
+                        IsVisible="{Binding IsMonth}"
+                        StrokeShape="RoundRectangle 8"
+                        StrokeThickness="0" />
+                    <Border
+                        BackgroundColor="{toolkit:AppThemeResource GcMonthStripSelectedColor}"
+                        IsVisible="{Binding IsSelected}"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="0" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        Text="{Binding Text}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </DataTemplate>
+
+            <!--  Two labels rather than a trigger: a trigger's theme color does not follow a theme change  -->
+            <DataTemplate x:Key="GcMonthWeekdayTemplate" x:DataType="model:WeekdayTitle">
+                <Grid Grid.Column="{Binding Column}">
+                    <Label
+                        FontSize="13"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                        Style="{StaticResource GcMediumLabelStyle}"
+                        Text="{Binding Text}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                        VerticalOptions="Center" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsToday}"
+                        Text="{Binding Text}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </DataTemplate>
+
+            <!--  Schedule: the banner that opens a month  -->
+            <DataTemplate x:Key="GcMonthRowTemplate" x:DataType="model:ScheduleMonthRow">
+                <Border
+                    Margin="8,16,8,0"
+                    Padding="0"
+                    Background="{Binding SkyBrush}"
+                    HeightRequest="112"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="0">
+                    <Grid>
+                        <BoxView
+                            Margin="0,16,56,0"
+                            CornerRadius="22"
+                            HeightRequest="44"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            WidthRequest="44"
+                            Color="{Binding SunColor}" />
+                        <BoxView
+                            Margin="-80,0,0,-236"
+                            CornerRadius="150"
+                            HeightRequest="300"
+                            HorizontalOptions="Start"
+                            VerticalOptions="End"
+                            WidthRequest="300"
+                            Color="{Binding FarHillColor}" />
+                        <BoxView
+                            Margin="0,0,-120,-292"
+                            CornerRadius="170"
+                            HeightRequest="340"
+                            HorizontalOptions="End"
+                            VerticalOptions="End"
+                            WidthRequest="340"
+                            Color="{Binding NearHillColor}" />
+                        <Label
+                            Margin="20,16,0,0"
+                            FontSize="22"
+                            Text="{Binding Title}"
+                            TextColor="#1F1F1F" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!--  Schedule: the dates of a week  -->
+            <DataTemplate x:Key="GcWeekRowTemplate" x:DataType="model:ScheduleWeekRow">
+                <Label
+                    Padding="72,16,16,4"
+                    FontSize="12"
+                    Text="{Binding Text}"
+                    TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+            </DataTemplate>
+
+            <!--  Schedule: an event chip  -->
+            <DataTemplate x:Key="GcEventTemplate" x:DataType="model:GoogleEvent">
+                <Border
+                    Padding="12,7"
+                    BackgroundColor="{Binding Color}"
+                    StrokeShape="RoundRectangle 8"
+                    StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenEventCommand, Source={RelativeSource AncestorType={x:Type vm:GoogleCalendarViewModel}}, x:DataType=vm:GoogleCalendarViewModel}" CommandParameter="{Binding .}" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="1">
+                        <Label
+                            FontSize="14"
+                            LineBreakMode="TailTruncation"
+                            MaxLines="1"
+                            Style="{StaticResource GcMediumLabelStyle}"
+                            Text="{Binding Title}"
+                            TextColor="{Binding TextColor}" />
+                        <Label
+                            FontSize="12"
+                            IsVisible="{Binding HasTime}"
+                            Text="{Binding TimeText}"
+                            TextColor="{Binding TextColor}" />
+                        <Label
+                            FontSize="12"
+                            IsVisible="{Binding HasLocation}"
+                            LineBreakMode="TailTruncation"
+                            MaxLines="1"
+                            Text="{Binding Location}"
+                            TextColor="{Binding TextColor}" />
+                    </VerticalStackLayout>
+                </Border>
+            </DataTemplate>
+
+            <!--  Schedule: the current time between today's events  -->
+            <DataTemplate x:Key="GcNowLineTemplate" x:DataType="model:ScheduleNowLine">
+                <Grid
+                    Margin="-5,0,0,0"
+                    ColumnDefinitions="Auto,*"
+                    HeightRequest="10">
+                    <BoxView
+                        CornerRadius="5"
+                        HeightRequest="10"
+                        WidthRequest="10"
+                        Color="{toolkit:AppThemeResource GcNowColor}" />
+                    <BoxView
+                        Grid.Column="1"
+                        HeightRequest="2"
+                        VerticalOptions="Center"
+                        Color="{toolkit:AppThemeResource GcNowColor}" />
+                </Grid>
+            </DataTemplate>
+
+            <controls:ScheduleItemTemplateSelector
+                x:Key="GcItemTemplateSelector"
+                EventTemplate="{StaticResource GcEventTemplate}"
+                NowLineTemplate="{StaticResource GcNowLineTemplate}" />
+
+            <!--  Schedule: a day, its date on the left and its events on the right  -->
+            <DataTemplate x:Key="GcDayRowTemplate" x:DataType="model:ScheduleDayRow">
+                <Grid Padding="0,8,16,4" ColumnDefinitions="72,*">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                            Text="{Binding WeekdayText}"
+                            TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsToday}"
+                            Style="{StaticResource GcMediumLabelStyle}"
+                            Text="{Binding WeekdayText}"
+                            TextColor="{toolkit:AppThemeResource GcPrimaryColor}" />
+                        <Grid HeightRequest="36" WidthRequest="36">
+                            <BoxView
+                                CornerRadius="18"
+                                IsVisible="{Binding IsToday}"
+                                Color="{toolkit:AppThemeResource GcPrimaryColor}" />
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                                Text="{Binding DayText}"
+                                TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsToday}"
+                                Style="{StaticResource GcMediumLabelStyle}"
+                                Text="{Binding DayText}"
+                                TextColor="{toolkit:AppThemeResource GcOnPrimaryColor}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        BindableLayout.ItemTemplateSelector="{StaticResource GcItemTemplateSelector}"
+                        BindableLayout.ItemsSource="{Binding Items}"
+                        Spacing="6" />
+                </Grid>
+            </DataTemplate>
+
+            <controls:ScheduleRowTemplateSelector
+                x:Key="GcRowTemplateSelector"
+                DayTemplate="{StaticResource GcDayRowTemplate}"
+                MonthTemplate="{StaticResource GcMonthRowTemplate}"
+                WeekTemplate="{StaticResource GcWeekRowTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid SafeAreaEdges="None">
+        <Grid RowDefinitions="Auto,Auto,*" SafeAreaEdges="Container">
+
+            <!--  App bar: menu, month (opens the drop-down month), search, today, tasks, account  -->
+            <Grid
+                Padding="4,0,8,0"
+                ColumnDefinitions="48,*,48,48,48,48"
+                HeightRequest="64">
+                <Grid Style="{StaticResource GcIconButtonStyle}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMenuTapped" />
+                    </Grid.GestureRecognizers>
+                    <Label
+                        FontSize="20"
+                        Style="{StaticResource GcIconStyle}"
+                        Text="&#xf0c9;" />
+                </Grid>
+                <HorizontalStackLayout
+                    Grid.Column="1"
+                    Padding="8,0"
+                    HorizontalOptions="Start"
+                    Spacing="8"
+                    VerticalOptions="Fill">
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTitleTapped" />
+                    </HorizontalStackLayout.GestureRecognizers>
+                    <Label
+                        FontSize="22"
+                        Text="{Binding Title}"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                        VerticalOptions="Center" />
+                    <Label
+                        x:Name="monthArrow"
+                        FontSize="14"
+                        Style="{StaticResource GcIconStyle}"
+                        Text="&#xf0d7;"
+                        TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}" />
+                </HorizontalStackLayout>
+                <Grid Grid.Column="2" Style="{StaticResource GcIconButtonStyle}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SearchCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Label Style="{StaticResource GcIconStyle}" Text="&#xf002;" />
+                </Grid>
+                <!--  Google's "today" button: a rounded square with today's day  -->
+                <Grid Grid.Column="3" Style="{StaticResource GcIconButtonStyle}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TodayCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Border
+                        Padding="0"
+                        HeightRequest="20"
+                        HorizontalOptions="Center"
+                        Stroke="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                        StrokeShape="RoundRectangle 4"
+                        StrokeThickness="2"
+                        VerticalOptions="Center"
+                        WidthRequest="20">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="10"
+                            HorizontalOptions="Center"
+                            Text="{Binding TodayText}"
+                            TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                            VerticalOptions="Center" />
+                    </Border>
+                </Grid>
+                <!--  Tasks: only drawn, the sample has no tasks  -->
+                <Label
+                    Grid.Column="4"
+                    FontFamily="FontAwesomeRegular"
+                    FontSize="20"
+                    Style="{StaticResource GcIconStyle}"
+                    Text="&#xf058;" />
+                <Border
+                    Grid.Column="5"
+                    Padding="2"
+                    HeightRequest="36"
+                    HorizontalOptions="Center"
+                    Stroke="{toolkit:AppThemeResource GcAccountRingColor}"
+                    StrokeShape="Ellipse"
+                    StrokeThickness="2"
+                    VerticalOptions="Center"
+                    WidthRequest="36">
+                    <Border
+                        Padding="0"
+                        StrokeShape="Ellipse"
+                        StrokeThickness="0">
+                        <Image Aspect="AspectFill" Source="monkey.png" />
+                    </Border>
+                </Border>
+            </Grid>
+
+            <!--  The month that drops down from the title (animated in code-behind)  -->
+            <VerticalStackLayout
+                x:Name="monthPanel"
+                Grid.Row="1"
+                HeightRequest="0"
+                IsClippedToBounds="True"
+                IsVisible="False">
+                <plugin:Calendar
+                    x:Name="calendar"
+                    Padding="8,0"
+                    AllowDeselecting="False"
+                    DayViewSize="40"
+                    DayViewTemplate="{StaticResource GcDayTemplate}"
+                    DaysTitleLabelStyle="{StaticResource GcDaysTitleStyle}"
+                    DaysTitleMaximumLength="OneChar"
+                    Events="{Binding Events}"
+                    FooterSectionVisible="False"
+                    HeaderSectionVisible="False"
+                    OtherMonthDayIsVisible="False"
+                    OtherMonthWeekIsVisible="False"
+                    SelectedDate="{Binding SelectedDate}"
+                    ShownDate="{Binding ShownDate}"
+                    Style="{StaticResource SettingsCalendarStyle}"
+                    SwipeUpToHideEnabled="False"
+                    WeekendTitleStyle="{StaticResource GcDaysTitleStyle}" />
+            </VerticalStackLayout>
+
+            <!--  Month view: the months that drop down from the title instead (animated in code-behind)  -->
+            <VerticalStackLayout
+                x:Name="monthStripPanel"
+                Grid.Row="1"
+                HeightRequest="0"
+                IsClippedToBounds="True"
+                IsVisible="False">
+                <ScrollView
+                    x:Name="monthStrip"
+                    HorizontalScrollBarVisibility="Never"
+                    Orientation="Horizontal">
+                    <HorizontalStackLayout
+                        x:Name="monthStripItems"
+                        Padding="4,8,4,12"
+                        BindableLayout.ItemTemplate="{StaticResource GcMonthStripItemTemplate}"
+                        BindableLayout.ItemsSource="{Binding MonthStripItems}"
+                        Spacing="4" />
+                </ScrollView>
+            </VerticalStackLayout>
+
+            <CollectionView
+                x:Name="schedule"
+                Grid.Row="2"
+                IsVisible="{Binding IsScheduleView}"
+                ItemTemplate="{StaticResource GcRowTemplateSelector}"
+                ItemsSource="{Binding ScheduleRows}"
+                Scrolled="OnScheduleScrolled"
+                SelectionMode="None">
+                <!--  Room under the last event for the add button  -->
+                <CollectionView.Footer>
+                    <ContentView HeightRequest="96" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <!--  Day view: the date and the all-day events, then the hours  -->
+            <Grid
+                x:Name="dayView"
+                Grid.Row="2"
+                IsVisible="{Binding IsDayView}"
+                RowDefinitions="Auto,Auto,*">
+                <Grid
+                    Padding="0,8,16,10"
+                    ColumnDefinitions="48,*"
+                    ColumnSpacing="8">
+                    <!--  Swiping the date moves the day too, like swiping the hours  -->
+                    <Grid.GestureRecognizers>
+                        <SwipeGestureRecognizer Command="{Binding NextDayCommand}" Direction="Left" />
+                        <SwipeGestureRecognizer Command="{Binding PreviousDayCommand}" Direction="Right" />
+                    </Grid.GestureRecognizers>
+                    <VerticalStackLayout Spacing="2" VerticalOptions="Start">
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding ShownDay.IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                            Text="{Binding ShownDay.WeekdayText}"
+                            TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding ShownDay.IsToday}"
+                            Style="{StaticResource GcMediumLabelStyle}"
+                            Text="{Binding ShownDay.WeekdayText}"
+                            TextColor="{toolkit:AppThemeResource GcPrimaryColor}" />
+                        <Grid HeightRequest="40" WidthRequest="40">
+                            <BoxView
+                                CornerRadius="20"
+                                IsVisible="{Binding ShownDay.IsToday}"
+                                Color="{toolkit:AppThemeResource GcPrimaryColor}" />
+                            <Label
+                                FontSize="22"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding ShownDay.IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                                Text="{Binding ShownDay.DayText}"
+                                TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontSize="22"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding ShownDay.IsToday}"
+                                Style="{StaticResource GcMediumLabelStyle}"
+                                Text="{Binding ShownDay.DayText}"
+                                TextColor="{toolkit:AppThemeResource GcOnPrimaryColor}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        BindableLayout.ItemTemplate="{StaticResource GcDayAllDayTemplate}"
+                        BindableLayout.ItemsSource="{Binding ShownDay.AllDayEvents}"
+                        Spacing="4"
+                        VerticalOptions="Center" />
+                </Grid>
+                <BoxView
+                    Grid.Row="1"
+                    HeightRequest="1"
+                    Color="{toolkit:AppThemeResource GcDividerColor}" />
+                <ScrollView x:Name="dayScroll" Grid.Row="2">
+                    <Grid Padding="0,8,0,96" ColumnDefinitions="48,*">
+                        <Grid.GestureRecognizers>
+                            <SwipeGestureRecognizer Command="{Binding NextDayCommand}" Direction="Left" />
+                            <SwipeGestureRecognizer Command="{Binding PreviousDayCommand}" Direction="Right" />
+                        </Grid.GestureRecognizers>
+                        <VerticalStackLayout
+                            Grid.ColumnSpan="2"
+                            BindableLayout.ItemTemplate="{StaticResource GcHourTemplate}"
+                            BindableLayout.ItemsSource="{Binding HourLabels}" />
+                        <Grid Grid.Column="1" Margin="0,0,12,0">
+                            <BoxView
+                                HorizontalOptions="Start"
+                                WidthRequest="1"
+                                Color="{toolkit:AppThemeResource GcDividerColor}" />
+                            <AbsoluteLayout
+                                Margin="1,0,0,0"
+                                BindableLayout.ItemTemplate="{StaticResource GcDayBlockTemplate}"
+                                BindableLayout.ItemsSource="{Binding ShownDay.Blocks}" />
+                            <Grid
+                                Margin="{Binding ShownDay.NowLineMargin}"
+                                ColumnDefinitions="Auto,*"
+                                HeightRequest="10"
+                                InputTransparent="True"
+                                IsVisible="{Binding ShownDay.IsToday}"
+                                VerticalOptions="Start">
+                                <BoxView
+                                    Margin="-5,0,0,0"
+                                    CornerRadius="5"
+                                    HeightRequest="10"
+                                    WidthRequest="10"
+                                    Color="{toolkit:AppThemeResource GcNowColor}" />
+                                <BoxView
+                                    Grid.Column="1"
+                                    HeightRequest="2"
+                                    VerticalOptions="Center"
+                                    Color="{toolkit:AppThemeResource GcNowColor}" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </ScrollView>
+            </Grid>
+
+            <!--  Week view: the week strip, the all-day events, then the hours  -->
+            <Grid
+                x:Name="weekView"
+                Grid.Row="2"
+                IsVisible="{Binding IsWeekView}"
+                RowDefinitions="Auto,Auto,Auto,*">
+                <plugin:Calendar
+                    x:Name="weekCalendar"
+                    Padding="48,0,0,0"
+                    CalendarLayout="Week"
+                    DayTappedCommand="{Binding ShowDayCommand}"
+                    DayViewSize="40"
+                    DayViewTemplate="{StaticResource GcWeekDayTemplate}"
+                    DaysTitleLabelStyle="{StaticResource GcDaysTitleStyle}"
+                    DaysTitleMaximumLength="OneChar"
+                    FooterSectionVisible="False"
+                    HeaderSectionVisible="False"
+                    ShownDate="{Binding ShownDate}"
+                    Style="{StaticResource SettingsCalendarStyle}"
+                    SwipeUpToHideEnabled="False"
+                    WeekendTitleStyle="{StaticResource GcDaysTitleStyle}" />
+                <Grid
+                    Grid.Row="1"
+                    Padding="48,0,0,6"
+                    BindableLayout.ItemTemplate="{StaticResource GcAllDayColumnTemplate}"
+                    BindableLayout.ItemsSource="{Binding WeekDays}"
+                    ColumnDefinitions="*,*,*,*,*,*,*"
+                    IsVisible="{Binding WeekHasAllDayEvents}" />
+                <BoxView
+                    Grid.Row="2"
+                    HeightRequest="1"
+                    Color="{toolkit:AppThemeResource GcDividerColor}" />
+                <ScrollView x:Name="weekScroll" Grid.Row="3">
+                    <Grid Padding="0,8,0,96" ColumnDefinitions="48,*">
+                        <!--  Swiping the hours moves the week too, like swiping the week strip  -->
+                        <Grid.GestureRecognizers>
+                            <SwipeGestureRecognizer Command="{Binding NextWeekCommand}" Direction="Left" />
+                            <SwipeGestureRecognizer Command="{Binding PreviousWeekCommand}" Direction="Right" />
+                        </Grid.GestureRecognizers>
+                        <VerticalStackLayout
+                            Grid.ColumnSpan="2"
+                            BindableLayout.ItemTemplate="{StaticResource GcHourTemplate}"
+                            BindableLayout.ItemsSource="{Binding HourLabels}" />
+                        <Grid
+                            Grid.Column="1"
+                            BindableLayout.ItemTemplate="{StaticResource GcWeekColumnTemplate}"
+                            BindableLayout.ItemsSource="{Binding WeekDays}"
+                            ColumnDefinitions="*,*,*,*,*,*,*" />
+                    </Grid>
+                </ScrollView>
+            </Grid>
+
+            <!--
+                Month view: the weekdays, then six weeks of days that fill the screen
+                (DayViewSize and DayViewHeight are set in code-behind)
+            -->
+            <Grid
+                x:Name="monthView"
+                Grid.Row="2"
+                IsClippedToBounds="True"
+                IsVisible="{Binding IsMonthView}"
+                RowDefinitions="22,*"
+                SizeChanged="OnMonthViewSizeChanged">
+                <Grid
+                    Padding="3,0"
+                    BindableLayout.ItemTemplate="{StaticResource GcMonthWeekdayTemplate}"
+                    BindableLayout.ItemsSource="{Binding MonthWeekdays}"
+                    ColumnDefinitions="*,*,*,*,*,*,*" />
+                <!--  The negative margin removes the calendar's top padding  -->
+                <plugin:Calendar
+                    x:Name="monthCalendar"
+                    Grid.Row="1"
+                    Margin="0,-15,0,0"
+                    Padding="3,0"
+                    DayTappedCommand="{Binding ShowDayCommand}"
+                    DayViewHeight="100"
+                    DayViewSize="56"
+                    DayViewTemplate="{StaticResource GcMonthDayTemplate}"
+                    DaysTitleLabelStyle="{StaticResource GcHiddenTitleStyle}"
+                    Events="{Binding MonthEvents}"
+                    FooterSectionVisible="False"
+                    HeaderSectionVisible="False"
+                    ShownDate="{Binding ShownDate}"
+                    Style="{StaticResource SettingsCalendarStyle}"
+                    SwipeUpToHideEnabled="False"
+                    VerticalOptions="Start"
+                    WeekendTitleStyle="{StaticResource GcHiddenTitleStyle}" />
+            </Grid>
+
+            <!--  Add button  -->
+            <Border
+                Grid.Row="2"
+                Margin="0,0,24,20"
+                Padding="0"
+                BackgroundColor="{toolkit:AppThemeResource GcFabColor}"
+                HeightRequest="56"
+                HorizontalOptions="End"
+                StrokeShape="RoundRectangle 16"
+                StrokeThickness="0"
+                VerticalOptions="End"
+                WidthRequest="56">
+                <Border.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Opacity="0.3"
+                        Radius="8"
+                        Offset="0,3" />
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddEventCommand}" />
+                </Border.GestureRecognizers>
+                <Grid
+                    HeightRequest="18"
+                    HorizontalOptions="Center"
+                    InputTransparent="True"
+                    VerticalOptions="Center"
+                    WidthRequest="18">
+                    <BoxView
+                        CornerRadius="1"
+                        HeightRequest="2"
+                        Color="{StaticResource GcOnFabColor}" />
+                    <BoxView
+                        CornerRadius="1"
+                        WidthRequest="2"
+                        Color="{StaticResource GcOnFabColor}" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!--  Navigation drawer  -->
+        <Grid
+            x:Name="drawerLayer"
+            IsVisible="False"
+            SafeAreaEdges="None">
+            <BoxView
+                x:Name="drawerScrim"
+                Opacity="0"
+                Color="#66000000">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnDrawerScrimTapped" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <Border
+                x:Name="drawer"
+                Padding="12,0"
+                BackgroundColor="{toolkit:AppThemeResource GcDrawerColor}"
+                HorizontalOptions="Start"
+                SafeAreaEdges="None"
+                StrokeShape="RoundRectangle 0,16,0,16"
+                StrokeThickness="0"
+                WidthRequest="304">
+                <ScrollView SafeAreaEdges="Container">
+                    <VerticalStackLayout Padding="0,16">
+                        <Label
+                            Padding="16,8,16,20"
+                            FontSize="22"
+                            Text="Google Calendar"
+                            TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}" />
+
+                        <!--  The views, the one on screen highlighted  -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Views}">
+                            <BindableLayout.ItemTemplate>
+                                <!--
+                                    Layers shown by IsSelected rather than triggers: a trigger's theme color
+                                    does not revert after a theme change
+                                -->
+                                <DataTemplate x:DataType="model:GoogleCalendarViewOption">
+                                    <Grid>
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnViewTapped" />
+                                        </Grid.GestureRecognizers>
+                                        <Border
+                                            BackgroundColor="{toolkit:AppThemeResource GcPrimaryContainerColor}"
+                                            IsVisible="{Binding IsSelected}"
+                                            StrokeShape="RoundRectangle 28"
+                                            StrokeThickness="0" />
+                                        <Grid
+                                            ColumnDefinitions="40,*"
+                                            IsVisible="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}"
+                                            Style="{StaticResource GcDrawerItemStyle}">
+                                            <Label Style="{StaticResource GcIconStyle}" Text="{Binding Glyph}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="14"
+                                                Style="{StaticResource GcMediumLabelStyle}"
+                                                Text="{Binding Title}"
+                                                TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                        <Grid
+                                            ColumnDefinitions="40,*"
+                                            IsVisible="{Binding IsSelected}"
+                                            Style="{StaticResource GcDrawerItemStyle}">
+                                            <Label
+                                                Style="{StaticResource GcIconStyle}"
+                                                Text="{Binding Glyph}"
+                                                TextColor="{toolkit:AppThemeResource GcOnPrimaryContainerColor}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="14"
+                                                Style="{StaticResource GcMediumLabelStyle}"
+                                                Text="{Binding Title}"
+                                                TextColor="{toolkit:AppThemeResource GcOnPrimaryContainerColor}"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <BoxView Style="{StaticResource GcDividerStyle}" />
+
+                        <Label
+                            Padding="16,12"
+                            FontSize="14"
+                            Style="{StaticResource GcMediumLabelStyle}"
+                            Text="My calendars"
+                            TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+                        <!--  Unchecking a calendar hides its events in every view  -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Calendars}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:GoogleCalendarSource">
+                                    <Grid
+                                        Padding="8,0,16,0"
+                                        ColumnDefinitions="48,*"
+                                        ColumnSpacing="4"
+                                        HeightRequest="48">
+                                        <CheckBox
+                                            IsChecked="{Binding IsVisible}"
+                                            VerticalOptions="Center"
+                                            Color="{Binding Color}" />
+                                        <Label
+                                            Grid.Column="1"
+                                            FontSize="14"
+                                            Text="{Binding Name}"
+                                            TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <BoxView Style="{StaticResource GcDividerStyle}" />
+
+                        <!--  Sample app items in place of Settings and Help  -->
+                        <Grid ColumnDefinitions="40,*" Style="{StaticResource GcDrawerItemStyle}">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnXamlSourceTapped" />
+                            </Grid.GestureRecognizers>
+                            <Label Style="{StaticResource GcIconStyle}" Text="&#xf121;" />
+                            <Label
+                                Grid.Column="1"
+                                FontSize="14"
+                                Style="{StaticResource GcMediumLabelStyle}"
+                                Text="XAML of the calendar"
+                                TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="40,*" Style="{StaticResource GcDrawerItemStyle}">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnBackToSamplesTapped" />
+                            </Grid.GestureRecognizers>
+                            <Label Style="{StaticResource GcIconStyle}" Text="&#xf060;" />
+                            <Label
+                                Grid.Column="1"
+                                FontSize="14"
+                                Style="{StaticResource GcMediumLabelStyle}"
+                                Text="Back to samples"
+                                TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+
+        <!--  Event details, full screen as in Google Calendar  -->
+        <Grid
+            x:Name="detailsLayer"
+            BackgroundColor="{toolkit:AppThemeResource GcBackgroundColor}"
+            IsVisible="False"
+            RowDefinitions="64,*"
+            SafeAreaEdges="Container">
+            <Grid Padding="4,0,8,0" ColumnDefinitions="48,*,48">
+                <Grid Style="{StaticResource GcIconButtonStyle}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CloseEventCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Label
+                        FontSize="20"
+                        Style="{StaticResource GcIconStyle}"
+                        Text="&#xf00d;" />
+                </Grid>
+                <Grid Grid.Column="2" Style="{StaticResource GcIconButtonStyle}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DeleteEventCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Label
+                        FontFamily="FontAwesomeRegular"
+                        Style="{StaticResource GcIconStyle}"
+                        Text="&#xf2ed;" />
+                </Grid>
+            </Grid>
+            <!--  BindingContext is the opened GoogleEvent, set in code-behind  -->
+            <ScrollView
+                x:Name="detailsContent"
+                Grid.Row="1"
+                x:DataType="model:GoogleEvent">
+                <VerticalStackLayout Padding="0,8,16,32" Spacing="24">
+                    <Grid ColumnDefinitions="56,*" Style="{StaticResource GcDetailsRowStyle}">
+                        <BoxView
+                            Margin="0,9,0,0"
+                            CornerRadius="4"
+                            HeightRequest="16"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Start"
+                            WidthRequest="16"
+                            Color="{Binding Color}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label
+                                FontSize="22"
+                                Text="{Binding Title}"
+                                TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}" />
+                            <Label
+                                FontSize="14"
+                                Text="{Binding DateText}"
+                                TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Grid
+                        ColumnDefinitions="56,*"
+                        IsVisible="{Binding HasLocation}"
+                        Style="{StaticResource GcDetailsRowStyle}">
+                        <Label Style="{StaticResource GcIconStyle}" Text="&#xf3c5;" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource GcDetailsTextStyle}"
+                            Text="{Binding Location}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="56,*" Style="{StaticResource GcDetailsRowStyle}">
+                        <Label
+                            FontFamily="FontAwesomeRegular"
+                            Style="{StaticResource GcIconStyle}"
+                            Text="&#xf0f3;" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource GcDetailsTextStyle}"
+                            Text="{Binding ReminderText}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="56,*" Style="{StaticResource GcDetailsRowStyle}">
+                        <Label
+                            FontFamily="FontAwesomeRegular"
+                            Style="{StaticResource GcIconStyle}"
+                            Text="&#xf133;" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource GcDetailsTextStyle}"
+                            Text="{Binding Calendar.Name}" />
+                    </Grid>
+                    <Grid
+                        ColumnDefinitions="56,*"
+                        IsVisible="{Binding HasDescription}"
+                        Style="{StaticResource GcDetailsRowStyle}">
+                        <Label
+                            Style="{StaticResource GcIconStyle}"
+                            Text="&#xf036;"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource GcDetailsTextStyle}"
+                            Text="{Binding Description}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </Grid>
+</ContentPage>
