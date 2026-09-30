@@ -32,7 +32,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>3.1.0</PackageVersion>
+		<PackageVersion>3.1.1</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -49,20 +49,10 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Added DayViewTemplate: draw every day cell with your own DataTemplate or DataTemplateSelector (null restores the built-in cell; the template can be switched at runtime) 
-                        * Added the public ICalendarDay interface, the binding context of DayViewTemplate: Date, Day, IsSelected, IsToday, IsWeekend, IsThisMonth, IsDisabled, HasEvents, EventCount, Events, EventColors, IsRangeStart, IsRangeEnd 
-                        * Added Day Template sample page 
-                        * Fix: the today highlight now moves to the new day at midnight while the calendar is shown, and is re-checked when the app resumes 
-                        * Fix: adding, replacing or removing entries of the EventCollection at runtime now refreshes the day cells (event dots and colors) right away, also after the calendar's page was shown again 
-                        * Fix: changing DisabledDates, MinimumDate, MaximumDate, OtherMonthDayIsVisible or OtherMonthWeekIsVisible at runtime (or through a binding) now updates the visible days 
-                        * Fix: EventIndicatorType TopDot now draws the event dots above the day number (they were always drawn below it) 
-                        * Fix: EventIndicatorType BackgroundFull no longer paints hidden other-month days and follows a runtime change of EventIndicatorType 
-                        * Fix: with two calendars on screen, tapping a day in one no longer selects that date in the other 
-                        * Fix: calendars no longer share one default Events collection and one default DisabledDates list 
-                        * Fix: a day whose event collection implements IMultiEventDay without providing Colors shows its event dot again (in the indicator color) 
-                        * Fix: RangeSelectionCalendar keeps SelectedDatesRangeBackgroundColor on the range after a color, theme or layout change, and applies a new SelectedDatesRangeBackgroundColor right away 
-                        * Fix: RangeSelectionCalendar no longer ignores SelectedStartDate/SelectedEndDate set from code after the range was extended at its start 
-                        * Fix: HeaderSectionTemplate/FooterSectionTemplate are no longer modified when their content is created (the template kept a reference to the Calendar), and a BindingContext set on the template root is now kept 
+                        * Added: a day of the EventCollection stored as an ObservableCollection&lt;T&gt; (any INotifyCollectionChanged) is observed; adding, removing or replacing its events updates the day cell and the event list without assigning the day again (#20) 
+                        * Added: SwipeDetectionDisabled can be changed at any time; it used to be read only when the calendar was shown 
+                        * Fix: a calendar with gesture recognizers of its own no longer throws NullReferenceException when its page is closed after SwipeDetectionDisabled was switched from True to False 
+                        * Fix: a calendar whose handler is replaced by another one keeps handling day taps and changes of Events 
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
