@@ -160,7 +160,7 @@ Defaults are for a LIGHT background: black text, #2196F3 header labels, white ar
 | SwipeToChangeMonthEnabled | bool | true | Swipe left/right = next/previous unit (raises MonthChanged) |
 | SwipeUpToHideEnabled | bool | true | Swipe up toggles CalendarSectionShown |
 | SwipeLeftCommand / SwipeRightCommand / SwipeUpCommand | ICommand | null | Executed (parameter null) together with the default action |
-| SwipeDetectionDisabled | bool | false | No swipe recognizers at all. Read when the handler attaches: set it in XAML/before showing |
+| SwipeDetectionDisabled | bool | false | No swipe recognizers at all. Can be changed at any time; recognizers the app added to the calendar are kept |
 
 ## 4. Commands, events, methods (non-bindable members)
 
@@ -181,7 +181,7 @@ Defaults are for a LIGHT background: black text, #2196F3 header labels, white ar
 4. Bind `SelectedDates` to `ObservableCollection<DateTime>`, never `List<DateTime>`.
 5. On `RangeSelectionCalendar` bind either SelectedStartDate/SelectedEndDate or SelectedDates, not both.
 6. `DisabledDates` is a non-observable `List<DateTime>`: assign a new list to apply changes, store `.Date` values (a time component makes the entry never match).
-7. `EventCollection` notifies the calendar only through its own `Add`, `Remove`, `this[date]` setter and `Clear`. A variable typed `Dictionary<DateTime, ICollection>` bypasses notifications. Mutating the collection stored for a day does NOT update the day's dots/count: reassign `Events[date] = collection`.
+7. `EventCollection` notifies the calendar through its own `Add`, `Remove`, `this[date]` setter and `Clear`. A variable typed `Dictionary<DateTime, ICollection>` bypasses notifications. A day stored as an `ObservableCollection<T>` (any `INotifyCollectionChanged`) is observed: adding/removing/replacing its items updates the day and the event list. A day stored as a `List<T>` is NOT observed: reassign `Events[date] = collection` after changing it.
 8. `MonthChanged`/`MonthChangedCommand` fire only for user navigation (month/week arrows, swipes, AutoChangeMonthOnDayTap), never for ShownDate/Month/Year set from code and never for the year arrows. Use `OnShownDateChangedCommand` or `ShownDatesChanged` to see every change.
 9. `ShownDatesChanged` can fire for the initial range during construction, before XAML handlers/commands are attached. Read `VisibleStartDate`/`VisibleEndDate` after the calendar is loaded for the first range.
 10. Swipe up hides the days. If the footer is hidden (`FooterSectionVisible="False"`) or replaced by a template without `ShowHideCalendarCommand`, set `SwipeUpToHideEnabled="False"` — otherwise the user cannot bring the days back.
@@ -204,11 +204,18 @@ public EventCollection Events { get; } = new()
 };
 
 Events.Add(date, new List<MyEvent> { ... });   // new day
-Events[date] = new List<MyEvent> { ... };      // replace a day (also use this to refresh a changed day)
+Events[date] = new List<MyEvent> { ... };      // replace a day (also use this to refresh a changed List<T> day)
 Events.Remove(date);
 Events.Clear();
+
+// Single events of a day: store it as an ObservableCollection<T>, then change it in place
+var today = new ObservableCollection<MyEvent> { new("Design review") };
+Events[DateTime.Today] = today;
+today.Add(new("Lunch"));                       // day cell and event list update
 ```
-- Keys: only the date part is used. Values: any `ICollection` of your own objects (`List<T>`, `ObservableCollection<T>`, your own collection class).
+- Keys: only the date part is used. Values: any `ICollection` of your own objects (`List<T>`, `ObservableCollection<T>`, your own collection class). Only values implementing `INotifyCollectionChanged` are observed.
+- Editing an event object in place (e.g. its Name) updates templates only if the event class implements `INotifyPropertyChanged`.
+- Reading a day's events: `Events.TryGetValue(date, out var dayEvents)`, then enumerate `dayEvents`.
 - Per-day colors: make the day's collection implement `IPersonalizableDayEvent` (Color properties `EventIndicatorColor`, `EventIndicatorSelectedColor`, `EventIndicatorTextColor`, `EventIndicatorSelectedTextColor`; null → calendar color; a null selected color falls back to the day's non-selected color first) and/or `IMultiEventDay` (`IReadOnlyList<Color> Colors`, max 5 dots used). With `Colors` null or empty, one dot in the indicator color is shown.
 - The package does NOT contain a class implementing these. `DayEventCollection<T>` exists only in the sample app; define it yourself:
 

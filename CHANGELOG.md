@@ -3,6 +3,16 @@
 All notable changes to [Plugin.Maui.Calendar](https://www.nuget.org/packages/Plugin.Maui.Calendar/) are listed here, newest first.
 Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/#versions-body-tab) and has a matching tag in this repository.
 
+## [3.1.1] - 2026-09-30
+
+### Added
+- A day of the `EventCollection` stored as an `ObservableCollection<T>` (any `INotifyCollectionChanged`) is observed: adding, removing or replacing its events updates the day cell and the event list without assigning the day again ([#20](https://github.com/yurkinh/Plugin.Maui.Calendar/issues/20)). By @MykhailoDav
+- `SwipeDetectionDisabled` can be changed at any time; it used to be read only when the calendar was shown. By @MykhailoDav
+
+### Fixed
+- A calendar with gesture recognizers of its own no longer throws `NullReferenceException` when its page is closed after `SwipeDetectionDisabled` was switched from `True` to `False`. By @MykhailoDav
+- A calendar whose handler is replaced by another one keeps handling day taps and changes of `Events`. By @MykhailoDav
+
 ## [3.1.0] - 2026-09-25
 
 ### Added
@@ -165,6 +175,7 @@ Properties replaced by styles:
 - Added `MultiSelectionCalendar`.
 - Updated to .NET 8. Refactored the code.
 
+[3.1.1]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.0.3...3.1.0
 [3.0.3]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.0.2...3.0.3
 [3.0.2]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.0.1...3.0.2
