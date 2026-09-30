@@ -70,6 +70,16 @@ A look-alike of the Windows 11 calendar flyout, and weekend calendars (the fille
 | -------------------- | ---------------- | ----------------- | ------------- | -------------- |
 | ![Windows 11 look-alike on Android](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/W11_android.png) | ![Windows 11 look-alike on iOS](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/W11_ios.png) | ![Weekend calendar on Android](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendCalendar_android.png) | ![Weekend calendar on iOS](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendCalendar_ios.png) | ![Weekend filled calendar](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendFilledCalendar.png) |
 
+A look-alike of the Google Calendar app with its Month, Week, Day and Schedule views. The Month view is a `Calendar` whose days are taller than wide (`DayViewSize` and `DayViewHeight`) and drawn by a `DayViewTemplate`, the Week view shows its week with `CalendarLayout="Week"`, and the month under the title of the other views is a `Calendar` too:
+
+| Month | Months under the title | Week | Day |
+| ----- | ---------------------- | ---- | --- |
+| ![Google Calendar look-alike: the Month view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_month.png) | ![Google Calendar look-alike: the months to pick under the title of the Month view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_month_picker.png) | ![Google Calendar look-alike: the Week view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_week.png) | ![Google Calendar look-alike: the Day view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_day.png) |
+
+| Schedule | Month under the title | Event | Drawer |
+| -------- | --------------------- | ----- | ------ |
+| ![Google Calendar look-alike: the Schedule view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_schedule.png) | ![Google Calendar look-alike: the month under the title of the Schedule view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_schedule_month.png) | ![Google Calendar look-alike: an event](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_event.png) | ![Google Calendar look-alike: the drawer with the views and the calendars](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_drawer.png) |
+
 ## Getting started
 
 ### Requirements
