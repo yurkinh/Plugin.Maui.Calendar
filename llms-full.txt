@@ -95,7 +95,8 @@ All are bindable properties of `Calendar` (inherited by the other three controls
 | HeaderSectionTemplate | DataTemplate | built-in header | BindingContext = the Calendar |
 | FooterSectionTemplate | DataTemplate | built-in footer | BindingContext = the Calendar |
 | DayViewTemplate | DataTemplate | null | Custom day cell, BindingContext = ICalendarDay. Also accepts DataTemplateSelector. See 9 |
-| DayViewSize | double | 40 | Cell width and height |
+| DayViewSize | double | 40 | Cell width and height (only the width when DayViewHeight is set) |
+| DayViewHeight | double | -1 | Cell height; -1 → square cell (DayViewSize high). Taller cells can list a day's events in a DayViewTemplate |
 | DayViewCornerRadius | float | 20 | Corner radius of selection/today/event backgrounds |
 | DayViewBorderMargin | Thickness | 0 | Inset of those backgrounds |
 | WeekendDayBackgroundColor | Color | Transparent | Box behind every Saturday/Sunday cell (not the title row) |
@@ -405,7 +406,7 @@ Hide what a picker does not need, and keep the days from being swiped away:
 
 - The template root must be a `View` (Grid, Border, Label, …); anything else throws InvalidOperationException.
 - Cells are reused across months/weeks: bind to ICalendarDay members or use DataTriggers; never read them once in code.
-- The calendar still sizes cells to DayViewSize, hides other-month days per OtherMonthDayIsVisible/OtherMonthWeekIsVisible, handles taps and selection (DayTappedCommand, AllowDeselecting, AutoChangeMonthOnDayTap) and draws WeekendDayBackgroundColor.
+- The calendar still sizes cells to DayViewSize (width) and DayViewHeight (height, square by default), hides other-month days per OtherMonthDayIsVisible/OtherMonthWeekIsVisible, handles taps and selection (DayTappedCommand, AllowDeselecting, AutoChangeMonthOnDayTap) and draws WeekendDayBackgroundColor.
 - Ignored with a template: DaysLabelStyle, DayViewCornerRadius, DayViewBorderMargin, EventIndicatorType, SelectedDayBackgroundColor, SelectedDayTextColor, SelectedTodayTextColor, DeselectedDayTextColor, TodayOutlineColor, TodayFillColor, TodayTextColor, WeekendDayColor, OtherMonthDayColor, OtherMonthSelectedDayColor, DisabledDayColor, EventIndicatorTextColor, EventIndicatorSelectedTextColor, SelectedDatesRangeBackgroundColor. EventIndicatorColor/EventIndicatorSelectedColor still feed EventColors.
 - Children that handle input (Button, CheckBox, own gesture recognizers) swallow the tap: set InputTransparent="True" on them if the tap should select the day.
 - Can be switched at runtime; null restores the built-in cell; selection and shown month are kept.
@@ -443,6 +444,7 @@ Hide what a picker does not need, and keep the days from being swiped away:
 
 | Feature | Since |
 | --- | --- |
+| DayViewHeight | 3.1.1 |
 | DayViewTemplate, ICalendarDay | 3.1.0 |
 | WeekSelectionCalendar, WeekendDayBackgroundColor(+CornerRadius), VisibleStartDate/VisibleEndDate, ShownDatesChanged(+Command) | 3.0.3 |
 | .NET 10 / XAML source generator support | 3.0.0 |

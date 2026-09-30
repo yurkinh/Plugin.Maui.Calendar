@@ -390,7 +390,7 @@ xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Cal
 | `SelectedDateLabelStyle` | `Label` | `DefaultSelectedDateLabelStyle` | Selected date text of the default footer |
 | `FooterArrowLabelStyle` | `Label` | `DefaultFooterArrowLabelStyle` | Show/hide arrow of the default footer |
 
-`DayViewSize` (default `40`) is the width and height of a day cell, `DayViewCornerRadius` (default `20`) rounds the selection, today and event backgrounds, and `DayViewBorderMargin` insets them in the cell.
+`DayViewSize` (default `40`) is the width and height of a day cell, or only its width when `DayViewHeight` is set, `DayViewCornerRadius` (default `20`) rounds the selection, today and event backgrounds, and `DayViewBorderMargin` insets them in the cell.
 
 ## Dark mode and themes
 
@@ -611,10 +611,11 @@ public class EventDayTemplateSelector : DataTemplateSelector
 
 ### Day template notes
 * The root of the template must be a `View`, such as a `Grid`, `Border` or `Label`. Any other root (for example a `ViewCell`) throws an `InvalidOperationException` when the cell is created.
-* The calendar still sizes every cell to `DayViewSize` (the template fills that square), hides the days that `OtherMonthDayIsVisible` and `OtherMonthWeekIsVisible` hide, selects a day when its cell is tapped (`DayTappedCommand`, `AllowDeselecting` and `AutoChangeMonthOnDayTap` work as usual) and draws `WeekendDayBackgroundColor` behind the cells.
+* The calendar still sizes every cell to `DayViewSize` (the template fills that square, or a taller cell when `DayViewHeight` is set), hides the days that `OtherMonthDayIsVisible` and `OtherMonthWeekIsVisible` hide, selects a day when its cell is tapped (`DayTappedCommand`, `AllowDeselecting` and `AutoChangeMonthOnDayTap` work as usual) and draws `WeekendDayBackgroundColor` behind the cells.
 * `EventIndicatorColor` and `EventIndicatorSelectedColor` still provide `EventColors` for days whose events don't set their own colors.
 * These properties only style the built-in cell and are **ignored** when a template is set: `DaysLabelStyle`, `DayViewCornerRadius`, `DayViewBorderMargin`, `EventIndicatorType` (including the `BackgroundFull` cell background), `SelectedDayBackgroundColor`, `SelectedDayTextColor`, `SelectedTodayTextColor`, `DeselectedDayTextColor`, `TodayOutlineColor`, `TodayFillColor`, `TodayTextColor`, `WeekendDayColor`, `OtherMonthDayColor`, `OtherMonthSelectedDayColor`, `DisabledDayColor`, `EventIndicatorTextColor`, `EventIndicatorSelectedTextColor`, and `SelectedDatesRangeBackgroundColor` on `RangeSelectionCalendar`. Draw these states in the template from the `ICalendarDay` members.
 * Taps are handled by the cell around the template. A child that handles input itself, such as a `Button`, a `CheckBox` or a view with its own gesture recognizers, takes the tap and the day is not selected. Set `InputTransparent="True"` on such a child if tapping it should select the day.
+* For a month grid that writes the events in the days, as in a wall calendar, make the cells taller than wide: `DayViewSize` is their width (for example the calendar width divided by 7) and `DayViewHeight` their height. The Google Calendar page of the sample app sets both from the screen size.
 * In the `Week` and `TwoWeek` layouts `IsThisMonth` is always `true`, so a template that fades other-month days shows every day normally there.
 * In a `RangeSelectionCalendar`, style the whole range with `IsSelected` and its first and last days with `IsRangeStart` and `IsRangeEnd`.
 
@@ -703,7 +704,8 @@ The tables list every bindable property of `Calendar`, which the other three con
 | `HeaderSectionTemplate` | `DataTemplate` | Built-in header | See [Header and footer](#header-and-footer) |
 | `FooterSectionTemplate` | `DataTemplate` | Built-in footer | See [Header and footer](#header-and-footer) |
 | `DayViewTemplate` | `DataTemplate` | `null` | See [Custom day cells](#custom-day-cells-dayviewtemplate) |
-| `DayViewSize` | `double` | `40` | Width and height of a day cell |
+| `DayViewSize` | `double` | `40` | Width and height of a day cell (only its width when `DayViewHeight` is set) |
+| `DayViewHeight` | `double` | `-1` | Height of a day cell; `-1` makes the cell square (`DayViewSize` high) |
 | `DayViewCornerRadius` | `float` | `20` | Corner radius of the selection, today and event backgrounds |
 | `DayViewBorderMargin` | `Thickness` | `0` | Inset of those backgrounds in the cell |
 | `WeekendDayBackgroundCornerRadius` | `float` | `0` | Corner radius of the weekend column boxes |
