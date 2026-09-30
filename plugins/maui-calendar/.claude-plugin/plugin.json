@@ -1,0 +1,12 @@
+{
+  "name": "maui-calendar",
+  "description": "Teaches your coding agent the complete Plugin.Maui.Calendar API, its behavior rules and the common mistakes, so it writes calendar code for .NET MAUI that works the first time",
+  "author": {
+    "name": "yurkinh",
+    "url": "https://github.com/yurkinh"
+  },
+  "homepage": "https://github.com/yurkinh/Plugin.Maui.Calendar",
+  "repository": "https://github.com/yurkinh/Plugin.Maui.Calendar",
+  "license": "MIT",
+  "keywords": ["maui", "dotnet-maui", "calendar", "xaml", "date-picker", "range-selection"]
+}

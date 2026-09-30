@@ -39,3 +39,18 @@ jobs:
       with:
         name: coverage-report
         path: tests/Plugin.Maui.Calendar.Tests/TestResults/**/coverage.cobertura.xml
+
+  check-ai-skill:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check that the AI skill matches llms-full.txt
+      # The skill of the maui-calendar agent plugin is llms-full.txt with front matter on top, so
+      # agents get the same reference from the plugin as from the NuGet package.
+      run: |
+        if ! sed '1,/^---$/d' plugins/maui-calendar/skills/maui-calendar/SKILL.md | sed '1{/^$/d;}' | diff - llms-full.txt; then
+          echo "::error file=plugins/maui-calendar/skills/maui-calendar/SKILL.md::SKILL.md differs from llms-full.txt. Copy llms-full.txt into it below the front matter."
+          exit 1
+        fi

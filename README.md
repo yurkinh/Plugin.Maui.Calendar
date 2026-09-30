@@ -780,7 +780,29 @@ dotnet build samples/SampleApp/SampleApp.csproj -t:Run -f net10.0-android
 
 [llms-full.txt](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/llms-full.txt) is a single file with everything an AI coding assistant needs to use this package correctly: the API, the behavior and the common mistakes. It is also included in the NuGet package, next to this readme, so it always matches the version you installed. [llms.txt](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/llms.txt) is the short index in the [llms.txt](https://llmstxt.org) format.
 
-To make your assistant use it, add a line like this to your project's `AGENTS.md`, `CLAUDE.md` or `.github/copilot-instructions.md`:
+### Agent skill for Claude Code and GitHub Copilot CLI
+
+This repository is also a plugin marketplace. Its `maui-calendar` plugin installs llms-full.txt as an agent skill, and your agent loads it only when you work with the calendar.
+
+Claude Code:
+
+```bash
+claude plugin marketplace add yurkinh/Plugin.Maui.Calendar
+claude plugin install maui-calendar@maui-calendar
+```
+
+GitHub Copilot CLI:
+
+```bash
+copilot plugin marketplace add yurkinh/Plugin.Maui.Calendar
+copilot plugin install maui-calendar@maui-calendar
+```
+
+The skill describes the newest version of the package. Run `claude plugin update maui-calendar@maui-calendar` or `copilot plugin update maui-calendar@maui-calendar` to get a newer skill. For an older package version, use the llms-full.txt from its NuGet package instead.
+
+### Other assistants
+
+Add a line like this to your project's `AGENTS.md`, `CLAUDE.md` or `.github/copilot-instructions.md`:
 
 ```text
 For Plugin.Maui.Calendar, follow https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/llms-full.txt

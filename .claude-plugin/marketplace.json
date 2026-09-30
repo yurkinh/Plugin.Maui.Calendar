@@ -1,0 +1,16 @@
+{
+  "name": "maui-calendar",
+  "owner": {
+    "name": "yurkinh"
+  },
+  "metadata": {
+    "description": "Agent skill for Plugin.Maui.Calendar, for Claude Code and GitHub Copilot CLI"
+  },
+  "plugins": [
+    {
+      "name": "maui-calendar",
+      "source": "./plugins/maui-calendar",
+      "description": "Teaches your coding agent the complete Plugin.Maui.Calendar API, its behavior rules and the common mistakes, so it writes calendar code for .NET MAUI that works the first time"
+    }
+  ]
+}
