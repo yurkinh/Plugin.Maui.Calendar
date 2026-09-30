@@ -10,14 +10,16 @@ public partial class Calendar : ContentView, IDisposable
 
 		base.OnHandlerChanging(args);
 
-		if (args.NewHandler != null)
-		{
-			AttachHandler();
-		}
-
+		// Detach first: when one handler replaces another, detaching after attaching would undo
+		// what AttachHandler just did (swipe recognizers, day-tap subscription).
 		if (args.OldHandler != null)
 		{
 			DetachHandler();
+		}
+
+		if (args.NewHandler != null)
+		{
+			AttachHandler();
 		}
 	}
 
