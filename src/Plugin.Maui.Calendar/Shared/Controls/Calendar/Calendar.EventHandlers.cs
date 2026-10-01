@@ -12,7 +12,7 @@ public partial class Calendar : ContentView, IDisposable
 
 		// Detach first: when one handler replaces another, detaching after attaching would undo
 		// what AttachHandler just did (swipe recognizers, day-tap subscription).
-		if (args.OldHandler != null)
+		if (args.OldHandler is not null)
 		{
 			DetachHandler();
 		}
