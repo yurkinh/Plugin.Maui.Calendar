@@ -55,7 +55,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			control.isSelectingDates = false;
 		}
-		control.UpdateDays(true);
+		control.UpdateDays();
 
 	}
 
@@ -88,7 +88,8 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateSelectedDatesCollection(SelectedDates?.ToList());
+	// Only the current SelectedDates collection is observed, so it is never null here.
+	void OnSelectedDatesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateSelectedDatesCollection([.. SelectedDates]);
 
 
 	static void SelectedDatesChanged(BindableObject bindable, object oldValue, object newValue)
@@ -109,7 +110,7 @@ public partial class Calendar : ContentView, IDisposable
 	void UpdateSelectedDatesCollection(List<DateTime> SelectedDates)
 	{
 		CurrentSelectionEngine.UpdateDateSelection(SelectedDates ?? []);
-		UpdateDays(true);
+		UpdateDays();
 		UpdateSelectedDateLabel();
 		UpdateEvents();
 		if (CurrentSelectionEngine is RangedSelectionEngine)

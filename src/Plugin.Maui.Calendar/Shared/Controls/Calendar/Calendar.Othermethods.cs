@@ -11,78 +11,125 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView, IDisposable
 {
+	// The week shown in a row starts on FirstDayOfWeek, so the week is counted from that day too;
+	// otherwise the number of the shown row would depend on which of its days ShownDate is.
 	int GetWeekNumber(DateTime date)
 	{
-		return Culture.Calendar.GetWeekOfYear(
+		return FormattingCulture.DateTimeFormat.Calendar.GetWeekOfYear(
 			date,
 			CalendarWeekRule.FirstFourDayWeek,
-			Culture.DateTimeFormat.FirstDayOfWeek
+			FirstDayOfWeek
 		);
 	}
 
 	void PrevUnit()
 	{
-		var oldMonth = DateOnly.FromDateTime(ShownDate);
-		ShownDate = CurrentViewLayoutEngine.GetPreviousUnit(ShownDate);
-		var newMonth = DateOnly.FromDateTime(ShownDate);
-
-		var args = new MonthChangedEventArgs(oldMonth, newMonth);
-		MonthChanged?.Invoke(this, args);
-
-		if (MonthChangedCommand?.CanExecute(null) == true)
+		if (!CanExecutePrevUnit())
 		{
-			MonthChangedCommand.Execute(args);
+			return;
 		}
+
+		var oldShownDate = ShownDate;
+		ShownDate = CurrentViewLayoutEngine.GetPreviousUnit(ShownDate);
+		RaiseMonthChanged(oldShownDate);
 	}
 
 	void NextUnit()
 	{
-		var oldMonth = DateOnly.FromDateTime(ShownDate);
-		ShownDate = CurrentViewLayoutEngine.GetNextUnit(ShownDate);
-		var newMonth = DateOnly.FromDateTime(ShownDate);
-
-		var args = new MonthChangedEventArgs(oldMonth, newMonth);
-		MonthChanged?.Invoke(this, args);
-
-		if (MonthChangedCommand?.CanExecute(null) == true)
+		if (!CanExecuteNextUnit())
 		{
-			MonthChangedCommand.Execute(args);
+			return;
 		}
+
+		var oldShownDate = ShownDate;
+		ShownDate = CurrentViewLayoutEngine.GetNextUnit(ShownDate);
+		RaiseMonthChanged(oldShownDate);
+	}
+
+	// Moving back is only blocked by MinimumDate and moving forward only by MaximumDate, so a
+	// calendar showing a month outside the allowed dates can always be moved towards them.
+	bool CanExecutePrevUnit()
+	{
+		var target = CurrentViewLayoutEngine.GetPreviousUnit(ShownDate);
+		return target != ShownDate && GetShownUnit(target).End >= MinimumDate.Date;
+	}
+
+	bool CanExecuteNextUnit()
+	{
+		var target = CurrentViewLayoutEngine.GetNextUnit(ShownDate);
+		return target != ShownDate && GetShownUnit(target).Start <= MaximumDate.Date;
+	}
+
+	/// <summary>
+	/// The days of the unit the calendar shows for <paramref name="date"/>: its month in the month
+	/// layout (the days of other months around it don't count), its week(s) in the week layouts.
+	/// </summary>
+	(DateTime Start, DateTime End) GetShownUnit(DateTime date)
+	{
+		if (CalendarLayout == WeekLayout.Month)
+		{
+			return (new DateTime(date.Year, date.Month, 1), new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month)));
+		}
+
+		return (CurrentViewLayoutEngine.GetFirstDate(date).Date, CurrentViewLayoutEngine.GetLastDate(date).Date);
 	}
 
 	void NextYear(object obj)
 	{
-		ShownDate = ShownDate.AddYears(1);
+		if (!CanExecuteNextYear(obj))
+		{
+			return;
+		}
+
+		var oldShownDate = ShownDate;
+		var target = ShownDate.AddYears(1);
+		ShownDate = target > MaximumDate ? MaximumDate : target;
+		RaiseMonthChanged(oldShownDate);
 	}
 
-	bool CanExecuteNextYear(object obj)
-	{
-		try
-		{
-			var maxDate = Culture.Calendar.MaxSupportedDateTime;
-			return ShownDate.Year < maxDate.Year;
-		}
-		catch
-		{
-			return false;
-		}
-	}
+	// MaximumDate.Year is at most DateTime.MaxValue.Year, so this also keeps AddYears in range.
+	bool CanExecuteNextYear(object obj) => ShownDate.Year < MaximumDate.Year;
 
 	void PrevYear(object obj)
 	{
-		ShownDate = ShownDate.AddYears(-1);
+		if (!CanExecutePrevYear(obj))
+		{
+			return;
+		}
+
+		var oldShownDate = ShownDate;
+		var target = ShownDate.AddYears(-1);
+		ShownDate = target < MinimumDate ? MinimumDate : target;
+		RaiseMonthChanged(oldShownDate);
 	}
 
-	bool CanExecutePrevYear(object obj)
+	// MinimumDate.Year is at least DateTime.MinValue.Year, so this also keeps AddYears in range.
+	bool CanExecutePrevYear(object obj) => ShownDate.Year > MinimumDate.Year;
+
+	/// <summary>
+	/// Re-evaluates whether the arrows can be used, after a change of the shown date, of the allowed
+	/// dates or of the layout.
+	/// </summary>
+	void RefreshNavigationCommands()
 	{
-		try
+		((Command)PrevLayoutUnitCommand).ChangeCanExecute();
+		((Command)NextLayoutUnitCommand).ChangeCanExecute();
+		((Command)PrevYearCommand).ChangeCanExecute();
+		((Command)NextYearCommand).ChangeCanExecute();
+	}
+
+	/// <summary>
+	/// Raises <see cref="MonthChanged"/> and executes <see cref="MonthChangedCommand"/> after the user
+	/// moved the calendar from <paramref name="oldShownDate"/> to <see cref="ShownDate"/>.
+	/// </summary>
+	void RaiseMonthChanged(DateTime oldShownDate)
+	{
+		var args = new MonthChangedEventArgs(DateOnly.FromDateTime(oldShownDate), DateOnly.FromDateTime(ShownDate));
+		MonthChanged?.Invoke(this, args);
+
+		if (MonthChangedCommand?.CanExecute(args) == true)
 		{
-			var minDate = Culture.Calendar.MinSupportedDateTime;
-			return ShownDate.Year > minDate.Year;
-		}
-		catch
-		{
-			return false;
+			MonthChangedCommand.Execute(args);
 		}
 	}
 
@@ -102,32 +149,20 @@ public partial class Calendar : ContentView, IDisposable
 		SelectedDate = null;
 	}
 
-	void OnSwiped(object sender, SwipedEventArgs e)
+	// The calendar only adds recognizers for these four directions (see UpdateSwipeGestures), and so do
+	// the day cells that hand their swipes to the calendar on Android (see DayView).
+	internal void OnSwiped(object sender, SwipedEventArgs e)
 	{
-		switch (e.Direction)
+		var swiped = e.Direction switch
 		{
-			case SwipeDirection.Left:
-				OnSwipeLeft();
-				break;
-			case SwipeDirection.Right:
-				OnSwipeRight();
-				break;
-			case SwipeDirection.Up:
-				OnSwipeUp();
-				break;
-			case SwipeDirection.Down:
-				OnSwipeDown();
-				break;
-		}
+			SwipeDirection.Left => SwipedLeft,
+			SwipeDirection.Right => SwipedRight,
+			SwipeDirection.Up => SwipedUp,
+			_ => SwipedDown,
+		};
+
+		swiped?.Invoke(this, EventArgs.Empty);
 	}
-
-	void OnSwipeLeft() => SwipedLeft?.Invoke(this, EventArgs.Empty);
-
-	void OnSwipeRight() => SwipedRight?.Invoke(this, EventArgs.Empty);
-
-	void OnSwipeUp() => SwipedUp?.Invoke(this, EventArgs.Empty);
-
-	void OnSwipeDown() => SwipedDown?.Invoke(this, EventArgs.Empty);
 
 
 
@@ -139,12 +174,6 @@ public partial class Calendar : ContentView, IDisposable
 
 	void RenderLayout()
 	{
-		// Item 16: skip during construction; the constructor performs one render at the end.
-		if (isInitializing)
-		{
-			return;
-		}
-
 		CurrentViewLayoutEngine = CalendarLayout switch
 		{
 			WeekLayout.Week => new WeekViewEngine(1, FirstDayOfWeek),
@@ -162,7 +191,6 @@ public partial class Calendar : ContentView, IDisposable
 			daysControl,
 			dayViews,
 			this,
-			nameof(DaysTitleLabelStyle),
 			DayTappedCommand,
 			DayViewTemplate
 		);
@@ -171,7 +199,7 @@ public partial class Calendar : ContentView, IDisposable
 
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
-		UpdateDays(forceUpdate: true);
+		UpdateDays();
 
 		// The cells join the grid only now that their models hold real data. On a calendar that is
 		// already on screen they are rendered (and their DayViewTemplate content, including a
@@ -182,6 +210,9 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		UpdateWeekendBackground();
+
+		// The layout engine decides how far the arrows move.
+		RefreshNavigationCommands();
 	}
 
 	internal void AssignIndicatorColors(ref DayModel dayModel)
@@ -196,16 +227,16 @@ public partial class Calendar : ContentView, IDisposable
 			if (dayEventCollection is IPersonalizableDayEvent personalizableDay)
 			{
 				dayModel.EventIndicatorColor =
-					personalizableDay?.EventIndicatorColor ?? EventIndicatorColor;
+					personalizableDay.EventIndicatorColor ?? EventIndicatorColor;
 				dayModel.EventIndicatorSelectedColor =
-					personalizableDay?.EventIndicatorSelectedColor
-				 ?? personalizableDay?.EventIndicatorColor
+					personalizableDay.EventIndicatorSelectedColor
+				 ?? personalizableDay.EventIndicatorColor
 				 ?? EventIndicatorSelectedColor;
 				dayModel.EventIndicatorTextColor =
-					personalizableDay?.EventIndicatorTextColor ?? EventIndicatorTextColor;
+					personalizableDay.EventIndicatorTextColor ?? EventIndicatorTextColor;
 				dayModel.EventIndicatorSelectedTextColor =
-					personalizableDay?.EventIndicatorSelectedTextColor
-				 ?? personalizableDay?.EventIndicatorTextColor
+					personalizableDay.EventIndicatorSelectedTextColor
+				 ?? personalizableDay.EventIndicatorTextColor
 				 ?? EventIndicatorSelectedTextColor;
 			}
 			// A multi-event day that provides no colors still shows the single indicator dot.
@@ -279,13 +310,8 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (disposing)
 		{
-			if (Events is EventCollection events)
-			{
-				events.CollectionChanged -= OnEventsCollectionChanged;
-			}
+			Events.CollectionChanged -= OnEventsCollectionChanged;
 			StopTodayRefresh();
-			calendarSectionAnimateHide.Value.Dispose();
-			calendarSectionAnimateShow.Value.Dispose();
 		}
 	}
 

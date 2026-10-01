@@ -8,22 +8,22 @@ namespace Plugin.Maui.Calendar.Controls.SelectionEngines;
 
 class RangedSelectionEngine : ISelectionEngine
 {
-	DateTime? rangeSelectionEndDate;
-	DateTime? rangeSelectionStartDate;
+	// The first and last day of the selected range (the same day while only its first border is
+	// selected), or null when nothing is selected.
+	(DateTime Start, DateTime End)? range;
 
 	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
 	{
-		if (rangeSelectionStartDate.HasValue && rangeSelectionEndDate.HasValue)
+		if (range is not { } selected)
 		{
-			var startDateText = isNativeDigits 
-								? rangeSelectionStartDate.Value.ToNativeDigitString(selectedDateTextFormat, culture) 
-								: rangeSelectionStartDate.Value.ToString(selectedDateTextFormat, culture);
-			var endDateText = isNativeDigits 
-								? rangeSelectionEndDate.Value.ToNativeDigitString(selectedDateTextFormat, culture) 
-								: rangeSelectionEndDate.Value.ToString(selectedDateTextFormat, culture);
-			return $"{startDateText} - {endDateText}";
+			return string.Empty;
 		}
-		return string.Empty;
+
+		return $"{Format(selected.Start)} - {Format(selected.End)}";
+
+		string Format(DateTime date) => isNativeDigits
+			? date.ToNativeDigitString(selectedDateTextFormat, culture)
+			: date.ToString(selectedDateTextFormat, culture);
 	}
 
 	bool ISelectionEngine.TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
@@ -34,46 +34,41 @@ class RangedSelectionEngine : ISelectionEngine
 
 	bool ISelectionEngine.IsDateSelected(DateTime dateToCheck)
 	{
-		if (!rangeSelectionStartDate.HasValue || !rangeSelectionEndDate.HasValue)
-		{
-			return false;
-		}
-
 		var date = dateToCheck.Date;
-		return date >= rangeSelectionStartDate.Value.Date && date <= rangeSelectionEndDate.Value.Date;
+		return range is { } selected && date >= selected.Start && date <= selected.End;
 	}
 
 	List<DateTime> ISelectionEngine.PerformDateSelection(DateTime dateToSelect, List<DateTime> disabledDates)
 	{
-		return SelectDateRange(dateToSelect, disabledDates ?? []);
+		return SelectDateRange(dateToSelect, disabledDates);
 	}
 
 	void ISelectionEngine.UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
-		if (datesToSelect is not null && datesToSelect.Any())
-		{
-			// Use LINQ to simplify finding min and max
-			rangeSelectionStartDate = datesToSelect.Min().Date;
-			rangeSelectionEndDate = datesToSelect.Max().Date;
-		}
-		else
-		{
-			rangeSelectionStartDate = null;
-			rangeSelectionEndDate = null;
-		}
+		var dates = datesToSelect?.ToList() ?? [];
+
+		range = dates.Count > 0 ? (dates.Min().Date, dates.Max().Date) : null;
 	}
 
+	/// <summary>
+	/// Selects <paramref name="newSelected"/> as the first border of a new range when no range or a
+	/// complete range is selected, or as its second border (the other end) when only the first border
+	/// is selected. <see langword="null"/> clears the selection.
+	/// </summary>
 	internal List<DateTime> SelectDateRange(DateTime? newSelected, List<DateTime> disabledDates)
 	{
-		if (newSelected is null
-			|| !rangeSelectionStartDate.HasValue
-			|| rangeSelectionStartDate != rangeSelectionEndDate)
+		if (newSelected is not { } date)
 		{
-			SelectFirstIntervalBorder(newSelected);
+			range = null;
+		}
+		else if (range is { } selected && selected.Start == selected.End)
+		{
+			// The second border extends the range before or after the first one.
+			range = date.Date <= selected.Start ? (date.Date, selected.End) : (selected.Start, date.Date);
 		}
 		else
 		{
-			SelectSecondIntervalBorder(newSelected);
+			range = (date.Date, date.Date);
 		}
 
 		return CreateRangeList(disabledDates);
@@ -81,24 +76,21 @@ class RangedSelectionEngine : ISelectionEngine
 
 	List<DateTime> CreateRangeList(List<DateTime> disabledDates = null)
 	{
-		if (!rangeSelectionStartDate.HasValue || !rangeSelectionEndDate.HasValue)
+		if (range is not { } selected)
 		{
 			return [];
 		}
 
-		var start = rangeSelectionStartDate.Value.Date;
-		var end = rangeSelectionEndDate.Value.Date;
-		var capacity = (end - start).Days + 1;
-		var rangeList = new List<DateTime>(capacity);
+		var rangeList = new List<DateTime>((selected.End - selected.Start).Days + 1);
 
 		// Use a HashSet for O(1) per-day lookups instead of O(n) List.Contains.
-		HashSet<DateTime> disabledSet = disabledDates?.Count > 0
-			? new HashSet<DateTime>(disabledDates)
-			: null;
+		var disabledSet = Calendar.CreateDisabledDateSet(disabledDates);
 
-		for (var date = start; date <= end; date = date.AddDays(1))
+		// Counted in days, so a range ending on the last day of DateTime does not step past it.
+		for (var day = 0; day <= (selected.End - selected.Start).Days; day++)
 		{
-			if (disabledSet is null || !disabledSet.Contains(date))
+			var date = selected.Start.AddDays(day);
+			if (disabledSet?.Contains(date) != true)
 			{
 				rangeList.Add(date);
 			}
@@ -110,31 +102,6 @@ class RangedSelectionEngine : ISelectionEngine
 	internal List<DateTime> GetDateRange(List<DateTime> disabledDates = null) =>
 		CreateRangeList(disabledDates);
 
-	void SelectFirstIntervalBorder(DateTime? newSelected)
-	{
-		rangeSelectionStartDate = newSelected?.Date;
-		rangeSelectionEndDate = newSelected?.Date;
-	}
-
-	internal DateTime? RangeSelectionStartDate => rangeSelectionStartDate;
-	internal DateTime? RangeSelectionEndDate => rangeSelectionEndDate;
-
-	void SelectSecondIntervalBorder(DateTime? newSelected)
-	{
-		if (newSelected is null)
-		{
-			return;
-		}
-
-		var newDate = newSelected.Value.Date;
-		// If new date is before or equal to start, update start; otherwise update end.
-		if (!rangeSelectionStartDate.HasValue || newDate <= rangeSelectionStartDate.Value.Date)
-		{
-			rangeSelectionStartDate = newDate;
-		}
-		else
-		{
-			rangeSelectionEndDate = newDate;
-		}
-	}
+	internal DateTime? RangeSelectionStartDate => range?.Start;
+	internal DateTime? RangeSelectionEndDate => range?.End;
 }

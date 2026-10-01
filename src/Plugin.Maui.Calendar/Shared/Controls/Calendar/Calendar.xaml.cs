@@ -1,4 +1,4 @@
-namespace Plugin.Maui.Calendar.Controls;
+﻿namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView, IDisposable
 {
@@ -7,35 +7,29 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	public Calendar()
 	{
-		// Item 16: suppress all intermediate renders triggered by bindable-property
-		// callbacks that fire during construction.  One consolidated render executes
-		// after the control is fully configured.
-		isInitializing = true;
+		// The arrows of the default header ask the navigation commands whether they can execute while
+		// InitializeComponent creates the header, and the answer depends on the layout engine.
+		InitializeViewLayoutEngine();
 
-		PrevLayoutUnitCommand = new Command(PrevUnit);
-		NextLayoutUnitCommand = new Command(NextUnit);
+		PrevLayoutUnitCommand = new Command(PrevUnit, CanExecutePrevUnit);
+		NextLayoutUnitCommand = new Command(NextUnit, CanExecuteNextUnit);
 		PrevYearCommand = new Command(PrevYear, CanExecutePrevYear);
 		NextYearCommand = new Command(NextYear, CanExecuteNextYear);
 		ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
 
 		InitializeComponent();
 
-		InitializeViewLayoutEngine();
 		InitializeSelectionType();
-
-		isInitializing = false;
 
 		// OnEventsChanged only observes a collection that is assigned, not the default one.
 		ObserveEvents();
 
-		// Single consolidated render at end of construction.
+		// The first render, once the control is fully configured: no property callback runs during
+		// construction (XAML assigns the calendar's properties after the constructor).
 		UpdateSelectedDateLabel();
 		UpdateLayoutUnitLabel();
 		UpdateEvents();
 		RenderLayout();
-
-		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
-		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));
 
 		// Keeps IsToday current across midnight, but only while the calendar is on screen.
 		Loaded += OnCalendarLoaded;

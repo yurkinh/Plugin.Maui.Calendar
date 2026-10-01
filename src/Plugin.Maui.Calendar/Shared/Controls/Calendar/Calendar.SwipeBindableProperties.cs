@@ -11,7 +11,7 @@ public partial class Calendar : ContentView, IDisposable
 			 typeof(bool),
 			 typeof(Calendar),
 			 false,
-			 propertyChanged: OnSwipeDetectionDisabledChanged
+			 propertyChanged: static (bindable, oldValue, newValue) => ((Calendar)bindable).UpdateSwipeGestures()
 		 );
 
 	/// <summary>
@@ -22,22 +22,6 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (bool)GetValue(SwipeDetectionDisabledProperty);
 		set => SetValue(SwipeDetectionDisabledProperty, value);
-	}
-
-	static void OnSwipeDetectionDisabledChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		// Without a handler there is nothing to change: AttachHandler reads the property.
-		if (bindable is Calendar { Handler: not null } calendar)
-		{
-			if ((bool)newValue)
-			{
-				calendar.RemoveSwipeGestures();
-			}
-			else
-			{
-				calendar.AddSwipeGestures();
-			}
-		}
 	}
 
 	/// <summary>

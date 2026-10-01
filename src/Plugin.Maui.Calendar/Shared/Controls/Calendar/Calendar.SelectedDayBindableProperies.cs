@@ -24,10 +24,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnSelectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -53,10 +51,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDeselectedDayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -82,10 +78,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnSelectedTodayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -111,10 +105,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnOtherMonthSelectedDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -140,9 +132,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnSelectedDayBackgroundColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 }

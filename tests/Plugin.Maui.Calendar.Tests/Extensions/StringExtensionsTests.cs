@@ -1,6 +1,5 @@
 using FluentAssertions;
 using System.Globalization;
-using Plugin.Maui.Calendar.Tests.TestableCode.Extensions;
 using Xunit;
 
 namespace Plugin.Maui.Calendar.Tests.Extensions;

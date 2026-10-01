@@ -44,9 +44,10 @@ All are bindable properties of `Calendar` (inherited by the other three controls
 | --- | --- | --- | --- |
 | ShownDate | DateTime | today | Two-way. The month (or week) shown |
 | Day / Month / Year | int | today | Two-way parts of ShownDate. Month outside 1..12 throws ArgumentException |
-| MinimumDate | DateTime | DateTime.MinValue | Earlier days disabled. Date part only |
-| MaximumDate | DateTime | DateTime.MaxValue | Later days disabled. Date part only |
-| DisabledDates | List<DateTime> | new empty list per calendar | Two-way. Not observed: assign a NEW list to change it. Entries must be dates without time |
+| MinimumDate | DateTime | DateTime.MinValue | Earlier days disabled; the arrows/swipes don't move to a month (week) entirely before it. Date part only |
+| MaximumDate | DateTime | DateTime.MaxValue | Later days disabled; the arrows/swipes don't move to a month (week) entirely after it. Date part only |
+| DisabledDates | List<DateTime> | new empty list per calendar | Two-way. Not observed: assign a NEW list to change it. Date part only |
+| TimeProvider | TimeProvider | TimeProvider.System | Which day is today. A fixed provider (e.g. FakeTimeProvider) pins today for tests/screenshots |
 | VisibleStartDate | DateTime | read-only | First date on screen (includes other-month days) |
 | VisibleEndDate | DateTime | read-only | Last date on screen |
 | AutoChangeMonthOnDayTap | bool | false | Tapping a previous/next-month day shows that month and raises MonthChanged |
@@ -82,7 +83,7 @@ All are bindable properties of `Calendar` (inherited by the other three controls
 | Property | Type | Default | Notes |
 | --- | --- | --- | --- |
 | CalendarLayout | WeekLayout | Month | Month, TwoWeek, Week. Arrows/swipes then move by that unit |
-| WeekViewUnit | WeekViewUnit | MonthName | Header text: MonthName or WeekNumber (FirstFourDayWeek rule, Culture's first day of week) |
+| WeekViewUnit | WeekViewUnit | MonthName | Header text: MonthName or WeekNumber (FirstFourDayWeek rule, counted from FirstDayOfWeek; ISO 8601 with Monday) |
 | FirstDayOfWeek | DayOfWeek | Sunday | Independent of Culture |
 | OtherMonthDayIsVisible | bool | true | Month layout: show previous/next-month days |
 | OtherMonthWeekIsVisible | bool | true | Month layout: show rows made only of other-month days |
@@ -105,7 +106,7 @@ All are bindable properties of `Calendar` (inherited by the other three controls
 ### Culture and text
 | Property | Type | Default | Notes |
 | --- | --- | --- | --- |
-| Culture | CultureInfo | CultureInfo.InvariantCulture | Two-way. Month/day names, number and date formats. SET IT (default shows English names) |
+| Culture | CultureInfo | CultureInfo.InvariantCulture | Two-way. Month/day names, number and date formats, always with the Gregorian calendar (also for fa-IR, ar-SA, th-TH). SET IT (default shows English names) |
 | UseNativeDigits | bool | false | Numbers in the culture's native digits |
 | DaysTitleMaximumLength | DaysTitleMaxLength | ThreeChars | OneChar=1, TwoChars=2, ThreeChars=3, None=0. Prefers the culture's abbreviation when it fits |
 | UseAbbreviatedDayNames | bool | false | Titles = culture AbbreviatedDayNames as they are; DaysTitleMaximumLength ignored |
@@ -165,8 +166,8 @@ Defaults are for a LIGHT background: black text, #2196F3 header labels, white ar
 
 ## 4. Commands, events, methods (non-bindable members)
 
-- `PrevLayoutUnitCommand`, `NextLayoutUnitCommand` (ICommand): previous/next month, or week in week layouts. Raise MonthChanged.
-- `PrevYearCommand`, `NextYearCommand` (ICommand): ShownDate ± 1 year. Do NOT raise MonthChanged.
+- `PrevLayoutUnitCommand`, `NextLayoutUnitCommand` (ICommand): previous/next month, or week in week layouts. Raise MonthChanged. CanExecute is false where the target month/week is entirely before MinimumDate / after MaximumDate.
+- `PrevYearCommand`, `NextYearCommand` (ICommand): ShownDate ± 1 year, kept within MinimumDate/MaximumDate. Raise MonthChanged. CanExecute is false where the whole target year is out of range.
 - `ShowHideCalendarCommand` (ICommand): toggles CalendarSectionShown.
 - `event EventHandler<MonthChangedEventArgs> MonthChanged` — `OldMonth`, `NewMonth` (DateOnly; the shown dates before/after).
 - `event EventHandler<ShownDatesChangedEventArgs> ShownDatesChanged` — `VisibleStartDate`, `VisibleEndDate` (DateTime).
@@ -181,9 +182,9 @@ Defaults are for a LIGHT background: black text, #2196F3 header labels, white ar
 3. `SelectedDates` gets a new `ObservableCollection` instance after every tap. Bind it Two-way; never cache the old instance or subscribe once to its CollectionChanged.
 4. Bind `SelectedDates` to `ObservableCollection<DateTime>`, never `List<DateTime>`.
 5. On `RangeSelectionCalendar` bind either SelectedStartDate/SelectedEndDate or SelectedDates, not both.
-6. `DisabledDates` is a non-observable `List<DateTime>`: assign a new list to apply changes, store `.Date` values (a time component makes the entry never match).
+6. `DisabledDates` is a non-observable `List<DateTime>`: assign a new list to apply changes. The time of an entry is ignored.
 7. `EventCollection` notifies the calendar through its own `Add`, `Remove`, `this[date]` setter and `Clear`. A variable typed `Dictionary<DateTime, ICollection>` bypasses notifications. A day stored as an `ObservableCollection<T>` (any `INotifyCollectionChanged`) is observed: adding/removing/replacing its items updates the day and the event list. A day stored as a `List<T>` is NOT observed: reassign `Events[date] = collection` after changing it.
-8. `MonthChanged`/`MonthChangedCommand` fire only for user navigation (month/week arrows, swipes, AutoChangeMonthOnDayTap), never for ShownDate/Month/Year set from code and never for the year arrows. Use `OnShownDateChangedCommand` or `ShownDatesChanged` to see every change.
+8. `MonthChanged`/`MonthChangedCommand` fire only for user navigation (month/week arrows, year arrows, swipes, AutoChangeMonthOnDayTap), never for ShownDate/Month/Year set from code. Use `OnShownDateChangedCommand` or `ShownDatesChanged` to see every change.
 9. `ShownDatesChanged` can fire for the initial range during construction, before XAML handlers/commands are attached. Read `VisibleStartDate`/`VisibleEndDate` after the calendar is loaded for the first range.
 10. Swipe up hides the days. If the footer is hidden (`FooterSectionVisible="False"`) or replaced by a template without `ShowHideCalendarCommand`, set `SwipeUpToHideEnabled="False"` — otherwise the user cannot bring the days back.
 11. "Weekend" is always Saturday + Sunday (WeekendDayColor, WeekendTitleStyle, WeekendDayBackgroundColor, ICalendarDay.IsWeekend), independent of culture and FirstDayOfWeek.

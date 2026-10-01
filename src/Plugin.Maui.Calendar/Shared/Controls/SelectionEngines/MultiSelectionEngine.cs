@@ -34,7 +34,7 @@ internal class MultiSelectionEngine : ISelectionEngine
 
 	public bool IsDateSelected(DateTime dateToCheck)
 	{
-		return selectedDates.Contains(dateToCheck);
+		return selectedDates.Contains(dateToCheck.Date);
 	}
 
 	public List<DateTime> PerformDateSelection(
@@ -42,24 +42,27 @@ internal class MultiSelectionEngine : ISelectionEngine
 		List<DateTime> disabledDates = null
 	)
 	{
-		if (!selectedDates.Remove(dateToSelect))
+		var date = dateToSelect.Date;
+
+		if (!selectedDates.Remove(date))
 		{
-			if (disabledDates is null || !disabledDates.Contains(dateToSelect))
+			if (Plugin.Maui.Calendar.Controls.Calendar.CreateDisabledDateSet(disabledDates)?.Contains(date) != true)
 			{
-				selectedDates.Add(dateToSelect);
+				selectedDates.Add(date);
 			}
 		}
 
 		return [.. selectedDates];
 	}
 
+	// Dates are kept by day: dates selected from code may carry a time.
 	public void UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
 		selectedDates.Clear();
 
 		foreach (var date in datesToSelect ?? [])
 		{
-			selectedDates.Add(date);
+			selectedDates.Add(date.Date);
 		}
 	}
 }

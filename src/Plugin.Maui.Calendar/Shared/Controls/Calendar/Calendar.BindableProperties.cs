@@ -25,9 +25,10 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(Day),
 		typeof(int),
 		typeof(Calendar),
-		DateTime.Today.Day,
+		1,
 		BindingMode.TwoWay,
-		propertyChanged: OnDayChanged
+		propertyChanged: OnDayChanged,
+		defaultValueCreator: static _ => DateTime.Today.Day
 	);
 
 	/// <summary>
@@ -41,9 +42,17 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDayChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar && newValue is int newDay && calendar.ShownDate.Day != newDay)
+		var calendar = (Calendar)bindable;
+		var newDay = (int)newValue;
+
+		if (calendar.ShownDate.Day != newDay)
 		{
-			calendar.ShownDate = new DateTime(calendar.Year, calendar.Month, newDay);
+			// A day the shown month doesn't have (31 in a 30-day month) moves to its last day.
+			calendar.ShownDate = new DateTime(
+				calendar.Year,
+				calendar.Month,
+				Math.Min(DateTime.DaysInMonth(calendar.Year, calendar.Month), newDay)
+			);
 		}
 	}
 
@@ -55,9 +64,10 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(Month),
 		typeof(int),
 		typeof(Calendar),
-		DateTime.Today.Month,
+		1,
 		BindingMode.TwoWay,
-		propertyChanged: OnMonthChanged
+		propertyChanged: OnMonthChanged,
+		defaultValueCreator: static _ => DateTime.Today.Month
 	);
 
 	/// <summary>
@@ -76,7 +86,9 @@ public partial class Calendar : ContentView, IDisposable
 			throw new ArgumentException("Month must be between 1 and 12.");
 		}
 
-		if (bindable is Calendar calendar && calendar.ShownDate.Month != newMonth)
+		var calendar = (Calendar)bindable;
+
+		if (calendar.ShownDate.Month != newMonth)
 		{
 			calendar.ShownDate = new DateTime(
 				calendar.Year,
@@ -94,9 +106,10 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(Year),
 		typeof(int),
 		typeof(Calendar),
-		DateTime.Today.Year,
+		1,
 		BindingMode.TwoWay,
-		propertyChanged: OnYearChanged
+		propertyChanged: OnYearChanged,
+		defaultValueCreator: static _ => DateTime.Today.Year
 	);
 
 	/// <summary>
@@ -110,10 +123,17 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnYearChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar && calendar.ShownDate.Year != (int)newValue)
+		var calendar = (Calendar)bindable;
+		var newYear = (int)newValue;
+
+		if (calendar.ShownDate.Year != newYear)
 		{
-			calendar.ShownDate = new DateTime((int)newValue, calendar.Month, calendar.Day);
-			calendar.UpdateLayoutUnitLabel();
+			// February 29 moves to February 28 in a year that is not a leap year.
+			calendar.ShownDate = new DateTime(
+				newYear,
+				calendar.Month,
+				Math.Min(DateTime.DaysInMonth(newYear, calendar.Month), calendar.Day)
+			);
 		}
 	}
 
@@ -125,9 +145,10 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(ShownDate),
 		typeof(DateTime),
 		typeof(Calendar),
-		DateTime.Today,
+		default(DateTime),
 		BindingMode.TwoWay,
-		propertyChanged: OnShownDateChanged
+		propertyChanged: OnShownDateChanged,
+		defaultValueCreator: static _ => DateTime.Today
 	);
 
 	/// <summary>
@@ -141,38 +162,27 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnShownDateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar && newValue is DateTime newDateTime)
+		var calendar = (Calendar)bindable;
+		var newDateTime = (DateTime)newValue;
+
+		// Day, Month and Year follow ShownDate; setting them only moves ShownDate when it differs.
+		calendar.Day = newDateTime.Day;
+		calendar.Month = newDateTime.Month;
+		calendar.Year = newDateTime.Year;
+
+		calendar.UpdateLayoutUnitLabel();
+		calendar.UpdateDays();
+
+		calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
+
+		calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+
+		if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
 		{
-			if (calendar.Day != newDateTime.Day)
-			{
-				calendar.Day = newDateTime.Day;
-			}
-
-			if (calendar.Month != newDateTime.Month)
-			{
-				calendar.Month = newDateTime.Month;
-			}
-
-			if (calendar.Year != newDateTime.Year)
-			{
-				calendar.Year = newDateTime.Year;
-			}
-
-			calendar.UpdateLayoutUnitLabel();
-			calendar.UpdateDays(true);
-
-			calendar.OnShownDateChangedCommand?.Execute(calendar.ShownDate);
-
-			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
-
-			if (calendar.CurrentSelectionEngine is RangedSelectionEngine)
-			{
-				calendar.UpdateRangeSelection();
-			}
-
-			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
-			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
+			calendar.UpdateRangeSelection();
 		}
+
+		calendar.RefreshNavigationCommands();
 	}
 
 
@@ -244,7 +254,9 @@ public partial class Calendar : ContentView, IDisposable
 		typeof(Calendar),
 		CultureInfo.InvariantCulture,
 		BindingMode.TwoWay,
-		propertyChanged: OnCultureChanged
+		propertyChanged: OnCultureChanged,
+		// A binding to a culture that is not loaded yet sets null.
+		coerceValue: static (bindable, value) => value ?? CultureInfo.InvariantCulture
 	);
 
 	/// <summary>
@@ -259,21 +271,38 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnCultureChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
+		var calendar = (Calendar)bindable;
+		calendar.formattingCulture = null;
+
+		calendar.UpdateLayoutUnitLabel();
+		calendar.UpdateSelectedDateLabel();
+		calendar.UpdateDayTitles();
+		calendar.UpdateDays();
+		calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
+	}
+
+	CultureInfo formattingCulture;
+
+	/// <summary>
+	/// <see cref="Culture"/> with the Gregorian calendar. The days are always laid out by the
+	/// Gregorian calendar, so month names and dates must be written by it too: the default calendar
+	/// of some cultures is another one (Persian for fa-IR, Um Al-Qura for ar-SA, Thai Buddhist for
+	/// th-TH), whose month names and years would not match the days shown.
+	/// </summary>
+	internal CultureInfo FormattingCulture => formattingCulture ??= GetGregorianCulture(Culture);
+
+	internal static CultureInfo GetGregorianCulture(CultureInfo culture)
+	{
+		if (culture.DateTimeFormat.Calendar is GregorianCalendar)
 		{
-			if (calendar.ShownDate.Month > 0)
-			{
-				calendar.UpdateLayoutUnitLabel();
-			}
-
-			calendar.UpdateSelectedDateLabel();
-			calendar.UpdateDayTitles();
-			calendar.UpdateDays(true);
-			calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
-
-			((Command)calendar.NextYearCommand)?.ChangeCanExecute();
-			((Command)calendar.PrevYearCommand)?.ChangeCanExecute();
+			return culture;
 		}
+
+		// Every culture offers the localized Gregorian calendar (the default type), which keeps the
+		// culture's own month names (for example "اکتبر" for October in Persian).
+		var gregorianCulture = (CultureInfo)culture.Clone();
+		gregorianCulture.DateTimeFormat.Calendar = new GregorianCalendar();
+		return gregorianCulture;
 	}
 
 	/// <summary>
@@ -283,7 +312,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(UseNativeDigits),
 		typeof(bool),
 		typeof(Calendar),
-		false
+		false,
+		propertyChanged: OnUseNativeDigitsChanged
 	);
 
 	/// <summary>
@@ -296,6 +326,16 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (bool)GetValue(UseNativeDigitsProperty);
 		set => SetValue(UseNativeDigitsProperty, value);
+	}
+
+	static void OnUseNativeDigitsChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		var calendar = (Calendar)bindable;
+
+		calendar.UpdateLayoutUnitLabel();
+		calendar.UpdateSelectedDateLabel();
+		calendar.UpdateDays();
+		calendar.OnPropertyChanged(nameof(calendar.LocalizedYear));
 	}
 
 	/// <summary>
@@ -340,10 +380,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnOtherMonthDayIsVisibleChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDays(forceUpdate: true);
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDays();
 	}
 
 
@@ -369,11 +407,9 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnOtherMonthWeekIsVisibleChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			// Forced: the shown dates do not change, so a plain UpdateDays would return early.
-			calendar.UpdateDays(forceUpdate: true);
-		}
+		var calendar = (Calendar)bindable;
+
+		calendar.UpdateDays();
 	}
 
 
@@ -399,10 +435,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnCalendarSectionShownChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.ShowHideCalendarSection();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.ShowHideCalendarSection();
 	}
 
 
@@ -429,10 +463,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDayTappedCommandChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayGlobalProperties();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayGlobalProperties();
 	}
 
 
@@ -470,11 +502,10 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnMinMaxDateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			// Forced: the shown dates do not change, so a plain UpdateDays would return early.
-			calendar.UpdateDays(forceUpdate: true);
-		}
+		var calendar = (Calendar)bindable;
+
+		calendar.UpdateDays();
+		calendar.RefreshNavigationCommands();
 	}
 
 
@@ -498,16 +529,9 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(CalendarLayoutProperty, value);
 	}
 
-	static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		if (bindable is Calendar calendar && newValue is WeekLayout layout)
-		{
-			calendar.CalendarLayout = layout;
-
-			// RenderLayout already runs a forced UpdateDays for the new cells.
-			calendar.RenderLayout();
-		}
-	}
+	// RenderLayout already runs a forced UpdateDays for the new cells.
+	static void OnCalendarLayoutChanged(BindableObject bindable, object oldValue, object newValue) =>
+		((Calendar)bindable).RenderLayout();
 
 
 	/// <summary>
@@ -530,13 +554,8 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(WeekViewUnitProperty, value);
 	}
 
-	static void OnWeekViewUnitChanged(BindableObject bindable, object oldValue, object newValue)
-	{
-		if (bindable is Calendar calendar && newValue is WeekViewUnit viewUnit)
-		{
-			calendar.WeekViewUnit = viewUnit;
-		}
-	}
+	static void OnWeekViewUnitChanged(BindableObject bindable, object oldValue, object newValue) =>
+		((Calendar)bindable).UpdateLayoutUnitLabel();
 
 
 	/// <summary>
@@ -561,17 +580,11 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnFirstDayOfWeekChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			if (calendar.ShownDate.Month > 0)
-			{
-				calendar.UpdateLayoutUnitLabel();
-			}
+		var calendar = (Calendar)bindable;
 
-			calendar.UpdateSelectedDateLabel();
-			calendar.UpdateDayTitles();
-			calendar.RenderLayout();
-		}
+		calendar.UpdateLayoutUnitLabel();
+		calendar.UpdateSelectedDateLabel();
+		calendar.RenderLayout();
 	}
 
 
@@ -635,9 +648,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnAllowDeselectingChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayGlobalProperties();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayGlobalProperties();
 	}
 }
