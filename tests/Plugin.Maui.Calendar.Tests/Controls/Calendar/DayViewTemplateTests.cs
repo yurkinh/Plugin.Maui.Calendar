@@ -579,6 +579,55 @@ public class DayViewTemplateTests
         createContent.Should().Throw<InvalidOperationException>().WithMessage("*ViewCell*");
     }
 
+    // ── cell size (DayViewSize, DayViewHeight) ───────────────────────────────
+
+    [Fact]
+    public void DayViewHeight_Default_CellsAreDayViewSizeSquares()
+    {
+        var calendar = new TestCalendar { ShownDate = May15, DayViewSize = 48 };
+
+        calendar.DayViewHeight.Should().Be(-1);
+        calendar.DayViews.Should().OnlyContain(dayView =>
+            dayView.Container().WidthRequest == 48 && dayView.Container().HeightRequest == 48);
+    }
+
+    [Fact]
+    public void DayViewHeight_Set_CellsTakeItAsHeightAndKeepDayViewSizeAsWidth()
+    {
+        var calendar = new TestCalendar
+        {
+            ShownDate = May15,
+            DayViewSize = 48,
+            DayViewHeight = 110,
+            DayViewTemplate = CalendarTestExtensions.DayLabelTemplate(),
+        };
+
+        calendar.DayViews.Should().OnlyContain(dayView =>
+            dayView.Container().WidthRequest == 48 && dayView.Container().HeightRequest == 110);
+
+        calendar.DayViewSize = 56;
+
+        calendar.DayViews.Should().OnlyContain(dayView =>
+            dayView.Container().WidthRequest == 56 && dayView.Container().HeightRequest == 110,
+            "DayViewSize no longer sets the height");
+
+        calendar.DayViewHeight = -1;
+
+        calendar.DayViews.Should().OnlyContain(dayView =>
+            dayView.Container().WidthRequest == 56 && dayView.Container().HeightRequest == 56,
+            "-1 makes the cells square again");
+    }
+
+    [Fact]
+    public void DayViewHeight_KeptWhenNavigating()
+    {
+        var calendar = new TestCalendar { ShownDate = May15, DayViewSize = 48, DayViewHeight = 90 };
+
+        calendar.ShownDate = new DateTime(2025, 6, 15);
+
+        calendar.DayViews.Should().OnlyContain(dayView => dayView.Container().HeightRequest == 90);
+    }
+
     // ── EventIndicatorType.BackgroundFull ────────────────────────────────────
 
     [Fact]

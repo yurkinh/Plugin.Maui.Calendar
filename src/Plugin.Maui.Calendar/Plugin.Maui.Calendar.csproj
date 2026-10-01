@@ -49,10 +49,12 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Added: a day of the EventCollection stored as an ObservableCollection&lt;T&gt; (any INotifyCollectionChanged) is observed; adding, removing or replacing its events updates the day cell and the event list without assigning the day again (#20) 
-                        * Added: SwipeDetectionDisabled can be changed at any time; it used to be read only when the calendar was shown 
-                        * Fix: a calendar with gesture recognizers of its own no longer throws NullReferenceException when its page is closed after SwipeDetectionDisabled was switched from True to False 
-                        * Fix: a calendar whose handler is replaced by another one keeps handling day taps and changes of Events 
+                        * Added DayViewHeight: the height of the day cells, while DayViewSize stays their width (-1, the default, keeps square cells), so a DayViewTemplate can list the events of a day in a month grid
+                        * Added observed day collections: a day of the EventCollection stored as an ObservableCollection&lt;T&gt; (any INotifyCollectionChanged) is observed, so adding, removing or replacing its events updates the day cell and the event list without assigning the day again (#20)
+                        * Added runtime SwipeDetectionDisabled: it can be changed at any time; it used to be read only when the calendar was shown
+                        * Added Google Calendar sample page: the Schedule, Day, Week and Month views of the Google Calendar app
+                        * Fix: a calendar with gesture recognizers of its own no longer throws NullReferenceException when its page is closed after SwipeDetectionDisabled was switched from True to False
+                        * Fix: a calendar whose handler is replaced by another one keeps handling day taps and changes of Events
     </PackageReleaseNotes>
 	</PropertyGroup>	
 

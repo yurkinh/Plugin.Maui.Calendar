@@ -64,7 +64,7 @@
         x:Name="container"
         Margin="0"
         Padding="0"
-        HeightRequest="{Binding DayViewSize, Mode=OneWay}"
+        HeightRequest="{Binding DayViewHeight, Mode=OneWay}"
         IsVisible="{Binding IsVisible, Mode=OneWay}"
         WidthRequest="{Binding DayViewSize, Mode=OneWay}">
         <Grid.GestureRecognizers>
