@@ -15,6 +15,11 @@ public partial class GoogleCalendarPage : ContentPage
 	readonly GoogleCalendarViewModel viewModel;
 	bool monthExpanded;
 
+	// Cancelled when the page disappears: animations that end later leave the page alone. Its source
+	// lives from OnAppearing to OnDisappearing, so the page (transient, never disposed) owns no disposable.
+	CancellationToken lifetime;
+	Action endLifetime = () => { };
+
 	public GoogleCalendarPage(GoogleCalendarViewModel vm)
 	{
 		InitializeComponent();
@@ -24,33 +29,58 @@ public partial class GoogleCalendarPage : ContentPage
 		vm.PropertyChanged += OnViewModelPropertyChanged;
 	}
 
-#if ANDROID
-	// App.UpdateStatusBar paints the Android status bar in the color of the sample pages;
-	// this page gives it Google's color while it is shown, the app's color again when it leaves
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
+
+		var lifetimeSource = new CancellationTokenSource();
+		lifetime = lifetimeSource.Token;
+		endLifetime = () =>
+		{
+			lifetimeSource.Cancel();
+			lifetimeSource.Dispose();
+		};
+
+#if ANDROID
 		SetStatusBarColor((CommunityToolkit.Maui.AppThemeColor)Resources["GcBackgroundColor"]);
-		Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
+
+		if (Application.Current is { } app)
+		{
+			app.RequestedThemeChanged += OnRequestedThemeChanged;
+		}
+#endif
 	}
 
 	protected override void OnDisappearing()
 	{
 		base.OnDisappearing();
-		Application.Current!.RequestedThemeChanged -= OnRequestedThemeChanged;
-		SetStatusBarColor((CommunityToolkit.Maui.AppThemeColor)Application.Current.Resources["PageBackgroundColor"]);
+
+		endLifetime();
+		endLifetime = () => { };
+		viewModel.AddEventCommand.Cancel();
+		viewModel.SearchCommand.Cancel();
+
+#if ANDROID
+		if (Application.Current is { } app)
+		{
+			app.RequestedThemeChanged -= OnRequestedThemeChanged;
+			SetStatusBarColor((CommunityToolkit.Maui.AppThemeColor)app.Resources["PageBackgroundColor"]);
+		}
+#endif
 	}
 
-	// Runs after the app's own handler, which has just set the app's color
+#if ANDROID
+	// App.UpdateStatusBar paints the Android status bar in the color of the sample pages;
+	// this page gives it Google's color while it is shown, the app's color again when it leaves.
+	// Runs after the app's own handler, which has just set the app's color.
 	void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e) =>
 		SetStatusBarColor((CommunityToolkit.Maui.AppThemeColor)Resources["GcBackgroundColor"]);
 
 	static void SetStatusBarColor(CommunityToolkit.Maui.AppThemeColor color)
 	{
-		if (OperatingSystem.IsAndroidVersionAtLeast(23))
+		if (OperatingSystem.IsAndroidVersionAtLeast(23) && Application.Current is { } app)
 		{
-			CommunityToolkit.Maui.Core.Platform.StatusBar.SetColor(
-				Application.Current!.RequestedTheme == AppTheme.Dark ? color.Dark : color.Light);
+			CommunityToolkit.Maui.Core.Platform.StatusBar.SetColor(app.RequestedTheme == AppTheme.Dark ? color.Dark : color.Light);
 		}
 	}
 #endif
@@ -66,7 +96,7 @@ public partial class GoogleCalendarPage : ContentPage
 
 		if (drawerLayer.IsVisible)
 		{
-			_ = CloseDrawerAsync();
+			_ = CloseDrawerAsync(lifetime);
 			return true;
 		}
 
@@ -160,8 +190,10 @@ public partial class GoogleCalendarPage : ContentPage
 		// Lets a strip that has just been shown lay out its items first
 		Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(50), () =>
 		{
-			var item = (VisualElement)monthStripItems.Children[index];
-			_ = monthStrip.ScrollToAsync(Math.Max(0, item.X - item.Width * 0.85), 0, animate);
+			if (monthStripItems.Children[index] is VisualElement item)
+			{
+				_ = monthStrip.ScrollToAsync(Math.Max(0, item.X - item.Width * 0.85), 0, animate);
+			}
 		});
 	}
 
@@ -176,20 +208,29 @@ public partial class GoogleCalendarPage : ContentPage
 			drawerScrim.FadeToAsync(1, animationLength));
 	}
 
-	void OnDrawerScrimTapped(object sender, TappedEventArgs e) => _ = CloseDrawerAsync();
+	void OnDrawerScrimTapped(object sender, TappedEventArgs e) => _ = CloseDrawerAsync(lifetime);
 
 	async void OnXamlSourceTapped(object sender, TappedEventArgs e)
 	{
-		await CloseDrawerAsync();
-		await Navigation.PushModalAsync(new XamlSourcePage(nameof(GoogleCalendarPage)));
+		var token = lifetime;
+		await CloseDrawerAsync(token);
+
+		if (!token.IsCancellationRequested)
+		{
+			await Navigation.PushModalAsync(new XamlSourcePage(nameof(GoogleCalendarPage)));
+		}
 	}
 
 	async void OnBackToSamplesTapped(object sender, TappedEventArgs e) => await Shell.Current.GoToAsync("..");
 
 	async void OnViewTapped(object sender, TappedEventArgs e)
 	{
-		viewModel.SelectViewCommand.Execute(((BindableObject)sender).BindingContext);
-		await CloseDrawerAsync();
+		if (sender is BindableObject { BindingContext: GoogleCalendarViewOption option })
+		{
+			viewModel.SelectViewCommand.Execute(option);
+		}
+
+		await CloseDrawerAsync(lifetime);
 	}
 
 	void OnMonthViewSizeChanged(object sender, EventArgs e) => UpdateMonthDaySize();
@@ -234,13 +275,16 @@ public partial class GoogleCalendarPage : ContentPage
 		}
 	}
 
-	async Task CloseDrawerAsync()
+	async Task CloseDrawerAsync(CancellationToken token)
 	{
 		await Task.WhenAll(
 			drawer.TranslateToAsync(-drawer.WidthRequest, 0, animationLength, Easing.CubicIn),
 			drawerScrim.FadeToAsync(0, animationLength));
 
-		drawerLayer.IsVisible = false;
+		if (!token.IsCancellationRequested)
+		{
+			drawerLayer.IsVisible = false;
+		}
 	}
 
 	void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -248,7 +292,7 @@ public partial class GoogleCalendarPage : ContentPage
 		switch (e.PropertyName)
 		{
 			case nameof(GoogleCalendarViewModel.OpenedEvent):
-				_ = ShowOpenedEventAsync();
+				_ = ShowOpenedEventAsync(lifetime);
 				break;
 			case nameof(GoogleCalendarViewModel.CurrentView):
 				OnCurrentViewChanged();
@@ -259,7 +303,7 @@ public partial class GoogleCalendarPage : ContentPage
 		}
 	}
 
-	async Task ShowOpenedEventAsync()
+	async Task ShowOpenedEventAsync(CancellationToken token)
 	{
 		if (viewModel.OpenedEvent is { } opened)
 		{
@@ -280,7 +324,10 @@ public partial class GoogleCalendarPage : ContentPage
 				detailsLayer.TranslateToAsync(0, 48, 150, Easing.CubicIn));
 
 			// A new event may have opened during the animation
-			detailsLayer.IsVisible = viewModel.OpenedEvent is not null;
+			if (!token.IsCancellationRequested)
+			{
+				detailsLayer.IsVisible = viewModel.OpenedEvent is not null;
+			}
 		}
 	}
 }

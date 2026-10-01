@@ -323,12 +323,13 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 		UpdateDay(deleted.Start.Date);
 	}
 
+	// Cancelled by the page when it disappears
 	[RelayCommand]
-	async Task AddEvent()
+	async Task AddEvent(CancellationToken token)
 	{
 		var title = await Shell.Current.CurrentPage.DisplayPromptAsync("New event", null, "Save", "Cancel", "Add title");
 
-		if (string.IsNullOrWhiteSpace(title))
+		if (token.IsCancellationRequested || string.IsNullOrWhiteSpace(title))
 		{
 			return;
 		}
@@ -353,12 +354,13 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 		GoTo(day);
 	}
 
+	// Cancelled by the page when it disappears
 	[RelayCommand]
-	async Task Search()
+	async Task Search(CancellationToken token)
 	{
 		var query = await Shell.Current.CurrentPage.DisplayPromptAsync("Search", null, "Search", "Cancel", "Search events");
 
-		if (string.IsNullOrWhiteSpace(query))
+		if (token.IsCancellationRequested || string.IsNullOrWhiteSpace(query))
 		{
 			return;
 		}
@@ -375,6 +377,11 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 		if (match is null)
 		{
 			await Shell.Current.DisplayAlertAsync("Search", $"No results for \"{query}\"", "OK");
+			return;
+		}
+
+		if (token.IsCancellationRequested)
+		{
 			return;
 		}
 

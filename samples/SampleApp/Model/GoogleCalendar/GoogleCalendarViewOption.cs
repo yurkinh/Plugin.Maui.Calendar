@@ -5,10 +5,10 @@ namespace SampleApp.Model;
 /// </summary>
 public enum GoogleCalendarView
 {
-	Schedule,
-	Day,
-	Week,
-	Month,
+	Schedule = 0,
+	Day = 1,
+	Week = 2,
+	Month = 3,
 }
 
 /// <summary>
