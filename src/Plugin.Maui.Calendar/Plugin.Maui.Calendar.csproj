@@ -16,11 +16,17 @@
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 		<!--  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
     
-		<!-- Enable trimming and AOT analyzers on all platforms -->
-		<!-- <IsAotCompatible>true</IsAotCompatible>
+		<!--
+			Runs the trimming, AOT and single-file analyzers on all platforms, so code that is not safe for trimming or
+			Native AOT shows up as build warnings. The library is deliberately not marked trimmable (IsTrimmable or
+			IsAotCompatible): apps then keep all of it in their default partial trimming, so reflection-based bindings
+			to its members (templates without x:DataType) keep working in Release. Native AOT and full trimming trim it anyway.
+		-->
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+		<EnableAotAnalyzer>true</EnableAotAnalyzer>
 		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
-		<PublishAot>true</PublishAot> -->
+		<!-- Without this, the MAUI build turns the trim analyzer off and hides its warnings (xamarin/xamarin-macios#21351) -->
+		<_MauiDoNotConfigureTrimAnalyzer>true</_MauiDoNotConfigureTrimAnalyzer>
     
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.2</SupportedOSPlatformVersion>
