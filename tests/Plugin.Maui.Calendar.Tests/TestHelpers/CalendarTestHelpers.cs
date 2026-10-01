@@ -1,6 +1,8 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
+using Microsoft.Maui.Animations;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using Plugin.Maui.Calendar.Controls;
@@ -20,6 +22,9 @@ interface IDayCells
 sealed class TestCalendar : CalendarControl, IDayCells
 {
     public IReadOnlyList<DayView> DayViews => dayViews;
+
+    /// <summary>Calls the protected <c>Dispose(bool)</c>, as a finalizer of a derived class would with <see langword="false"/>.</summary>
+    public void CallDispose(bool disposing) => Dispose(disposing);
 }
 
 sealed class TestMultiSelectionCalendar : MultiSelectionCalendar, IDayCells
@@ -83,7 +88,7 @@ class FakeViewHandler : IViewHandler
 
     public object? PlatformView => null;
 
-    public IMauiContext? MauiContext => null;
+    public IMauiContext? MauiContext { get; init; }
 
     public Size GetDesiredSize(double widthConstraint, double heightConstraint) => Size.Zero;
 
@@ -115,10 +120,69 @@ sealed class FakeLayoutHandler : FakeViewHandler
     }
 }
 
+/// <summary>
+/// A ticker that never ticks on its own. With <see cref="SystemEnabled"/> off (animations turned off
+/// in the system settings) MAUI finishes every animation as soon as it starts; with it on, an
+/// animation runs until a test aborts it.
+/// </summary>
+sealed class FakeTicker : ITicker
+{
+    public bool IsRunning { get; private set; }
+
+    public int MaxFps { get; set; } = 60;
+
+    public Action? Fire { get; set; }
+
+    public bool SystemEnabled { get; set; }
+
+    public void Start() => IsRunning = true;
+
+    public void Stop() => IsRunning = false;
+
+    /// <summary>
+    /// Lets the running animations reach their end, as the next frames would. The animation manager
+    /// measures the time between frames with the system clock, and <see cref="FakeHandlers.WithAnimations"/>
+    /// speeds its animations up so that a few milliseconds are enough.
+    /// </summary>
+    public void FinishFrame()
+    {
+        Thread.Sleep(30);
+        Fire?.Invoke();
+    }
+}
+
+static class FakeHandlers
+{
+    /// <summary>
+    /// A handler whose <see cref="IMauiContext"/> provides an animation manager driven by
+    /// <paramref name="ticker"/>, so the view can run animations.
+    /// </summary>
+    public static FakeViewHandler WithAnimations(FakeTicker ticker)
+    {
+        var services = new ServiceCollection()
+            .AddSingleton<IAnimationManager>(new AnimationManager(ticker) { SpeedModifier = 1000 })
+            .BuildServiceProvider();
+
+        return new FakeViewHandler { MauiContext = new MauiContext(services) };
+    }
+}
+
 /// <summary>Event entry whose indicator colors come from the day itself (see <see cref="IMultiEventDay"/>).</summary>
 sealed class MultiColorEvents(params Color[] colors) : List<string>, IMultiEventDay
 {
     public IReadOnlyList<Color> Colors { get; } = colors;
+}
+
+/// <summary>Event entry that sets its own indicator colors (see <see cref="IPersonalizableDayEvent"/>).</summary>
+sealed class PersonalizedEvents : List<string>, IPersonalizableDayEvent
+{
+    public Color? EventIndicatorColor { get; set; }
+
+    public Color? EventIndicatorSelectedColor { get; set; }
+
+    public Color? EventIndicatorTextColor { get; set; }
+
+    public Color? EventIndicatorSelectedTextColor { get; set; }
 }
 
 static class CalendarTestExtensions
@@ -221,6 +285,30 @@ static class CalendarTestExtensions
     /// <summary>Raises what the calendar does on its Unloaded event.</summary>
     public static void SimulateUnloaded(this CalendarControl calendar) =>
         InvokePrivate(calendar, "OnCalendarUnloaded", calendar, EventArgs.Empty);
+
+    /// <summary>The element named <paramref name="name"/> (x:Name) in the calendar's own XAML.</summary>
+    public static T Named<T>(this CalendarControl calendar, string name) where T : Element =>
+        calendar.FindByName<T>(name) ?? throw new InvalidOperationException($"The calendar has no element named {name}.");
+
+    /// <summary>
+    /// Gives the calendar a handler, as happens when it is about to be shown on screen. Unlike
+    /// <see cref="SimulateHandlerAttached"/> this goes through <c>OnHandlerChanging</c>, and the
+    /// calendar's <c>Handler</c> is set afterwards.
+    /// </summary>
+    public static FakeViewHandler AttachHandler(this CalendarControl calendar, FakeViewHandler? handler = null)
+    {
+        handler ??= new FakeViewHandler();
+        calendar.Handler = handler;
+        return handler;
+    }
+
+    /// <summary>The swipe recognizers the calendar added to itself.</summary>
+    public static List<SwipeGestureRecognizer> SwipeGestures(this CalendarControl calendar) =>
+        [.. calendar.GestureRecognizers.OfType<SwipeGestureRecognizer>()];
+
+    /// <summary>Swipes over the calendar in <paramref name="direction"/>, through its swipe recognizer.</summary>
+    public static void Swipe(this CalendarControl calendar, SwipeDirection direction) =>
+        calendar.SwipeGestures().Single(gesture => gesture.Direction == direction).SendSwiped(calendar, direction);
 
     /// <summary>Collects the names of the properties for which <paramref name="source"/> raises PropertyChanged.</summary>
     public static List<string> RecordPropertyChanges(this INotifyPropertyChanged source)

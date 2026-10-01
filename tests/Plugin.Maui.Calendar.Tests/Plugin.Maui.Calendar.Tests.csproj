@@ -8,15 +8,31 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
+  <!--
+    Code coverage, collected with: dotnet test /p:CollectCoverage=true
+    Only the library's own code counts: the code generated from XAML and by the MVVM toolkit (under obj)
+    is left out. The run fails when line or branch coverage of the library drops below 100%.
+  -->
+  <PropertyGroup Condition="'$(CollectCoverage)' == 'true'">
+    <Include>[Plugin.Maui.Calendar]*</Include>
+    <ExcludeByFile>**/obj/**/*.cs</ExcludeByFile>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>$(MSBuildThisFileDirectory)TestResults/coverage/</CoverletOutput>
+    <Threshold>100</Threshold>
+    <ThresholdType>line,branch</ThresholdType>
+    <ThresholdStat>total</ThresholdStat>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="8.11.0" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="10.0.1">
+    <PackageReference Include="coverlet.msbuild" Version="10.1.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
