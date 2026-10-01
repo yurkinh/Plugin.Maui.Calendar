@@ -37,6 +37,16 @@
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>
 
+	<!--
+		dotnet publish -f net10.0-ios -c Release -p:UITestNativeAot=true builds the app with Native AOT for the iOS
+		simulator, which trims every assembly fully, to run the UI tests against it (UITEST_APP). Set here rather than
+		on the command line, where PublishAot and the runtime identifier would also reach the library's other targets.
+	-->
+	<PropertyGroup Condition="'$(UITestNativeAot)' == 'true' and $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<PublishAot>true</PublishAot>
+		<RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#e5e5e5" />
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FFFFFF" BaseSize="128,128" />
