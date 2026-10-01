@@ -227,11 +227,11 @@ public class EventCollection : Dictionary<DateTime, ICollection>
 
 	internal enum EventCollectionChangedType
 	{
-		Add,
-		Set,
-		Remove,
-		Clear,
+		Add = 0,
+		Set = 1,
+		Remove = 2,
+		Clear = 3,
 		/// <summary>The events inside a day's own collection changed.</summary>
-		DayCollectionChanged
+		DayCollectionChanged = 4
 	}
 }

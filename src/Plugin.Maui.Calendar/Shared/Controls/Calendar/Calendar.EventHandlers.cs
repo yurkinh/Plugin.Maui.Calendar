@@ -17,7 +17,7 @@ public partial class Calendar : ContentView, IDisposable
 			DetachHandler();
 		}
 
-		if (args.NewHandler != null)
+		if (args.NewHandler is not null)
 		{
 			AttachHandler();
 		}
