@@ -4,8 +4,8 @@ namespace SampleApp.Views;
 
 /// <summary>
 /// A look-alike of the Google Calendar app with its Schedule, Day, Week and Month views. The view model
-/// holds the data; this class sizes the days of the Month view and runs the animations of the drop-down
-/// month, the drawer and the event details.
+/// holds the data; this class sizes the days of the Month view, moves the current time lines and runs
+/// the animations of the drop-down month, the drawer and the event details.
 /// </summary>
 public partial class GoogleCalendarPage : ContentPage
 {
@@ -13,6 +13,7 @@ public partial class GoogleCalendarPage : ContentPage
 	const uint animationLength = 250;
 
 	readonly GoogleCalendarViewModel viewModel;
+	readonly IDispatcherTimer nowTimer;
 	bool monthExpanded;
 
 	// Cancelled when the page disappears: animations that end later leave the page alone. Its source
@@ -27,6 +28,11 @@ public partial class GoogleCalendarPage : ContentPage
 
 		vm.ScrollRequested += OnScrollRequested;
 		vm.PropertyChanged += OnViewModelPropertyChanged;
+
+		// The current time lines move with the time, as in Google Calendar
+		nowTimer = Dispatcher.CreateTimer();
+		nowTimer.Interval = TimeSpan.FromMinutes(1);
+		nowTimer.Tick += OnNowTimerTick;
 	}
 
 	protected override void OnAppearing()
@@ -40,6 +46,9 @@ public partial class GoogleCalendarPage : ContentPage
 			lifetimeSource.Cancel();
 			lifetimeSource.Dispose();
 		};
+
+		viewModel.RefreshCurrentTime();
+		nowTimer.Start();
 
 #if ANDROID
 		SetStatusBarColor((CommunityToolkit.Maui.AppThemeColor)Resources["GcBackgroundColor"]);
@@ -57,6 +66,7 @@ public partial class GoogleCalendarPage : ContentPage
 
 		endLifetime();
 		endLifetime = () => { };
+		nowTimer.Stop();
 		viewModel.AddEventCommand.Cancel();
 		viewModel.SearchCommand.Cancel();
 
@@ -102,6 +112,8 @@ public partial class GoogleCalendarPage : ContentPage
 
 		return base.OnBackButtonPressed();
 	}
+
+	void OnNowTimerTick(object sender, EventArgs e) => viewModel.RefreshCurrentTime();
 
 	void OnScrollRequested(ScheduleRow row, bool animate) =>
 		// Lets the list lay out a new ItemsSource before scrolling it

@@ -3,7 +3,7 @@ namespace SampleApp.Model;
 /// <summary>
 /// A day on the hours of the Day and Week views: its all-day events above the hours, its timed events on them.
 /// </summary>
-public class DayColumn(int column, DateTime date, string weekdayText, string dayText, IReadOnlyList<GoogleEvent> allDayEvents, IReadOnlyList<EventBlock> blocks, double hourHeight)
+public partial class DayColumn(int column, DateTime date, string weekdayText, string dayText, IReadOnlyList<GoogleEvent> allDayEvents, IReadOnlyList<EventBlock> blocks, double hourHeight) : ObservableObject
 {
 	/// <summary>
 	/// Grid column of the day in the Week view, 0 for the first day of the week.
@@ -27,7 +27,15 @@ public class DayColumn(int column, DateTime date, string weekdayText, string day
 	/// <summary>
 	/// Places the current time line (10 high, centered on the time) on today.
 	/// </summary>
-	public Thickness NowLineMargin { get; } = new(0, DateTime.Now.TimeOfDay.TotalHours * hourHeight - 5, 0, 0);
+	[ObservableProperty]
+	public partial Thickness NowLineMargin { get; private set; } = NowLine(hourHeight);
+
+	/// <summary>
+	/// Moves the current time line to the time now.
+	/// </summary>
+	public void UpdateNowLine(double hourHeight) => NowLineMargin = NowLine(hourHeight);
+
+	static Thickness NowLine(double hourHeight) => new(0, DateTime.Now.TimeOfDay.TotalHours * hourHeight - 5, 0, 0);
 }
 
 /// <summary>

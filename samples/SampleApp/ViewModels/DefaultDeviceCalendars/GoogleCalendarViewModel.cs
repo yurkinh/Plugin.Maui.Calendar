@@ -71,6 +71,9 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 	// The day at the top of the schedule, kept to come back to it when the whole list is rebuilt
 	DateTime topDate = DateTime.Today;
 
+	// Today when the views were built: they are built again after midnight
+	DateTime currentDay = DateTime.Today;
+
 	// First day of the week in the Week view
 	DateTime weekStart;
 
@@ -222,6 +225,33 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 		if (topDate.Year != ShownDate.Year || topDate.Month != ShownDate.Month)
 		{
 			ShownDate = topDate;
+		}
+	}
+
+	/// <summary>
+	/// Called by the page every minute and when it appears: moves the current time lines of the Day,
+	/// Week and Schedule views, and builds every view again after midnight.
+	/// </summary>
+	public void RefreshCurrentTime()
+	{
+		if (DateTime.Today != currentDay)
+		{
+			currentDay = DateTime.Today;
+			OnPropertyChanged(nameof(TodayText));
+			RebuildViews();
+			return;
+		}
+
+		foreach (var day in WeekDays.Append(ShownDay))
+		{
+			day.UpdateNowLine(HourHeight);
+		}
+
+		// The schedule's line stays before the first of today's events that has not started yet
+		if (ScheduleRows.OfType<ScheduleDayRow>().FirstOrDefault(r => r.IsToday) is { } todayRow
+			&& todayRow.Items.TakeWhile(item => item is not ScheduleNowLine).Count() != NowLineIndex(EventsOn(currentDay)))
+		{
+			UpdateScheduleRow(currentDay, EventsOn(currentDay));
 		}
 	}
 
@@ -443,11 +473,17 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 		}
 
 		// A calendar was shown or hidden in the drawer: its events leave or join every day
+		RebuildViews();
+	}
+
+	void RebuildViews()
+	{
 		Events = CreateEventCollection();
 		MonthEvents = CreateMonthEventCollection();
 		ScheduleRows = new(CreateScheduleRows());
 		UpdateWeek();
 		ShownDay = CreateDayColumn(ShownDay.Date, 0);
+		MonthWeekdays = CreateMonthWeekdays(ShownDate);
 
 		// A new list starts at the top: go back to where the schedule was
 		ScrollTo(topDate, animate: false);
@@ -484,6 +520,11 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 			ShownDay = CreateDayColumn(day, 0);
 		}
 
+		UpdateScheduleRow(day, dayEvents);
+	}
+
+	void UpdateScheduleRow(DateTime day, List<GoogleEvent> dayEvents)
+	{
 		var oldRow = ScheduleRows.OfType<ScheduleDayRow>().FirstOrDefault(r => r.Date == day);
 		var newRow = CreateDayRow(day, dayEvents);
 
@@ -703,12 +744,17 @@ public partial class GoogleCalendarViewModel : BasePageViewModel
 
 		if (day == DateTime.Today)
 		{
-			// The current time line goes before the first event that has not started yet
-			var next = dayEvents.FindIndex(e => !e.IsAllDay && e.Start > DateTime.Now);
-			items.Insert(next < 0 ? items.Count : next, new ScheduleNowLine());
+			items.Insert(NowLineIndex(dayEvents), new ScheduleNowLine());
 		}
 
 		return new ScheduleDayRow(day, day.ToString("ddd", culture), day.Day.ToString(culture), items);
+	}
+
+	// The current time line goes before the first event of the day that has not started yet
+	static int NowLineIndex(List<GoogleEvent> dayEvents)
+	{
+		var next = dayEvents.FindIndex(e => !e.IsAllDay && e.Start > DateTime.Now);
+		return next < 0 ? dayEvents.Count : next;
 	}
 
 	string MonthTitle(DateTime date)
