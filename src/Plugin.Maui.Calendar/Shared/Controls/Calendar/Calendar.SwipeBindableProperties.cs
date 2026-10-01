@@ -10,13 +10,34 @@ public partial class Calendar : ContentView, IDisposable
 			 nameof(SwipeDetectionDisabled),
 			 typeof(bool),
 			 typeof(Calendar),
-			 false
+			 false,
+			 propertyChanged: OnSwipeDetectionDisabledChanged
 		 );
 
+	/// <summary>
+	/// Removes the calendar's swipe recognizers, for example when it is inside a view that
+	/// handles swipes itself. Can be changed at any time.
+	/// </summary>
 	public bool SwipeDetectionDisabled
 	{
 		get => (bool)GetValue(SwipeDetectionDisabledProperty);
 		set => SetValue(SwipeDetectionDisabledProperty, value);
+	}
+
+	static void OnSwipeDetectionDisabledChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		// Without a handler there is nothing to change: AttachHandler reads the property.
+		if (bindable is Calendar { Handler: not null } calendar)
+		{
+			if ((bool)newValue)
+			{
+				calendar.RemoveSwipeGestures();
+			}
+			else
+			{
+				calendar.AddSwipeGestures();
+			}
+		}
 	}
 
 	/// <summary>

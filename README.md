@@ -237,7 +237,19 @@ Events[DateTime.Today] = new List<MyEvent> { new("Moved review") };
 Events.Remove(DateTime.Today.AddDays(5));
 ```
 
-Always use it through the `EventCollection` type: the calendar is notified by its own `Add`, `Remove`, indexer and `Clear`, and a reference typed as `Dictionary<DateTime, ICollection>` bypasses them. Adding to or removing from the collection already stored for a day is not seen by the day cell: assign the day again (`Events[date] = events`) to update its dots.
+Always use it through the `EventCollection` type: the calendar is notified by its own `Add`, `Remove`, indexer and `Clear`, and a reference typed as `Dictionary<DateTime, ICollection>` bypasses them.
+
+To add, remove or replace single events of a day, store the day's events in an `ObservableCollection<T>` (or any collection that implements `INotifyCollectionChanged`). The calendar follows changes inside it:
+
+```csharp
+var today = new ObservableCollection<MyEvent> { new("Design review") };
+Events[DateTime.Today] = today;
+
+today.Add(new("Lunch"));      // the day cell and the event list update
+today[0] = new("Moved review");
+```
+
+A `List<T>` is not observed: after changing it, assign the day again (`Events[date] = events`). To change what an event shows (its name, for example), make your event class implement `INotifyPropertyChanged`; templates are bound to your event objects. To read a day's events, use `Events.TryGetValue(date, out var dayEvents)` and enumerate `dayEvents`.
 
 ### The event list
 
@@ -589,8 +601,8 @@ The sample page also has a "Tiles" template (weekday name from `Date`, weekend t
 | `IsThisMonth` | `bool` | The day belongs to the shown month. Always `true` in the `Week` and `TwoWeek` layouts |
 | `IsDisabled` | `bool` | The day is before `MinimumDate`, after `MaximumDate` or in `DisabledDates`. Disabled days can't be selected |
 | `HasEvents` | `bool` | `Events` has an entry for the day (even an empty one) |
-| `EventCount` | `int` | The number of events in the day's `Events` entry; `0` when there is none. Changes inside that entry's own collection are not observed: assign the entry again (`Events[date] = dayEvents`) to refresh the count |
-| `Events` | `IReadOnlyList<object>` | The day's events: the objects stored in its `Events` entry, in order, or an empty list. Use it to show event text inside the cell. Like `EventCount`, assign the entry again to refresh it after changing the entry's own collection |
+| `EventCount` | `int` | The number of events in the day's `Events` entry; `0` when there is none. Follows changes inside an `ObservableCollection<T>` entry; after changing a `List<T>` entry, assign it again (`Events[date] = dayEvents`) |
+| `Events` | `IReadOnlyList<object>` | The day's events: the objects stored in its `Events` entry, in order, or an empty list. Use it to show event text inside the cell. Refreshed like `EventCount` |
 | `EventColors` | `IReadOnlyList<Color>` | The day's event indicator colors: up to five from an event collection that implements `IMultiEventDay` and provides colors, otherwise the single indicator color. Empty when the day has no events |
 | `IsRangeStart` | `bool` | The day is the first day of the selected range. Only set by `RangeSelectionCalendar`, `false` in the other calendars |
 | `IsRangeEnd` | `bool` | The day is the last day of the selected range. Only set by `RangeSelectionCalendar`, `false` in the other calendars. For a one-day range both `IsRangeStart` and `IsRangeEnd` are `true` |
@@ -648,7 +660,7 @@ By default a swipe left or right shows the next or previous month (or week), and
 
 * `SwipeToChangeMonthEnabled="False"` and `SwipeUpToHideEnabled="False"` turn off the default actions.
 * `SwipeLeftCommand`, `SwipeRightCommand` and `SwipeUpCommand` run on the swipe, together with the default action. The `SwipedLeft`, `SwipedRight`, `SwipedUp` and `SwipedDown` events are raised as well; a swipe down has no default action.
-* `SwipeDetectionDisabled="True"` adds no swipe recognizers at all, for example when the calendar is inside a view that handles swipes itself. Set it before the calendar is shown.
+* `SwipeDetectionDisabled="True"` adds no swipe recognizers at all, for example when the calendar is inside a view that handles swipes itself. It can be changed at any time; gesture recognizers you add to the calendar yourself are kept.
 
 ## API reference
 
@@ -747,7 +759,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 | `SwipeToChangeMonthEnabled` | `bool` | `true` | A swipe left or right shows the next or previous month (or week) |
 | `SwipeUpToHideEnabled` | `bool` | `true` | A swipe up hides or shows the days |
 | `SwipeLeftCommand`, `SwipeRightCommand`, `SwipeUpCommand` | `ICommand` | `null` | Executed on the swipe |
-| `SwipeDetectionDisabled` | `bool` | `false` | No swipe recognizers; set it before the calendar is shown |
+| `SwipeDetectionDisabled` | `bool` | `false` | No swipe recognizers. Can be changed at any time |
 
 ### Commands, events and methods
 
@@ -767,7 +779,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 * **Set `Culture`.** It defaults to `CultureInfo.InvariantCulture`, which shows English month and day names.
 * **`SelectedDates` is replaced after every tap.** Bind it two-way and read the property again rather than keeping the previous collection.
 * **`DisabledDates`** is a plain `List<DateTime>`: assign a new list to change it, and store dates without a time.
-* **Events** update when you add, replace or remove a day of the `EventCollection`, not when you change the collection stored for a day. Assign the day again (`Events[date] = events`).
+* **Events** update when you add, replace or remove a day of the `EventCollection`, and when events are added to or removed from a day stored as an `ObservableCollection<T>`. A day stored as a `List<T>` is not observed: assign it again (`Events[date] = events`) after changing it.
 * **`MonthChanged`** and `MonthChangedCommand` report the user's navigation only. Use `OnShownDateChangedCommand` or `ShownDatesChanged` to also see changes made from code.
 * **Weekend** means Saturday and Sunday for `WeekendDayColor`, `WeekendTitleStyle`, `WeekendDayBackgroundColor` and `ICalendarDay.IsWeekend`, whatever the culture.
 * **A swipe up hides the days.** Keep a way to show them again (the default footer or `ShowHideCalendarCommand`), or set `SwipeUpToHideEnabled="False"`.

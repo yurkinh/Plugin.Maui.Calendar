@@ -7,7 +7,13 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 
 ### Added
 - `DayViewHeight`: the height of the day cells, while `DayViewSize` stays their width. The default, `-1`, keeps square cells. Taller cells can list the events of a day in a `DayViewTemplate`, as in a month grid. By @MykhailoDav
+- A day of the `EventCollection` stored as an `ObservableCollection<T>` (any `INotifyCollectionChanged`) is observed: adding, removing or replacing its events updates the day cell and the event list without assigning the day again ([#20](https://github.com/yurkinh/Plugin.Maui.Calendar/issues/20)). By @MykhailoDav
+- `SwipeDetectionDisabled` can be changed at any time; it used to be read only when the calendar was shown. By @MykhailoDav
 - Google Calendar sample page: the Schedule, Day, Week and Month views of the Google Calendar app. By @MykhailoDav
+
+### Fixed
+- A calendar with gesture recognizers of its own no longer throws `NullReferenceException` when its page is closed after `SwipeDetectionDisabled` was switched from `True` to `False`. By @MykhailoDav
+- A calendar whose handler is replaced by another one keeps handling day taps and changes of `Events`. By @MykhailoDav
 
 ## [3.1.0] - 2026-09-25
 

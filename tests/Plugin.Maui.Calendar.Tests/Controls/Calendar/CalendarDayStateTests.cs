@@ -233,9 +233,98 @@ public class CalendarDayStateTests
     }
 
     [Fact]
+    public void EventState_ChangesInsideAnObservableDaysCollection_RefreshCellsAndRaisePropertyChanged()
+    {
+        var dayEvents = new ObservableCollection<string> { "a" };
+        var calendar = new TestCalendar { Events = new EventCollection { [May(12)] = dayEvents }, ShownDate = May15 };
+        ICalendarDay may12 = calendar.DayFor(May(12));
+        var changes = calendar.DayFor(May(12)).RecordPropertyChanges();
+
+        dayEvents.Add("b");
+
+        may12.EventCount.Should().Be(2);
+        may12.Events.Should().Equal("a", "b");
+        changes.Should().Contain([nameof(ICalendarDay.EventCount), nameof(ICalendarDay.Events)]);
+
+        dayEvents[0] = "c";
+
+        may12.Events.Should().Equal("c", "b");
+
+        dayEvents.Clear();
+
+        may12.EventCount.Should().Be(0);
+        may12.Events.Should().BeEmpty();
+        may12.HasEvents.Should().BeTrue("the day still has an entry, even though it is empty");
+    }
+
+    [Fact]
+    public void EventState_DayCollectionChangedOffTheUIThread_CellsAreUpdatedThroughTheDispatcher()
+    {
+        var dispatcher = new QueueingDispatcher();
+        using var dispatcherScope = SyncDispatcherProvider.Use(dispatcher);
+        var dayEvents = new ObservableCollection<string> { "a" };
+        var calendar = new TestCalendar { Events = new EventCollection { [May(12)] = dayEvents }, ShownDate = May15 };
+        ICalendarDay may12 = calendar.DayFor(May(12));
+
+        // What code on a background thread sees: the calendar's dispatcher requires a dispatch.
+        dispatcher.IsDispatchRequired = true;
+        dayEvents.Add("b");
+
+        may12.EventCount.Should().Be(1, "the cells must not be changed off the UI thread");
+        dispatcher.QueuedCount.Should().Be(1, "the update is handed to the UI thread");
+
+        dispatcher.RunQueued();
+
+        may12.EventCount.Should().Be(2);
+        may12.Events.Should().Equal("a", "b");
+    }
+
+    [Fact]
+    public void EventState_CollectionReplacedForADay_ChangesInsideTheOldOneAreIgnored()
+    {
+        var old = new ObservableCollection<string> { "a" };
+        var events = new EventCollection { [May(12)] = old };
+        var calendar = new TestCalendar { Events = events, ShownDate = May15 };
+
+        events[May(12)] = new ObservableCollection<string> { "new" };
+        old.Add("b");
+
+        ICalendarDay may12 = calendar.DayFor(May(12));
+        may12.EventCount.Should().Be(1);
+        may12.Events.Should().Equal("new");
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SelectedDayEvents_FollowChangesInsideTheSelectedDaysCollections(bool multiSelection)
+    {
+        var may12Events = new ObservableCollection<string> { "a" };
+        var may13Events = new ObservableCollection<string>();
+        var events = new EventCollection { [May(12)] = may12Events, [May(13)] = may13Events };
+        CalendarControl calendar = multiSelection
+            ? new TestMultiSelectionCalendar { Events = events, ShownDate = May15 }
+            : new TestCalendar { Events = events, ShownDate = May15 };
+        if (multiSelection)
+        {
+            calendar.SelectedDates = [May(12), May(13)];
+        }
+        else
+        {
+            calendar.SelectedDate = May(12);
+        }
+
+        may12Events.Add("b");
+        may13Events.Add("c");
+
+        calendar.SelectedDayEvents.Cast<string>().Should().Equal(multiSelection ? new[] { "a", "b", "c" } : new[] { "a", "b" });
+    }
+
+    [Fact]
     public void EventCount_ChangeInsideADaysCollection_RefreshedByAssigningTheEntryAgain()
     {
-        // Documented behavior: only changes to the EventCollection itself are observed.
+        // Documented behavior: a day's collection that does not raise CollectionChanged (a List)
+        // is not observed; only changes to the EventCollection itself are.
         var dayEvents = new List<string> { "a" };
         var events = new EventCollection { [May(12)] = dayEvents };
         var calendar = new TestCalendar { Events = events, ShownDate = May15 };

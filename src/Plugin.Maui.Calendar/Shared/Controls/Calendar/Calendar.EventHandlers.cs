@@ -10,14 +10,16 @@ public partial class Calendar : ContentView, IDisposable
 
 		base.OnHandlerChanging(args);
 
-		if (args.NewHandler != null)
-		{
-			AttachHandler();
-		}
-
-		if (args.OldHandler != null)
+		// Detach first: when one handler replaces another, detaching after attaching would undo
+		// what AttachHandler just did (swipe recognizers, day-tap subscription).
+		if (args.OldHandler is not null)
 		{
 			DetachHandler();
+		}
+
+		if (args.NewHandler is not null)
+		{
+			AttachHandler();
 		}
 	}
 
@@ -77,20 +79,7 @@ public partial class Calendar : ContentView, IDisposable
 
 		if (!SwipeDetectionDisabled)
 		{
-			leftSwipeGesture = new() { Direction = SwipeDirection.Left };
-			rightSwipeGesture = new() { Direction = SwipeDirection.Right };
-			upSwipeGesture = new() { Direction = SwipeDirection.Up };
-			downSwipeGesture = new() { Direction = SwipeDirection.Down };
-
-			leftSwipeGesture.Swiped += OnSwiped;
-			rightSwipeGesture.Swiped += OnSwiped;
-			upSwipeGesture.Swiped += OnSwiped;
-			downSwipeGesture.Swiped += OnSwiped;
-
-			GestureRecognizers.Add(leftSwipeGesture);
-			GestureRecognizers.Add(rightSwipeGesture);
-			GestureRecognizers.Add(upSwipeGesture);
-			GestureRecognizers.Add(downSwipeGesture);
+			AddSwipeGestures();
 		}
 	}
 
@@ -99,22 +88,60 @@ public partial class Calendar : ContentView, IDisposable
 		calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
 		WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(this);
 
-		if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
-		{
-			leftSwipeGesture.Swiped -= OnSwiped;
-			rightSwipeGesture.Swiped -= OnSwiped;
-			upSwipeGesture.Swiped -= OnSwiped;
-			downSwipeGesture.Swiped -= OnSwiped;
-
-			GestureRecognizers.Remove(leftSwipeGesture);
-			GestureRecognizers.Remove(rightSwipeGesture);
-			GestureRecognizers.Remove(upSwipeGesture);
-			GestureRecognizers.Remove(downSwipeGesture);
-		}
+		// Removes what AttachHandler added, whatever SwipeDetectionDisabled is now.
+		RemoveSwipeGestures();
 		//Todo remove later/when all event and properties will be refactored
 		//all this should be done automaticall or not needed
 		Dispose();
 		isHandlerDetached = true;
+	}
+
+	// Idempotent, so SwipeDetectionDisabled can be switched at any time.
+	void AddSwipeGestures()
+	{
+		if (leftSwipeGesture is not null)
+		{
+			return;
+		}
+
+		leftSwipeGesture = new() { Direction = SwipeDirection.Left };
+		rightSwipeGesture = new() { Direction = SwipeDirection.Right };
+		upSwipeGesture = new() { Direction = SwipeDirection.Up };
+		downSwipeGesture = new() { Direction = SwipeDirection.Down };
+
+		leftSwipeGesture.Swiped += OnSwiped;
+		rightSwipeGesture.Swiped += OnSwiped;
+		upSwipeGesture.Swiped += OnSwiped;
+		downSwipeGesture.Swiped += OnSwiped;
+
+		GestureRecognizers.Add(leftSwipeGesture);
+		GestureRecognizers.Add(rightSwipeGesture);
+		GestureRecognizers.Add(upSwipeGesture);
+		GestureRecognizers.Add(downSwipeGesture);
+	}
+
+	// Removes only the calendar's own recognizers; ones the app added to the calendar stay.
+	void RemoveSwipeGestures()
+	{
+		if (leftSwipeGesture is null)
+		{
+			return;
+		}
+
+		leftSwipeGesture.Swiped -= OnSwiped;
+		rightSwipeGesture.Swiped -= OnSwiped;
+		upSwipeGesture.Swiped -= OnSwiped;
+		downSwipeGesture.Swiped -= OnSwiped;
+
+		GestureRecognizers.Remove(leftSwipeGesture);
+		GestureRecognizers.Remove(rightSwipeGesture);
+		GestureRecognizers.Remove(upSwipeGesture);
+		GestureRecognizers.Remove(downSwipeGesture);
+
+		leftSwipeGesture = null;
+		rightSwipeGesture = null;
+		upSwipeGesture = null;
+		downSwipeGesture = null;
 	}
 
 	// Every calendar on screen receives every DayTappedMessage, so a tap is only handled by the
