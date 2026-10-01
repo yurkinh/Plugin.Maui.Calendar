@@ -7,7 +7,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 
 ### Added
 - `TimeProvider`: tells the calendar which day is today. The default, `TimeProvider.System`, follows the device clock; another provider pins today, for example for tests and screenshots. By @MykhailoDav
-- Unit tests that cover all of the library's code (100 % of lines and branches, checked by CI). By @MykhailoDav
+- Unit tests that cover all of the library's code (100 % of lines and branches, checked by CI), and UI tests that drive a test app with Appium, check the calendar's behavior and compare screenshots of every look with baselines (recorded for iOS and Android). By @MykhailoDav
 
 ### Fixed
 - Cultures whose default calendar is not Gregorian (for example `fa-IR`, `ar-SA`, `th-TH`) showed the month names and years of that calendar over the Gregorian days. Month names, years and the selected date are now written with the Gregorian calendar. By @MykhailoDav
