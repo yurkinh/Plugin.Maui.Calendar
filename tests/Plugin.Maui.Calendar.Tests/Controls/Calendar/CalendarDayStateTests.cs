@@ -258,6 +258,28 @@ public class CalendarDayStateTests
     }
 
     [Fact]
+    public void EventState_DayCollectionChangedOffTheUIThread_CellsAreUpdatedThroughTheDispatcher()
+    {
+        var dispatcher = new QueueingDispatcher();
+        using var dispatcherScope = SyncDispatcherProvider.Use(dispatcher);
+        var dayEvents = new ObservableCollection<string> { "a" };
+        var calendar = new TestCalendar { Events = new EventCollection { [May(12)] = dayEvents }, ShownDate = May15 };
+        ICalendarDay may12 = calendar.DayFor(May(12));
+
+        // What code on a background thread sees: the calendar's dispatcher requires a dispatch.
+        dispatcher.IsDispatchRequired = true;
+        dayEvents.Add("b");
+
+        may12.EventCount.Should().Be(1, "the cells must not be changed off the UI thread");
+        dispatcher.QueuedCount.Should().Be(1, "the update is handed to the UI thread");
+
+        dispatcher.RunQueued();
+
+        may12.EventCount.Should().Be(2);
+        may12.Events.Should().Equal("a", "b");
+    }
+
+    [Fact]
     public void EventState_CollectionReplacedForADay_ChangesInsideTheOldOneAreIgnored()
     {
         var old = new ObservableCollection<string> { "a" };

@@ -29,7 +29,66 @@ public sealed class MauiControlsCollection
 
 sealed class SyncDispatcherProvider : IDispatcherProvider
 {
-    public IDispatcher GetForCurrentThread() => SyncDispatcher.Instance;
+    [ThreadStatic]
+    static IDispatcher? dispatcherOverride;
+
+    /// <summary>
+    /// Makes controls created on this thread use <paramref name="dispatcher"/> until the returned
+    /// scope is disposed.
+    /// </summary>
+    public static IDisposable Use(IDispatcher dispatcher)
+    {
+        dispatcherOverride = dispatcher;
+        return new OverrideScope();
+    }
+
+    public IDispatcher GetForCurrentThread() => dispatcherOverride ?? SyncDispatcher.Instance;
+
+    sealed class OverrideScope : IDisposable
+    {
+        public void Dispose() => dispatcherOverride = null;
+    }
+}
+
+/// <summary>
+/// Stands in for the UI thread's dispatcher as seen from a background thread: while
+/// <see cref="IsDispatchRequired"/> is true, dispatched work is queued until
+/// <see cref="RunQueued"/> runs it the way the UI thread later would.
+/// </summary>
+sealed class QueueingDispatcher : IDispatcher
+{
+    readonly Queue<Action> queued = new();
+
+    public bool IsDispatchRequired { get; set; }
+
+    public int QueuedCount => queued.Count;
+
+    public bool Dispatch(Action action)
+    {
+        if (IsDispatchRequired)
+        {
+            queued.Enqueue(action);
+        }
+        else
+        {
+            action();
+        }
+        return true;
+    }
+
+    public bool DispatchDelayed(TimeSpan delay, Action action) => Dispatch(action);
+
+    public IDispatcherTimer CreateTimer() => new FakeDispatcherTimer();
+
+    /// <summary>Runs the queued work as the UI thread, where no dispatch is required.</summary>
+    public void RunQueued()
+    {
+        IsDispatchRequired = false;
+        while (queued.TryDequeue(out var action))
+        {
+            action();
+        }
+    }
 }
 
 /// <summary>
