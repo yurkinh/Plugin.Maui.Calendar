@@ -75,6 +75,20 @@ The tests read these environment variables:
 
 The Appium log of a run is in `TestResults/Screenshots/<platform>/appium.log`.
 
+### Native AOT
+
+Native AOT trims every assembly fully and compiles the app ahead of time, so it catches code that only works with
+reflection. To run the tests against a Native AOT build of the host app on the iOS simulator:
+
+```bash
+dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-ios -c Release -p:UITestNativeAot=true -p:_IsPublishing=true
+UITEST_PLATFORM=ios UITEST_APP="$PWD/tests/Plugin.Maui.Calendar.UITests.HostApp/bin/Release/net10.0-ios/iossimulator-arm64/Plugin.Maui.Calendar.UITests.HostApp.app" \
+	dotnet test tests/Plugin.Maui.Calendar.UITests
+```
+
+`_IsPublishing` makes the build use Native AOT for the simulator (`dotnet publish` only builds for devices). The
+screenshots match the same baselines as a Debug build.
+
 ## Screenshots and baselines
 
 A screenshot of the calendar is compared with `Baselines/<platform>/<name>.png`. A pixel counts as different when a
