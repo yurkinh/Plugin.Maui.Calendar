@@ -50,7 +50,8 @@ public partial class Calendar : ContentView, IDisposable
 			nameof(SelectedDateTextFormat),
 			typeof(string),
 			typeof(Calendar),
-			"d MMM yyyy"
+			"d MMM yyyy",
+			propertyChanged: static (bindable, oldValue, newValue) => ((Calendar)bindable).UpdateSelectedDateLabel()
 		);
 
 	/// <summary>

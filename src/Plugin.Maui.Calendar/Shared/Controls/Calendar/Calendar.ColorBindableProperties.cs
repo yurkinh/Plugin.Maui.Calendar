@@ -24,10 +24,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnWeekendDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -53,10 +51,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnOtherMonthDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -109,9 +105,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnWeekendDayBackgroundChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateWeekendBackground();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateWeekendBackground();
 	}
 }

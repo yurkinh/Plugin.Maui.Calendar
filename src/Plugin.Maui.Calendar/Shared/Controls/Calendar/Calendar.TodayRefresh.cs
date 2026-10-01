@@ -1,4 +1,4 @@
-using Plugin.Maui.Calendar.Models;
+﻿using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -84,7 +84,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		todayRefreshTimer.Stop();
-		todayRefreshTimer.Interval = GetTodayRefreshInterval(DateTime.Now);
+		todayRefreshTimer.Interval = GetTodayRefreshInterval(TimeProvider.GetLocalNow().DateTime);
 		todayRefreshTimer.Start();
 	}
 
@@ -94,10 +94,7 @@ public partial class Calendar : ContentView, IDisposable
 
 		// The timer keeps running and waits this long before the next tick; stopping and starting
 		// it here would not work (see StartTodayRefresh).
-		if (todayRefreshTimer is not null)
-		{
-			todayRefreshTimer.Interval = GetTodayRefreshInterval(DateTime.Now);
-		}
+		((IDispatcherTimer)sender).Interval = GetTodayRefreshInterval(TimeProvider.GetLocalNow().DateTime);
 	}
 
 	void OnTodayRefreshWindowResumed(object sender, EventArgs e)
@@ -107,13 +104,18 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
-	/// Re-evaluates <see cref="DayModel.IsToday"/> on every day cell against the current local
-	/// date. Cells whose value changes raise PropertyChanged for it and for the colors that
-	/// depend on it; the others are left untouched.
+	/// The local date of <see cref="TimeProvider"/>: the day the calendar highlights as today.
+	/// </summary>
+	DateTime Today => TimeProvider.GetLocalNow().Date;
+
+	/// <summary>
+	/// Re-evaluates <see cref="DayModel.IsToday"/> on every day cell against <see cref="Today"/>.
+	/// Cells whose value changes raise PropertyChanged for it and for the colors that depend on
+	/// it; the others are left untouched.
 	/// </summary>
 	internal void RefreshToday()
 	{
-		var today = DateTime.Today;
+		var today = Today;
 		var changed = false;
 
 		foreach (var dayView in dayViews)

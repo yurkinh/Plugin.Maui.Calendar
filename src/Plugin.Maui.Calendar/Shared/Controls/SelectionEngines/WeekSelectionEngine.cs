@@ -8,24 +8,22 @@ namespace Plugin.Maui.Calendar.Controls.SelectionEngines;
 
 class WeekSelectionEngine(Func<DayOfWeek> firstDayOfWeekProvider) : ISelectionEngine
 {
-	DateTime? selectedWeekStart;
-	DateTime? selectedWeekEnd;
+	// The first and last day of the selected week, or null when no week is selected. Both are
+	// within the range of DateTime, so the first and last week of DateTime are shorter.
+	(DateTime Start, DateTime End)? selectedWeek;
 
 	string ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, CultureInfo culture, bool isNativeDigits)
 	{
-		if (!selectedWeekStart.HasValue || !selectedWeekEnd.HasValue)
+		if (selectedWeek is not { } week)
 		{
 			return string.Empty;
 		}
 
-		var startDateText = isNativeDigits
-			? selectedWeekStart.Value.ToNativeDigitString(selectedDateTextFormat, culture)
-			: selectedWeekStart.Value.ToString(selectedDateTextFormat, culture);
-		var endDateText = isNativeDigits
-			? selectedWeekEnd.Value.ToNativeDigitString(selectedDateTextFormat, culture)
-			: selectedWeekEnd.Value.ToString(selectedDateTextFormat, culture);
+		return $"{Format(week.Start)} - {Format(week.End)}";
 
-		return $"{startDateText} - {endDateText}";
+		string Format(DateTime date) => isNativeDigits
+			? date.ToNativeDigitString(selectedDateTextFormat, culture)
+			: date.ToString(selectedDateTextFormat, culture);
 	}
 
 	bool ISelectionEngine.TryGetSelectedEvents(EventCollection allEvents, out ICollection selectedEvents)
@@ -36,66 +34,55 @@ class WeekSelectionEngine(Func<DayOfWeek> firstDayOfWeekProvider) : ISelectionEn
 
 	bool ISelectionEngine.IsDateSelected(DateTime dateToCheck)
 	{
-		if (!selectedWeekStart.HasValue || !selectedWeekEnd.HasValue)
-		{
-			return false;
-		}
-
 		var date = dateToCheck.Date;
-		return date >= selectedWeekStart.Value.Date && date <= selectedWeekEnd.Value.Date;
+		return selectedWeek is { } week && date >= week.Start && date <= week.End;
 	}
 
 	List<DateTime> ISelectionEngine.PerformDateSelection(DateTime dateToSelect, List<DateTime> disabledDates)
 	{
 		var selectedDate = dateToSelect.Date;
-		var disabledSet = CreateDisabledSet(disabledDates);
+		var disabledSet = Calendar.CreateDisabledDateSet(disabledDates);
 
 		if (disabledSet?.Contains(selectedDate) == true)
 		{
-			ClearSelection();
+			selectedWeek = null;
 			return [];
 		}
 
-		var weekStart = GetWeekStart(selectedDate);
-		var weekEnd = weekStart.AddDays(6);
+		var week = GetWeek(selectedDate);
 
-		if (selectedWeekStart == weekStart && selectedWeekEnd == weekEnd)
+		// Tapping a day of the selected week deselects it.
+		if (selectedWeek?.Start == week.Start)
 		{
-			ClearSelection();
+			selectedWeek = null;
 			return [];
 		}
 
-		selectedWeekStart = weekStart;
-		selectedWeekEnd = weekEnd;
+		selectedWeek = week;
 
 		return CreateSelectedWeekList(disabledSet);
 	}
 
 	void ISelectionEngine.UpdateDateSelection(IEnumerable<DateTime> datesToSelect)
 	{
-		var date = datesToSelect?.Select(d => d.Date).FirstOrDefault() ?? default;
+		// Cast to DateTime? so an empty sequence gives null rather than DateTime.MinValue, which is a day too.
+		var date = datesToSelect?.Cast<DateTime?>().FirstOrDefault();
 
-		if (date == default)
-		{
-			ClearSelection();
-			return;
-		}
-
-		selectedWeekStart = GetWeekStart(date);
-		selectedWeekEnd = selectedWeekStart.Value.AddDays(6);
+		selectedWeek = date is { } dateToSelect ? GetWeek(dateToSelect.Date) : null;
 	}
 
 	List<DateTime> CreateSelectedWeekList(HashSet<DateTime> disabledSet = null)
 	{
-		if (!selectedWeekStart.HasValue || !selectedWeekEnd.HasValue)
+		if (selectedWeek is not { } week)
 		{
 			return [];
 		}
 
 		var selectedDates = new List<DateTime>(7);
-		for (var date = selectedWeekStart.Value.Date; date <= selectedWeekEnd.Value.Date; date = date.AddDays(1))
+		for (var day = 0; day <= (week.End - week.Start).Days; day++)
 		{
-			if (disabledSet is null || !disabledSet.Contains(date))
+			var date = week.Start.AddDays(day);
+			if (disabledSet?.Contains(date) != true)
 			{
 				selectedDates.Add(date);
 			}
@@ -104,26 +91,14 @@ class WeekSelectionEngine(Func<DayOfWeek> firstDayOfWeekProvider) : ISelectionEn
 		return selectedDates;
 	}
 
-	DateTime GetWeekStart(DateTime date)
+	(DateTime Start, DateTime End) GetWeek(DateTime date)
 	{
-		var firstDayOfWeek = firstDayOfWeekProvider();
-		var difference = (7 + (date.DayOfWeek - firstDayOfWeek)) % 7;
-		return date.AddDays(-difference).Date;
-	}
+		var daysFromWeekStart = (7 + (date.DayOfWeek - firstDayOfWeekProvider())) % 7;
+		var daysSinceMin = (date - DateTime.MinValue).Days;
+		var daysUntilMax = (DateTime.MaxValue.Date - date).Days;
 
-	static HashSet<DateTime> CreateDisabledSet(List<DateTime> disabledDates)
-	{
-		if (disabledDates?.Count > 0)
-		{
-			return [.. disabledDates.Select(date => date.Date)];
-		}
-
-		return null;
-	}
-
-	void ClearSelection()
-	{
-		selectedWeekStart = null;
-		selectedWeekEnd = null;
+		return (
+			date.AddDays(-Math.Min(daysFromWeekStart, daysSinceMin)),
+			date.AddDays(Math.Min(6 - daysFromWeekStart, daysUntilMax)));
 	}
 }

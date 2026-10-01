@@ -36,21 +36,15 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(DisabledDayColorProperty, value);
 	}
 
-	// The shown dates do not change, so the update is forced; otherwise UpdateDays returns early
-	// and the visible cells keep their old IsDisabled state.
 	static void OnDisabledDatesChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDays(forceUpdate: true);
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDays();
 	}
 
 	static void OnDisabledDayColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 }

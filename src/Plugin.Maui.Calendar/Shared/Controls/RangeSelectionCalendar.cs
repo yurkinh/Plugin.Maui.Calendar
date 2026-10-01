@@ -130,7 +130,7 @@ public class RangeSelectionCalendar : Calendar
 			rangeSelectionCalendar.isSelectionDatesChanging = true;
 			rangeSelectionCalendar.selectionEngine.SelectDateRange((DateTime?)newValue, rangeSelectionCalendar.DisabledDates);
 			rangeSelectionCalendar.SelectedDates = new ObservableCollection<DateTime>(
-				rangeSelectionCalendar.selectionEngine.GetDateRange()
+				rangeSelectionCalendar.selectionEngine.GetDateRange(rangeSelectionCalendar.DisabledDates)
 			);
 		}
 		rangeSelectionCalendar.isSelectionDatesChanging = false;

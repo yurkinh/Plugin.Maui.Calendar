@@ -237,16 +237,22 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 
 	public bool IsControlVisible => IsThisMonth || OtherMonthWeekIsVisible;
 	
-	// Cached result of Date.Date == DateTime.Today; updated in OnDateChanged via the
-	// MVVM Toolkit partial hook so that BackgroundColor, TextColor and OutlineColor
-	// getters never call DateTime.Today more than once per Date assignment.
+	// Cached result of Date.Date == Today; updated in OnDateChanged via the MVVM Toolkit partial
+	// hook so that the BackgroundColor, TextColor and OutlineColor getters don't compare dates.
 	bool isToday;
+
+	/// <summary>
+	/// The date the calendar considers today (from its <see cref="Controls.Calendar.TimeProvider"/>).
+	/// Assigned before <see cref="Date"/>, so a new date is compared with the right day. Setting it
+	/// raises no change notification: <see cref="RefreshIsToday"/> does that for a date that stays.
+	/// </summary>
+	internal DateTime Today { get; set; } = DateTime.Today;
 
 	// Runs before the generated setter raises PropertyChanged for Date and its dependents
 	// (including IsToday), so the cache is set silently here.
 	partial void OnDateChanged(DateTime value)
 	{
-		isToday = value.Date == DateTime.Today;
+		isToday = value.Date == Today.Date;
 	}
 
 	public bool IsToday => isToday;
@@ -260,6 +266,7 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 	/// <returns>Whether <see cref="IsToday"/> changed.</returns>
 	internal bool RefreshIsToday(DateTime today)
 	{
+		Today = today;
 		var value = Date.Date == today.Date;
 		if (isToday == value)
 		{

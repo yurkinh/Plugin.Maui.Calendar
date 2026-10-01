@@ -29,10 +29,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnEventIndicatorTypeChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayGlobalProperties();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayGlobalProperties();
 	}
 
 
@@ -58,10 +56,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnEventIndicatorColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -87,10 +83,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnEventIndicatorSelectedColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -116,10 +110,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnEventIndicatorTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -145,10 +137,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnEventIndicatorSelectedTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -183,7 +173,9 @@ public partial class Calendar : ContentView, IDisposable
 		propertyChanged: OnEventsChanged,
 		// Each calendar gets its own default collection (a single shared instance would leak events
 		// added to it into every other calendar); the constructor starts observing it.
-		defaultValueCreator: static _ => new EventCollection()
+		defaultValueCreator: static _ => new EventCollection(),
+		// A binding to a collection that is not created yet sets null, which shows no events.
+		coerceValue: static (bindable, value) => value ?? new EventCollection()
 	);
 
 	/// <summary>
@@ -197,23 +189,16 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnEventsChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			if (oldValue is EventCollection oldEvents)
-			{
-				oldEvents.CollectionChanged -= calendar.OnEventsCollectionChanged;
-			}
+		var calendar = (Calendar)bindable;
 
-			if (newValue is EventCollection newEvents)
-			{
-				newEvents.CollectionChanged += calendar.OnEventsCollectionChanged;
-			}
+		// Never null: the default value is created and null is coerced to an empty collection.
+		((EventCollection)oldValue).CollectionChanged -= calendar.OnEventsCollectionChanged;
+		((EventCollection)newValue).CollectionChanged += calendar.OnEventsCollectionChanged;
 
-			calendar.UpdateEvents();
-			calendar.UpdateLayoutUnitLabel();
-			//Todo: called two time at the calendar start
-			calendar.UpdateDays(true);
-		}
+		calendar.UpdateEvents();
+		calendar.UpdateLayoutUnitLabel();
+		//Todo: called two time at the calendar start
+		calendar.UpdateDays();
 	}
 
 
