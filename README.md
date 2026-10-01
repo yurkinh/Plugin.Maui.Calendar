@@ -70,6 +70,22 @@ A look-alike of the Windows 11 calendar flyout, and weekend calendars (the fille
 | -------------------- | ---------------- | ----------------- | ------------- | -------------- |
 | ![Windows 11 look-alike on Android](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/W11_android.png) | ![Windows 11 look-alike on iOS](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/W11_ios.png) | ![Weekend calendar on Android](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendCalendar_android.png) | ![Weekend calendar on iOS](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendCalendar_ios.png) | ![Weekend filled calendar](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/WeekendFilledCalendar.png) |
 
+A look-alike of the Google Calendar app with its Month, Week, Day and Schedule views. The Month view is a `Calendar` whose days are taller than wide (`DayViewSize` and `DayViewHeight`) and drawn by a `DayViewTemplate`, the Week view shows its week with `CalendarLayout="Week"`, and the month under the title of the other views is a `Calendar` too:
+
+| Month | Months under the title | Week | Day |
+| ----- | ---------------------- | ---- | --- |
+| ![Google Calendar look-alike: the Month view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_month.png) | ![Google Calendar look-alike: the months to pick under the title of the Month view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_month_picker.png) | ![Google Calendar look-alike: the Week view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_week.png) | ![Google Calendar look-alike: the Day view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_day.png) |
+
+| Schedule | Month under the title | Event | Drawer |
+| -------- | --------------------- | ----- | ------ |
+| ![Google Calendar look-alike: the Schedule view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_schedule.png) | ![Google Calendar look-alike: the month under the title of the Schedule view](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_schedule_month.png) | ![Google Calendar look-alike: an event](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_event.png) | ![Google Calendar look-alike: the drawer with the views and the calendars](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/GoogleCalendar_drawer.png) |
+
+Calendars in popups: a date picker and two range pickers, one returning every date of the range and one its start and end:
+
+| Date picker | Range picker: selected dates | Range picker: start and end |
+| ----------- | ---------------------------- | --------------------------- |
+| ![A date picker in a popup](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/PickerPopup_date.png) | ![A range picker in a popup that returns every date of the range](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/PickerPopup_range_dates.png) | ![A range picker in a popup that returns the start and end dates](https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/res/PickerPopup_range_start_end.png) |
+
 ## Getting started
 
 ### Requirements
@@ -390,7 +406,7 @@ xmlns:styles="clr-namespace:Plugin.Maui.Calendar.Styles;assembly=Plugin.Maui.Cal
 | `SelectedDateLabelStyle` | `Label` | `DefaultSelectedDateLabelStyle` | Selected date text of the default footer |
 | `FooterArrowLabelStyle` | `Label` | `DefaultFooterArrowLabelStyle` | Show/hide arrow of the default footer |
 
-`DayViewSize` (default `40`) is the width and height of a day cell, `DayViewCornerRadius` (default `20`) rounds the selection, today and event backgrounds, and `DayViewBorderMargin` insets them in the cell.
+`DayViewSize` (default `40`) is the width and height of a day cell, or only its width when `DayViewHeight` is set, `DayViewCornerRadius` (default `20`) rounds the selection, today and event backgrounds, and `DayViewBorderMargin` insets them in the cell.
 
 ## Dark mode and themes
 
@@ -611,10 +627,11 @@ public class EventDayTemplateSelector : DataTemplateSelector
 
 ### Day template notes
 * The root of the template must be a `View`, such as a `Grid`, `Border` or `Label`. Any other root (for example a `ViewCell`) throws an `InvalidOperationException` when the cell is created.
-* The calendar still sizes every cell to `DayViewSize` (the template fills that square), hides the days that `OtherMonthDayIsVisible` and `OtherMonthWeekIsVisible` hide, selects a day when its cell is tapped (`DayTappedCommand`, `AllowDeselecting` and `AutoChangeMonthOnDayTap` work as usual) and draws `WeekendDayBackgroundColor` behind the cells.
+* The calendar still sizes every cell to `DayViewSize` (the template fills that square, or a taller cell when `DayViewHeight` is set), hides the days that `OtherMonthDayIsVisible` and `OtherMonthWeekIsVisible` hide, selects a day when its cell is tapped (`DayTappedCommand`, `AllowDeselecting` and `AutoChangeMonthOnDayTap` work as usual) and draws `WeekendDayBackgroundColor` behind the cells.
 * `EventIndicatorColor` and `EventIndicatorSelectedColor` still provide `EventColors` for days whose events don't set their own colors.
 * These properties only style the built-in cell and are **ignored** when a template is set: `DaysLabelStyle`, `DayViewCornerRadius`, `DayViewBorderMargin`, `EventIndicatorType` (including the `BackgroundFull` cell background), `SelectedDayBackgroundColor`, `SelectedDayTextColor`, `SelectedTodayTextColor`, `DeselectedDayTextColor`, `TodayOutlineColor`, `TodayFillColor`, `TodayTextColor`, `WeekendDayColor`, `OtherMonthDayColor`, `OtherMonthSelectedDayColor`, `DisabledDayColor`, `EventIndicatorTextColor`, `EventIndicatorSelectedTextColor`, and `SelectedDatesRangeBackgroundColor` on `RangeSelectionCalendar`. Draw these states in the template from the `ICalendarDay` members.
 * Taps are handled by the cell around the template. A child that handles input itself, such as a `Button`, a `CheckBox` or a view with its own gesture recognizers, takes the tap and the day is not selected. Set `InputTransparent="True"` on such a child if tapping it should select the day.
+* For a month grid that writes the events in the days, as in a wall calendar, make the cells taller than wide: `DayViewSize` is their width (for example the calendar width divided by 7) and `DayViewHeight` their height. The Google Calendar page of the sample app sets both from the screen size.
 * In the `Week` and `TwoWeek` layouts `IsThisMonth` is always `true`, so a template that fades other-month days shows every day normally there.
 * In a `RangeSelectionCalendar`, style the whole range with `IsSelected` and its first and last days with `IsRangeStart` and `IsRangeEnd`.
 
@@ -703,7 +720,8 @@ The tables list every bindable property of `Calendar`, which the other three con
 | `HeaderSectionTemplate` | `DataTemplate` | Built-in header | See [Header and footer](#header-and-footer) |
 | `FooterSectionTemplate` | `DataTemplate` | Built-in footer | See [Header and footer](#header-and-footer) |
 | `DayViewTemplate` | `DataTemplate` | `null` | See [Custom day cells](#custom-day-cells-dayviewtemplate) |
-| `DayViewSize` | `double` | `40` | Width and height of a day cell |
+| `DayViewSize` | `double` | `40` | Width and height of a day cell (only its width when `DayViewHeight` is set) |
+| `DayViewHeight` | `double` | `-1` | Height of a day cell; `-1` makes the cell square (`DayViewSize` high) |
 | `DayViewCornerRadius` | `float` | `20` | Corner radius of the selection, today and event backgrounds |
 | `DayViewBorderMargin` | `Thickness` | `0` | Inset of those backgrounds in the cell |
 | `WeekendDayBackgroundCornerRadius` | `float` | `0` | Corner radius of the weekend column boxes |
@@ -766,7 +784,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 | Styling | Weekend colors, shaded weekend columns, custom day cells (`DayViewTemplate`) |
 | Week view | One week, two weeks |
 | Picker popups | A date picker and two range pickers in a popup |
-| Device look-alikes | The Windows 11 calendar flyout |
+| Device look-alikes | The Windows 11 calendar flyout, the Google Calendar app (Schedule, Day, Week and Month views) |
 
 Every sample page has a `</>` button that shows the XAML of its calendar, and the Settings tab switches the theme, the language and the first day of the week of all samples. Open `Plugin.Maui.Calendar.slnx` and run the SampleApp project, or run it from the command line:
 

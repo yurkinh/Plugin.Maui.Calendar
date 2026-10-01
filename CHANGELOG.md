@@ -3,6 +3,12 @@
 All notable changes to [Plugin.Maui.Calendar](https://www.nuget.org/packages/Plugin.Maui.Calendar/) are listed here, newest first.
 Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/#versions-body-tab) and has a matching tag in this repository.
 
+## [3.1.1] - 2026-10-01
+
+### Added
+- `DayViewHeight`: the height of the day cells, while `DayViewSize` stays their width. The default, `-1`, keeps square cells. Taller cells can list the events of a day in a `DayViewTemplate`, as in a month grid. By @MykhailoDav
+- Google Calendar sample page: the Schedule, Day, Week and Month views of the Google Calendar app. By @MykhailoDav
+
 ## [3.1.0] - 2026-09-25
 
 ### Added
@@ -165,6 +171,7 @@ Properties replaced by styles:
 - Added `MultiSelectionCalendar`.
 - Updated to .NET 8. Refactored the code.
 
+[3.1.1]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.0.3...3.1.0
 [3.0.3]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.0.2...3.0.3
 [3.0.2]: https://github.com/yurkinh/Plugin.Maui.Calendar/compare/3.0.1...3.0.2
