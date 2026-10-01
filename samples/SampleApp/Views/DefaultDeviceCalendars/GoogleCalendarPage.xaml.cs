@@ -262,10 +262,11 @@ public partial class GoogleCalendarPage : ContentPage
 		const double weekGap = 6;
 		const int weeks = GoogleCalendarViewModel.MonthWeekCount;
 
-		var dayHeight = Math.Floor((monthView.Height - weekdayRowHeight - weekGap * weeks) / weeks);
+		// Never negative in a very small window: a DayViewHeight of -1 would make the days square
+		var dayHeight = Math.Max(0, Math.Floor((monthView.Height - weekdayRowHeight - weekGap * weeks) / weeks));
 
 		// The calendar has a padding of 3 on both sides
-		monthCalendar.DayViewSize = (monthView.Width - 6) / 7;
+		monthCalendar.DayViewSize = Math.Max(0, (monthView.Width - 6) / 7);
 		monthCalendar.DayViewHeight = dayHeight;
 
 		// Under the date (4 + 17 + 4), every line takes 12 and 2.5 of spacing
