@@ -1,0 +1,87 @@
+name: UI tests
+
+# Runs the Appium UI tests (tests/Plugin.Maui.Calendar.UITests) on an iOS simulator and an Android emulator.
+# The screenshot baselines are recorded on the devices listed in tests/Plugin.Maui.Calendar.UITests/README.md;
+# the hosted runners have other devices, so the screenshots are only compared when asked for.
+on:
+  workflow_dispatch:
+    inputs:
+      compare-screenshots:
+        description: Compare screenshots with the baselines (only matches on the devices they were recorded on)
+        type: boolean
+        default: false
+
+env:
+  UITEST_SCREENSHOTS: ${{ inputs.compare-screenshots && 'on' || 'off' }}
+
+jobs:
+  ios:
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: Install .NET MAUI
+      run: dotnet workload install maui
+    - name: Install Appium
+      working-directory: tests/Plugin.Maui.Calendar.UITests
+      run: npm ci
+    - name: Build the host app
+      run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-ios -c Debug
+    - name: Run the UI tests
+      env:
+        UITEST_PLATFORM: ios
+      run: dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ui-tests-ios
+        path: tests/Plugin.Maui.Calendar.UITests/TestResults/
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - uses: actions/setup-java@v4
+      with:
+        distribution: microsoft
+        java-version: 21
+    - name: Enable KVM for the emulator
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+    - name: Install .NET MAUI
+      run: dotnet workload install maui-android
+    - name: Install Appium
+      working-directory: tests/Plugin.Maui.Calendar.UITests
+      run: npm ci
+    - name: Build the host app
+      run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-android -c Debug
+    - name: Run the UI tests on an emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      env:
+        UITEST_PLATFORM: android
+      with:
+        api-level: 35
+        arch: x86_64
+        target: google_apis
+        disable-animations: true
+        script: dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ui-tests-android
+        path: tests/Plugin.Maui.Calendar.UITests/TestResults/
