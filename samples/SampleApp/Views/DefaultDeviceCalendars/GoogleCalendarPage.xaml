@@ -688,7 +688,7 @@
                 Padding="4,0,8,0"
                 ColumnDefinitions="48,*,48,48,48,48"
                 HeightRequest="64">
-                <Grid Style="{StaticResource GcIconButtonStyle}">
+                <Grid SemanticProperties.Description="Main menu" Style="{StaticResource GcIconButtonStyle}">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnMenuTapped" />
                     </Grid.GestureRecognizers>
@@ -718,14 +718,20 @@
                         Text="&#xf0d7;"
                         TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}" />
                 </HorizontalStackLayout>
-                <Grid Grid.Column="2" Style="{StaticResource GcIconButtonStyle}">
+                <Grid
+                    Grid.Column="2"
+                    SemanticProperties.Description="Search"
+                    Style="{StaticResource GcIconButtonStyle}">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SearchCommand}" />
                     </Grid.GestureRecognizers>
                     <Label Style="{StaticResource GcIconStyle}" Text="&#xf002;" />
                 </Grid>
                 <!--  Google's "today" button: a rounded square with today's day  -->
-                <Grid Grid.Column="3" Style="{StaticResource GcIconButtonStyle}">
+                <Grid
+                    Grid.Column="3"
+                    SemanticProperties.Description="Go to today"
+                    Style="{StaticResource GcIconButtonStyle}">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TodayCommand}" />
                     </Grid.GestureRecognizers>
@@ -1036,6 +1042,7 @@
                 BackgroundColor="{toolkit:AppThemeResource GcFabColor}"
                 HeightRequest="56"
                 HorizontalOptions="End"
+                SemanticProperties.Description="Create event"
                 StrokeShape="RoundRectangle 16"
                 StrokeThickness="0"
                 VerticalOptions="End"
@@ -1223,7 +1230,7 @@
             RowDefinitions="64,*"
             SafeAreaEdges="Container">
             <Grid Padding="4,0,8,0" ColumnDefinitions="48,*,48">
-                <Grid Style="{StaticResource GcIconButtonStyle}">
+                <Grid SemanticProperties.Description="Close" Style="{StaticResource GcIconButtonStyle}">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CloseEventCommand}" />
                     </Grid.GestureRecognizers>
@@ -1232,7 +1239,10 @@
                         Style="{StaticResource GcIconStyle}"
                         Text="&#xf00d;" />
                 </Grid>
-                <Grid Grid.Column="2" Style="{StaticResource GcIconButtonStyle}">
+                <Grid
+                    Grid.Column="2"
+                    SemanticProperties.Description="Delete event"
+                    Style="{StaticResource GcIconButtonStyle}">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding DeleteEventCommand}" />
                     </Grid.GestureRecognizers>
