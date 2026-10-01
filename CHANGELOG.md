@@ -24,6 +24,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 - `RangeSelectionCalendar` put disabled days in `SelectedDates` when `SelectedEndDate` was set from code. By @MykhailoDav
 - The default `ShownDate`, `Day`, `Month` and `Year` are the day the calendar is created, not the day the app first created a calendar. By @MykhailoDav
 - The visibility of the footer and the event list were bound by name, through reflection, which Native AOT and full trimming can break; they use compiled bindings now. By @MykhailoDav
+- A Native AOT app crashed as soon as the calendar's footer was shown: the default footer styles gave `VerticalTextAlignment` a `LayoutOptions` value, which MAUI otherwise drops (so the footer's texts were not centered vertically either). The default styles now give every property a value of its own type. By @MykhailoDav
 
 ### Changed
 - The trimming, AOT and single-file analyzers check the library on every build; the MAUI build used to turn the trimming analyzer off. The library is still not marked trimmable, so apps keep all of it in their default trimming. By @MykhailoDav
