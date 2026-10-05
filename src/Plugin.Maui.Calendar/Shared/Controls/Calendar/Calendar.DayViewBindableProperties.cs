@@ -179,12 +179,11 @@ public partial class Calendar : ContentView, IDisposable
 	// Cells that were not rendered yet create their content later, directly from the new template.
 	static void OnDayViewTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
+		var calendar = (Calendar)bindable;
+
+		foreach (var dayView in calendar.dayViews)
 		{
-			foreach (var dayView in calendar.dayViews)
-			{
-				dayView.SetDayViewTemplate((DataTemplate)newValue);
-			}
+			dayView.SetDayViewTemplate((DataTemplate)newValue);
 		}
 	}
 
@@ -193,9 +192,7 @@ public partial class Calendar : ContentView, IDisposable
 	// date-recomputation pass).
 	static void OnDayViewGlobalPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayGlobalProperties();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayGlobalProperties();
 	}
 }

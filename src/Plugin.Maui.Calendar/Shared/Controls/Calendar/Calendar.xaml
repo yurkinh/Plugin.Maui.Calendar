@@ -32,16 +32,16 @@
         <controls:DataTemplateView
             Grid.Row="1"
             BindingContext="{x:Reference calendar}"
-            IsVisible="{Binding FooterSectionVisible, Source={x:Reference calendar}}"
+            IsVisible="{Binding FooterSectionVisible, Source={x:Reference calendar}, x:DataType=controls:Calendar}"
             ItemTemplate="{Binding FooterSectionTemplate}"/>
         <ScrollView
             x:Name="eventsScrollView"
             Grid.Row="2"
-            IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}}">
+            IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}, x:DataType=controls:Calendar}">
             <VerticalStackLayout
-                BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}}"
-                BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}}"
-                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}}"/>
+                BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}, x:DataType=controls:Calendar}"
+                BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}, x:DataType=controls:Calendar}"
+                BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}, x:DataType=controls:Calendar}"/>
         </ScrollView>
     </Grid>
 </ContentView>

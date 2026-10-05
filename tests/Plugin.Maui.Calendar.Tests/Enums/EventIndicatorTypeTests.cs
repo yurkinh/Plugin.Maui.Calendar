@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Plugin.Maui.Calendar.Tests.TestableCode.Enums;
+using Plugin.Maui.Calendar.Enums;
 using Xunit;
 
 namespace Plugin.Maui.Calendar.Tests.Enums;

@@ -7,7 +7,6 @@ public partial class Calendar : ContentView, IDisposable
 {
 	protected override void OnHandlerChanging(HandlerChangingEventArgs args)
 	{
-
 		base.OnHandlerChanging(args);
 
 		// Detach first: when one handler replaces another, detaching after attaching would undo
@@ -63,6 +62,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	void AttachHandler()
 	{
+		isHandlerAttached = true;
 		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
 		WeakReferenceMessenger.Default.Register<Calendar, DayTappedMessage>(this, static (calendar, message) => calendar.OnDayTappedMessage(message));
 
@@ -74,74 +74,67 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			isHandlerDetached = false;
 			UpdateEvents();
-			UpdateDays(forceUpdate: true);
+			UpdateDays();
 		}
 
-		if (!SwipeDetectionDisabled)
-		{
-			AddSwipeGestures();
-		}
+		UpdateSwipeGestures();
 	}
 
 	void DetachHandler()
 	{
+		isHandlerAttached = false;
 		calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
 		WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(this);
-
-		// Removes what AttachHandler added, whatever SwipeDetectionDisabled is now.
 		RemoveSwipeGestures();
+
 		//Todo remove later/when all event and properties will be refactored
 		//all this should be done automaticall or not needed
 		Dispose();
 		isHandlerDetached = true;
 	}
 
-	// Idempotent, so SwipeDetectionDisabled can be switched at any time.
-	void AddSwipeGestures()
+	/// <summary>
+	/// Adds the swipe recognizers while the calendar has a handler and <see cref="SwipeDetectionDisabled"/>
+	/// is off, and removes them otherwise.
+	/// </summary>
+	void UpdateSwipeGestures()
 	{
-		if (leftSwipeGesture is not null)
+		RemoveSwipeGestures();
+
+		if (!isHandlerAttached || SwipeDetectionDisabled)
 		{
 			return;
 		}
 
-		leftSwipeGesture = new() { Direction = SwipeDirection.Left };
-		rightSwipeGesture = new() { Direction = SwipeDirection.Right };
-		upSwipeGesture = new() { Direction = SwipeDirection.Up };
-		downSwipeGesture = new() { Direction = SwipeDirection.Down };
+		swipeGestures =
+		[
+			new() { Direction = SwipeDirection.Left },
+			new() { Direction = SwipeDirection.Right },
+			new() { Direction = SwipeDirection.Up },
+			new() { Direction = SwipeDirection.Down },
+		];
 
-		leftSwipeGesture.Swiped += OnSwiped;
-		rightSwipeGesture.Swiped += OnSwiped;
-		upSwipeGesture.Swiped += OnSwiped;
-		downSwipeGesture.Swiped += OnSwiped;
-
-		GestureRecognizers.Add(leftSwipeGesture);
-		GestureRecognizers.Add(rightSwipeGesture);
-		GestureRecognizers.Add(upSwipeGesture);
-		GestureRecognizers.Add(downSwipeGesture);
+		foreach (var swipeGesture in swipeGestures)
+		{
+			swipeGesture.Swiped += OnSwiped;
+			GestureRecognizers.Add(swipeGesture);
+		}
 	}
 
-	// Removes only the calendar's own recognizers; ones the app added to the calendar stay.
 	void RemoveSwipeGestures()
 	{
-		if (leftSwipeGesture is null)
+		if (swipeGestures is null)
 		{
 			return;
 		}
 
-		leftSwipeGesture.Swiped -= OnSwiped;
-		rightSwipeGesture.Swiped -= OnSwiped;
-		upSwipeGesture.Swiped -= OnSwiped;
-		downSwipeGesture.Swiped -= OnSwiped;
+		foreach (var swipeGesture in swipeGestures)
+		{
+			swipeGesture.Swiped -= OnSwiped;
+			GestureRecognizers.Remove(swipeGesture);
+		}
 
-		GestureRecognizers.Remove(leftSwipeGesture);
-		GestureRecognizers.Remove(rightSwipeGesture);
-		GestureRecognizers.Remove(upSwipeGesture);
-		GestureRecognizers.Remove(downSwipeGesture);
-
-		leftSwipeGesture = null;
-		rightSwipeGesture = null;
-		upSwipeGesture = null;
-		downSwipeGesture = null;
+		swipeGestures = null;
 	}
 
 	// Every calendar on screen receives every DayTappedMessage, so a tap is only handled by the
@@ -159,10 +152,7 @@ public partial class Calendar : ContentView, IDisposable
 	// Idempotent, so it can run whether or not Events is already observed.
 	void ObserveEvents()
 	{
-		if (Events is EventCollection events)
-		{
-			events.CollectionChanged -= OnEventsCollectionChanged;
-			events.CollectionChanged += OnEventsCollectionChanged;
-		}
+		Events.CollectionChanged -= OnEventsCollectionChanged;
+		Events.CollectionChanged += OnEventsCollectionChanged;
 	}
 }

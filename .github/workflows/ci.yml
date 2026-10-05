@@ -26,7 +26,8 @@ jobs:
       # project is built by the next step.
       run: msbuild src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj -r -property:Configuration=Release
     - name: Run Unit Tests
-      run: dotnet test tests\Plugin.Maui.Calendar.Tests\Plugin.Maui.Calendar.Tests.csproj --configuration Release --logger trx --collect:"XPlat Code Coverage"
+      # Fails when the line or branch coverage of the library drops below 100% (see the test project).
+      run: dotnet test tests\Plugin.Maui.Calendar.Tests\Plugin.Maui.Calendar.Tests.csproj --configuration Release --logger trx /p:CollectCoverage=true
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       if: always()
@@ -38,7 +39,7 @@ jobs:
       if: always()
       with:
         name: coverage-report
-        path: tests/Plugin.Maui.Calendar.Tests/TestResults/**/coverage.cobertura.xml
+        path: tests/Plugin.Maui.Calendar.Tests/TestResults/coverage/coverage.cobertura.xml
 
   check-ai-skill:
 

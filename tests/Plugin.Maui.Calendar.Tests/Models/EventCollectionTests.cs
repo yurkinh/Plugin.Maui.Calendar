@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using FluentAssertions;
 using Plugin.Maui.Calendar.Models;
@@ -6,8 +7,9 @@ using Xunit;
 namespace Plugin.Maui.Calendar.Tests.Models;
 
 /// <summary>
-/// Verifies that <see cref="EventCollection"/> observes the day collections that raise
-/// CollectionChanged (issue #20) exactly while they are stored in it.
+/// Verifies <see cref="EventCollection"/>: entries are kept by day (the time of a key is ignored), every
+/// change is reported to the calendars that show the collection, and the day collections that raise
+/// CollectionChanged (issue #20) are observed exactly while they are stored in it.
 /// </summary>
 public class EventCollectionTests
 {
@@ -120,5 +122,111 @@ public class EventCollectionTests
         add.Should().Throw<ArgumentException>();
         rejected.Add("a");
         changes.Should().BeEmpty();
+    }
+
+    // ── Keys and the notifications of the collection itself ──────────────────
+
+    static readonly DateTime May10 = new(2025, 5, 10);
+
+    static List<(DateTime Item, string Type)> RecordChangesWithDays(EventCollection events)
+    {
+        var changes = new List<(DateTime, string)>();
+        events.CollectionChanged += (_, e) => changes.Add((e.Item, e.Type.ToString()));
+        return changes;
+    }
+
+    [Fact]
+    public void Keys_IgnoreTheTimeOfDay()
+    {
+        var events = new EventCollection { [May10.AddHours(9)] = new List<string> { "Breakfast" } };
+
+        events.ContainsKey(May10.AddHours(18)).Should().BeTrue();
+        events[May10.AddMinutes(1)].Should().BeEquivalentTo(new[] { "Breakfast" });
+        events.TryGetValue(May10.AddHours(23), out var dayEvents).Should().BeTrue();
+        dayEvents.Should().BeSameAs(events[May10]);
+        events.Keys.Should().Equal(May10);
+    }
+
+    [Fact]
+    public void Capacity_CreatesAnEmptyCollection()
+    {
+        new EventCollection(10).Should().BeEmpty();
+    }
+
+    [Fact]
+    public void AddSetRemoveAndClear_AreReported()
+    {
+        var events = new EventCollection();
+        var changes = RecordChangesWithDays(events);
+
+        events.Add(May10.AddHours(8), new List<string>());
+        events[May10] = new List<string> { "Lunch" };
+        events.Remove(May10.AddHours(20)).Should().BeTrue();
+        events.Add(May10, new List<string>());
+        events.Clear();
+
+        changes.Should().Equal(
+            (May10, "Add"),
+            (May10, "Set"),
+            (May10, "Remove"),
+            (May10, "Add"),
+            (default(DateTime), "Clear"));
+    }
+
+    [Fact]
+    public void RemovingAMissingDayAndClearingAnEmptyCollection_AreNotReported()
+    {
+        var events = new EventCollection();
+        var changes = RecordChangesWithDays(events);
+
+        events.Remove(May10).Should().BeFalse();
+        events.Clear();
+
+        changes.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Changes_WithoutObservers_DoNotThrow()
+    {
+        var events = new EventCollection();
+
+        var dayEvents = new ObservableCollection<string>();
+
+        var change = () =>
+        {
+            events.Add(May10, new List<string>());
+            events[May10] = dayEvents;
+            dayEvents.Add("observed, but nobody listens");
+            events.Remove(May10);
+            events.Add(May10, new List<string>());
+            events.Clear();
+        };
+
+        change.Should().NotThrow();
+    }
+
+    [Fact]
+    public void TryGetValues_CollectsTheEventsOfTheGivenDays()
+    {
+        var events = new EventCollection
+        {
+            [May10] = new List<string> { "a", "b" },
+            [May10.AddDays(2)] = new List<string> { "c" },
+        };
+
+        events.TryGetValues([May10, May10.AddDays(1), May10.AddDays(2)], out var values).Should().BeTrue();
+        values.Cast<object>().Should().Equal("a", "b", "c");
+
+        events.TryGetValues([May10.AddDays(1)], out var none).Should().BeFalse();
+        none.Cast<object>().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void TryGetValues_DaysWithEmptyEntriesOnly_ReturnsFalse()
+    {
+        var events = new EventCollection { [May10] = new List<string>() };
+
+        events.TryGetValues([May10], out ICollection values).Should().BeFalse();
+        values.Cast<object>().Should().BeEmpty();
     }
 }

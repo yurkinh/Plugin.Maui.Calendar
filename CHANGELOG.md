@@ -3,6 +3,32 @@
 All notable changes to [Plugin.Maui.Calendar](https://www.nuget.org/packages/Plugin.Maui.Calendar/) are listed here, newest first.
 Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/#versions-body-tab) and has a matching tag in this repository.
 
+## [Unreleased]
+
+### Added
+- `TimeProvider`: tells the calendar which day is today. The default, `TimeProvider.System`, follows the device clock; another provider pins today, for example for tests and screenshots. By @MykhailoDav
+- Unit tests that cover all of the library's code (100 % of lines and branches, checked by CI), and UI tests that drive a test app with Appium, check the calendar's behavior and compare screenshots of every look with baselines (recorded for iOS and Android). By @MykhailoDav
+
+### Fixed
+- Cultures whose default calendar is not Gregorian (for example `fa-IR`, `ar-SA`, `th-TH`) showed the month names and years of that calendar over the Gregorian days. Month names, years and the selected date are now written with the Gregorian calendar. By @MykhailoDav
+- The week number was counted from the first day of the week of `Culture`, so a row shown from `FirstDayOfWeek` could get the number of the next week. It is now counted from `FirstDayOfWeek`. By @MykhailoDav
+- `UseNativeDigits`, `WeekViewUnit` and `SelectedDateTextFormat` changed at runtime are applied right away. By @MykhailoDav
+- The arrows and swipes no longer move to a month (or week) that lies completely before `MinimumDate` or after `MaximumDate`, and the arrows are disabled there. The year arrows stop at the years of `MinimumDate` and `MaximumDate`. By @MykhailoDav
+- The year arrows raise `MonthChanged` like the other navigation. `MonthChangedCommand.CanExecute` gets the `MonthChangedEventArgs`, and a move to the same date (at the end of the range of `DateTime`) raises nothing. By @MykhailoDav
+- `DisabledDates`, `SelectedDate` and `SelectedDates` with a time (for example `DateTime.Now`) count for their day. By @MykhailoDav
+- `ShownDate` set to `default(DateTime)` (as a binding to an unset property does), navigating near year 1, and selecting a week or a range at either end of the range of `DateTime` threw. By @MykhailoDav
+- `Events` or `Culture` set to `null` (as a binding to a value that is not created yet does) threw; they now mean an empty collection and the invariant culture. By @MykhailoDav
+- Setting `Year` while February 29 is shown, or `Day` to a day the month doesn't have, threw; the shown date moves to the last day of the month. By @MykhailoDav
+- A calendar created with `CalendarSectionShown="False"` could never show its days, and after its page was shown again the days no longer slid in and out. A change made while the days slide is applied when the animation ends. By @MykhailoDav
+- On Android a swipe that started on a day did nothing, because the day's tap handling took the whole touch; only swipes over the weekday titles or between the rows changed the month. The days now pass their swipes to the calendar. By @MykhailoDav
+- `RangeSelectionCalendar` put disabled days in `SelectedDates` when `SelectedEndDate` was set from code. By @MykhailoDav
+- The default `ShownDate`, `Day`, `Month` and `Year` are the day the calendar is created, not the day the app first created a calendar. By @MykhailoDav
+- The visibility of the footer and the event list were bound by name, through reflection, which Native AOT and full trimming can break; they use compiled bindings now. By @MykhailoDav
+- A Native AOT app crashed as soon as the calendar's footer was shown: the default footer styles gave `VerticalTextAlignment` a `LayoutOptions` value, which MAUI otherwise drops (so the footer's texts were not centered vertically either). The default styles now give every property a value of its own type. By @MykhailoDav
+
+### Changed
+- The trimming, AOT and single-file analyzers check the library on every build; the MAUI build used to turn the trimming analyzer off. The library is still not marked trimmable, so apps keep all of it in their default trimming. By @MykhailoDav
+
 ## [3.1.1] - 2026-10-01
 
 ### Added

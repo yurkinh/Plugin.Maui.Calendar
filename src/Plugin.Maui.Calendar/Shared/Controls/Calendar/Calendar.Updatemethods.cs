@@ -10,11 +10,6 @@ public partial class Calendar : ContentView, IDisposable
 {
 	void UpdateEvents()
 	{
-		if (isInitializing)
-		{
-			return;
-		}
-
 		SelectedDayEvents = CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents) ? selectedEvents : null;
 
 		eventsScrollView.ScrollToAsync(0, 0, false);
@@ -24,28 +19,38 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		if (WeekViewUnit == WeekViewUnit.WeekNumber)
 		{
-			LayoutUnitText = GetWeekNumber(ShownDate).ToString();
+			var weekNumber = GetWeekNumber(ShownDate);
+			LayoutUnitText = UseNativeDigits ? weekNumber.ToNativeDigitString(Culture) : weekNumber.ToString(Culture);
 			return;
 		}
 
-		LayoutUnitText = Culture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
+		LayoutUnitText = FormattingCulture.DateTimeFormat.MonthNames[ShownDate.Month - 1].Capitalize();
 	}
 
-	void UpdateSelectedDateLabel() => SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, Culture, UseNativeDigits);
+	void UpdateSelectedDateLabel() => SelectedDateText = CurrentSelectionEngine.GetSelectedDateText(SelectedDateTextFormat, FormattingCulture, UseNativeDigits);
 
 	void ShowHideCalendarSection()
 	{
+		// A change made while the section animates is applied when the animation finishes.
 		if (calendarSectionAnimating)
 		{
 			return;
 		}
 
+		var show = CalendarSectionShown;
+
+		// Without a handler there is nothing to animate, and before the section was ever laid out
+		// its height is unknown, so the section is shown or hidden right away.
+		if (Handler is null || calendarSectionHeight <= 0)
+		{
+			ApplyCalendarSectionState(show);
+			return;
+		}
+
 		calendarSectionAnimating = true;
 
-		var animation = CalendarSectionShown ? calendarSectionAnimateShow : calendarSectionAnimateHide;
-		var prevState = CalendarSectionShown;
-
-		animation.Value.Commit(
+		// A new animation every time: an Animation that was committed and finished can't be reused.
+		new Animation(AnimateMonths, show ? 0 : 1, show ? 1 : 0).Commit(
 			this,
 			calendarSectionAnimationId,
 			calendarSectionAnimationRate,
@@ -53,13 +58,26 @@ public partial class Calendar : ContentView, IDisposable
 			finished: (value, cancelled) =>
 			{
 				calendarSectionAnimating = false;
+				ApplyCalendarSectionState(show);
 
-				if (prevState != CalendarSectionShown)
+				// CalendarSectionShown changed again while the section was animating.
+				if (show != CalendarSectionShown)
 				{
-					ToggleCalendarSectionVisibility();
+					ShowHideCalendarSection();
 				}
 			}
 		);
+	}
+
+	/// <summary>
+	/// Puts the calendar section in its final shown or hidden state. A shown section gets back its
+	/// natural height, so it follows later changes of its content (layout, day size, ...).
+	/// </summary>
+	void ApplyCalendarSectionState(bool shown)
+	{
+		calendarContainer.HeightRequest = shown ? -1 : 0;
+		calendarContainer.TranslationY = shown ? 0 : -calendarSectionHeight;
+		calendarContainer.Opacity = shown ? 1 : 0;
 	}
 
 	void UpdateCalendarSectionHeight()
@@ -77,12 +95,10 @@ public partial class Calendar : ContentView, IDisposable
 			return;
 		}
 
-		// Item 1: UpdateDays already calls AssignIndicatorColors per day, so a separate
-		// UpdateDaysColors pass would be a redundant second iteration. The update must be
-		// forced: the shown dates did not change, so a plain UpdateDays() would return early
-		// and leave HasEvents, EventCount and EventColors stale.
+		// UpdateDays already calls AssignIndicatorColors per day, so a separate UpdateDaysColors
+		// pass would be a redundant second iteration.
 		UpdateEvents();
-		UpdateDays(forceUpdate: true);
+		UpdateDays();
 	}
 
 	void OnDayTappedHandler(DateTime value)
@@ -91,20 +107,9 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			if (value.Month != ShownDate.Month || value.Year != ShownDate.Year)
 			{
-				var oldMonth = new DateOnly(ShownDate.Year, ShownDate.Month, 1);
-				var newMonth = new DateOnly(value.Year, value.Month, 1);
-
+				var oldShownDate = ShownDate;
 				ShownDate = value;
-
-				// Item 6: construct MonthChangedEventArgs once and reuse for both the
-				// event and the command to avoid a second allocation.
-				var args = new MonthChangedEventArgs(oldMonth, newMonth);
-				MonthChanged?.Invoke(this, args);
-
-				if (MonthChangedCommand?.CanExecute(null) == true)
-				{
-					MonthChangedCommand.Execute(args);
-				}
+				RaiseMonthChanged(oldShownDate);
 			}
 		}
 
@@ -116,11 +121,6 @@ public partial class Calendar : ContentView, IDisposable
 	// daysControl.Children.OfType<Label>() on every invocation.
 	void UpdateDayTitles()
 	{
-		if (dayTitleLabels is null)
-		{
-			return;
-		}
-
 		var dayNumber = (int)FirstDayOfWeek;
 
 		foreach (var dayLabel in dayTitleLabels)
@@ -152,57 +152,48 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
-	DateTime firstDate = DateTime.MinValue;
-	void UpdateDays(bool forceUpdate = false)
+	void UpdateDays()
 	{
-		// Item 16: skip all work during construction; one consolidated render fires at the
-		// end of the Calendar() constructor.
-		if (isInitializing)
-		{
-			return;
-		}
-
-		int lastDayOfMonth = 0;
-		if (!forceUpdate && firstDate == CurrentViewLayoutEngine.GetFirstDate(ShownDate))
-		{
-			return;
-		}
-		firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
+		var firstDate = CurrentViewLayoutEngine.GetFirstDate(ShownDate);
 		var lastDate = CurrentViewLayoutEngine.GetLastDate(ShownDate);
 
 		var shownDatesChanged = VisibleStartDate != firstDate.Date || VisibleEndDate != lastDate.Date;
 		SetValue(VisibleStartDatePropertyKey, firstDate.Date);
 		SetValue(VisibleEndDatePropertyKey, lastDate.Date);
 
-		int addDays = 0;
+		// The cells before DateTime.MinValue (in its first week, which starts before it) and after
+		// DateTime.MaxValue stay empty. firstDate falls on FirstDayOfWeek in every other week.
+		var leadingEmptyCells = (7 + (firstDate.DayOfWeek - FirstDayOfWeek)) % 7;
 		var remainingDaysUntilMax = (DateTime.MaxValue.Date - firstDate.Date).Days + 1;
-		var safeOffsets = (int)Math.Min(dayViews.Count, Math.Max(0, remainingDaysUntilMax));
 
-		// Item 4: build a HashSet<DateTime> once so each per-day IsDisabled check is O(1)
-		// instead of O(n) with List.Contains.
-		var disabledSet = DisabledDates?.Count > 0 ? new HashSet<DateTime>(DisabledDates) : null;
+		// The 1-based cell number of the last day of the shown month met so far.
+		int lastDayOfMonth = 0;
+
+		// Build the set once so each per-day IsDisabled check is O(1) instead of O(n) with List.Contains.
+		var disabledSet = CreateDisabledDateSet(DisabledDates);
 
 		// Read the clock once so every cell in this pass agrees on which day is today.
-		var today = DateTime.Today;
+		var today = Today;
 
-		foreach (var dayView in dayViews)
+		for (int cell = 0; cell < dayViews.Count; cell++)
 		{
-			var dayModel = dayView.BindingContext as DayModel;
+			var dayModel = (DayModel)dayViews[cell].BindingContext;
+			var dayIndex = cell - leadingEmptyCells;
 
-			if (addDays < safeOffsets)
+			if (dayIndex >= 0 && dayIndex < remainingDaysUntilMax)
 			{
-				var currentDate = firstDate.AddDays(addDays++);
+				var currentDate = firstDate.AddDays(dayIndex);
 
 				if (currentDate.Month == ShownDate.Month)
 				{
-					lastDayOfMonth = addDays;
+					lastDayOfMonth = cell + 1;
 				}
 
-				bool currentMonthOnLine = lastDayOfMonth == 0 || (addDays - 1) / 7 == (lastDayOfMonth - 1) / 7;
+				bool currentMonthOnLine = lastDayOfMonth == 0 || cell / 7 == (lastDayOfMonth - 1) / 7;
 
-				// Item 2: only date-specific values are set here; global/color props are
-				// propagated by UpdateDayGlobalProperties so they don't need to be pushed
-				// on every date-change render.
+				// Only date-specific values are set here; global/color props are propagated by
+				// UpdateDayGlobalProperties so they don't need to be pushed on every date-change render.
+				dayModel.Today = today;
 				dayModel.Date = currentDate.Date;
 				// A cell that keeps its date (e.g. the same month re-rendered after midnight)
 				// skips OnDateChanged, so IsToday is re-evaluated explicitly on every pass.
@@ -220,8 +211,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			else
 			{
-				addDays++;
-
+				dayModel.Today = today;
 				dayModel.Date = DateTime.MaxValue.Date;
 				dayModel.RefreshIsToday(today);
 				dayModel.Day = string.Empty;
@@ -260,11 +250,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		foreach (var dayView in dayViews)
 		{
-			var dayModel = dayView.BindingContext as DayModel;
-			if (dayModel is null)
-			{
-				continue;
-			}
+			var dayModel = (DayModel)dayView.BindingContext;
 
 			// Structural global props
 			dayModel.DayTappedCommand = DayTappedCommand;
@@ -447,4 +433,15 @@ public partial class Calendar : ContentView, IDisposable
 		=> currentDate.Date < minimumDate.Date
 		|| currentDate.Date > maximumDate.Date
 		|| (disabledSet?.Contains(currentDate.Date) ?? false);
+
+	/// <summary>
+	/// The date parts of <paramref name="disabledDates"/> (so a disabled date with a time, such as
+	/// <c>DateTime.Now.AddDays(2)</c>, still disables its day), or <see langword="null"/> when there
+	/// are none.
+	/// </summary>
+	internal static HashSet<DateTime> CreateDisabledDateSet(IEnumerable<DateTime> disabledDates)
+	{
+		var disabledSet = disabledDates?.Select(date => date.Date).ToHashSet();
+		return disabledSet?.Count > 0 ? disabledSet : null;
+	}
 }

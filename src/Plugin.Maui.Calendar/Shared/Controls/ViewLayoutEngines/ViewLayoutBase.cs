@@ -7,11 +7,32 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 {
 	protected const int numberOfDaysInWeek = 7;
 
+	/// <summary>
+	/// The first day of the week of <paramref name="dateInWeek"/>, or <see cref="DateTime.MinValue"/>
+	/// for the first week of <see cref="DateTime"/>, whose first day may lie before it (January 1 of
+	/// year 1 is a Monday). The calendar then leaves the cells before <see cref="DateTime.MinValue"/> empty.
+	/// </summary>
 	protected DateTime GetFirstDateOfWeek(DateTime dateInWeek)
 	{
-		var difference = (7 + (dateInWeek.DayOfWeek - firstDayOfWeek)) % 7;
-		return dateInWeek.AddDays(-1 * difference).Date;
+		var difference = GetDaysFromFirstDayOfWeek(dateInWeek);
+		return difference > (dateInWeek.Date - DateTime.MinValue).Days
+			? DateTime.MinValue
+			: dateInWeek.Date.AddDays(-difference);
 	}
+
+	/// <summary>
+	/// The last day of the <paramref name="numberOfWeeks"/> weeks starting with the week of
+	/// <paramref name="dateInFirstWeek"/>, or <see cref="DateTime.MaxValue"/>'s date when they end after it.
+	/// </summary>
+	protected DateTime GetLastDateOfWeeks(DateTime dateInFirstWeek, int numberOfWeeks)
+	{
+		// Counted in days since DateTime.MinValue, so a first week that starts before it still ends on the right day.
+		long lastDay = (dateInFirstWeek.Date - DateTime.MinValue).Days - GetDaysFromFirstDayOfWeek(dateInFirstWeek) + (numberOfWeeks * numberOfDaysInWeek) - 1;
+		long maxDay = (DateTime.MaxValue.Date - DateTime.MinValue).Days;
+		return DateTime.MinValue.AddDays(Math.Min(lastDay, maxDay));
+	}
+
+	int GetDaysFromFirstDayOfWeek(DateTime date) => (numberOfDaysInWeek + (date.DayOfWeek - firstDayOfWeek)) % numberOfDaysInWeek;
 
 	/// <summary>
 	/// Returns <see langword="true"/> when the grid column at <paramref name="column"/>
@@ -26,7 +47,8 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	}
 
 	/// <summary>
-	/// Populates <paramref name="targetGrid"/> with the day-of-week header row and the rows and
+	/// Populates <paramref name="targetGrid"/> with the day-of-week header row (styled with the
+	/// <see cref="Calendar.DaysTitleLabelStyle"/> of <paramref name="calendar"/>) and the rows and
 	/// columns for <paramref name="numberOfWeeks"/> × 7 day cells, and fills
 	/// <paramref name="dayViews"/> with those <see cref="DayView"/> cells, each already assigned its
 	/// grid row and column. The cells are not added to <paramref name="targetGrid"/>: the caller adds
@@ -37,8 +59,7 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	protected static void GenerateWeekLayout(
 			Grid targetGrid,
 			List<DayView> dayViews,
-			object bindingContext,
-			string daysTitleLabelStyleeBindingName,
+			Calendar calendar,
 			ICommand dayTappedCommand,
 			DataTemplate dayViewTemplate,
 			int numberOfWeeks
@@ -59,10 +80,9 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 		{
 			var label = new Label
 			{
-				HorizontalTextAlignment = TextAlignment.Center,
-				BindingContext = bindingContext
+				HorizontalTextAlignment = TextAlignment.Center
 			};
-			label.SetBinding(VisualElement.StyleProperty, daysTitleLabelStyleeBindingName);
+			label.SetBinding(VisualElement.StyleProperty, static (Calendar calendar) => calendar.DaysTitleLabelStyle, source: calendar);
 
 			targetGrid.Add(label, i, 0);
 		}

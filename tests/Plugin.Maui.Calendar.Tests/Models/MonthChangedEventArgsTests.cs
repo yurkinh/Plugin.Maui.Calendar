@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Plugin.Maui.Calendar.Tests.TestableCode.Models;
+using Plugin.Maui.Calendar.Models;
 using Xunit;
 
 namespace Plugin.Maui.Calendar.Tests.Models;

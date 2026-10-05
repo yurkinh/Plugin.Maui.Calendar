@@ -24,10 +24,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnTodayOutlineColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -53,10 +51,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnTodayTextColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
 	}
 
 
@@ -82,9 +78,38 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnTodayFillColorChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDaysColors();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDaysColors();
+	}
+
+	/// <summary>
+	/// Bindable property for TimeProvider
+	/// </summary>
+	public static readonly BindableProperty TimeProviderProperty = BindableProperty.Create(
+		nameof(TimeProvider),
+		typeof(TimeProvider),
+		typeof(Calendar),
+		TimeProvider.System,
+		propertyChanged: OnTimeProviderChanged,
+		coerceValue: static (bindable, value) => value ?? TimeProvider.System
+	);
+
+	/// <summary>
+	/// Tells the calendar which day is today (the day drawn with <see cref="TodayOutlineColor"/>,
+	/// <see cref="TodayFillColor"/> and <see cref="TodayTextColor"/>). <see cref="TimeProvider.System"/>
+	/// (the default) follows the device clock; another provider can pin today to a fixed date, for
+	/// example for tests and screenshots.
+	/// </summary>
+	public TimeProvider TimeProvider
+	{
+		get => (TimeProvider)GetValue(TimeProviderProperty);
+		set => SetValue(TimeProviderProperty, value);
+	}
+
+	static void OnTimeProviderChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		var calendar = (Calendar)bindable;
+		calendar.RefreshToday();
+		calendar.ScheduleTodayRefresh();
 	}
 }

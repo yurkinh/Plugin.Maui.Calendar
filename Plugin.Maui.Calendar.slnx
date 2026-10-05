@@ -4,5 +4,9 @@
   </Folder>
   <Folder Name="/src/" />
   <Project Path="src/Plugin.Maui.Calendar/Plugin.Maui.Calendar.csproj" />
-  <Project Path="tests/Plugin.Maui.Calendar.Tests/Plugin.Maui.Calendar.Tests.csproj" />
+  <Folder Name="/tests/">
+    <Project Path="tests/Plugin.Maui.Calendar.Tests/Plugin.Maui.Calendar.Tests.csproj" />
+    <Project Path="tests/Plugin.Maui.Calendar.UITests.HostApp/Plugin.Maui.Calendar.UITests.HostApp.csproj" />
+    <Project Path="tests/Plugin.Maui.Calendar.UITests/Plugin.Maui.Calendar.UITests.csproj" />
+  </Folder>
 </Solution>

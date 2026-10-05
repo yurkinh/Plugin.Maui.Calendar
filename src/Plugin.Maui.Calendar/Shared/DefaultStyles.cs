@@ -49,7 +49,7 @@ public static class DefaultStyles
 		style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Center });
 		style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
 		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 16 });
+		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 16d });
 
 		return style;
 	}
@@ -58,16 +58,16 @@ public static class DefaultStyles
 	{
 		Style style = new(typeof(Button)) { CanCascade = true };
 		style.Setters.Add(new Setter() { Property = Button.PaddingProperty, Value = new Thickness(0) });
-		style.Setters.Add(new Setter() { Property = VisualElement.WidthRequestProperty, Value = 36 });
-		style.Setters.Add(new Setter() { Property = VisualElement.HeightRequestProperty, Value = 36 });
+		style.Setters.Add(new Setter() { Property = VisualElement.WidthRequestProperty, Value = 36d });
+		style.Setters.Add(new Setter() { Property = VisualElement.HeightRequestProperty, Value = 36d });
 		style.Setters.Add(new Setter() { Property = Button.CornerRadiusProperty, Value = 18 });
 		style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.Center });
 		style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
 		style.Setters.Add(new Setter() { Property = VisualElement.BackgroundColorProperty, Value = Colors.White });
 		style.Setters.Add(new Setter() { Property = Button.BorderColorProperty, Value = Colors.Black });
-		style.Setters.Add(new Setter() { Property = Button.BorderWidthProperty, Value = 1 });
+		style.Setters.Add(new Setter() { Property = Button.BorderWidthProperty, Value = 1d });
 		style.Setters.Add(new Setter() { Property = Button.FontAttributesProperty, Value = FontAttributes.Bold });
-		style.Setters.Add(new Setter() { Property = Button.FontSizeProperty, Value = 14 });
+		style.Setters.Add(new Setter() { Property = Button.FontSizeProperty, Value = 14d });
 		style.Setters.Add(new Setter() { Property = Button.FontFamilyProperty, Value = "OpenSansSemibold" });
 		style.Setters.Add(new Setter() { Property = Button.TextColorProperty, Value = Colors.Black });
 
@@ -79,7 +79,7 @@ public static class DefaultStyles
 		Style style = new(typeof(Label)) { CanCascade = true };
 		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Black });
 		style.Setters.Add(new Setter() { Property = Label.HorizontalTextAlignmentProperty, Value = TextAlignment.Center });
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 14 });
+		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 14d });
 		style.Setters.Add(new Setter() { Property = Label.LineBreakModeProperty, Value = LineBreakMode.WordWrap });
 		style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = TextAlignment.Center });
 		style.Setters.Add(new Setter() { Property = View.MarginProperty, Value = new Thickness(5, 2, 5, 2) });
@@ -140,12 +140,12 @@ public static class DefaultStyles
 		style.Setters.Add(new Setter() { Property = View.MarginProperty, Value = new Thickness(0, 15, 0, 0) });
 		style.Setters.Add(new Setter() { Property = View.HorizontalOptionsProperty, Value = LayoutOptions.End });
 		style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
-		style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = LayoutOptions.Center });
+		style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = TextAlignment.Center });
 		style.Setters.Add(new Setter() { Property = Label.LineBreakModeProperty, Value = LineBreakMode.TailTruncation });
 		style.Setters.Add(new Setter() { Property = Label.TextProperty, Value = "↑" });
 		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Black });
 		style.Setters.Add(new Setter() { Property = Label.FontFamilyProperty, Value = "OpenSansSemibold" });
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
+		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18d });
 		style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
 
 		return style;
@@ -155,9 +155,9 @@ public static class DefaultStyles
 	{
 		Style style = new(typeof(Label)) { CanCascade = true };
 		style.Setters.Add(new Setter() { Property = View.VerticalOptionsProperty, Value = LayoutOptions.Center });
-		style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = LayoutOptions.Center });
+		style.Setters.Add(new Setter() { Property = Label.VerticalTextAlignmentProperty, Value = TextAlignment.Center });
 		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Color.FromArgb("#2196F3") });
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
+		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18d });
 		style.Setters.Add(new Setter() { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
 
 		return style;
@@ -166,7 +166,7 @@ public static class DefaultStyles
 	static Style CreateDefaultDaysTitleLabelStyle()
 	{
 		Style style = new(typeof(Label)) { CanCascade = true };
-		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18 });
+		style.Setters.Add(new Setter() { Property = Label.FontSizeProperty, Value = 18d });
 		style.Setters.Add(new Setter() { Property = Label.TextColorProperty, Value = Colors.Black });
 
 		return style;

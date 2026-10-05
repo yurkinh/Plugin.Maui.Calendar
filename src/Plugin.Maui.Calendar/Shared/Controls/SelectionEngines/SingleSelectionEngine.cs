@@ -40,12 +40,13 @@ class SingleSelectionEngine : ISelectionEngine
 		List<DateTime> disabledDates
 	)
 	{
-		if (dateToSelect == selectedDate)
+		// Dates are compared by day: a date selected from code may carry a time.
+		if (dateToSelect.Date == selectedDate?.Date)
 		{
 			selectedDate = null;
 			return [];
 		}
-		if (disabledDates is not null && disabledDates.Contains(dateToSelect))
+		if (Calendar.CreateDisabledDateSet(disabledDates)?.Contains(dateToSelect.Date) == true)
 		{
 			selectedDate = null;
 			return [];

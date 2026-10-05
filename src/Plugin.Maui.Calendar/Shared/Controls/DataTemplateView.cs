@@ -15,10 +15,7 @@ public class DataTemplateView : ContentView
 
     static void OnItemTemplateChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (bindable is DataTemplateView view)
-		{
-			view.CreateContent();
-		}
+        ((DataTemplateView)bindable).CreateContent();
 	}
 
     protected override void OnBindingContextChanged()

@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -21,7 +21,35 @@ public sealed partial class DayView : ContentView
 	{
 		this.dayViewTemplate = dayViewTemplate;
 		InitializeComponent();
+
+#if ANDROID
+		AddSwipeForwarding();
+#endif
 	}
+
+#if ANDROID
+	// On Android the view that handles taps (the container of this cell) takes the whole touch, so the
+	// calendar's own swipe recognizers never see a swipe that starts on a day: the cell recognizes
+	// swipes itself and hands them to its calendar. Elsewhere the calendar's recognizers see them, and
+	// recognizers on the cells would make every swipe count twice.
+	void AddSwipeForwarding()
+	{
+		foreach (var direction in new[] { SwipeDirection.Left, SwipeDirection.Right, SwipeDirection.Up, SwipeDirection.Down })
+		{
+			var swipe = new SwipeGestureRecognizer { Direction = direction };
+			swipe.Swiped += OnSwiped;
+			container.GestureRecognizers.Add(swipe);
+		}
+	}
+
+	void OnSwiped(object sender, SwipedEventArgs e)
+	{
+		if (FindOwningCalendar() is { SwipeDetectionDisabled: false } calendar)
+		{
+			calendar.OnSwiped(this, e);
+		}
+	}
+#endif
 
 	/// <summary>Whether the cell content (built-in or templated) has been created.</summary>
 	internal bool IsContentCreated => isContentCreated;

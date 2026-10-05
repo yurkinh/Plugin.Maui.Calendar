@@ -46,10 +46,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnWeekendTitleStyleChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayTitles();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayTitles();
 	}
 
 	public static readonly BindableProperty UseAbbreviatedDayNamesProperty =
@@ -69,10 +67,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnUseAbbreviatedDayNamesChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayTitles();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayTitles();
 	}
 
 	/// <summary>
@@ -97,10 +93,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDaysTitleMaximumLengthChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayTitles();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayTitles();
 	}
 
 	/// <summary>
@@ -125,9 +119,7 @@ public partial class Calendar : ContentView, IDisposable
 
 	static void OnDaysTitleLabelFirstUpperRestLowerChanged(BindableObject bindable, object oldValue, object newValue)
 	{
-		if (bindable is Calendar calendar)
-		{
-			calendar.UpdateDayTitles();
-		}
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayTitles();
 	}
 }

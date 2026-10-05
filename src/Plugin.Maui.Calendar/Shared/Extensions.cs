@@ -70,35 +70,4 @@ static class Extensions
     {
         return dataTemplate.SelectDataTemplate(item, container)?.CreateContent();
     }
-
-    internal static DateTime StartDayOfMonth(this DateTime dt) => new DateTime(dt.Year, dt.Month, 1);
-
-    internal static DateTime EndDayOfMonth(this DateTime dt) => dt.StartDayOfMonth().AddMonths(1).AddDays(-1);
-
-
-    internal static int WeeksInMonth(this DateTime dateTime, CultureInfo culture)
-    {
-        var daysInMonth = DaysInMonth(dateTime);
-        var date = new DateTime(dateTime.Year, dateTime.Month, daysInMonth);
-        var lastWeekOfMonth = WeekOfMonth(date, culture);
-        return lastWeekOfMonth;
-    }
-
-    internal static int WeekOfMonth(this DateTime date, CultureInfo culture)
-    {
-        var weekOfYear = culture.Calendar.GetWeekOfYear(date, CalendarWeekRule.FirstDay, culture.DateTimeFormat.FirstDayOfWeek);
-        var weekOfYearForFirstDayOfMonth = culture.Calendar.GetWeekOfYear(date.FirstDayOfMonth(), CalendarWeekRule.FirstDay, culture.DateTimeFormat.FirstDayOfWeek);
-        var weekOfMonth = weekOfYear - weekOfYearForFirstDayOfMonth + 1;
-        return weekOfMonth;
-    }
-
-    internal static int DaysInMonth(this DateTime value)
-    {
-        return DateTime.DaysInMonth(value.Year, value.Month);
-    }
-
-    internal static DateTime FirstDayOfMonth(this DateTime dt)
-    {
-        return new DateTime(dt.Year, dt.Month, 1);
-    }
 }
