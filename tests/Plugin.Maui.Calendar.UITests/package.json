@@ -4,7 +4,7 @@
   "description": "Appium and its drivers for the UI tests. The tests start this Appium with APPIUM_HOME set to this folder.",
   "devDependencies": {
     "appium": "3.8.0",
-    "appium-mac2-driver": "4.3.5",
+    "appium-mac2-driver": "4.3.6",
     "appium-uiautomator2-driver": "8.7.0",
     "appium-windows-driver": "6.3.0",
     "appium-xcuitest-driver": "12.13.3"

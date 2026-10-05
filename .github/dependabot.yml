@@ -1,0 +1,20 @@
+version: 2
+
+updates:
+  # Appium and its drivers for the UI tests (tests/Plugin.Maui.Calendar.UITests). They are pinned and bundle their
+  # own dependencies, so a vulnerable dependency is only fixed by a new version of the package that bundles it.
+  # One pull request a week brings the new versions of all of them; a new major version gets a pull request of
+  # its own, because the drivers have to support the Appium they run on.
+  - package-ecosystem: npm
+    directory: /tests/Plugin.Maui.Calendar.UITests
+    schedule:
+      interval: weekly
+    groups:
+      appium:
+        patterns:
+          - "appium*"
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: test

@@ -110,8 +110,14 @@ jobs:
         # A phone the size of the Pixel 9 the tests were written on, so the state texts under the calendar, which
         # the tests read, fit on the screen.
         profile: pixel_7
+        cores: 4
         disable-animations: true
-        script: dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
+        # The emulator is slow on the runner, and system apps such as the launcher stop responding at times. Their
+        # "isn't responding" dialogs would cover the app, so they are turned off and the one already open is closed.
+        script: |
+          adb shell settings put global hide_error_dialogs 1
+          adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
+          dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
     - uses: actions/upload-artifact@v4
       if: always()
       with:
