@@ -91,8 +91,8 @@ screenshots match the same baselines as a Debug build.
 
 ### On GitHub Actions
 
-The *UI tests* workflow (`.github/workflows/ui-tests.yml`) runs the tests after every merge into `main`, and on demand
-from the Actions tab:
+The *UI tests* workflow (`.github/workflows/ui-tests.yml`) runs the tests for every pull request into `main`, after
+every merge into `main`, and on demand from the Actions tab:
 
 * **iOS** on the iPhone 17 simulator with iOS 26.5, the one the iOS baselines were recorded on, so the screenshots
   are compared too.
