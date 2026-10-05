@@ -1,41 +1,68 @@
 name: UI tests
 
-# Runs the Appium UI tests (tests/Plugin.Maui.Calendar.UITests) on an iOS simulator and an Android emulator.
-# The screenshot baselines are recorded on the devices listed in tests/Plugin.Maui.Calendar.UITests/README.md;
-# the hosted runners have other devices, so the screenshots are only compared when asked for.
+# Runs the Appium UI tests (tests/Plugin.Maui.Calendar.UITests) on an iOS simulator and an Android emulator after
+# every merge into main, and on demand.
 on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      compare-screenshots:
-        description: Compare screenshots with the baselines (only matches on the devices they were recorded on)
-        type: boolean
-        default: false
 
+# The SDK, the workload set and Xcode the tests were last checked with. Each .NET for iOS version needs one Xcode
+# version (the workload set 10.0.401.1 brings .NET for iOS 27, which needs Xcode 27), so update them together.
 env:
-  UITEST_SCREENSHOTS: ${{ inputs.compare-screenshots && 'on' || 'off' }}
+  DOTNET_SDK_VERSION: 10.0.400
+  DOTNET_WORKLOAD_VERSION: 10.0.400.1
+  XCODE_VERSION: '26.6'
 
 jobs:
   ios:
     runs-on: macos-26
     timeout-minutes: 60
+    env:
+      UITEST_PLATFORM: ios
+      UITEST_DEVICE: iPhone 17
+      UITEST_PLATFORM_VERSION: '26.5'
+      # The simulator the iOS baselines were recorded on, so the screenshots are compared too.
+      UITEST_SCREENSHOTS: 'on'
     steps:
     - uses: actions/checkout@v4
+    - name: Select Xcode
+      run: sudo xcode-select --switch /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+    # The first boot of a simulator takes minutes: it boots while the next steps run.
+    - name: Start booting the simulator
+      run: |
+        udid=$(xcrun simctl list devices available --json | jq -r \
+          --arg runtime "com.apple.CoreSimulator.SimRuntime.iOS-${UITEST_PLATFORM_VERSION//./-}" --arg name "$UITEST_DEVICE" \
+          '.devices[$runtime][]? | select(.name == $name) | .udid')
+        if [ -z "$udid" ]; then
+          echo "::error::There is no $UITEST_DEVICE simulator with iOS $UITEST_PLATFORM_VERSION on this runner."
+          exit 1
+        fi
+        echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
+        xcrun simctl boot "$udid"
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
     - uses: actions/setup-node@v4
       with:
         node-version: 22
     - name: Install .NET MAUI
-      run: dotnet workload install maui
+      run: dotnet workload install maui --version ${{ env.DOTNET_WORKLOAD_VERSION }}
     - name: Install Appium
       working-directory: tests/Plugin.Maui.Calendar.UITests
       run: npm ci
+    # Otherwise Appium builds it when the first test starts, which together with the boot takes longer than
+    # the tests wait for the app to start.
+    - name: Build WebDriverAgent
+      working-directory: tests/Plugin.Maui.Calendar.UITests
+      env:
+        APPIUM_HOME: ${{ github.workspace }}/tests/Plugin.Maui.Calendar.UITests
+      run: npx appium driver run xcuitest build-wda --name "$UITEST_DEVICE" --sdk "$UITEST_PLATFORM_VERSION"
     - name: Build the host app
       run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-ios -c Debug
+    - name: Wait for the simulator
+      run: xcrun simctl bootstatus "$SIMULATOR_UDID"
     - name: Run the UI tests
-      env:
-        UITEST_PLATFORM: ios
       run: dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
     - uses: actions/upload-artifact@v4
       if: always()
@@ -46,11 +73,15 @@ jobs:
   android:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      UITEST_PLATFORM: android
+      # The emulator is not the device the Android baselines were recorded on, so only the behavior is checked.
+      UITEST_SCREENSHOTS: 'off'
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
     - uses: actions/setup-node@v4
       with:
         node-version: 22
@@ -64,7 +95,7 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
     - name: Install .NET MAUI
-      run: dotnet workload install maui-android
+      run: dotnet workload install maui-android --version ${{ env.DOTNET_WORKLOAD_VERSION }}
     - name: Install Appium
       working-directory: tests/Plugin.Maui.Calendar.UITests
       run: npm ci
@@ -72,12 +103,13 @@ jobs:
       run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-android -c Debug
     - name: Run the UI tests on an emulator
       uses: reactivecircus/android-emulator-runner@v2
-      env:
-        UITEST_PLATFORM: android
       with:
         api-level: 35
         arch: x86_64
         target: google_apis
+        # A phone the size of the Pixel 9 the tests were written on, so the state texts under the calendar, which
+        # the tests read, fit on the screen.
+        profile: pixel_7
         disable-animations: true
         script: dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
     - uses: actions/upload-artifact@v4

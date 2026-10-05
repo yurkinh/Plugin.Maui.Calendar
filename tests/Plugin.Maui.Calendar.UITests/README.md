@@ -89,6 +89,19 @@ UITEST_PLATFORM=ios UITEST_APP="$PWD/tests/Plugin.Maui.Calendar.UITests.HostApp/
 `_IsPublishing` makes the build use Native AOT for the simulator (`dotnet publish` only builds for devices). The
 screenshots match the same baselines as a Debug build.
 
+### On GitHub Actions
+
+The *UI tests* workflow (`.github/workflows/ui-tests.yml`) runs the tests after every merge into `main`, and on demand
+from the Actions tab:
+
+* **iOS** on the iPhone 17 simulator with iOS 26.5, the one the iOS baselines were recorded on, so the screenshots
+  are compared too.
+* **Android** on an API 35 emulator the size of a Pixel 7. That is not the device the Android baselines were
+  recorded on, so only the behavior is checked.
+
+The workflow pins the .NET SDK, the workload set and Xcode. Each .NET for iOS version needs one Xcode version, so
+update them together. When a run fails, its artifacts hold the screenshots, the test results and the Appium log.
+
 ## Screenshots and baselines
 
 A screenshot of the calendar is compared with `Baselines/<platform>/<name>.png`. A pixel counts as different when a
