@@ -102,6 +102,16 @@ public sealed class DrawnParityPage : ContentPage
 			WeekendTitleStyle = ThemeColorStyle(Colors.Red, Colors.Orange),
 			DaysLabelStyle = DynamicFontStyle("ParityDayFont"),
 		}),
+		("14 weekend bands", () => new Calendar
+		{
+			Events = Events(), SelectedDate = Oct(14), WeekendDayBackgroundColor = Colors.LightGray,
+		}),
+		("15 rounded bands, Monday first, hidden other weeks, weekend text", () => new Calendar
+		{
+			Events = Events(), SelectedDate = Oct(17), FirstDayOfWeek = DayOfWeek.Monday,
+			WeekendDayBackgroundColor = Color.FromArgb("#FFE3E3"), WeekendDayBackgroundCornerRadius = 10,
+			WeekendDayColor = Colors.Red, OtherMonthWeekIsVisible = false,
+		}),
 	];
 
 	public DrawnParityPage()

@@ -232,7 +232,9 @@ sealed class DrawnDayCell : SkiaLayer
 		}
 
 		topDot = dotsOnTop;
-		content.ClearChildren();
+
+		// ClearChildren would dispose the label and the dots, which are added again below.
+		content.ClearChildrenDoNotDispose();
 
 		foreach (var child in dotsOnTop ? new SkiaControl[] { dots, label, spacer } : [spacer, label, dots])
 		{

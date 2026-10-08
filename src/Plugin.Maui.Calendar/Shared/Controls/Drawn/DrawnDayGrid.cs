@@ -21,6 +21,10 @@ sealed class DrawnDayGrid : SkiaGrid
 	readonly List<SkiaLabel> titleLabels = [];
 	readonly List<DrawnDayCell> cells = [];
 
+	// The weekend background bands (see Calendar.UpdateWeekendBackground), behind the cells; empty
+	// while WeekendDayBackgroundColor is not set.
+	readonly List<SkiaShape> weekendBands = [];
+
 	// The styles of the day labels and of the titles, resolved as the native labels resolve them.
 	readonly DrawnLabelStyle dayLabelStyle;
 	readonly DrawnLabelStyle titleStyle;
@@ -100,12 +104,85 @@ sealed class DrawnDayGrid : SkiaGrid
 				cells.Add(cell);
 				AddSubView(cell);
 			}
+
+			// Bands of the previous layout would cover other rows: the calendar sets them again.
+			RemoveWeekendBands();
 		}
 
 		for (var i = 0; i < days.Count; i++)
 		{
 			cells[i].Day = days[i];
 		}
+	}
+
+	/// <summary>The weekend background bands, by week and then by column.</summary>
+	internal IReadOnlyList<SkiaShape> WeekendBands => weekendBands;
+
+	/// <summary>
+	/// Shows a <paramref name="color"/> band behind the weekend days of every week, as the native
+	/// grid does (see Calendar.CreateWeekendBands): one per weekend column and week, as wide as the
+	/// column, reaching half the row spacing above and below its row so the bands of consecutive
+	/// weeks touch, and ignoring touches. A transparent <paramref name="color"/> shows no bands.
+	/// </summary>
+	internal void SetWeekendBands(Color color, double cornerRadius, DayOfWeek firstDayOfWeek)
+	{
+		RemoveWeekendBands();
+
+		if (color is not { Alpha: > 0 } || cells.Count == 0)
+		{
+			return;
+		}
+
+		var bleed = RowSpacing / 2;
+		for (var week = 1; week <= cells.Count / daysInWeek; week++)
+		{
+			for (var column = 0; column < daysInWeek; column++)
+			{
+				if (!ViewLayoutEngines.ViewLayoutBase.IsWeekendColumn(firstDayOfWeek, column))
+				{
+					continue;
+				}
+
+				var band = new SkiaShape
+				{
+					Type = ShapeType.Rectangle,
+					BackgroundColor = color,
+					CornerRadius = cornerRadius,
+					HorizontalOptions = LayoutOptions.Fill,
+					VerticalOptions = LayoutOptions.Fill,
+					Margin = new Thickness(0, -bleed, 0, -bleed),
+					InputTransparent = true,
+				};
+				Grid.SetColumn(band, column);
+				Grid.SetRow(band, week);
+				weekendBands.Add(band);
+			}
+		}
+
+		// A grid draws its children in the order they were added: the bands go behind the cells.
+		foreach (var cell in cells)
+		{
+			RemoveSubView(cell);
+		}
+		foreach (var band in weekendBands)
+		{
+			AddSubView(band);
+		}
+		foreach (var cell in cells)
+		{
+			AddSubView(cell);
+		}
+	}
+
+	void RemoveWeekendBands()
+	{
+		foreach (var band in weekendBands)
+		{
+			RemoveSubView(band);
+			band.Dispose();
+		}
+
+		weekendBands.Clear();
 	}
 
 	/// <summary>The style of the day numbers (<c>DaysLabelStyle</c>).</summary>

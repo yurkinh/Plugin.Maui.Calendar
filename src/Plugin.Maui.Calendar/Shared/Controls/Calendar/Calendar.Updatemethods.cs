@@ -362,6 +362,13 @@ public partial class Calendar : ContentView, IDisposable
 		// are rebuilt below only when a visible colour is set.
 		RemoveWeekendBands();
 
+		// The drawn grid draws the same bands behind its cells.
+		if (isDayGridDrawn)
+		{
+			drawnDayGrid.SetWeekendBands(WeekendDayBackgroundColor, WeekendDayBackgroundCornerRadius, FirstDayOfWeek);
+			return;
+		}
+
 		if (WeekendDayBackgroundColor is not { Alpha: > 0 })
 		{
 			return;

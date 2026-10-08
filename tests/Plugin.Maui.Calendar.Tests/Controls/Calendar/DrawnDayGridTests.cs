@@ -315,6 +315,70 @@ public sealed class DrawnDayGridTests : IDisposable
 		Cell(calendar, May(14)).Label.Text.Should().Be("١٤");
 	}
 
+	// ── Weekend bands ────────────────────────────────────────────────────────
+
+	[Fact]
+	public void WeekendBands_NoneByDefault()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+
+		DrawnGrid(calendar).WeekendBands.Should().BeEmpty();
+	}
+
+	[Fact]
+	public void WeekendBands_OnePerWeekendColumnAndWeek_BehindTheCells()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, WeekendDayBackgroundColor = Colors.LightGray, WeekendDayBackgroundCornerRadius = 10 };
+
+		var grid = DrawnGrid(calendar);
+		grid.WeekendBands.Should().HaveCount(12, "two weekend columns in six weeks");
+		grid.WeekendBands.Select(Grid.GetColumn).Distinct().Should().BeEquivalentTo([0, 6], "Sunday and Saturday, Sunday first");
+		grid.WeekendBands.Should().OnlyContain(band =>
+			band.BackgroundColor == Colors.LightGray && band.CornerRadius == new CornerRadius(10) && band.InputTransparent
+			&& band.Margin == new Thickness(0, -3, 0, -3));
+
+		var children = grid.Views.ToList();
+		children.IndexOf(grid.WeekendBands[^1]).Should().BeLessThan(children.IndexOf(grid.Cells[0]), "the bands are drawn first");
+	}
+
+	[Fact]
+	public void WeekendBands_FollowFirstDayOfWeekAndTheLayout()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, WeekendDayBackgroundColor = Colors.LightGray };
+
+		calendar.FirstDayOfWeek = DayOfWeek.Monday;
+		DrawnGrid(calendar).WeekendBands.Select(Grid.GetColumn).Distinct().Should().BeEquivalentTo([5, 6]);
+
+		calendar.CalendarLayout = WeekLayout.Week;
+		DrawnGrid(calendar).WeekendBands.Should().HaveCount(2);
+	}
+
+	[Fact]
+	public void WeekendBands_RemovedWhenTheColorIsCleared()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, WeekendDayBackgroundColor = Colors.LightGray };
+		var band = DrawnGrid(calendar).WeekendBands[0];
+
+		calendar.WeekendDayBackgroundColor = Colors.Transparent;
+
+		DrawnGrid(calendar).WeekendBands.Should().BeEmpty();
+		DrawnGrid(calendar).Views.Should().NotContain(band);
+	}
+
+	[Fact]
+	public void IndicatorTypeChange_KeepsTheCellContent()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+		var label = Cell(calendar, May(14)).Label;
+
+		calendar.EventIndicatorType = EventIndicatorType.TopDot;
+		calendar.EventIndicatorType = EventIndicatorType.BottomDot;
+
+		// DrawnUI disposes a removed child after a delay, but marks it at once.
+		label.IsAlive.Should().NotBe(ObjectAliveType.BeingDisposed, "moving the dot row must not dispose the label");
+		Cell(calendar, May(14)).Label.Should().BeSameAs(label);
+	}
+
 	// ── Titles ───────────────────────────────────────────────────────────────
 
 	[Fact]
@@ -351,6 +415,18 @@ public sealed class DrawnDayGridTests : IDisposable
 		DrawnGrid(calendar).TitleLabels.Select(label => label.HorizontalTextAlignment).Should().Equal(
 			DrawTextAlignment.Start, DrawTextAlignment.Center, DrawTextAlignment.Center, DrawTextAlignment.Center,
 			DrawTextAlignment.Center, DrawTextAlignment.Center, DrawTextAlignment.Start);
+	}
+
+	[Fact]
+	public void Titles_FollowTheCultureAndTheLengthOptions()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+
+		calendar.Culture = new System.Globalization.CultureInfo("de-DE");
+		calendar.DaysTitleMaximumLength = DaysTitleMaxLength.TwoChars;
+
+		DrawnGrid(calendar).TitleLabels.Select(label => label.Text)
+			.Should().Equal("SO", "MO", "DI", "MI", "DO", "FR", "SA");
 	}
 
 	sealed class MultiColorEvents(IReadOnlyList<Color> colors) : List<string>, IMultiEventDay
