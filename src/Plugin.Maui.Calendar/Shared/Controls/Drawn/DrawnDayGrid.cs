@@ -5,7 +5,7 @@ using Plugin.Maui.Calendar.Models;
 namespace Plugin.Maui.Calendar.Controls.Drawn;
 
 /// <summary>
-/// Phase 0 spike of the hybrid DrawnUI migration: the drawn counterpart of the native day grid built
+/// The drawn counterpart of the native day grid built
 /// by <c>ViewLayoutBase.GenerateWeekLayout</c>. A row of day-of-week titles over one
 /// <see cref="DrawnDayCell"/> per day, each showing the same <see cref="DayModel"/> a native
 /// <see cref="DayView"/> would bind to. Only the built-in cell is drawn; a calendar with a
@@ -21,6 +21,15 @@ sealed class DrawnDayGrid : SkiaGrid
 	readonly List<SkiaLabel> titleLabels = [];
 	readonly List<DrawnDayCell> cells = [];
 
+	// The styles of the day labels and of the titles, resolved as the native labels resolve them.
+	readonly DrawnLabelStyle dayLabelStyle;
+	readonly DrawnLabelStyle titleStyle;
+	readonly DrawnLabelStyle weekendTitleStyle;
+
+	string[] titleTexts = [];
+	bool[] weekendTitles = [];
+	bool stylesRefreshPending;
+
 	/// <summary>The day cells, in grid order.</summary>
 	internal IReadOnlyList<DrawnDayCell> Cells => cells;
 
@@ -33,8 +42,18 @@ sealed class DrawnDayGrid : SkiaGrid
 	/// <summary>Raised when a swipe over the grid ends, with its direction.</summary>
 	internal Action<SwipeDirection> Swiped { get; set; }
 
-	internal DrawnDayGrid()
+	/// <param name="styleOwner">
+	/// The calendar: the styles are resolved below it, so they get its resources and the app's.
+	/// </param>
+	internal DrawnDayGrid(Element styleOwner)
 	{
+		dayLabelStyle = new DrawnLabelStyle(styleOwner);
+		titleStyle = new DrawnLabelStyle(styleOwner);
+		weekendTitleStyle = new DrawnLabelStyle(styleOwner);
+		dayLabelStyle.Changed += OnStyleChanged;
+		titleStyle.Changed += OnStyleChanged;
+		weekendTitleStyle.Changed += OnStyleChanged;
+
 		// The same spacing and columns as the native grid.
 		ColumnSpacing = 0;
 		RowSpacing = 6;
@@ -75,7 +94,7 @@ sealed class DrawnDayGrid : SkiaGrid
 
 			for (var i = 0; i < days.Count; i++)
 			{
-				var cell = new DrawnDayCell(day => DayTapped?.Invoke(day));
+				var cell = new DrawnDayCell(day => DayTapped?.Invoke(day), dayLabelStyle);
 				Grid.SetColumn(cell, i % daysInWeek);
 				Grid.SetRow(cell, 1 + (i / daysInWeek));
 				cells.Add(cell);
@@ -89,14 +108,68 @@ sealed class DrawnDayGrid : SkiaGrid
 		}
 	}
 
-	/// <summary>Shows the day-of-week titles with their label styles (see Calendar.UpdateDayTitles).</summary>
-	internal void SetTitles(IReadOnlyList<string> texts, IReadOnlyList<Style> styles)
+	/// <summary>The style of the day numbers (<c>DaysLabelStyle</c>).</summary>
+	internal Style DayLabelStyle
 	{
-		for (var i = 0; i < titleLabels.Count && i < texts.Count; i++)
+		get => dayLabelStyle.Style;
+		set => dayLabelStyle.Style = value;
+	}
+
+	/// <summary>
+	/// Shows the day-of-week titles (see Calendar.UpdateDayTitles): the weekend days with
+	/// <paramref name="weekendStyle"/>, the others with <paramref name="style"/>.
+	/// </summary>
+	internal void SetTitles(IReadOnlyList<string> texts, IReadOnlyList<bool> weekend, Style style, Style weekendStyle)
+	{
+		titleTexts = [.. texts];
+		weekendTitles = [.. weekend];
+		titleStyle.Style = style;
+		weekendTitleStyle.Style = weekendStyle;
+		ApplyTitles();
+	}
+
+	void ApplyTitles()
+	{
+		for (var i = 0; i < titleLabels.Count && i < titleTexts.Length; i++)
 		{
+			var style = weekendTitles[i] ? weekendTitleStyle : titleStyle;
+
 			// The native titles are centered unless their style says otherwise (see ViewLayoutBase).
-			DrawnText.ApplyLabelStyle(titleLabels[i], styles[i], DrawnText.DefaultLabelFontSize, TextAlignment.Center);
-			DrawnText.SetText(titleLabels[i], texts[i], styles[i]);
+			style.ApplyTo(titleLabels[i], TextAlignment.Center);
+			DrawnText.SetText(titleLabels[i], titleTexts[i], style.FontFamily);
+		}
+	}
+
+	// A new style, theme or resource value: the labels show it once, after all its changes (a new
+	// style changes many properties at once).
+	void OnStyleChanged()
+	{
+		if (stylesRefreshPending)
+		{
+			return;
+		}
+
+		if (Dispatcher is not { } dispatcher)
+		{
+			RefreshStyles();
+			return;
+		}
+
+		stylesRefreshPending = true;
+		dispatcher.Dispatch(() =>
+		{
+			stylesRefreshPending = false;
+			RefreshStyles();
+		});
+	}
+
+	void RefreshStyles()
+	{
+		ApplyTitles();
+
+		foreach (var cell in cells)
+		{
+			cell.RefreshStyle();
 		}
 	}
 

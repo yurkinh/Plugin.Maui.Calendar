@@ -138,7 +138,9 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			drawnDayGrid.SetTitles(
 				[.. titles.Select(title => title.Text)],
-				[.. titles.Select(title => title.IsWeekend ? WeekendTitleStyle : DaysTitleLabelStyle)]);
+				[.. titles.Select(title => title.IsWeekend)],
+				DaysTitleLabelStyle,
+				WeekendTitleStyle);
 		}
 	}
 
@@ -272,6 +274,12 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	void UpdateDayGlobalProperties()
 	{
+		// The drawn grid resolves the day label style once for all its cells.
+		if (isDayGridDrawn)
+		{
+			drawnDayGrid.DayLabelStyle = DaysLabelStyle;
+		}
+
 		foreach (var dayView in dayViews)
 		{
 			var dayModel = (DayModel)dayView.BindingContext;

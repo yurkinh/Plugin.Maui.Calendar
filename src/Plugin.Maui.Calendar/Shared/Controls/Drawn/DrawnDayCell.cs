@@ -25,6 +25,7 @@ sealed class DrawnDayCell : SkiaLayer
 	const double dotSize = 8;
 
 	readonly Action<DayModel> tapped;
+	readonly DrawnLabelStyle labelStyle;
 	readonly SkiaLayer container;
 	readonly SkiaShape background;
 	readonly DrawnOutline outline;
@@ -35,12 +36,13 @@ sealed class DrawnDayCell : SkiaLayer
 
 	DayModel day;
 	bool? topDot;
-	Style labelStyle;
+	int labelStyleVersion = -1;
 	bool applyPending;
 
-	internal DrawnDayCell(Action<DayModel> tapped)
+	internal DrawnDayCell(Action<DayModel> tapped, DrawnLabelStyle labelStyle)
 	{
 		this.tapped = tapped;
+		this.labelStyle = labelStyle;
 		HorizontalOptions = LayoutOptions.Fill;
 
 		// The Border: its fill, and its stroke drawn over it by an outline of the same size.
@@ -176,18 +178,20 @@ sealed class DrawnDayCell : SkiaLayer
 		outline.CornerRadius = day.DayViewCornerRadius;
 		outline.Color = day.OutlineColor;
 
-		// The font of the text depends on the style and the text: both are applied only when they change.
-		var styleChanged = !ReferenceEquals(labelStyle, day.DaysLabelStyle);
+		// The style and the font of the text are applied only when they or the text change.
+		var styleChanged = labelStyleVersion != labelStyle.Version;
 		if (styleChanged)
 		{
-			labelStyle = day.DaysLabelStyle;
-			DrawnText.ApplyLabelStyle(label, labelStyle, DrawnText.DefaultLabelFontSize);
+			labelStyleVersion = labelStyle.Version;
+			labelStyle.ApplyTo(label, TextAlignment.Start);
 		}
 
 		if (styleChanged || label.Text != day.Day)
 		{
-			DrawnText.SetText(label, day.Day, labelStyle);
+			DrawnText.SetText(label, day.Day, labelStyle.FontFamily);
 		}
+
+		// The day's state decides the color, whatever the style says (see DayView.xaml).
 		label.TextColor = day.TextColor;
 
 		// The dot row shows EventColors whatever the indicator type, like the native cell.
@@ -207,6 +211,15 @@ sealed class DrawnDayCell : SkiaLayer
 		AccessibilityLabel = day.Date.ToLongDateString();
 		AccessibilityIsPressed = day.IsSelected;
 		AccessibilityCanInteract = day.IsVisible && !day.IsDisabled;
+	}
+
+	/// <summary>Shows a new value of the day label style (a new style, theme or resource value).</summary>
+	internal void RefreshStyle()
+	{
+		if (day is not null)
+		{
+			Apply();
+		}
 	}
 
 	// The dot row sits above the label for TopDot and below it otherwise, in every cell, so the

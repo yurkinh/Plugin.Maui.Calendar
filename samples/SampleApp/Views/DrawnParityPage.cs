@@ -94,6 +94,13 @@ public sealed class DrawnParityPage : ContentPage
 			DaysTitleLabelStyle = LabelStyle(textColor: Colors.Teal),
 			WeekendTitleStyle = LabelStyle(textColor: Colors.Teal),
 		}),
+		("13 theme: implicit app Label style, theme color, dynamic font", () => new Calendar
+		{
+			Events = Events(), SelectedDate = Oct(14),
+			DaysTitleLabelStyle = LabelStyle(fontSize: 15),
+			WeekendTitleStyle = ThemeColorStyle(Colors.Red, Colors.Orange),
+			DaysLabelStyle = DynamicFontStyle("ParityDayFont"),
+		}),
 	];
 
 	public DrawnParityPage()
@@ -110,6 +117,8 @@ public sealed class DrawnParityPage : ContentPage
 			calendar.EventsScrollViewVisible = false;
 			return calendar;
 		}
+
+		Resources["ParityDayFont"] = "OpenSansSemibold";
 
 		Content = new VerticalStackLayout
 		{
@@ -146,6 +155,26 @@ public sealed class DrawnParityPage : ContentPage
 		events[Oct(16)] = new DayEventCollection<string> { "A" };
 		((DayEventCollection<string>)events[Oct(16)]).Colors = [Colors.Red, Colors.Orange, Colors.Yellow, Colors.Green, Colors.Blue];
 		return events;
+	}
+
+	// A theme-dependent setter value, as {toolkit:AppThemeResource} or {AppThemeBinding} in XAML.
+	static Style ThemeColorStyle(Color light, Color dark)
+	{
+		var style = LabelStyle(fontSize: 15, bold: true);
+		style.Setters.Add(new Setter
+		{
+			Property = Label.TextColorProperty,
+			Value = new CommunityToolkit.Maui.AppThemeColor { Light = light, Dark = dark }.GetBinding(),
+		});
+		return style;
+	}
+
+	// A setter value from a dynamic resource, which the page defines (see the constructor).
+	static Style DynamicFontStyle(string key)
+	{
+		var style = LabelStyle(fontSize: 15);
+		style.Setters.Add(new Setter { Property = Label.FontFamilyProperty, Value = new Microsoft.Maui.Controls.Internals.DynamicResource(key) });
+		return style;
 	}
 
 	static Style LabelStyle(Color textColor = null, double? fontSize = null, string fontFamily = null, bool bold = false)

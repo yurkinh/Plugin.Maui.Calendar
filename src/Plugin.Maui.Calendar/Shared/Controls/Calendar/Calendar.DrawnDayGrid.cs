@@ -39,7 +39,7 @@ public partial class Calendar : ContentView, IDisposable
 			return;
 		}
 
-		drawnDayGrid = new DrawnDayGrid
+		drawnDayGrid = new DrawnDayGrid(this)
 		{
 			DayTapped = day => DayView.Tap(day, this),
 		};
