@@ -38,6 +38,22 @@ sealed class DrawnLabelStyle : IDisposable
 		this.owner = owner;
 		owner.AddLogicalChild(resolver);
 		resolver.PropertyChanged += OnResolverPropertyChanged;
+
+		// A label whose styles set no text color uses the platform's, which follows the theme
+		// without any property of the label changing. (Application raises it as a weak event.)
+		if (Application.Current is { } application)
+		{
+			application.RequestedThemeChanged += OnRequestedThemeChanged;
+		}
+	}
+
+	void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+	{
+		if (resolver.TextColor is null)
+		{
+			Version++;
+			Changed?.Invoke();
+		}
 	}
 
 	/// <summary>The style to resolve.</summary>
@@ -94,6 +110,11 @@ sealed class DrawnLabelStyle : IDisposable
 
 	public void Dispose()
 	{
+		if (Application.Current is { } application)
+		{
+			application.RequestedThemeChanged -= OnRequestedThemeChanged;
+		}
+
 		resolver.PropertyChanged -= OnResolverPropertyChanged;
 		owner.RemoveLogicalChild(resolver);
 	}

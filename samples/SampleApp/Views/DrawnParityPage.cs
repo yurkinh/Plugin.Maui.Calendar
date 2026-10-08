@@ -3,6 +3,7 @@ using Calendar = Plugin.Maui.Calendar.Controls.Calendar;
 using Plugin.Maui.Calendar.Controls;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
+using Microsoft.Maui.Controls.Xaml;
 using SampleApp.Model;
 
 namespace SampleApp.Views;
@@ -157,16 +158,21 @@ public sealed class DrawnParityPage : ContentPage
 		return events;
 	}
 
-	// A theme-dependent setter value, as {toolkit:AppThemeResource} or {AppThemeBinding} in XAML.
+	// A theme-dependent setter value, written as an app writes it: {AppThemeBinding} in XAML.
 	static Style ThemeColorStyle(Color light, Color dark)
 	{
-		var style = LabelStyle(fontSize: 15, bold: true);
-		style.Setters.Add(new Setter
-		{
-			Property = Label.TextColorProperty,
-			Value = new CommunityToolkit.Maui.AppThemeColor { Light = light, Dark = dark }.GetBinding(),
-		});
-		return style;
+		var resources = new ResourceDictionary().LoadFromXaml($$"""
+			<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+			    <Style x:Key="Weekend" TargetType="Label">
+			        <Setter Property="FontSize" Value="15" />
+			        <Setter Property="FontAttributes" Value="Bold" />
+			        <Setter Property="HorizontalTextAlignment" Value="Center" />
+			        <Setter Property="TextColor" Value="{AppThemeBinding Light={{light.ToArgbHex()}}, Dark={{dark.ToArgbHex()}}}" />
+			    </Style>
+			</ResourceDictionary>
+			""");
+		return (Style)resources["Weekend"];
 	}
 
 	// A setter value from a dynamic resource, which the page defines (see the constructor).

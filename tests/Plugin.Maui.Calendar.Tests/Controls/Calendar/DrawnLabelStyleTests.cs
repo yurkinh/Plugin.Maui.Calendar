@@ -131,6 +131,19 @@ public sealed class DrawnLabelStyleTests : IDisposable
 	}
 
 	[Fact]
+	public void NoTextColorInAnyStyle_UsesThePlatformTextColor_OfTheCurrentTheme()
+	{
+		var app = new Application { UserAppTheme = AppTheme.Light };
+		Application.Current = app;
+		var calendar = new TestCalendar { ShownDate = May15, DaysTitleLabelStyle = Style((Label.FontSizeProperty, 15d)) };
+		WeekdayTitleColor(calendar).Should().Be(Colors.Black);
+
+		app.UserAppTheme = AppTheme.Dark;
+
+		WeekdayTitleColor(calendar).Should().Be(Colors.White);
+	}
+
+	[Fact]
 	public void NewDaysLabelStyle_IsShownByEveryCell()
 	{
 		var calendar = new TestCalendar { ShownDate = May15 };
