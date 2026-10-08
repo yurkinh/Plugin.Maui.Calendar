@@ -1,0 +1,3 @@
+#nullable enable
+Plugin.Maui.Calendar.Resource
+Plugin.Maui.Calendar.Resource.Resource() -> void

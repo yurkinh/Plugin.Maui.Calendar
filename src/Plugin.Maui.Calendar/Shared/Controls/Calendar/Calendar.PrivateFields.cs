@@ -1,6 +1,8 @@
 ﻿using Plugin.Maui.Calendar.Controls.Interfaces;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
+using Plugin.Maui.Calendar.Controls.Drawn;
 using Plugin.Maui.Calendar.Interfaces;
+using Plugin.Maui.Calendar.Models;
 
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -20,11 +22,29 @@ public partial class Calendar : ContentView, IDisposable
 	double calendarSectionHeight;
 	IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
 	public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
+
+	/// <summary>
+	/// No longer populated: days are drawn by DrawnUI instead of one native <see cref="DayView"/> each.
+	/// Kept (always empty) so the public API stays binary compatible.
+	/// </summary>
+	[Obsolete("Days are now drawn; DayView instances are no longer created and this list is always empty.")]
 	protected readonly List<DayView> dayViews = [];
 
-	// Item 13: cached references to the 7 day-of-week header labels populated in
-	// RenderLayout so UpdateDayTitles can iterate them directly.
-	Label[] dayTitleLabels;
+	// One model per drawn day cell, in display order (replaces dayViews internally)
+	private protected readonly List<DayModel> dayModels = [];
+
+	DaysGrid daysGrid;
+
+	// Resolve the public Label styles for the drawn labels (see LabelStyleBridge)
+	LabelStyleBridge daysLabelStyleBridge;
+	LabelStyleBridge daysTitleStyleBridge;
+	LabelStyleBridge weekendTitleStyleBridge;
+
+	// A swipe over the days can be seen both by the canvas and by the native
+	// SwipeGestureRecognizers (platform dependent); handle it once.
+	static readonly TimeSpan swipeDedupWindow = TimeSpan.FromMilliseconds(400);
+	DateTime lastSwipeTime = DateTime.MinValue;
+	SwipeDirection lastSwipeDirection;
 
 	// Item 16: guard flag set during construction so that bindable-property callbacks
 	// that fire before the control is fully initialised skip expensive render passes.

@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using DrawnUi.Draw;
 using MemoryToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
@@ -18,6 +19,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            // Plugin.Maui.Calendar renders its day grid with DrawnUI
+            .UseDrawnUi()
             .ConfigureMopups()
             .UseMauiCommunityToolkit()
             .InjectServices()

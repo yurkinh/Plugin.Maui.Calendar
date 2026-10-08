@@ -1,21 +1,18 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
-using Plugin.Maui.Calendar.Controls;
+﻿using System.Windows.Input;
+using Plugin.Maui.Calendar.Controls.Drawn;
+using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Interfaces;
 
 interface IViewLayoutEngine
 {
 	/// <summary>
-	/// Populates <paramref name="targetGrid"/> with the day-header row and all
-	/// <see cref="DayView"/> cells.  The caller is responsible for clearing the grid
-	/// before invoking this method.
+	/// Rebuilds <paramref name="targetGrid"/> with the day-header row and all day cells,
+	/// filling <paramref name="dayModels"/> with one model per cell.
 	/// </summary>
 	void GenerateLayout(
-		Grid targetGrid,
-		List<DayView> dayViews,
-		object bindingContext,
-		string daysTitleLabelStyleeBindingName,
+		DaysGrid targetGrid,
+		List<DayModel> dayModels,
 		ICommand dayTappedCommand
 	);
 

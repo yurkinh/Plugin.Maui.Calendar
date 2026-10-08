@@ -62,7 +62,8 @@
 	</PropertyGroup> 
 	<ItemGroup>
 
-	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />		
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
+	  <PackageReference Include="DrawnUi.Maui" Version="1.10.7.2" />		
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
@@ -77,6 +78,8 @@
 	<ItemGroup>
 	  <AdditionalFiles Include="PublicAPI.Shipped.txt" />
 	  <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+	  <!-- generated Android Resource designer class (present since earlier releases) -->
+	  <AdditionalFiles Include="PublicAPI\android\PublicAPI.Shipped.txt" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Shared\" />

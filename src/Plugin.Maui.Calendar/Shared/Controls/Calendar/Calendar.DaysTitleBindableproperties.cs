@@ -12,7 +12,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(DaysTitleLabelStyle),
 		typeof(Style),
 		typeof(Calendar),
-		DefaultStyles.DefaultDaysTitleLabelStyle
+		DefaultStyles.DefaultDaysTitleLabelStyle,
+		propertyChanged: OnDaysTitleLabelStyleChanged
 	);
 
 	/// <summary>
@@ -44,10 +45,23 @@ public partial class Calendar : ContentView, IDisposable
 		set => SetValue(WeekendTitleStyleProperty, value);
 	}
 
+	static void OnDaysTitleLabelStyleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is Calendar calendar && calendar.daysTitleStyleBridge is not null)
+		{
+			// raises Changed -> ApplyTitleStyles
+			calendar.daysTitleStyleBridge.Style = (Style)newValue;
+		}
+	}
+
 	static void OnWeekendTitleStyleChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		if (bindable is Calendar calendar)
 		{
+			if (calendar.weekendTitleStyleBridge is not null)
+			{
+				calendar.weekendTitleStyleBridge.Style = (Style)newValue;
+			}
 			calendar.UpdateDayTitles();
 		}
 	}

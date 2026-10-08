@@ -1,5 +1,7 @@
 ﻿using System.Windows.Input;
+using Plugin.Maui.Calendar.Controls.Drawn;
 using Plugin.Maui.Calendar.Interfaces;
+using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 
@@ -9,21 +11,12 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 	readonly int unitSizeinDays = 7 * numberOfWeeks;
 
 	public void GenerateLayout(
-		Grid targetGrid,
-		List<DayView> dayViews,
-		object bindingContext,
-		string daysTitleLabelStyleeBindingName,
+		DaysGrid targetGrid,
+		List<DayModel> dayModels,
 		ICommand dayTappedCommand
 	)
 	{
-		GenerateWeekLayout(
-			targetGrid,
-			dayViews,
-			bindingContext,
-			daysTitleLabelStyleeBindingName,
-			dayTappedCommand,
-			numberOfWeeks
-		);
+		targetGrid.Build(numberOfWeeks, dayModels, dayTappedCommand);
 	}
 
 	public DateTime GetFirstDate(DateTime dateToShow)

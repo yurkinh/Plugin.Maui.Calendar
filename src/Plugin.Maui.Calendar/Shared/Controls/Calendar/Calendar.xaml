@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls"
+    xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw"
     x:Name="calendar"
     SwipedLeft="OnSwipedLeft"
     SwipedRight="OnSwipedRight"
@@ -23,10 +24,12 @@
                 BindingContext="{x:Reference calendar}"
                 IsVisible="{Binding HeaderSectionVisible}"
                 ItemTemplate="{Binding HeaderSectionTemplate}"/>
-            <Grid
-                x:Name="daysControl"
+            <!-- Day grid is drawn (DrawnUI); content is built in RenderLayout. VerticalOptions=Start lets it size to content. -->
+            <draw:Canvas
+                x:Name="daysCanvas"
+                Gestures="SoftLock"
                 HorizontalOptions="Fill"
-                VerticalOptions="Fill"/>
+                VerticalOptions="Start"/>
         </VerticalStackLayout>
 
         <controls:DataTemplateView

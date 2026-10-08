@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Plugin.Maui.Calendar.Controls.Drawn;
 using Plugin.Maui.Calendar.Controls.SelectionEngines;
 using Plugin.Maui.Calendar.Controls.ViewLayoutEngines;
 using Plugin.Maui.Calendar.Enums;
@@ -101,9 +102,28 @@ public partial class Calendar : ContentView, IDisposable
 		SelectedDate = null;
 	}
 
-	void OnSwiped(object sender, SwipedEventArgs e)
+	void OnSwiped(object sender, SwipedEventArgs e) => HandleSwipe(e.Direction);
+
+	void OnDaysGridSwiped(object sender, SwipeDirection direction)
 	{
-		switch (e.Direction)
+		if (!SwipeDetectionDisabled)
+		{
+			HandleSwipe(direction);
+		}
+	}
+
+	void HandleSwipe(SwipeDirection direction)
+	{
+		// the same physical swipe may reach both the canvas and the native recognizers
+		var now = DateTime.UtcNow;
+		if (direction == lastSwipeDirection && now - lastSwipeTime < swipeDedupWindow)
+		{
+			return;
+		}
+		lastSwipeDirection = direction;
+		lastSwipeTime = now;
+
+		switch (direction)
 		{
 			case SwipeDirection.Left:
 				OnSwipeLeft();
@@ -151,29 +171,23 @@ public partial class Calendar : ContentView, IDisposable
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
 
-		daysControl.Children.Clear();
-		daysControl.RowDefinitions.Clear();
-		daysControl.ColumnDefinitions.Clear();
+		if (daysGrid is null)
+		{
+			daysGrid = new DaysGrid();
+			daysGrid.Swiped += OnDaysGridSwiped;
+			daysCanvas.Content = daysGrid;
+		}
 
-		// Item 3: GenerateLayout now populates daysControl directly, eliminating the
-		// intermediate Grid allocation and the O(n) copy loops.
-		CurrentViewLayoutEngine.GenerateLayout(
-			daysControl,
-			dayViews,
-			this,
-			nameof(DaysTitleLabelStyle),
-			DayTappedCommand
-		);
-
-		// Item 13: cache the 7 day-of-week header Labels so UpdateDayTitles doesn't
-		// re-filter Children.OfType<Label>() on every culture/style change.
-		dayTitleLabels = daysControl.Children.OfType<Label>().ToArray();
+		// Item 3: GenerateLayout rebuilds the drawn grid in place.
+		CurrentViewLayoutEngine.GenerateLayout(daysGrid, dayModels, DayTappedCommand);
 
 		// Item 2: push global properties onto the freshly created DayModels before the
 		// per-day date render so UpdateDays only handles date-specific values.
+		ApplyDaysLabelStyle();
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
-		UpdateDays();
+		// fresh models: render even when the first shown date did not change
+		UpdateDays(true);
 	}
 
 	internal void AssignIndicatorColors(ref DayModel dayModel)

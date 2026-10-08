@@ -100,19 +100,18 @@ public partial class Calendar : ContentView, IDisposable
 		SelectedDates = new ObservableCollection<DateTime>(CurrentSelectionEngine.PerformDateSelection(value, DisabledDates));
 	}
 
-	// Item 13: cached references to the 7 day-of-week title labels created during
-	// RenderLayout.  UpdateDayTitles iterates this array rather than calling
-	// daysControl.Children.OfType<Label>() on every invocation.
+	// Item 13: the 7 day-of-week title labels are created by the drawn grid and read
+	// from it directly.
 	void UpdateDayTitles()
 	{
-		if (dayTitleLabels is null)
+		if (daysGrid is null)
 		{
 			return;
 		}
 
 		var dayNumber = (int)FirstDayOfWeek;
 
-		foreach (var dayLabel in dayTitleLabels)
+		foreach (var dayLabel in daysGrid.TitleLabels)
 		{
 			string dayName;
 			if (UseAbbreviatedDayNames)
@@ -132,13 +131,44 @@ public partial class Calendar : ContentView, IDisposable
 							: dayName.ToUpperInvariant();
 
 			dayLabel.Text = titleText;
-
-			// Detect weekend days	
-			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
-			{
-				dayLabel.Style = WeekendTitleStyle;
-			}
 			dayNumber = (dayNumber + 1) % 7;
+		}
+
+		ApplyTitleStyles();
+	}
+
+	/// <summary>
+	/// Applies the resolved <see cref="DaysTitleLabelStyle"/> to weekday titles and
+	/// <see cref="WeekendTitleStyle"/> to Saturday/Sunday titles.
+	/// </summary>
+	void ApplyTitleStyles()
+	{
+		if (daysGrid is null || daysTitleStyleBridge is null)
+		{
+			return;
+		}
+
+		var dayNumber = (int)FirstDayOfWeek;
+		foreach (var dayLabel in daysGrid.TitleLabels)
+		{
+			var isWeekend = dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday;
+			var bridge = isWeekend ? weekendTitleStyleBridge : daysTitleStyleBridge;
+			bridge.ApplyTo(dayLabel, applyTextColor: true, applyLayoutOptions: true);
+			dayNumber = (dayNumber + 1) % 7;
+		}
+	}
+
+	/// <summary>Applies the resolved <see cref="DaysLabelStyle"/> to every day label.</summary>
+	void ApplyDaysLabelStyle()
+	{
+		if (daysGrid is null || daysLabelStyleBridge is null)
+		{
+			return;
+		}
+
+		foreach (var cell in daysGrid.Cells)
+		{
+			cell.ApplyLabelStyle(daysLabelStyleBridge);
 		}
 	}
 
@@ -161,15 +191,15 @@ public partial class Calendar : ContentView, IDisposable
 
 		int addDays = 0;
 		var remainingDaysUntilMax = (DateTime.MaxValue.Date - firstDate.Date).Days + 1;
-		var safeOffsets = (int)Math.Min(dayViews.Count, Math.Max(0, remainingDaysUntilMax));
+		var safeOffsets = (int)Math.Min(dayModels.Count, Math.Max(0, remainingDaysUntilMax));
 
 		// Item 4: build a HashSet<DateTime> once so each per-day IsDisabled check is O(1)
 		// instead of O(n) with List.Contains.
 		var disabledSet = DisabledDates?.Count > 0 ? new HashSet<DateTime>(DisabledDates) : null;
 
-		foreach (var dayView in dayViews)
+		for (int i = 0; i < dayModels.Count; i++)
 		{
-			var dayModel = dayView.BindingContext as DayModel;
+			var dayModel = dayModels[i];
 
 			if (addDays < safeOffsets)
 			{
@@ -220,13 +250,23 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	void UpdateDayGlobalProperties()
 	{
-		foreach (var dayView in dayViews)
+		if (daysLabelStyleBridge is not null)
 		{
-			var dayModel = dayView.BindingContext as DayModel;
-			if (dayModel is null)
+			// raises Changed (-> ApplyDaysLabelStyle) only when the style instance changed
+			daysLabelStyleBridge.Style = DaysLabelStyle;
+		}
+
+		if (daysGrid is not null)
+		{
+			foreach (var cell in daysGrid.Cells)
 			{
-				continue;
+				cell.Culture = Culture;
 			}
+		}
+
+		for (int i = 0; i < dayModels.Count; i++)
+		{
+			var dayModel = dayModels[i];
 
 			// Structural global props
 			dayModel.DayTappedCommand = DayTappedCommand;

@@ -1,3 +1,5 @@
+using Plugin.Maui.Calendar.Controls.Drawn;
+
 namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView, IDisposable
@@ -19,6 +21,7 @@ public partial class Calendar : ContentView, IDisposable
 		ShowHideCalendarCommand = new Command(ToggleCalendarSectionVisibility);
 
 		InitializeComponent();
+		InitializeStyleBridges();
 
 		InitializeViewLayoutEngine();
 		InitializeSelectionType();
@@ -33,5 +36,16 @@ public partial class Calendar : ContentView, IDisposable
 
 		calendarSectionAnimateHide = new Lazy<Animation>(() => new Animation(AnimateMonths, 1, 0));
 		calendarSectionAnimateShow = new Lazy<Animation>(() => new Animation(AnimateMonths, 0, 1));
+	}
+
+	void InitializeStyleBridges()
+	{
+		daysLabelStyleBridge = new LabelStyleBridge(this) { Style = DaysLabelStyle };
+		daysTitleStyleBridge = new LabelStyleBridge(this) { Style = DaysTitleLabelStyle };
+		weekendTitleStyleBridge = new LabelStyleBridge(this) { Style = WeekendTitleStyle };
+
+		daysLabelStyleBridge.Changed += (_, _) => ApplyDaysLabelStyle();
+		daysTitleStyleBridge.Changed += (_, _) => ApplyTitleStyles();
+		weekendTitleStyleBridge.Changed += (_, _) => ApplyTitleStyles();
 	}
 }
