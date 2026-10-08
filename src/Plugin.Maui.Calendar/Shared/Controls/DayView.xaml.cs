@@ -216,23 +216,30 @@ public sealed partial class DayView : ContentView
 
 	void OnTapped(object sender, EventArgs e)
 	{
-		if (BindingContext is DayModel dayModel && !dayModel.IsDisabled && dayModel.IsVisible)
+		if (BindingContext is DayModel dayModel)
 		{
-			if (!dayModel.AllowDeselect && dayModel.IsSelected)
-			{
-				return;
-			}
-
 			// Resolved before DayTappedCommand runs: the command may rebuild the layout (e.g. switch
 			// CalendarLayout), which takes this cell out of its calendar.
-			var owner = FindOwningCalendar();
-
-			dayModel.IsSelected = !dayModel.IsSelected;
-			dayModel.DayTappedCommand?.Execute(dayModel.Date);
-			// Source lets only the calendar that owns this cell handle the tap; the message is
-			// broadcast to every calendar that is on screen.
-			WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date) { Source = owner });
+			Tap(dayModel, FindOwningCalendar());
 		}
+	}
+
+	/// <summary>
+	/// Selects or deselects the tapped day of <paramref name="owner"/>, for the native cell and the
+	/// drawn grid alike.
+	/// </summary>
+	internal static void Tap(DayModel dayModel, Calendar owner)
+	{
+		if (dayModel.IsDisabled || !dayModel.IsVisible || (!dayModel.AllowDeselect && dayModel.IsSelected))
+		{
+			return;
+		}
+
+		dayModel.IsSelected = !dayModel.IsSelected;
+		dayModel.DayTappedCommand?.Execute(dayModel.Date);
+		// Source lets only the calendar that owns this cell handle the tap; the message is
+		// broadcast to every calendar that is on screen.
+		WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date) { Source = owner });
 	}
 
 	Calendar FindOwningCalendar()

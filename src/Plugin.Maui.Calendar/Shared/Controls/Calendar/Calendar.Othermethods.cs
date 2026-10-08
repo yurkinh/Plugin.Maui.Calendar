@@ -185,28 +185,41 @@ public partial class Calendar : ContentView, IDisposable
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
 
+		// The drawn grid paints the built-in cells only; a DayViewTemplate keeps the native cells.
+		// Its cells and title labels are still created, in a grid that is never shown, so the day
+		// models and every update pass stay the same in both modes.
+		var drawn = IsDrawnDayGridEnabled && DayViewTemplate is null;
+		var layoutGrid = drawn ? new Grid() : daysControl;
+
 		// Item 3: GenerateLayout now populates daysControl directly, eliminating the
 		// intermediate Grid allocation and the O(n) copy loops.
 		CurrentViewLayoutEngine.GenerateLayout(
-			daysControl,
+			layoutGrid,
 			dayViews,
 			this,
 			DayTappedCommand,
 			DayViewTemplate
 		);
 
-		dayTitleLabels = [.. daysControl.Children.OfType<Label>()];
+		dayTitleLabels = [.. layoutGrid.Children.OfType<Label>()];
 
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
 		UpdateDays();
 
-		// The cells join the grid only now that their models hold real data. On a calendar that is
-		// already on screen they are rendered (and their DayViewTemplate content, including a
-		// selector's choice, is created) once, for the right day, instead of first for empty models.
-		foreach (var dayView in dayViews)
+		if (drawn)
 		{
-			daysControl.Add(dayView);
+			ShowDrawnDayGrid();
+		}
+		else
+		{
+			// The cells join the grid only now that their models hold real data. On a calendar that is
+			// already on screen they are rendered (and their DayViewTemplate content, including a
+			// selector's choice, is created) once, for the right day, instead of first for empty models.
+			foreach (var dayView in dayViews)
+			{
+				daysControl.Add(dayView);
+			}
 		}
 
 		UpdateWeekendBackground();

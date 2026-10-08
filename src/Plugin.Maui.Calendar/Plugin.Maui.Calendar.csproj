@@ -73,6 +73,8 @@
 
 	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />		
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+	  <!-- Draws the day grid (the hybrid DrawnUI migration). Apps need builder.UseDrawnUi() in MauiProgram. -->
+	  <PackageReference Include="DrawnUi.Maui" Version="1.10.7.3" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Shared\" />

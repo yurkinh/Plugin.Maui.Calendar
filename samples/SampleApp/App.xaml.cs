@@ -16,7 +16,9 @@ public partial class App : Application
         calendarSettingsService.Apply();
     }
 
-    protected override Window CreateWindow(IActivationState activationState) => new(new AppShell());
+    // The DrawnUI spike benchmark (see DrawnSpikeBenchmarkPage) replaces the shell when requested.
+    protected override Window CreateWindow(IActivationState activationState) =>
+        new(Views.DrawnSpikeBenchmarkPage.Requested ? new Views.DrawnSpikeBenchmarkPage() : new AppShell());
 
     protected override void OnStart()
     {

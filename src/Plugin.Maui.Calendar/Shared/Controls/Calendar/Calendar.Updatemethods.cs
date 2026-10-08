@@ -150,6 +150,8 @@ public partial class Calendar : ContentView, IDisposable
 			}
 			dayNumber = (dayNumber + 1) % 7;
 		}
+
+		drawnDayGrid?.SetTitles([.. dayTitleLabels.Select(label => label.Text)], [.. dayTitleLabels.Select(label => label.Style)]);
 	}
 
 	void UpdateDays()
