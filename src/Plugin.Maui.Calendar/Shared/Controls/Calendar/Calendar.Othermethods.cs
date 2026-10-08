@@ -104,6 +104,8 @@ public partial class Calendar : ContentView, IDisposable
 
 	void OnSwiped(object sender, SwipedEventArgs e) => HandleSwipe(e.Direction);
 
+	void OnDaysGridDayTapped(object sender, DateTime date) => OnDayTappedHandler(date);
+
 	void OnDaysGridSwiped(object sender, SwipeDirection direction)
 	{
 		if (!SwipeDetectionDisabled)
@@ -175,6 +177,7 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			daysGrid = new DaysGrid();
 			daysGrid.Swiped += OnDaysGridSwiped;
+			daysGrid.DayTapped += OnDaysGridDayTapped;
 			daysCanvas.Content = daysGrid;
 		}
 

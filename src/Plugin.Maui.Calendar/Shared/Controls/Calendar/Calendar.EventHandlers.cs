@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Plugin.Maui.Calendar.Models;
+﻿using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls;
 
@@ -62,7 +61,6 @@ public partial class Calendar : ContentView, IDisposable
 	void AttachHandler()
 	{
 		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
-		WeakReferenceMessenger.Default.Register<DayTappedMessage>(this, (r, m) => OnDayTappedHandler(m.Value));
 
 		if (!SwipeDetectionDisabled)
 		{
@@ -86,7 +84,6 @@ public partial class Calendar : ContentView, IDisposable
 	void DetachHandler()
 	{
 		calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
-		WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(this);
 
 		if (!SwipeDetectionDisabled && GestureRecognizers.Count > 0)
 		{

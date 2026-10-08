@@ -23,14 +23,7 @@ public partial class Calendar : ContentView, IDisposable
 	IViewLayoutEngine CurrentViewLayoutEngine { get; set; }
 	public ISelectionEngine CurrentSelectionEngine { get; set; } = new SingleSelectionEngine();
 
-	/// <summary>
-	/// No longer populated: days are drawn by DrawnUI instead of one native <see cref="DayView"/> each.
-	/// Kept (always empty) so the public API stays binary compatible.
-	/// </summary>
-	[Obsolete("Days are now drawn; DayView instances are no longer created and this list is always empty.")]
-	protected readonly List<DayView> dayViews = [];
-
-	// One model per drawn day cell, in display order (replaces dayViews internally)
+	// One model per drawn day cell, in display order
 	private protected readonly List<DayModel> dayModels = [];
 
 	DaysGrid daysGrid;

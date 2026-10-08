@@ -15,7 +15,9 @@ Simple cross-platform plugin for Calendar control featuring:
 ### What's new
 V4.0.0
 * The day grid is now drawn with [DrawnUI](https://github.com/DrawnUi/DrawnUi.Net) (SkiaSharp) instead of ~250 native views — faster rendering and month switching
-* The public API (properties, styles, templates, events, commands) is unchanged
+* The public API (properties, styles, templates, events, commands) is unchanged, except for these removals: the internal-only `DayTappedMessage` type, the `DayView` type and the protected `Calendar.dayViews` field (days are drawn, so no `DayView` instances exist)
+* Removed the dependency on **CommunityToolkit.Mvvm** — apps that used it transitively through the plugin must now reference it directly
+* Fixed day taps in one calendar affecting other calendars on the same page (e.g. with **AutoChangeMonthOnDayTap**)
 * Fixed **EventIndicatorType.TopDot** (dots are now shown above the day number)
 * Weekday titles re-apply **DaysTitleLabelStyle** / **WeekendTitleStyle** correctly after **FirstDayOfWeek** changes
 

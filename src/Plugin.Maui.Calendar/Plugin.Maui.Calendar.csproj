@@ -65,11 +65,10 @@
 
 	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
 	  <PackageReference Include="DrawnUi.Maui" Version="1.10.7.2" />		
-	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 	  <!-- Locks the public API surface: any added/removed/changed public member fails the build -->
 	  <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0">
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

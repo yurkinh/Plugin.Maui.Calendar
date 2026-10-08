@@ -1,1 +1,5 @@
 #nullable enable
+*REMOVED*Plugin.Maui.Calendar.Models.DayTappedMessage
+*REMOVED*Plugin.Maui.Calendar.Models.DayTappedMessage.DayTappedMessage(System.DateTime Value) -> void
+*REMOVED*Plugin.Maui.Calendar.Controls.DayView
+*REMOVED*~readonly Plugin.Maui.Calendar.Controls.Calendar.dayViews -> System.Collections.Generic.List<Plugin.Maui.Calendar.Controls.DayView>

@@ -47,6 +47,9 @@ sealed class DaysGrid : SkiaLayout
 	/// <summary>Raised on the main thread when a swipe ends over the grid.</summary>
 	public event EventHandler<SwipeDirection> Swiped;
 
+	/// <summary>Raised on the main thread after a day cell handles a tap, with the tapped date.</summary>
+	public event EventHandler<DateTime> DayTapped;
+
 	public SkiaLabel[] TitleLabels { get; private set; } = [];
 
 	public IReadOnlyList<DayCell> Cells => cells;
@@ -87,13 +90,15 @@ sealed class DaysGrid : SkiaLayout
 			for (int col = 0; col < DaysInWeek; col++)
 			{
 				var model = new DayModel { DayTappedCommand = dayTappedCommand };
-				var cell = new DayCell(model);
+				var cell = new DayCell(model, OnCellTapped);
 				dayModels.Add(model);
 				cells.Add(cell);
 				Place(cell, week, col);
 			}
 		}
 	}
+
+	void OnCellTapped(DateTime date) => DayTapped?.Invoke(this, date);
 
 	public void Clear()
 	{

@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Globalization;
-using CommunityToolkit.Mvvm.Messaging;
 using DrawnUi.Draw;
 using DrawnUi.Models;
 using Microsoft.Maui.Layouts;
@@ -28,11 +27,13 @@ sealed class DayCell : SkiaLayout
 	readonly SkiaControl spacer;
 	readonly SkiaRichLabel label;
 	readonly EventDots dots;
+	readonly Action<DateTime> tapped;
 	FlexDirection appliedDirection = FlexDirection.Column;
 
-	public DayCell(DayModel model)
+	public DayCell(DayModel model, Action<DateTime> tapped)
 	{
 		Model = model;
+		this.tapped = tapped;
 
 		Type = LayoutType.Absolute;
 		HorizontalOptions = LayoutOptions.Fill;
@@ -136,7 +137,7 @@ sealed class DayCell : SkiaLayout
 
 		dayModel.IsSelected = !dayModel.IsSelected;
 		dayModel.DayTappedCommand?.Execute(dayModel.Date);
-		WeakReferenceMessenger.Default.Send(new DayTappedMessage(dayModel.Date));
+		tapped?.Invoke(dayModel.Date);
 	}
 
 	void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
