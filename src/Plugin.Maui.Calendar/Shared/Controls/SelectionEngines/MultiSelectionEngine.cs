@@ -6,7 +6,7 @@ using Plugin.Maui.Calendar.Shared.Extensions;
 
 namespace Plugin.Maui.Calendar.Shared.Controls.SelectionEngines;
 
-internal class MultiSelectionEngine : ISelectionEngine
+class MultiSelectionEngine : ISelectionEngine
 {
 	readonly HashSet<DateTime> selectedDates;
 
