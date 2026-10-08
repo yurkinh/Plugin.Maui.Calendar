@@ -1,0 +1,346 @@
+#nullable enable
+override Plugin.Maui.Calendar.Controls.DataTemplateView.OnBindingContextChanged() -> void
+override Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.UpdateRangeSelection() -> void
+Plugin.Maui.Calendar.Controls.Calendar
+Plugin.Maui.Calendar.Controls.Calendar.AllowDeselecting.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.AllowDeselecting.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.AutoChangeMonthOnDayTap.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.AutoChangeMonthOnDayTap.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.Calendar() -> void
+Plugin.Maui.Calendar.Controls.Calendar.CalendarLayout.get -> Plugin.Maui.Calendar.Enums.WeekLayout
+Plugin.Maui.Calendar.Controls.Calendar.CalendarLayout.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.CalendarSectionShown.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.CalendarSectionShown.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.ClearSelection() -> void
+Plugin.Maui.Calendar.Controls.Calendar.Day.get -> int
+Plugin.Maui.Calendar.Controls.Calendar.Day.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.DaysTitleLabelFirstUpperRestLower.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.DaysTitleLabelFirstUpperRestLower.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.DaysTitleMaximumLength.get -> Plugin.Maui.Calendar.Enums.DaysTitleMaxLength
+Plugin.Maui.Calendar.Controls.Calendar.DaysTitleMaximumLength.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.DayViewBorderMargin.get -> Microsoft.Maui.Thickness
+Plugin.Maui.Calendar.Controls.Calendar.DayViewBorderMargin.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.DayViewCornerRadius.get -> float
+Plugin.Maui.Calendar.Controls.Calendar.DayViewCornerRadius.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.DayViewSize.get -> double
+Plugin.Maui.Calendar.Controls.Calendar.DayViewSize.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.Dispose() -> void
+Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorType.get -> Plugin.Maui.Calendar.Enums.EventIndicatorType
+Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorType.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.EventsScrollViewVisible.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.EventsScrollViewVisible.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.FirstDayOfWeek.get -> System.DayOfWeek
+Plugin.Maui.Calendar.Controls.Calendar.FirstDayOfWeek.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.FooterArrowVisible.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.FooterArrowVisible.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.FooterSectionVisible.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.FooterSectionVisible.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.HeaderSectionVisible.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.HeaderSectionVisible.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.InitializeViewLayoutEngine() -> void
+Plugin.Maui.Calendar.Controls.Calendar.MaximumDate.get -> System.DateTime
+Plugin.Maui.Calendar.Controls.Calendar.MaximumDate.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.MinimumDate.get -> System.DateTime
+Plugin.Maui.Calendar.Controls.Calendar.MinimumDate.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.Month.get -> int
+Plugin.Maui.Calendar.Controls.Calendar.Month.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.MonthChanged -> System.EventHandler<Plugin.Maui.Calendar.Models.MonthChangedEventArgs>
+Plugin.Maui.Calendar.Controls.Calendar.OtherMonthDayIsVisible.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.OtherMonthDayIsVisible.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.OtherMonthWeekIsVisible.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.OtherMonthWeekIsVisible.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.SelectedDate.get -> System.DateTime?
+Plugin.Maui.Calendar.Controls.Calendar.SelectedDate.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.ShowMonthPicker.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.ShowMonthPicker.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.ShownDate.get -> System.DateTime
+Plugin.Maui.Calendar.Controls.Calendar.ShownDate.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.ShowYearPicker.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.ShowYearPicker.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.SwipedDown -> System.EventHandler
+Plugin.Maui.Calendar.Controls.Calendar.SwipeDetectionDisabled.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.SwipeDetectionDisabled.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.SwipedLeft -> System.EventHandler
+Plugin.Maui.Calendar.Controls.Calendar.SwipedRight -> System.EventHandler
+Plugin.Maui.Calendar.Controls.Calendar.SwipedUp -> System.EventHandler
+Plugin.Maui.Calendar.Controls.Calendar.SwipeToChangeMonthEnabled.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.SwipeToChangeMonthEnabled.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.SwipeUpToHideEnabled.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.SwipeUpToHideEnabled.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.UseAbbreviatedDayNames.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.UseAbbreviatedDayNames.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.UseNativeDigits.get -> bool
+Plugin.Maui.Calendar.Controls.Calendar.UseNativeDigits.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.WeekViewUnit.get -> Plugin.Maui.Calendar.Enums.WeekViewUnit
+Plugin.Maui.Calendar.Controls.Calendar.WeekViewUnit.set -> void
+Plugin.Maui.Calendar.Controls.Calendar.Year.get -> int
+Plugin.Maui.Calendar.Controls.Calendar.Year.set -> void
+Plugin.Maui.Calendar.Controls.DataTemplateView
+Plugin.Maui.Calendar.Controls.DataTemplateView.DataTemplateView() -> void
+Plugin.Maui.Calendar.Controls.DayView
+Plugin.Maui.Calendar.Controls.DefaultFooterSection
+Plugin.Maui.Calendar.Controls.DefaultFooterSection.DefaultFooterSection() -> void
+Plugin.Maui.Calendar.Controls.DefaultHeaderSection
+Plugin.Maui.Calendar.Controls.DefaultHeaderSection.DefaultHeaderSection() -> void
+Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine
+Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine.IsDateSelected(System.DateTime dateToCheck) -> bool
+Plugin.Maui.Calendar.Controls.MultiSelectionCalendar
+Plugin.Maui.Calendar.Controls.MultiSelectionCalendar.MultiSelectionCalendar() -> void
+Plugin.Maui.Calendar.Controls.RangeSelectionCalendar
+Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.RangeSelectionCalendar() -> void
+Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedEndDate.get -> System.DateTime?
+Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedEndDate.set -> void
+Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedStartDate.get -> System.DateTime?
+Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedStartDate.set -> void
+Plugin.Maui.Calendar.Converters.StrokeShapeConverter
+Plugin.Maui.Calendar.Converters.StrokeShapeConverter.StrokeShapeConverter() -> void
+Plugin.Maui.Calendar.Enums.DaysTitleMaxLength
+Plugin.Maui.Calendar.Enums.DaysTitleMaxLength.None = 0 -> Plugin.Maui.Calendar.Enums.DaysTitleMaxLength
+Plugin.Maui.Calendar.Enums.DaysTitleMaxLength.OneChar = 1 -> Plugin.Maui.Calendar.Enums.DaysTitleMaxLength
+Plugin.Maui.Calendar.Enums.DaysTitleMaxLength.ThreeChars = 3 -> Plugin.Maui.Calendar.Enums.DaysTitleMaxLength
+Plugin.Maui.Calendar.Enums.DaysTitleMaxLength.TwoChars = 2 -> Plugin.Maui.Calendar.Enums.DaysTitleMaxLength
+Plugin.Maui.Calendar.Enums.EventIndicatorType
+Plugin.Maui.Calendar.Enums.EventIndicatorType.Background = 2 -> Plugin.Maui.Calendar.Enums.EventIndicatorType
+Plugin.Maui.Calendar.Enums.EventIndicatorType.BackgroundFull = 3 -> Plugin.Maui.Calendar.Enums.EventIndicatorType
+Plugin.Maui.Calendar.Enums.EventIndicatorType.BottomDot = 0 -> Plugin.Maui.Calendar.Enums.EventIndicatorType
+Plugin.Maui.Calendar.Enums.EventIndicatorType.TopDot = 1 -> Plugin.Maui.Calendar.Enums.EventIndicatorType
+Plugin.Maui.Calendar.Enums.WeekLayout
+Plugin.Maui.Calendar.Enums.WeekLayout.Month = 2 -> Plugin.Maui.Calendar.Enums.WeekLayout
+Plugin.Maui.Calendar.Enums.WeekLayout.TwoWeek = 1 -> Plugin.Maui.Calendar.Enums.WeekLayout
+Plugin.Maui.Calendar.Enums.WeekLayout.Week = 0 -> Plugin.Maui.Calendar.Enums.WeekLayout
+Plugin.Maui.Calendar.Enums.WeekViewUnit
+Plugin.Maui.Calendar.Enums.WeekViewUnit.MonthName = 0 -> Plugin.Maui.Calendar.Enums.WeekViewUnit
+Plugin.Maui.Calendar.Enums.WeekViewUnit.WeekNumber = 1 -> Plugin.Maui.Calendar.Enums.WeekViewUnit
+Plugin.Maui.Calendar.Interfaces.IMultiEventDay
+Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent
+Plugin.Maui.Calendar.Models.DayTappedMessage
+Plugin.Maui.Calendar.Models.DayTappedMessage.DayTappedMessage(System.DateTime Value) -> void
+Plugin.Maui.Calendar.Models.EventCollection
+Plugin.Maui.Calendar.Models.EventCollection.Clear() -> void
+Plugin.Maui.Calendar.Models.EventCollection.ContainsKey(System.DateTime key) -> bool
+Plugin.Maui.Calendar.Models.EventCollection.EventCollection() -> void
+Plugin.Maui.Calendar.Models.EventCollection.EventCollection(int capacity) -> void
+Plugin.Maui.Calendar.Models.EventCollection.Remove(System.DateTime key) -> bool
+Plugin.Maui.Calendar.Models.MonthChangedEventArgs
+Plugin.Maui.Calendar.Models.MonthChangedEventArgs.MonthChangedEventArgs(System.DateOnly oldMonth, System.DateOnly newMonth) -> void
+Plugin.Maui.Calendar.Models.MonthChangedEventArgs.NewMonth.get -> System.DateOnly
+Plugin.Maui.Calendar.Models.MonthChangedEventArgs.OldMonth.get -> System.DateOnly
+Plugin.Maui.Calendar.Shared.Extensions.NativeDigitExtensions
+Plugin.Maui.Calendar.Styles.DefaultStyles
+virtual Plugin.Maui.Calendar.Controls.Calendar.Dispose(bool disposing) -> void
+virtual Plugin.Maui.Calendar.Controls.Calendar.UpdateRangeSelection() -> void
+~override Plugin.Maui.Calendar.Controls.Calendar.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs args) -> void
+~Plugin.Maui.Calendar.Controls.Calendar.Culture.get -> System.Globalization.CultureInfo
+~Plugin.Maui.Calendar.Controls.Calendar.Culture.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.CurrentSelectionEngine.get -> Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine
+~Plugin.Maui.Calendar.Controls.Calendar.CurrentSelectionEngine.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.DaysLabelStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.DaysLabelStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.DaysTitleLabelStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.DaysTitleLabelStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.DayTappedCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.DayTappedCommand.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.DeselectedDayTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.DeselectedDayTextColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.DisabledDates.get -> System.Collections.Generic.List<System.DateTime>
+~Plugin.Maui.Calendar.Controls.Calendar.DisabledDates.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.DisabledDayColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.DisabledDayColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.EmptyTemplate.get -> Microsoft.Maui.Controls.DataTemplate
+~Plugin.Maui.Calendar.Controls.Calendar.EmptyTemplate.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorSelectedColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorSelectedColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorSelectedTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorSelectedTextColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorTextColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.Events.get -> Plugin.Maui.Calendar.Models.EventCollection
+~Plugin.Maui.Calendar.Controls.Calendar.Events.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.EventTemplate.get -> Microsoft.Maui.Controls.DataTemplate
+~Plugin.Maui.Calendar.Controls.Calendar.EventTemplate.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.FooterArrowLabelStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.FooterArrowLabelStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.FooterSectionTemplate.get -> Microsoft.Maui.Controls.DataTemplate
+~Plugin.Maui.Calendar.Controls.Calendar.FooterSectionTemplate.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.HeaderSectionTemplate.get -> Microsoft.Maui.Controls.DataTemplate
+~Plugin.Maui.Calendar.Controls.Calendar.HeaderSectionTemplate.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.LayoutUnitText.get -> string
+~Plugin.Maui.Calendar.Controls.Calendar.LayoutUnitText.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.LocalizedYear.get -> string
+~Plugin.Maui.Calendar.Controls.Calendar.MonthChangedCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.MonthChangedCommand.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.MonthLabelStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.MonthLabelStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.NextLayoutUnitCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.NextMonthArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.NextMonthArrowButtonStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.NextYearArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.NextYearArrowButtonStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.NextYearCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.OnShownDateChangedCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.OnShownDateChangedCommand.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.OtherMonthDayColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.OtherMonthDayColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.OtherMonthSelectedDayColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.OtherMonthSelectedDayColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.PreviousMonthArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.PreviousMonthArrowButtonStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.PreviousYearArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.PreviousYearArrowButtonStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.PrevLayoutUnitCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.PrevYearCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDateLabelStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDateLabelStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDates.get -> System.Collections.ObjectModel.ObservableCollection<System.DateTime>
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDates.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDateText.get -> string
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDateText.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDateTextFormat.get -> string
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDateTextFormat.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDayBackgroundColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDayBackgroundColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDayEvents.get -> System.Collections.ICollection
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDayEvents.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDayTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedDayTextColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedTodayTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.SelectedTodayTextColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.ShowHideCalendarCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.SwipeLeftCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.SwipeLeftCommand.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SwipeRightCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.SwipeRightCommand.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.SwipeUpCommand.get -> System.Windows.Input.ICommand
+~Plugin.Maui.Calendar.Controls.Calendar.SwipeUpCommand.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.TodayFillColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.TodayFillColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.TodayOutlineColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.TodayOutlineColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.TodayTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.TodayTextColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.WeekendDayColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.Calendar.WeekendDayColor.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.WeekendTitleStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.WeekendTitleStyle.set -> void
+~Plugin.Maui.Calendar.Controls.Calendar.YearLabelStyle.get -> Microsoft.Maui.Controls.Style
+~Plugin.Maui.Calendar.Controls.Calendar.YearLabelStyle.set -> void
+~Plugin.Maui.Calendar.Controls.DataTemplateView.ItemTemplate.get -> Microsoft.Maui.Controls.DataTemplate
+~Plugin.Maui.Calendar.Controls.DataTemplateView.ItemTemplate.set -> void
+~Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine.GetSelectedDateText(string selectedDateTextFormat, System.Globalization.CultureInfo culture, bool isNativeDigits) -> string
+~Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine.PerformDateSelection(System.DateTime dateToSelect, System.Collections.Generic.List<System.DateTime> disabledDates = null) -> System.Collections.Generic.List<System.DateTime>
+~Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine.TryGetSelectedEvents(Plugin.Maui.Calendar.Models.EventCollection allEvents, out System.Collections.ICollection selectedEvents) -> bool
+~Plugin.Maui.Calendar.Controls.Interfaces.ISelectionEngine.UpdateDateSelection(System.Collections.Generic.IEnumerable<System.DateTime> datesToSelect) -> void
+~Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedDatesRangeBackgroundColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedDatesRangeBackgroundColor.set -> void
+~Plugin.Maui.Calendar.Converters.StrokeShapeConverter.Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) -> object
+~Plugin.Maui.Calendar.Converters.StrokeShapeConverter.ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture) -> object
+~Plugin.Maui.Calendar.Interfaces.IMultiEventDay.Colors.get -> System.Collections.Generic.IReadOnlyList<Microsoft.Maui.Graphics.Color>
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorColor.set -> void
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorSelectedColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorSelectedColor.set -> void
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorSelectedTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorSelectedTextColor.set -> void
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorTextColor.get -> Microsoft.Maui.Graphics.Color
+~Plugin.Maui.Calendar.Interfaces.IPersonalizableDayEvent.EventIndicatorTextColor.set -> void
+~Plugin.Maui.Calendar.Models.EventCollection.Add(System.DateTime key, System.Collections.ICollection value) -> void
+~Plugin.Maui.Calendar.Models.EventCollection.this[System.DateTime key].get -> System.Collections.ICollection
+~Plugin.Maui.Calendar.Models.EventCollection.this[System.DateTime key].set -> void
+~Plugin.Maui.Calendar.Models.EventCollection.TryGetValue(System.DateTime key, out System.Collections.ICollection value) -> bool
+~Plugin.Maui.Calendar.Models.EventCollection.TryGetValues(System.Collections.Generic.ICollection<System.DateTime> keys, out System.Collections.ICollection values) -> bool
+~readonly Plugin.Maui.Calendar.Controls.Calendar.dayViews -> System.Collections.Generic.List<Plugin.Maui.Calendar.Controls.DayView>
+~static Plugin.Maui.Calendar.Shared.Extensions.NativeDigitExtensions.ToNativeDigitString(this int number, System.Globalization.CultureInfo culture) -> string
+~static Plugin.Maui.Calendar.Shared.Extensions.NativeDigitExtensions.ToNativeDigitString(this System.DateTime date, string format, System.Globalization.CultureInfo culture) -> string
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultDaysTitleLabelStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultFooterArrowLabelStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultLabelStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultMonthLabelStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultNextMonthArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultNextYearArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultPreviousMonthArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultPreviousYearArrowButtonStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultSelectedDateLabelStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultWeekendTitleStyle.get -> Microsoft.Maui.Controls.Style
+~static Plugin.Maui.Calendar.Styles.DefaultStyles.DefaultYearLabelStyle.get -> Microsoft.Maui.Controls.Style
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.AllowDeselectingProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.AutoChangeMonthOnDayTapProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.CalendarLayoutProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.CalendarSectionShownProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.CultureProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DayProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DaysLabelStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DaysTitleLabelFirstUpperRestLowerProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DaysTitleLabelStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DaysTitleMaximumLengthProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DayTappedCommandProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DayViewBorderMarginProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DayViewCornerRadiusProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DayViewSizeProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DeselectedDayTextColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DisabledDatesProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.DisabledDayColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EmptyTemplateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorSelectedColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorSelectedTextColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorTextColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventIndicatorTypeProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventsProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventsScrollViewVisibleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.EventTemplateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.FirstDayOfWeekProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.FooterArrowLabelStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.FooterArrowVisibleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.FooterSectionTemplateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.FooterSectionVisibleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.HeaderSectionTemplateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.HeaderSectionVisibleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.MaximumDateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.MinimumDateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.MonthChangedCommandProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.MonthLabelStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.MonthProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.MonthTextProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.NextMonthArrowButtonStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.NextYearArrowButtonStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.OnShownDateChangedCommandProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.OtherMonthDayColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.OtherMonthDayIsVisibleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.OtherMonthSelectedDayColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.OtherMonthWeekIsVisibleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.PreviousMonthArrowButtonStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.PreviousYearArrowButtonStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDateLabelStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDatesProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDateTextFormatProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDateTextProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDayBackgroundColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDayEventsProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedDayTextColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SelectedTodayTextColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.ShowMonthPickerProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.ShownDateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.ShowYearPickerProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SwipeDetectionDisabledProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SwipeLeftCommandProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SwipeRightCommandProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SwipeToChangeMonthEnabledProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SwipeUpCommandProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.SwipeUpToHideEnabledProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.TodayFillColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.TodayOutlineColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.TodayTextColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.UseAbbreviatedDayNamesProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.UseNativeDigitsProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.WeekendDayColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.WeekendTitleStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.WeekViewUnitProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.YearLabelStyleProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.Calendar.YearProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.DataTemplateView.ItemTemplateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedDatesRangeBackgroundColorProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedEndDateProperty -> Microsoft.Maui.Controls.BindableProperty
+~static readonly Plugin.Maui.Calendar.Controls.RangeSelectionCalendar.SelectedStartDateProperty -> Microsoft.Maui.Controls.BindableProperty
