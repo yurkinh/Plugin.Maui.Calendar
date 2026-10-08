@@ -35,7 +35,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>3.0.2</PackageVersion>
+		<PackageVersion>4.0.0</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -52,8 +52,9 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Updated to .NET 10 MAUI SR6
-                        * Performance improvements and bug fixes                                             
+                        * Day grid is now drawn with DrawnUI (SkiaSharp) instead of native views; public API unchanged
+                        * BREAKING SETUP: call builder.UseDrawnUi() in MauiProgram (requires Microsoft.Maui.Controls 10.0.80+)
+                        * Fixed EventIndicatorType.TopDot and weekend title styles after FirstDayOfWeek changes
     </PackageReleaseNotes>
 	</PropertyGroup>	
 

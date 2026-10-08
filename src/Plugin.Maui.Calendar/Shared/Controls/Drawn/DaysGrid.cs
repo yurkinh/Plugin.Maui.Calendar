@@ -33,6 +33,8 @@ sealed class DaysGrid : SkiaLayout
 		ColumnSpacing = 0;
 		RowSpacing = 6;
 		AccessibilityRole = Aria.RoleGrid;
+		// recomposes only the regions of cells that changed; each DayCell keeps its own image cache
+		UseCache = SkiaCacheType.ImageComposite;
 
 		var columns = new ColumnDefinition[DaysInWeek];
 		for (int i = 0; i < DaysInWeek; i++)

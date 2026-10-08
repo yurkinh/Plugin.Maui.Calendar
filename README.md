@@ -13,6 +13,24 @@ Simple cross-platform plugin for Calendar control featuring:
 - UI reactive to EventCollection, Culture, and other changes 
 
 ### What's new
+V4.0.0
+* The day grid is now drawn with [DrawnUI](https://github.com/DrawnUi/DrawnUi.Net) (SkiaSharp) instead of ~250 native views — faster rendering and month switching
+* The public API (properties, styles, templates, events, commands) is unchanged
+* Fixed **EventIndicatorType.TopDot** (dots are now shown above the day number)
+* Weekday titles re-apply **DaysTitleLabelStyle** / **WeekendTitleStyle** correctly after **FirstDayOfWeek** changes
+
+> ⚠️ **Required setup change (4.0.0)**: register DrawnUI in `MauiProgram.cs`, otherwise the calendar cannot render:
+>
+> ```csharp
+> using DrawnUi.Draw;
+>
+> builder
+>     .UseMauiApp<App>()
+>     .UseDrawnUi();
+> ```
+>
+> Requires `Microsoft.Maui.Controls` 10.0.80 or later.
+
 V2.0.0
 * Updated to .NET 9
 * Optimized startup time: iOS 20 % / Android 40 % 
@@ -113,7 +131,7 @@ Weekend calendar
 | ![Weekend calendar Android Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_android.png) | ![Weekend calendar IOS Screenshot](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/res/WeekendCalendar_ios.png) |
 
 ### Usage
-To get started just install the package via Nuget.
+To get started just install the package via Nuget and call `.UseDrawnUi()` on your `MauiAppBuilder` (see [What's new](#whats-new)).
 You can take a look on the sample app to get started or continue reading.
 
 Reference the following xmlns to your page:
