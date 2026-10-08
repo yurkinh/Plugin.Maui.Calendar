@@ -3,7 +3,9 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using Plugin.Maui.Calendar.Controls;
 using Plugin.Maui.Calendar.Controls.Drawn;
+using DrawnUi.Draw;
 using Plugin.Maui.Calendar.Enums;
+using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Tests.TestHelpers;
 using Xunit;
 using CalendarControl = Plugin.Maui.Calendar.Controls.Calendar;
@@ -165,6 +167,154 @@ public sealed class DrawnDayGridTests : IDisposable
 		calendar.SelectedDate.Should().BeNull();
 	}
 
+	// ── Default cell ─────────────────────────────────────────────────────────
+
+	static DrawnDayCell Cell(CalendarControl calendar, DateTime date) =>
+		DrawnGrid(calendar).Cells.Single(cell => cell.Day.Date == date);
+
+	[Fact]
+	public void Cell_FillsItsColumn_WithADayViewSizeByDayViewHeightContainer()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, DayViewSize = 32, DayViewHeight = 56 };
+
+		var cell = Cell(calendar, May(14));
+
+		cell.HorizontalOptions.Should().Be(LayoutOptions.Fill);
+		cell.HeightRequest.Should().Be(56);
+		cell.Container.WidthRequest.Should().Be(32);
+		cell.Container.HeightRequest.Should().Be(56);
+	}
+
+	[Fact]
+	public void Background_FillsTheContainerUpToDayViewSize_InsideDayViewBorderMargin()
+	{
+		var calendar = new TestCalendar
+		{
+			ShownDate = May15, DayViewSize = 40, DayViewHeight = 60, DayViewBorderMargin = new Thickness(2, 3), DayViewCornerRadius = 6,
+		};
+
+		var cell = Cell(calendar, May(14));
+
+		// Width: 40 less the horizontal margin; height: the native Border's maximum, DayViewSize.
+		cell.BackgroundShape.WidthRequest.Should().Be(36);
+		cell.BackgroundShape.HeightRequest.Should().Be(40);
+		cell.BackgroundShape.Margin.Should().Be(new Thickness(2, 3));
+		cell.BackgroundShape.CornerRadius.Should().Be(new CornerRadius(6));
+		cell.Outline.WidthRequest.Should().Be(36);
+		cell.Outline.CornerRadius.Should().Be(6);
+	}
+
+	[Fact]
+	public void Outline_ShowsTheTodayOutline_OnlyOnTodayWhileNotSelected()
+	{
+		var calendar = new TestCalendar
+		{
+			ShownDate = May15, TodayOutlineColor = Colors.Green, TimeProvider = new FixedTimeProvider(May(14)),
+		};
+
+		Cell(calendar, May(14)).Outline.Color.Should().Be(Colors.Green);
+		Cell(calendar, May(15)).Outline.Color.Should().Be(Colors.Transparent);
+
+		calendar.SelectedDate = May(14);
+
+		Cell(calendar, May(14)).Outline.Color.Should().Be(Colors.Transparent);
+	}
+
+	[Fact]
+	public void BackgroundFull_PaintsTheWholeCell()
+	{
+		var calendar = new TestCalendar
+		{
+			ShownDate = May15, EventIndicatorType = EventIndicatorType.BackgroundFull, EventIndicatorColor = Colors.Green,
+			Events = new Plugin.Maui.Calendar.Models.EventCollection { [May(14)] = new List<string> { "Event" } },
+		};
+
+		Cell(calendar, May(14)).BackgroundColor.Should().Be(Colors.Green);
+		Cell(calendar, May(13)).BackgroundColor.Should().Be(Colors.Transparent);
+	}
+
+	[Theory]
+	[InlineData(EventIndicatorType.BottomDot)]
+	[InlineData(EventIndicatorType.TopDot)]
+	[InlineData(EventIndicatorType.Background)]
+	[InlineData(EventIndicatorType.BackgroundFull)]
+	public void Dots_ShowTheEventColors_ForEveryIndicatorType(EventIndicatorType type)
+	{
+		var calendar = new TestCalendar
+		{
+			ShownDate = May15, EventIndicatorType = type,
+			Events = new Plugin.Maui.Calendar.Models.EventCollection { [May(14)] = new MultiColorEvents([Colors.Red, Colors.Green, Colors.Blue]) },
+		};
+
+		Cell(calendar, May(14)).Dots.Where(dot => dot.IsVisible).Select(dot => dot.BackgroundColor)
+			.Should().Equal(Colors.Red, Colors.Green, Colors.Blue);
+		Cell(calendar, May(13)).Dots.Should().OnlyContain(dot => !dot.IsVisible);
+	}
+
+	[Fact]
+	public void HiddenOtherMonthDays_KeepTheirPlace_AndHiddenWeeksTakeNoRoom()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, OtherMonthDayIsVisible = false, OtherMonthWeekIsVisible = false };
+
+		// May 2025 starts on a Thursday: April 27 shares the first week with May days, June 1 starts
+		// a week of June days only.
+		var april27 = Cell(calendar, new DateTime(2025, 4, 27));
+		april27.IsVisible.Should().BeFalse("the native DayView of an other-month day is hidden");
+
+		var june1 = Cell(calendar, new DateTime(2025, 6, 1));
+		june1.IsVisible.Should().BeFalse("a week of other-month days takes no row");
+
+		Cell(calendar, May(14)).IsVisible.Should().BeTrue();
+		Cell(calendar, May(14)).Container.Opacity.Should().Be(1);
+	}
+
+	[Fact]
+	public void OtherMonthDayIsVisibleFalse_WithVisibleWeeks_HidesTheDayInsideItsCell()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, OtherMonthDayIsVisible = false, OtherMonthWeekIsVisible = true };
+
+		var april27 = Cell(calendar, new DateTime(2025, 4, 27));
+
+		april27.IsVisible.Should().BeTrue();
+		april27.Container.Opacity.Should().Be(0);
+	}
+
+	[Fact]
+	public void DayLabel_UsesDaysLabelStyle()
+	{
+		var style = LabelStyle(Colors.Green);
+		style.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = 20d });
+		style.Setters.Add(new Setter { Property = Label.FontAttributesProperty, Value = FontAttributes.Bold });
+		var calendar = new TestCalendar { ShownDate = May15, DaysLabelStyle = style };
+
+		var cell = Cell(calendar, May(14));
+		var label = cell.Label;
+
+		// Font families are not checked: on the net10.0 target of the tests there are no fonts.
+		label.FontSize.Should().Be(20);
+		label.FontAttributes.Should().Be(FontAttributes.Bold);
+		label.TextColor.Should().Be(cell.Day.TextColor, "the day's state decides the color, not the style");
+	}
+
+	[Fact]
+	public void DayLabel_StyleWithoutFontSize_UsesThePlatformLabelSize()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, DaysLabelStyle = LabelStyle(Colors.Green) };
+
+		Cell(calendar, May(14)).Label.FontSize.Should().Be(DrawnText.DefaultLabelFontSize);
+	}
+
+	[Fact]
+	public void DayLabel_UseNativeDigits_ShowsTheNativeDigits()
+	{
+		var calendar = new TestCalendar
+		{
+			ShownDate = May15, Culture = new System.Globalization.CultureInfo("ar-EG"), UseNativeDigits = true,
+		};
+
+		Cell(calendar, May(14)).Label.Text.Should().Be("١٤");
+	}
+
 	// ── Titles ───────────────────────────────────────────────────────────────
 
 	[Fact]
@@ -189,6 +339,30 @@ public sealed class DrawnDayGridTests : IDisposable
 		// Sunday first: the first and the last column are weekend days.
 		DrawnGrid(calendar).TitleLabels.Select(label => label.TextColor)
 			.Should().Equal(Colors.Red, Colors.Green, Colors.Green, Colors.Green, Colors.Green, Colors.Green, Colors.Red);
+	}
+
+	[Fact]
+	public void Titles_AreCentered_UnlessTheirStyleSaysOtherwise()
+	{
+		var start = LabelStyle(Colors.Green);
+		start.Setters.Add(new Setter { Property = Label.HorizontalTextAlignmentProperty, Value = TextAlignment.Start });
+		var calendar = new TestCalendar { ShownDate = May15, WeekendTitleStyle = start };
+
+		DrawnGrid(calendar).TitleLabels.Select(label => label.HorizontalTextAlignment).Should().Equal(
+			DrawTextAlignment.Start, DrawTextAlignment.Center, DrawTextAlignment.Center, DrawTextAlignment.Center,
+			DrawTextAlignment.Center, DrawTextAlignment.Center, DrawTextAlignment.Start);
+	}
+
+	sealed class MultiColorEvents(IReadOnlyList<Color> colors) : List<string>, IMultiEventDay
+	{
+		public IReadOnlyList<Color> Colors { get; } = colors;
+	}
+
+	sealed class FixedTimeProvider(DateTime now) : TimeProvider
+	{
+		public override DateTimeOffset GetUtcNow() => new(now, TimeSpan.Zero);
+
+		public override TimeZoneInfo LocalTimeZone => TimeZoneInfo.Utc;
 	}
 
 	static Style LabelStyle(Color textColor)

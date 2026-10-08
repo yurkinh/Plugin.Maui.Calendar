@@ -14,6 +14,12 @@ public class MainActivity : MauiAppCompatActivity
 			Views.DrawnSpikeBenchmarkPage.Requested = true;
 		}
 
+		// --ei calparity <n> opens scenario n of the DrawnUI parity page.
+		if (Intent?.GetIntExtra("calparity", -1) is >= 0 and var scenario)
+		{
+			Views.DrawnParityPage.Scenario = scenario;
+		}
+
 		base.OnCreate(savedInstanceState);
 	}
 }

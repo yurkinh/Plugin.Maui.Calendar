@@ -18,7 +18,9 @@ public partial class App : Application
 
     // The DrawnUI spike benchmark (see DrawnSpikeBenchmarkPage) replaces the shell when requested.
     protected override Window CreateWindow(IActivationState activationState) =>
-        new(Views.DrawnSpikeBenchmarkPage.Requested ? new Views.DrawnSpikeBenchmarkPage() : new AppShell());
+        new(Views.DrawnSpikeBenchmarkPage.Requested ? new Views.DrawnSpikeBenchmarkPage()
+            : Views.DrawnParityPage.Scenario >= 0 ? new Views.DrawnParityPage()
+            : new AppShell());
 
     protected override void OnStart()
     {

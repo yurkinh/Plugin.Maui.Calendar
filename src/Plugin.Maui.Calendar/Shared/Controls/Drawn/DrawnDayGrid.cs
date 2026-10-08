@@ -41,12 +41,14 @@ sealed class DrawnDayGrid : SkiaGrid
 		ColumnDefinitions = [.. Enumerable.Range(0, daysInWeek).Select(_ => new ColumnDefinition(GridLength.Star))];
 		VerticalOptions = LayoutOptions.Start;
 
-		// Cached as a whole and re-recorded only where a cell changed (a tap, a selection).
-		UseCache = SkiaCacheType.ImageComposite;
+		// Cached as a whole: a month change redraws every cell anyway. Not ImageComposite, which
+		// re-records only the changed cells but loses the synthetic bold of their labels
+		// (FontAttributes Bold without a bold font file) in DrawnUi 1.10.7.3.
+		UseCache = SkiaCacheType.Image;
 
 		for (var column = 0; column < daysInWeek; column++)
 		{
-			var title = new SkiaLabel { HorizontalTextAlignment = DrawTextAlignment.Center, HorizontalOptions = LayoutOptions.Fill };
+			var title = new SkiaLabel { HorizontalOptions = LayoutOptions.Fill };
 			Grid.SetColumn(title, column);
 			titleLabels.Add(title);
 			AddSubView(title);
@@ -92,8 +94,9 @@ sealed class DrawnDayGrid : SkiaGrid
 	{
 		for (var i = 0; i < titleLabels.Count && i < texts.Count; i++)
 		{
-			titleLabels[i].Text = texts[i];
-			StyleValues.ApplyLabelStyle(titleLabels[i], styles[i]);
+			// The native titles are centered unless their style says otherwise (see ViewLayoutBase).
+			DrawnText.ApplyLabelStyle(titleLabels[i], styles[i], DrawnText.DefaultLabelFontSize, TextAlignment.Center);
+			DrawnText.SetText(titleLabels[i], texts[i], styles[i]);
 		}
 	}
 
@@ -117,38 +120,5 @@ sealed class DrawnDayGrid : SkiaGrid
 				}
 				break;
 		}
-	}
-}
-
-/// <summary>Reads the values a <see cref="Style"/> (or one it is based on) sets.</summary>
-static class StyleValues
-{
-	internal static T Get<T>(Style style, BindableProperty property, T fallback)
-	{
-		for (var current = style; current is not null; current = current.BasedOn)
-		{
-			foreach (var setter in current.Setters)
-			{
-				if (setter.Property == property && setter.Value is T value)
-				{
-					return value;
-				}
-			}
-		}
-
-		return fallback;
-	}
-
-	/// <summary>
-	/// Gives <paramref name="label"/> the text settings of a <see cref="Label"/> style. Spike: only
-	/// plain setter values are read, not theme bindings or dynamic resources (phase 3).
-	/// </summary>
-	internal static void ApplyLabelStyle(SkiaLabel label, Style style)
-	{
-		label.TextColor = Get(style, Label.TextColorProperty, Colors.Black);
-		label.FontSize = Get(style, Label.FontSizeProperty, 14d);
-		label.FontAttributes = Get(style, Label.FontAttributesProperty, FontAttributes.None);
-		label.FontFamily = Get<string>(style, Label.FontFamilyProperty, null);
-		label.Margin = Get(style, View.MarginProperty, new Thickness(0));
 	}
 }
