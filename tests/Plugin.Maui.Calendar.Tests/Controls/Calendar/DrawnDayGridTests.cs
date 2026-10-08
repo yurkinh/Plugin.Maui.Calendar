@@ -379,6 +379,60 @@ public sealed class DrawnDayGridTests : IDisposable
 		Cell(calendar, May(14)).Label.Should().BeSameAs(label);
 	}
 
+	// ── Input ────────────────────────────────────────────────────────────────
+
+	[Theory]
+	[InlineData(-120, 0, SwipeDirection.Left)]
+	[InlineData(120, 10, SwipeDirection.Right)]
+	[InlineData(30, -150, SwipeDirection.Up)]
+	[InlineData(-40, 101, SwipeDirection.Down)]
+	[InlineData(100, -100, SwipeDirection.Right)]
+	public void GetSwipe_TheLargerMovementDecides(float x, float y, SwipeDirection expected)
+	{
+		DrawnDayGrid.GetSwipe(x, y).Should().Be(expected);
+	}
+
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(-99, 0)]
+	[InlineData(60, 80)]
+	public void GetSwipe_ShorterThanTheThreshold_IsNoSwipe(float x, float y)
+	{
+		DrawnDayGrid.GetSwipe(x, y).Should().BeNull();
+	}
+
+	[Fact]
+	public void SwipeThreshold_IsTheOneOfMauisSwipeRecognizer()
+	{
+		DrawnDayGrid.SwipeThreshold.Should().Be((float)new SwipeGestureRecognizer().Threshold);
+	}
+
+	[Fact]
+	public void DrawnSwipe_ChangesTheMonth_AsTheCalendarsRecognizersDo()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+		var swipes = new List<string>();
+		calendar.SwipedLeft += (_, _) => swipes.Add("left");
+
+		calendar.OnDrawnDaySwiped(SwipeDirection.Left);
+
+		swipes.Should().Equal("left");
+		calendar.ShownDate.Month.Should().Be(6);
+	}
+
+	[Fact]
+	public void DrawnSwipe_WhileSwipeDetectionIsDisabled_IsIgnored()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, SwipeDetectionDisabled = true };
+
+		calendar.OnDrawnDaySwiped(SwipeDirection.Left);
+		calendar.ShownDate.Month.Should().Be(5);
+
+		calendar.SwipeDetectionDisabled = false;
+		calendar.OnDrawnDaySwiped(SwipeDirection.Left);
+		calendar.ShownDate.Month.Should().Be(6, "the setting is read at the time of the swipe");
+	}
+
 	// ── Titles ───────────────────────────────────────────────────────────────
 
 	[Fact]

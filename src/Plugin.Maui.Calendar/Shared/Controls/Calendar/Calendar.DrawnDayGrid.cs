@@ -39,22 +39,17 @@ public partial class Calendar : ContentView, IDisposable
 			return;
 		}
 
+		// DrawnUI may report gestures on a thread of its own: the calendar handles them on the UI thread.
 		drawnDayGrid = new DrawnDayGrid(this)
 		{
-			DayTapped = day => DayView.Tap(day, this),
+			DayTapped = day => OnUiThread(() => DayView.Tap(day, this)),
 		};
 
 #if ANDROID
 		// As with the native cells (see DayView): on Android the canvas takes the whole touch, so the
 		// calendar's swipe recognizers never see a swipe that starts on a day and the grid hands it
 		// over. Elsewhere the calendar's recognizers see it, and handing it over would count it twice.
-		drawnDayGrid.Swiped = direction =>
-		{
-			if (!SwipeDetectionDisabled)
-			{
-				OnSwiped(this, new SwipedEventArgs(null, direction));
-			}
-		};
+		drawnDayGrid.Swiped = direction => OnUiThread(() => OnDrawnDaySwiped(direction));
 #endif
 
 #if ANDROID || IOS || MACCATALYST || WINDOWS
@@ -62,7 +57,9 @@ public partial class Calendar : ContentView, IDisposable
 		drawnDayCanvas = new Canvas
 		{
 			RenderingMode = RenderingModeType.Accelerated,
-			Gestures = GesturesMode.Enabled,
+
+			// Shares a pan the grid does not keep (a vertical one) with a native ScrollView around the calendar.
+			Gestures = GesturesMode.SoftLock,
 			HorizontalOptions = LayoutOptions.Fill,
 			VerticalOptions = LayoutOptions.Start,
 			Content = drawnDayGrid,
@@ -70,6 +67,30 @@ public partial class Calendar : ContentView, IDisposable
 #else
 		drawnDayCanvas = null;
 #endif
+	}
+
+	/// <summary>
+	/// A swipe the drawn grid recognized over the days (on Android, see EnsureDrawnDayGrid): handled
+	/// like one of the calendar's swipe recognizers, unless swipe detection is off at this moment.
+	/// </summary>
+	internal void OnDrawnDaySwiped(SwipeDirection direction)
+	{
+		if (!SwipeDetectionDisabled)
+		{
+			OnSwiped(this, new SwipedEventArgs(null, direction));
+		}
+	}
+
+	void OnUiThread(Action action)
+	{
+		if (Dispatcher.IsDispatchRequired)
+		{
+			Dispatcher.Dispatch(action);
+		}
+		else
+		{
+			action();
+		}
 	}
 
 	/// <summary>

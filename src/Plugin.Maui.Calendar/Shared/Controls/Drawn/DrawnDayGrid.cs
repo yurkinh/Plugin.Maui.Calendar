@@ -15,8 +15,9 @@ sealed class DrawnDayGrid : SkiaGrid
 {
 	const int daysInWeek = 7;
 
-	// Swipes shorter than this (in points) are taps or jitter, not swipes.
-	const float swipeThreshold = 40f;
+	// The distance (in points) a finger moves for a swipe: the default Threshold of MAUI's
+	// SwipeGestureRecognizer, which the native cells and the calendar use.
+	internal const float SwipeThreshold = 100f;
 
 	readonly List<SkiaLabel> titleLabels = [];
 	readonly List<DrawnDayCell> cells = [];
@@ -254,21 +255,38 @@ sealed class DrawnDayGrid : SkiaGrid
 	{
 		switch (e.Args.Type)
 		{
-			// Keeps a pan, so the swipe ends here. Taps are left to the cells.
+			// A mostly horizontal pan stays here, to end as a swipe to another month. A vertical one is
+			// left to a native ScrollView around the calendar (Canvas.Gestures is SoftLock), as the
+			// native cells leave it; without one the grid still gets its end. Taps go to the cells.
 			case TouchActionResult.Panning:
-				e.Consumed = true;
+				var pan = e.Args.Event.Distance.Total;
+				e.Consumed = Math.Abs(pan.X) > Math.Abs(pan.Y);
 				break;
 
 			case TouchActionResult.Up:
 				var distance = e.Args.Event.Distance.Total;
-				var threshold = swipeThreshold * RenderingScale;
-				if (Math.Max(Math.Abs(distance.X), Math.Abs(distance.Y)) >= threshold)
+				if (GetSwipe(distance.X / RenderingScale, distance.Y / RenderingScale) is { } direction)
 				{
-					Swiped?.Invoke(Math.Abs(distance.X) >= Math.Abs(distance.Y)
-						? (distance.X > 0 ? SwipeDirection.Right : SwipeDirection.Left)
-						: (distance.Y > 0 ? SwipeDirection.Down : SwipeDirection.Up));
+					Swiped?.Invoke(direction);
 				}
 				break;
 		}
+	}
+
+	/// <summary>
+	/// The direction of a finger that moved by (<paramref name="x"/>, <paramref name="y"/>) points,
+	/// or <see langword="null"/> when it moved less than <see cref="SwipeThreshold"/>: the larger
+	/// of the two movements decides, as for MAUI's SwipeGestureRecognizer.
+	/// </summary>
+	internal static SwipeDirection? GetSwipe(float x, float y)
+	{
+		if (Math.Max(Math.Abs(x), Math.Abs(y)) < SwipeThreshold)
+		{
+			return null;
+		}
+
+		return Math.Abs(x) >= Math.Abs(y)
+			? (x > 0 ? SwipeDirection.Right : SwipeDirection.Left)
+			: (y > 0 ? SwipeDirection.Down : SwipeDirection.Up);
 	}
 }

@@ -112,7 +112,12 @@ public sealed class DrawnParityPage : ContentPage
 			WeekendDayBackgroundColor = Color.FromArgb("#FFE3E3"), WeekendDayBackgroundCornerRadius = 10,
 			WeekendDayColor = Colors.Red, OtherMonthWeekIsVisible = false,
 		}),
+		("16 input: inside a ScrollView", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
+		("17 input: no ScrollView", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
 	];
+
+	// The input scenarios show what each calendar received, under it.
+	static bool IsInputScenario => Scenario >= 16;
 
 	public DrawnParityPage()
 	{
@@ -131,18 +136,63 @@ public sealed class DrawnParityPage : ContentPage
 
 		Resources["ParityDayFont"] = "OpenSansSemibold";
 
-		Content = new VerticalStackLayout
+		var native = Create(drawn: false);
+		var drawn = Create(drawn: true);
+
+		var stack = new VerticalStackLayout
 		{
 			Padding = new Thickness(8, 50, 8, 8),
 			Spacing = 10,
-			Children =
-			{
-				new Label { Text = name, FontSize = 12 },
-				Create(drawn: false),
-				new BoxView { HeightRequest = 1, Color = Colors.Gray },
-				Create(drawn: true),
-			},
+			Children = { new Label { Text = name, FontSize = 12 }, native },
 		};
+
+		if (IsInputScenario)
+		{
+			stack.Children.Add(InputLog(native, "NativeLog"));
+		}
+
+		stack.Children.Add(new BoxView { HeightRequest = 1, Color = Colors.Gray });
+		stack.Children.Add(drawn);
+
+		if (IsInputScenario)
+		{
+			stack.Children.Add(InputLog(drawn, "DrawnLog"));
+		}
+
+		// Scenario 16: content below the calendars, so the page scrolls.
+		if (Scenario == 16)
+		{
+			stack.Children.Add(new BoxView { HeightRequest = 1500, Color = Colors.LightBlue });
+			Content = new ScrollView { Content = stack };
+		}
+		else
+		{
+			Content = stack;
+		}
+	}
+
+	// What a calendar received: its swipes by direction, the shown month and whether its days are shown.
+	static Label InputLog(Calendar calendar, string automationId)
+	{
+		var log = new Label { FontSize = 12, AutomationId = automationId };
+		int left = 0, right = 0, up = 0, down = 0;
+
+		void Show() => log.Text =
+			$"swipes L{left} R{right} U{up} D{down} | month {calendar.ShownDate:yyyy-MM} | selected {calendar.SelectedDate:dd} | shown {calendar.CalendarSectionShown}";
+
+		calendar.SwipedLeft += (_, _) => { left++; Show(); };
+		calendar.SwipedRight += (_, _) => { right++; Show(); };
+		calendar.SwipedUp += (_, _) => { up++; Show(); };
+		calendar.SwipedDown += (_, _) => { down++; Show(); };
+		calendar.PropertyChanged += (_, e) =>
+		{
+			if (e.PropertyName is nameof(Calendar.ShownDate) or nameof(Calendar.SelectedDate) or nameof(Calendar.CalendarSectionShown))
+			{
+				Show();
+			}
+		};
+		Show();
+		return log;
 	}
 
 	static EventCollection Events()
