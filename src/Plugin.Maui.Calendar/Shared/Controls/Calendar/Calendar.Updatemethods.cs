@@ -121,9 +121,37 @@ public partial class Calendar : ContentView, IDisposable
 	// daysControl.Children.OfType<Label>() on every invocation.
 	void UpdateDayTitles()
 	{
+		var titles = GetDayTitles();
+
+		for (int column = 0; column < dayTitleLabels.Length; column++)
+		{
+			dayTitleLabels[column].Text = titles[column].Text;
+
+			// The other titles keep their binding to DaysTitleLabelStyle.
+			if (titles[column].IsWeekend)
+			{
+				dayTitleLabels[column].Style = WeekendTitleStyle;
+			}
+		}
+
+		if (isDayGridDrawn)
+		{
+			drawnDayGrid.SetTitles(
+				[.. titles.Select(title => title.Text)],
+				[.. titles.Select(title => title.IsWeekend ? WeekendTitleStyle : DaysTitleLabelStyle)]);
+		}
+	}
+
+	/// <summary>
+	/// The texts of the 7 day-of-week titles, from <see cref="FirstDayOfWeek"/>, and whether each is a
+	/// weekend day (styled with <see cref="WeekendTitleStyle"/>).
+	/// </summary>
+	(string Text, bool IsWeekend)[] GetDayTitles()
+	{
+		var titles = new (string Text, bool IsWeekend)[7];
 		var dayNumber = (int)FirstDayOfWeek;
 
-		foreach (var dayLabel in dayTitleLabels)
+		for (int column = 0; column < titles.Length; column++)
 		{
 			var fullName = (UseAbbreviatedDayNames
 				? Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber]
@@ -141,17 +169,11 @@ public partial class Calendar : ContentView, IDisposable
 							? dayName[..1].ToUpperInvariant() + dayName[1..].ToLowerInvariant()
 							: dayName.ToUpperInvariant();
 
-			dayLabel.Text = titleText;
-
-			// Detect weekend days	
-			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
-			{
-				dayLabel.Style = WeekendTitleStyle;
-			}
+			titles[column] = (titleText, dayNumber is (int)DayOfWeek.Saturday or (int)DayOfWeek.Sunday);
 			dayNumber = (dayNumber + 1) % 7;
 		}
 
-		drawnDayGrid?.SetTitles([.. dayTitleLabels.Select(label => label.Text)], [.. dayTitleLabels.Select(label => label.Style)]);
+		return titles;
 	}
 
 	void UpdateDays()

@@ -185,29 +185,36 @@ public partial class Calendar : ContentView, IDisposable
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
 
-		// The drawn grid paints the built-in cells only; a DayViewTemplate keeps the native cells.
-		// Its cells and title labels are still created, in a grid that is never shown, so the day
-		// models and every update pass stay the same in both modes.
-		var drawn = IsDrawnDayGridEnabled && DayViewTemplate is null;
-		var layoutGrid = drawn ? new Grid() : daysControl;
+		// Both grids show the same day models: the drawn one only needs the cells (which hold the
+		// models, see dayViews), the native one also the title labels and the grid rows.
+		isDayGridDrawn = UsesDrawnDayGrid;
 
-		// Item 3: GenerateLayout now populates daysControl directly, eliminating the
-		// intermediate Grid allocation and the O(n) copy loops.
-		CurrentViewLayoutEngine.GenerateLayout(
-			layoutGrid,
-			dayViews,
-			this,
-			DayTappedCommand,
-			DayViewTemplate
-		);
+		if (isDayGridDrawn)
+		{
+			CurrentViewLayoutEngine.CreateDays(dayViews, DayTappedCommand, DayViewTemplate);
+			dayTitleLabels = [];
+			EnsureDrawnDayGrid();
+		}
+		else
+		{
+			// Item 3: GenerateLayout now populates daysControl directly, eliminating the
+			// intermediate Grid allocation and the O(n) copy loops.
+			CurrentViewLayoutEngine.GenerateLayout(
+				daysControl,
+				dayViews,
+				this,
+				DayTappedCommand,
+				DayViewTemplate
+			);
 
-		dayTitleLabels = [.. layoutGrid.Children.OfType<Label>()];
+			dayTitleLabels = [.. daysControl.Children.OfType<Label>()];
+		}
 
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
 		UpdateDays();
 
-		if (drawn)
+		if (isDayGridDrawn)
 		{
 			ShowDrawnDayGrid();
 		}

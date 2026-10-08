@@ -12,7 +12,8 @@ public partial class Calendar : ContentView, IDisposable
 		nameof(DaysTitleLabelStyle),
 		typeof(Style),
 		typeof(Calendar),
-		DefaultStyles.DefaultDaysTitleLabelStyle
+		DefaultStyles.DefaultDaysTitleLabelStyle,
+		propertyChanged: OnDaysTitleLabelStyleChanged
 	);
 
 	/// <summary>
@@ -42,6 +43,13 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		get => (Style)GetValue(WeekendTitleStyleProperty);
 		set => SetValue(WeekendTitleStyleProperty, value);
+	}
+
+	// The native title labels bind to DaysTitleLabelStyle; the drawn titles are given it.
+	static void OnDaysTitleLabelStyleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		var calendar = (Calendar)bindable;
+		calendar.UpdateDayTitles();
 	}
 
 	static void OnWeekendTitleStyleChanged(BindableObject bindable, object oldValue, object newValue)

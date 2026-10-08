@@ -177,9 +177,17 @@ public partial class Calendar : ContentView, IDisposable
 	// so neither a layout rebuild nor an UpdateDays pass is needed. This also means a template set
 	// in XAML, which is assigned after the constructor has built the grid, does not rebuild it.
 	// Cells that were not rendered yet create their content later, directly from the new template.
+	// The exception: the drawn day grid shows the built-in cell only, so setting the first template
+	// or clearing the last one switches between the drawn and the native grid, which rebuilds it.
 	static void OnDayViewTemplateChanged(BindableObject bindable, object oldValue, object newValue)
 	{
 		var calendar = (Calendar)bindable;
+
+		if (calendar.isDayGridDrawn != calendar.UsesDrawnDayGrid)
+		{
+			calendar.RenderLayout();
+			return;
+		}
 
 		foreach (var dayView in calendar.dayViews)
 		{

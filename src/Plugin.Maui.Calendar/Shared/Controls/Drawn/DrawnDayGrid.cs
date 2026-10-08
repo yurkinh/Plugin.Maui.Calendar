@@ -21,6 +21,12 @@ sealed class DrawnDayGrid : SkiaGrid
 	readonly List<SkiaLabel> titleLabels = [];
 	readonly List<DrawnDayCell> cells = [];
 
+	/// <summary>The day cells, in grid order.</summary>
+	internal IReadOnlyList<DrawnDayCell> Cells => cells;
+
+	/// <summary>The 7 day-of-week titles, from the first day of the week.</summary>
+	internal IReadOnlyList<SkiaLabel> TitleLabels => titleLabels;
+
 	/// <summary>Raised with the cell's day when a day is tapped.</summary>
 	internal Action<DayModel> DayTapped { get; set; }
 

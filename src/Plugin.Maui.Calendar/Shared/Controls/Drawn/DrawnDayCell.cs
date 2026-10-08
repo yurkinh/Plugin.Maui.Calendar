@@ -193,9 +193,24 @@ sealed class DrawnDayCell : SkiaLayer
 		if (e.Args.Type == TouchActionResult.Tapped && day is not null)
 		{
 			e.Consumed = true;
+			Tap();
+		}
+	}
+
+	/// <summary>Handles a tap on the cell, as a touch does.</summary>
+	internal void Tap()
+	{
+		if (day is not null)
+		{
 			tapped(day);
 		}
 	}
+
+	/// <summary>The label that shows the day number.</summary>
+	internal SkiaLabel Label => label;
+
+	/// <summary>The shape behind the day: its background and the today outline.</summary>
+	internal SkiaShape BackgroundShape => background;
 
 	public override void OnDisposing()
 	{

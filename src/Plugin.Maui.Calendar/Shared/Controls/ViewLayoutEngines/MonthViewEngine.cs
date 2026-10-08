@@ -25,6 +25,11 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 		);
 	}
 
+	public void CreateDays(List<DayView> dayViews, ICommand dayTappedCommand, DataTemplate dayViewTemplate)
+	{
+		CreateWeekDays(dayViews, dayTappedCommand, dayViewTemplate, monthNumberOfWeeks);
+	}
+
 	public DateTime GetFirstDate(DateTime dateToShow)
 	{
 		return GetFirstDateOfWeek(new DateTime(dateToShow.Year, dateToShow.Month, 1));

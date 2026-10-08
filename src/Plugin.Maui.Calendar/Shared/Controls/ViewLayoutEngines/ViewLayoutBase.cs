@@ -87,23 +87,42 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 			targetGrid.Add(label, i, 0);
 		}
 
-		dayViews.Clear();
+		CreateWeekDays(dayViews, dayTappedCommand, dayViewTemplate, numberOfWeeks);
 
 		for (int i = 1; i <= numberOfWeeks; i++)
 		{
 			targetGrid.RowDefinitions.Add(new RowDefinition());
+		}
 
-			for (int col = 0; col < numberOfDaysInWeek; col++)
-			{
-				var dayView = new DayView(dayViewTemplate);
-				var dayModel = new DayModel();
-				dayView.BindingContext = dayModel;
-				dayModel.DayTappedCommand = dayTappedCommand;
+		for (int cell = 0; cell < dayViews.Count; cell++)
+		{
+			Grid.SetColumn(dayViews[cell], cell % numberOfDaysInWeek);
+			Grid.SetRow(dayViews[cell], 1 + (cell / numberOfDaysInWeek));
+		}
+	}
 
-				Grid.SetColumn(dayView, col);
-				Grid.SetRow(dayView, i);
-				dayViews.Add(dayView);
-			}
+	/// <summary>
+	/// Fills <paramref name="dayViews"/> with <paramref name="numberOfWeeks"/> × 7 <see cref="DayView"/>
+	/// cells, each with a new <see cref="DayModel"/> as its binding context, in grid order (rows top to
+	/// bottom, a row from <c>FirstDayOfWeek</c>). The drawn day grid shows these models without adding
+	/// the cells to the screen; <see cref="GenerateWeekLayout"/> places them in the native grid.
+	/// </summary>
+	protected static void CreateWeekDays(
+			List<DayView> dayViews,
+			ICommand dayTappedCommand,
+			DataTemplate dayViewTemplate,
+			int numberOfWeeks
+	)
+	{
+		dayViews.Clear();
+
+		for (int cell = 0; cell < numberOfWeeks * numberOfDaysInWeek; cell++)
+		{
+			var dayView = new DayView(dayViewTemplate);
+			var dayModel = new DayModel();
+			dayView.BindingContext = dayModel;
+			dayModel.DayTappedCommand = dayTappedCommand;
+			dayViews.Add(dayView);
 		}
 	}
 }
