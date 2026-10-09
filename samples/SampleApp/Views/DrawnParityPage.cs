@@ -114,6 +114,7 @@ public sealed class DrawnParityPage : ContentPage
 		}),
 		("16 input: inside a ScrollView", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
 		("17 input: no ScrollView", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
+		("18 DayViewTemplate set at 3 s, cleared at 6 s", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
 	];
 
 	// The input scenarios show what each calendar received, under it.
@@ -159,6 +160,21 @@ public sealed class DrawnParityPage : ContentPage
 			stack.Children.Add(InputLog(drawn, "DrawnLog"));
 		}
 
+		// Scenario 18: both calendars get a DayViewTemplate and lose it again while shown.
+		if (Scenario == 18)
+		{
+			Dispatcher.StartTimer(TimeSpan.FromSeconds(3), () =>
+			{
+				native.DayViewTemplate = drawn.DayViewTemplate = DayTemplate();
+				Dispatcher.StartTimer(TimeSpan.FromSeconds(3), () =>
+				{
+					native.DayViewTemplate = drawn.DayViewTemplate = null;
+					return false;
+				});
+				return false;
+			});
+		}
+
 		// Scenario 16: content below the calendars, so the page scrolls.
 		if (Scenario == 16)
 		{
@@ -170,6 +186,23 @@ public sealed class DrawnParityPage : ContentPage
 			Content = stack;
 		}
 	}
+
+	// A day cell of an app: the day number on a rounded square, orange when selected.
+	static DataTemplate DayTemplate() => new(() =>
+	{
+		var label = new Label { HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, FontSize = 13 };
+		label.SetBinding(Label.TextProperty, static (Plugin.Maui.Calendar.Interfaces.ICalendarDay day) => day.Day);
+		var border = new Border
+		{
+			StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 6 },
+			Stroke = Colors.Teal,
+			Margin = new Thickness(3),
+			Content = label,
+		};
+		border.SetBinding(VisualElement.BackgroundColorProperty, static (Plugin.Maui.Calendar.Interfaces.ICalendarDay day) => day.IsSelected,
+			converter: new SelectedColorConverter());
+		return border;
+	});
 
 	// What a calendar received: its swipes by direction, the shown month and whether its days are shown.
 	static Label InputLog(Calendar calendar, string automationId)
@@ -264,5 +297,14 @@ public sealed class DrawnParityPage : ContentPage
 		}
 		style.Setters.Add(new Setter { Property = Label.HorizontalTextAlignmentProperty, Value = TextAlignment.Center });
 		return style;
+	}
+
+	sealed class SelectedColorConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+			value is true ? Colors.Orange : Colors.Transparent;
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+			throw new NotSupportedException();
 	}
 }

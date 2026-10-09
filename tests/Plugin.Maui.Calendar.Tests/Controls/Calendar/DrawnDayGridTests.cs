@@ -87,6 +87,69 @@ public sealed class DrawnDayGridTests : IDisposable
 		calendar.DayViews.Should().Equal(cells, "only the content of the native cells changes");
 	}
 
+	[Fact]
+	public void DayViewTemplateSelector_UsesTheNativeGrid_AndItsChoices()
+	{
+		var label = CalendarTestExtensions.DayLabelTemplate();
+		var selector = new RecordingTemplateSelector(day => day.IsSelected ? label : null);
+
+		var calendar = new TestCalendar { ShownDate = May15, SelectedDate = May(14), DayViewTemplate = selector };
+		calendar.EnsureAllContent();
+
+		calendar.DrawnDayGrid.Should().BeNull();
+		calendar.CellFor(May(14)).ShowsTemplateContent().Should().BeTrue("the selector chose the template for the selected day");
+		calendar.CellFor(May(13)).ShowsBuiltInCell().Should().BeTrue("a selector returning null gives the built-in cell");
+	}
+
+	[Fact]
+	public void SwitchingGrids_KeepsTheCalendarState()
+	{
+		var calendar = new TestRangeSelectionCalendar
+		{
+			ShownDate = May15, SelectedStartDate = May(12), SelectedEndDate = May(16),
+			SelectedDatesRangeBackgroundColor = Colors.LightBlue,
+			Events = new Plugin.Maui.Calendar.Models.EventCollection { [May(20)] = new List<string> { "Event" } },
+		};
+		calendar.NextLayoutUnitCommand.Execute(null);
+		calendar.PrevLayoutUnitCommand.Execute(null);
+
+		calendar.DayViewTemplate = CalendarTestExtensions.DayLabelTemplate();
+		calendar.DayViewTemplate = null;
+
+		var grid = calendar.DrawnDayGrid!;
+		grid.Cells.Select(cell => cell.Day).Should().Equal(calendar.Days(), "the drawn grid shows the new days");
+		var day14 = grid.Cells.Single(cell => cell.Day.Date == May(14)).Day;
+		day14.IsSelected.Should().BeTrue();
+		day14.BackgroundColor.Should().Be(Colors.LightBlue, "the range colors are applied to the new days");
+		grid.Cells.Single(cell => cell.Day.Date == May(20)).Day.HasEvents.Should().BeTrue();
+		calendar.ShownDate.Month.Should().Be(5);
+	}
+
+	[Fact]
+	public void SwitchingToTheNativeGrid_ReleasesTheDrawnDays()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+		var grid = calendar.DrawnDayGrid!;
+
+		calendar.DayViewTemplate = CalendarTestExtensions.DayLabelTemplate();
+
+		grid.Cells.Should().OnlyContain(cell => cell.Day == null, "the drawn cells no longer follow days the calendar replaced");
+	}
+
+	[Fact]
+	public void DayViewTemplateSetAfterTheConstructor_AsXamlDoes_EndsInTheNativeGrid()
+	{
+		// XAML assigns the template after the constructor, which already rendered the drawn grid.
+		var calendar = new TestCalendar();
+		calendar.ShownDate = May15;
+		calendar.DayViewTemplate = CalendarTestExtensions.DayLabelTemplate();
+		calendar.EnsureAllContent();
+
+		calendar.DrawnDayGrid.Should().BeNull();
+		calendar.DayViews.Should().OnlyContain(dayView => dayView.ShowsTemplateContent());
+		calendar.Named<Grid>("daysControl").Children.OfType<DayView>().Should().HaveCount(42);
+	}
+
 	// ── Days ─────────────────────────────────────────────────────────────────
 
 	[Fact]

@@ -208,6 +208,9 @@ public partial class Calendar : ContentView, IDisposable
 			);
 
 			dayTitleLabels = [.. daysControl.Children.OfType<Label>()];
+
+			// A drawn grid shown before (until a DayViewTemplate was set) no longer follows the old days.
+			drawnDayGrid?.ReleaseDays();
 		}
 
 		UpdateDayGlobalProperties();

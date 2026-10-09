@@ -10,6 +10,14 @@ public partial class App : Application
     public App(IThemeService themeService, ICalendarSettingsService calendarSettingsService)
     {
         this.themeService = themeService;
+
+        // DrawnUI migration: CALDRAWN=1 (or the caldrawn intent extra on Android) draws the day
+        // grids of every page with DrawnUI.
+        if (Environment.GetEnvironmentVariable("CALDRAWN") == "1")
+        {
+            AppContext.SetSwitch("Plugin.Maui.Calendar.DrawnDayGrid", true);
+        }
+
         InitializeComponent();
 
         // Before the first page is created, so its calendars start with the saved choices

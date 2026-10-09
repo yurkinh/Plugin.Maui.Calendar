@@ -116,6 +116,19 @@ sealed class DrawnDayGrid : SkiaGrid
 		}
 	}
 
+	/// <summary>
+	/// Lets the cells go of their days while the calendar shows the native grid (a DayViewTemplate
+	/// is set). The cells are kept for the next time the grid is shown; <see cref="SetDays"/> gives
+	/// them days again.
+	/// </summary>
+	internal void ReleaseDays()
+	{
+		foreach (var cell in cells)
+		{
+			cell.Day = null;
+		}
+	}
+
 	/// <summary>The weekend background bands, by week and then by column.</summary>
 	internal IReadOnlyList<SkiaShape> WeekendBands => weekendBands;
 

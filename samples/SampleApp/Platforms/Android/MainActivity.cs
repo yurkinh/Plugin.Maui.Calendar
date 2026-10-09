@@ -20,6 +20,18 @@ public class MainActivity : MauiAppCompatActivity
 			Views.DrawnParityPage.Scenario = scenario;
 		}
 
+		// --es calroute <route> opens that sample page at startup (see AppShell).
+		if (Intent?.GetStringExtra("calroute") is { Length: > 0 } route)
+		{
+			AppShell.StartupRoute = route;
+		}
+
+		// --ez caldrawn true draws the day grids of every page with DrawnUI (see App).
+		if (Intent?.GetBooleanExtra("caldrawn", false) == true)
+		{
+			AppContext.SetSwitch("Plugin.Maui.Calendar.DrawnDayGrid", true);
+		}
+
 		base.OnCreate(savedInstanceState);
 	}
 }
