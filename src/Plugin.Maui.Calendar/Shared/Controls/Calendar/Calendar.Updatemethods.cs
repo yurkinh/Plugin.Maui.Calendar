@@ -136,6 +136,8 @@ public partial class Calendar : ContentView, IDisposable
 
 		if (IsDrawnDayGridShown)
 		{
+			// The titles follow the culture, and so do the dates a screen reader says.
+			drawnDayGrid.Culture = FormattingCulture;
 			drawnDayGrid.SetTitles(
 				[.. titles.Select(title => title.Text)],
 				[.. titles.Select(title => title.IsWeekend)],

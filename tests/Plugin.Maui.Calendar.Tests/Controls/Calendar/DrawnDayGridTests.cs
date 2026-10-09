@@ -4,6 +4,7 @@ using Microsoft.Maui.Graphics;
 using Plugin.Maui.Calendar.Controls;
 using Plugin.Maui.Calendar.Controls.Drawn;
 using DrawnUi.Draw;
+using DrawnUi.Models;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
 using Plugin.Maui.Calendar.Tests.TestHelpers;
@@ -510,6 +511,59 @@ public sealed class DrawnDayGridTests : IDisposable
 		calendar.SwipeDetectionDisabled = false;
 		calendar.OnDrawnDaySwiped(SwipeDirection.Left);
 		calendar.ShownDate.Month.Should().Be(6, "the setting is read at the time of the swipe");
+	}
+
+	// ── Accessibility ────────────────────────────────────────────────────────
+
+	[Fact]
+	public void Accessibility_EveryShownDayIsAButton_NamedWithItsFullDate()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, Culture = new System.Globalization.CultureInfo("en-US") };
+
+		var cell = Cell(calendar, May(14));
+
+		cell.AccessibilityRole.Should().Be(Aria.RoleButton);
+		cell.AccessibilityLabel.Should().Be("Wednesday, May 14, 2025");
+		cell.AccessibilityCanInteract.Should().BeTrue();
+		cell.AccessibilityIsPressed.Should().BeFalse();
+	}
+
+	[Fact]
+	public void Accessibility_FollowsTheCalendarCulture()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, Culture = new System.Globalization.CultureInfo("en-US") };
+
+		calendar.Culture = new System.Globalization.CultureInfo("de-DE");
+
+		Cell(calendar, May(14)).AccessibilityLabel.Should().Be("Mittwoch, 14. Mai 2025");
+	}
+
+	[Fact]
+	public void Accessibility_SelectedDayIsPressed_DisabledDayCannotBeUsed()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, SelectedDate = May(14), DisabledDates = [May(20)] };
+
+		Cell(calendar, May(14)).AccessibilityIsPressed.Should().BeTrue();
+		Cell(calendar, May(20)).AccessibilityCanInteract.Should().BeFalse();
+		Cell(calendar, May(20)).AccessibilityRole.Should().Be(Aria.RoleButton, "a disabled day is still read, as unavailable");
+	}
+
+	[Fact]
+	public void Accessibility_HiddenDays_AreLeftOutOfTheTree()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, OtherMonthDayIsVisible = false };
+
+		Cell(calendar, new DateTime(2025, 4, 27)).AccessibilityRole.Should().BeNull();
+		Cell(calendar, new DateTime(2025, 4, 27)).AccessibilityLabel.Should().BeNull();
+	}
+
+	[Fact]
+	public void Accessibility_TheGridIsAnArrowKeyGroup_AndTheTitlesAreText()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+
+		DrawnGrid(calendar).AccessibilityRole.Should().Be(Aria.RoleGrid);
+		DrawnGrid(calendar).TitleLabels.Should().OnlyContain(label => label.AccessibilityRole == Aria.RoleText);
 	}
 
 	// ── Titles ───────────────────────────────────────────────────────────────

@@ -26,6 +26,7 @@ sealed class DrawnDayCell : SkiaLayer
 
 	readonly Action<DayModel> tapped;
 	readonly DrawnLabelStyle labelStyle;
+	readonly Func<System.Globalization.CultureInfo> culture;
 	readonly SkiaLayer container;
 	readonly SkiaShape background;
 	readonly DrawnOutline outline;
@@ -39,10 +40,11 @@ sealed class DrawnDayCell : SkiaLayer
 	int labelStyleVersion = -1;
 	bool applyPending;
 
-	internal DrawnDayCell(Action<DayModel> tapped, DrawnLabelStyle labelStyle)
+	internal DrawnDayCell(Action<DayModel> tapped, DrawnLabelStyle labelStyle, Func<System.Globalization.CultureInfo> culture)
 	{
 		this.tapped = tapped;
 		this.labelStyle = labelStyle;
+		this.culture = culture;
 		HorizontalOptions = LayoutOptions.Fill;
 
 		// The Border: its fill, and its stroke drawn over it by an outline of the same size.
@@ -90,9 +92,6 @@ sealed class DrawnDayCell : SkiaLayer
 		container.AddSubView(outline);
 		container.AddSubView(content);
 		AddSubView(container);
-
-		// A screen reader reads each day as a button (phase 7 preview).
-		AccessibilityRole = Aria.RoleButton;
 
 		ConsumeGestures += OnCellGestures;
 	}
@@ -208,13 +207,27 @@ sealed class DrawnDayCell : SkiaLayer
 
 		ArrangeContent(day.EventIndicatorType == EventIndicatorType.TopDot);
 
-		AccessibilityLabel = day.Date.ToLongDateString();
-		AccessibilityIsPressed = day.IsSelected;
-		AccessibilityCanInteract = day.IsVisible && !day.IsDisabled;
+		ApplyAccessibility();
 	}
 
-	/// <summary>Shows a new value of the day label style (a new style, theme or resource value).</summary>
-	internal void RefreshStyle()
+	/// <summary>
+	/// What a screen reader says for the day: a button named with the full date, in the calendar's
+	/// culture, pressed while selected and unavailable while disabled. The platform speaks the role
+	/// and the states in its own language. A hidden or empty cell is left out of the accessibility
+	/// tree. (A native cell has no description of its own: a screen reader reads its day number.)
+	/// </summary>
+	void ApplyAccessibility()
+	{
+		var shown = day.IsControlVisible && day.IsVisible && !string.IsNullOrEmpty(day.Day);
+
+		AccessibilityRole = shown ? Aria.RoleButton : null;
+		AccessibilityLabel = shown ? day.Date.ToString("D", culture()) : null;
+		AccessibilityIsPressed = day.IsSelected;
+		AccessibilityCanInteract = shown && !day.IsDisabled;
+	}
+
+	/// <summary>Shows the day again: a new day label style (style, theme or resource value) or culture.</summary>
+	internal void Refresh()
 	{
 		if (day is not null)
 		{

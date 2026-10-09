@@ -1,5 +1,6 @@
 using AppoMobi.Gestures;
 using DrawnUi.Draw;
+using DrawnUi.Models;
 using Plugin.Maui.Calendar.Models;
 
 namespace Plugin.Maui.Calendar.Controls.Drawn;
@@ -31,6 +32,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	readonly DrawnLabelStyle titleStyle;
 	readonly DrawnLabelStyle weekendTitleStyle;
 
+	System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
 	string[] titleTexts = [];
 	bool[] weekendTitles = [];
 	bool stylesRefreshPending;
@@ -72,13 +74,37 @@ sealed class DrawnDayGrid : SkiaGrid
 
 		for (var column = 0; column < daysInWeek; column++)
 		{
-			var title = new SkiaLabel { HorizontalOptions = LayoutOptions.Fill };
+			// Read as text, as the native title labels are.
+			var title = new SkiaLabel { HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleText };
 			Grid.SetColumn(title, column);
 			titleLabels.Add(title);
 			AddSubView(title);
 		}
 
+		// One Tab stop whose days the arrow keys walk, by day and by week (the row length is counted
+		// on the first row: the 7 titles).
+		AccessibilityRole = Aria.RoleGrid;
+
 		ConsumeGestures += OnGridGestures;
+	}
+
+	/// <summary>The culture the screen reader names the days in (the calendar's formatting culture).</summary>
+	internal System.Globalization.CultureInfo Culture
+	{
+		get => culture;
+		set
+		{
+			if (Equals(culture, value))
+			{
+				return;
+			}
+
+			culture = value;
+			foreach (var cell in cells)
+			{
+				cell.Refresh();
+			}
+		}
 	}
 
 	/// <summary>
@@ -99,7 +125,7 @@ sealed class DrawnDayGrid : SkiaGrid
 
 			for (var i = 0; i < days.Count; i++)
 			{
-				var cell = new DrawnDayCell(day => DayTapped?.Invoke(day), dayLabelStyle);
+				var cell = new DrawnDayCell(day => DayTapped?.Invoke(day), dayLabelStyle, () => culture);
 				Grid.SetColumn(cell, i % daysInWeek);
 				Grid.SetRow(cell, 1 + (i / daysInWeek));
 				cells.Add(cell);
@@ -260,7 +286,7 @@ sealed class DrawnDayGrid : SkiaGrid
 
 		foreach (var cell in cells)
 		{
-			cell.RefreshStyle();
+			cell.Refresh();
 		}
 	}
 
