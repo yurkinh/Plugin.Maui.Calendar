@@ -78,6 +78,12 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		UpdateSwipeGestures();
+
+		// The drawn grid is created only now that it is going to be shown.
+		if (isDayGridDrawn && drawnDayGrid is null)
+		{
+			ShowDrawnDayGrid();
+		}
 	}
 
 	void DetachHandler()

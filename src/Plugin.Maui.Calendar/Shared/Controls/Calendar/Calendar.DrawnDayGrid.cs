@@ -94,21 +94,45 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
-	/// The drawn grid while the calendar shows it, otherwise <see langword="null"/>. Without a
-	/// platform (the net10.0 target, where nothing is rendered) the grid has no Canvas: a Canvas
-	/// needs the platform's main thread as soon as it is created.
+	/// The drawn grid while the calendar shows it, otherwise <see langword="null"/>; created on first
+	/// use. Without a platform (the net10.0 target, where nothing is rendered) the grid has no Canvas:
+	/// a Canvas needs the platform's main thread as soon as it is created.
 	/// </summary>
-	internal DrawnDayGrid DrawnDayGrid => isDayGridDrawn ? drawnDayGrid : null;
+	internal DrawnDayGrid DrawnDayGrid
+	{
+		get
+		{
+			if (isDayGridDrawn && drawnDayGrid is null)
+			{
+				ShowDrawnDayGrid();
+			}
+
+			return isDayGridDrawn ? drawnDayGrid : null;
+		}
+	}
+
+	/// <summary>Whether the drawn grid was ever created.</summary>
+	internal bool IsDrawnDayGridCreated => drawnDayGrid is not null;
+
+	// Whether the drawn grid exists and shows the current layout; the update passes skip it otherwise.
+	bool IsDrawnDayGridShown => isDayGridDrawn && drawnDayGrid is not null;
 
 	/// <summary>
-	/// Puts the drawn grid in place of the native one, showing the day models of the new layout.
-	/// Called by RenderLayout once the models hold real data.
+	/// Puts the drawn grid in place of the native one, showing the current layout: its days, titles,
+	/// day label style and weekend bands. The grid is created the first time, which RenderLayout leaves
+	/// until the calendar is about to be shown: a DayViewTemplate set in XAML after the constructor
+	/// switches to the native grid before then, and no drawn grid is built for nothing.
 	/// </summary>
 	void ShowDrawnDayGrid()
 	{
-		drawnDayGrid.SetDays([.. dayViews.Select(dayView => (DayModel)dayView.BindingContext)]);
+		EnsureDrawnDayGrid();
 
-		if (drawnDayCanvas is not null)
+		drawnDayGrid.DayLabelStyle = DaysLabelStyle;
+		drawnDayGrid.SetDays([.. dayViews.Select(dayView => (DayModel)dayView.BindingContext)]);
+		UpdateDayTitles();
+		UpdateWeekendBackground();
+
+		if (drawnDayCanvas is not null && !daysControl.Contains(drawnDayCanvas))
 		{
 			daysControl.Add(drawnDayCanvas);
 		}

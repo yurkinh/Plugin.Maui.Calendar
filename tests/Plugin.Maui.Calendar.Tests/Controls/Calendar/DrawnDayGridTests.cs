@@ -145,9 +145,25 @@ public sealed class DrawnDayGridTests : IDisposable
 		calendar.DayViewTemplate = CalendarTestExtensions.DayLabelTemplate();
 		calendar.EnsureAllContent();
 
+		calendar.IsDrawnDayGridCreated.Should().BeFalse("the template came before the calendar was shown");
 		calendar.DrawnDayGrid.Should().BeNull();
 		calendar.DayViews.Should().OnlyContain(dayView => dayView.ShowsTemplateContent());
 		calendar.Named<Grid>("daysControl").Children.OfType<DayView>().Should().HaveCount(42);
+	}
+
+	[Fact]
+	public void DrawnGrid_IsCreatedWhenTheCalendarGetsAHandler()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, WeekendDayBackgroundColor = Colors.LightGray };
+		calendar.IsDrawnDayGridCreated.Should().BeFalse("nothing is drawn before the calendar is shown");
+
+		calendar.SimulateHandlerAttached();
+
+		calendar.IsDrawnDayGridCreated.Should().BeTrue();
+		var grid = calendar.DrawnDayGrid!;
+		grid.Cells.Select(cell => cell.Day).Should().Equal(calendar.Days());
+		grid.TitleLabels[1].Text.Should().Be("MON");
+		grid.WeekendBands.Should().HaveCount(12);
 	}
 
 	// ── Days ─────────────────────────────────────────────────────────────────

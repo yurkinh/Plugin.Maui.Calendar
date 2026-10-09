@@ -193,7 +193,6 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			CurrentViewLayoutEngine.CreateDays(dayViews, DayTappedCommand, DayViewTemplate);
 			dayTitleLabels = [];
-			EnsureDrawnDayGrid();
 		}
 		else
 		{
@@ -219,7 +218,11 @@ public partial class Calendar : ContentView, IDisposable
 
 		if (isDayGridDrawn)
 		{
-			ShowDrawnDayGrid();
+			// Created when the calendar is about to be shown (see ShowDrawnDayGrid), unless it exists.
+			if (drawnDayGrid is not null || isHandlerAttached)
+			{
+				ShowDrawnDayGrid();
+			}
 		}
 		else
 		{

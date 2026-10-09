@@ -134,7 +134,7 @@ public partial class Calendar : ContentView, IDisposable
 			}
 		}
 
-		if (isDayGridDrawn)
+		if (IsDrawnDayGridShown)
 		{
 			drawnDayGrid.SetTitles(
 				[.. titles.Select(title => title.Text)],
@@ -275,7 +275,7 @@ public partial class Calendar : ContentView, IDisposable
 	void UpdateDayGlobalProperties()
 	{
 		// The drawn grid resolves the day label style once for all its cells.
-		if (isDayGridDrawn)
+		if (IsDrawnDayGridShown)
 		{
 			drawnDayGrid.DayLabelStyle = DaysLabelStyle;
 		}
@@ -363,7 +363,7 @@ public partial class Calendar : ContentView, IDisposable
 		RemoveWeekendBands();
 
 		// The drawn grid draws the same bands behind its cells.
-		if (isDayGridDrawn)
+		if (IsDrawnDayGridShown)
 		{
 			drawnDayGrid.SetWeekendBands(WeekendDayBackgroundColor, WeekendDayBackgroundCornerRadius, FirstDayOfWeek);
 			return;

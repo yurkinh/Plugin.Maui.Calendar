@@ -50,6 +50,21 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 		Report("native", native);
 		Report("drawn", drawn);
 
+		// A DayViewTemplate set as XAML sets it: the drawn-enabled calendar renders its drawn grid in
+		// the constructor first, then the native grid for the template.
+		await Measure(drawn: false, template: true);
+		await Measure(drawn: true, template: true);
+		var templateNative = new List<Result>();
+		var templateDrawn = new List<Result>();
+		for (var round = 0; round < rounds; round++)
+		{
+			templateNative.Add(await Measure(drawn: false, template: true));
+			templateDrawn.Add(await Measure(drawn: true, template: true));
+		}
+
+		Report("templ-off", templateNative);
+		Report("templ-on", templateDrawn);
+
 		ShowSideBySide();
 		await NextFrames();
 		Log("done");
@@ -77,7 +92,7 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 		host.Content = new VerticalStackLayout { Spacing = 12, Children = { Create(drawn: false), Create(drawn: true) } };
 	}
 
-	async Task<Result> Measure(bool drawn)
+	async Task<Result> Measure(bool drawn, bool template = false)
 	{
 		AppContext.SetSwitch(drawnDayGridSwitch, drawn);
 		host.Content = null;
@@ -91,6 +106,18 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 			Events = CreateEvents(),
 			EventsScrollViewVisible = false,
 		};
+
+		// As XAML does: the template is assigned after the constructor rendered the grid.
+		if (template)
+		{
+			calendar.DayViewTemplate = new DataTemplate(() =>
+			{
+				var label = new Label { HorizontalTextAlignment = TextAlignment.Center };
+				label.SetBinding(Label.TextProperty, static (Plugin.Maui.Calendar.Interfaces.ICalendarDay day) => day.Day);
+				return label;
+			});
+		}
+
 		host.Content = calendar;
 		await NextFrames();
 		var firstRender = stopwatch.Elapsed.TotalMilliseconds;
