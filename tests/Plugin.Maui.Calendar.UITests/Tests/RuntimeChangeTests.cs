@@ -37,7 +37,7 @@ public class RuntimeChangeTests : UITest
 		App.Tap("ActionMonday");
 
 		Assert.That(App.WaitForText("VisibleDates", "2025-04-28..2025-06-08"), Is.EqualTo("2025-04-28..2025-06-08"));
-		Assert.That(App.Text("Title0"), Is.EqualTo("MON"));
+		Assert.That(App.TitleText(0), Is.EqualTo("MON"));
 		CalendarMatchesBaseline("Interactive_Monday");
 
 		App.TapDay(May(20));

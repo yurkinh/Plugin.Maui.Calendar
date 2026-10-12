@@ -87,7 +87,9 @@ sealed class DrawnLabelStyle : IDisposable
 		label.TextColor = resolver.TextColor ?? DefaultTextColor;
 		label.FontSize = resolver.IsSet(Label.FontSizeProperty) ? resolver.FontSize : DrawnText.DefaultLabelFontSize;
 		label.FontAttributes = resolver.FontAttributes;
-		label.CharacterSpacing = resolver.CharacterSpacing;
+		// A SkiaLabel spaces its characters by CharacterSpacing - 1 points: 1 is the normal spacing, which
+		// is 0 for a native label.
+		label.CharacterSpacing = 1 + resolver.CharacterSpacing;
 		label.Margin = resolver.Margin;
 		label.Padding = resolver.Padding;
 		label.Opacity = resolver.Opacity;

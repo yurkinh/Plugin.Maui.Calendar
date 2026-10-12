@@ -13,6 +13,8 @@ namespace Plugin.Maui.Calendar.UITests.Infrastructure;
 /// <item><c>UITEST_PLATFORM_VERSION</c>: the iOS or Android version of that device.</item>
 /// <item><c>UITEST_APPIUM_URL</c>: an Appium server that is already running; otherwise one is started from this folder.</item>
 /// <item><c>UITEST_UPDATE_BASELINES</c>: <c>1</c> to save the screenshots as the new baselines instead of comparing them.</item>
+/// <item><c>UITEST_DRAWN</c>: <c>1</c> to test the calendars with the day grid drawn by DrawnUI (the host app's
+/// <c>DrawnButton</c>); their screenshots are compared with the baselines in <c>Baselines/&lt;platform&gt;-Drawn</c>.</item>
 /// <item><c>UITEST_SCREENSHOTS</c>: <c>off</c> to skip the screenshot comparisons and check the behavior only, on a
 /// device the baselines were not recorded on (fonts and rendering differ between devices and OS versions).</item>
 /// </list>
@@ -33,6 +35,8 @@ public static class UITestSettings
 
 	public static bool UpdateBaselines { get; } = Environment.GetEnvironmentVariable("UITEST_UPDATE_BASELINES") is "1" or "true";
 
+	public static bool DrawnGrid { get; } = Environment.GetEnvironmentVariable("UITEST_DRAWN") is "1" or "true";
+
 	public static bool CompareScreenshots { get; } = Environment.GetEnvironmentVariable("UITEST_SCREENSHOTS") is not ("off" or "0" or "false");
 
 	/// <summary>This project's folder (it holds the baselines and Appium's node_modules).</summary>
@@ -40,10 +44,10 @@ public static class UITestSettings
 		.GetCustomAttributes<AssemblyMetadataAttribute>()
 		.Single(attribute => attribute.Key == "ProjectDirectory").Value!;
 
-	public static string BaselineDirectory => Path.Combine(ProjectDirectory, "Baselines", Platform.ToString());
+	public static string BaselineDirectory => Path.Combine(ProjectDirectory, "Baselines", Platform + (DrawnGrid ? "-Drawn" : string.Empty));
 
 	/// <summary>Where the screenshots of failed comparisons are written.</summary>
-	public static string ResultsDirectory => Path.Combine(ProjectDirectory, "TestResults", "Screenshots", Platform.ToString());
+	public static string ResultsDirectory => Path.Combine(ProjectDirectory, "TestResults", "Screenshots", Platform + (DrawnGrid ? "-Drawn" : string.Empty));
 
 	/// <summary>The app to install and start.</summary>
 	public static string AppPath => Environment.GetEnvironmentVariable("UITEST_APP") is { Length: > 0 } app ? app : FindHostApp();

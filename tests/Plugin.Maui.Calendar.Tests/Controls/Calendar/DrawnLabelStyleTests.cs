@@ -73,7 +73,8 @@ public sealed class DrawnLabelStyleTests : IDisposable
 
 		WeekdayTitleColor(calendar).Should().Be(Colors.Teal, "the calendar style sets no text color");
 		DrawnGrid(calendar).TitleLabels[1].FontSize.Should().Be(12, "the calendar style wins over the implicit one");
-		Cell(calendar).Label.CharacterSpacing.Should().Be(2);
+		// A SkiaLabel's normal spacing is 1, a native label's 0.
+		Cell(calendar).Label.CharacterSpacing.Should().Be(1 + 2);
 	}
 
 	[Fact]
@@ -86,7 +87,7 @@ public sealed class DrawnLabelStyleTests : IDisposable
 		var calendar = new TestCalendar { ShownDate = May15 };
 		_ = new ContentPage { Content = calendar, Parent = app };
 
-		Cell(calendar).Label.CharacterSpacing.Should().Be(3);
+		Cell(calendar).Label.CharacterSpacing.Should().Be(1 + 3);
 	}
 
 	[Fact]
@@ -141,6 +142,15 @@ public sealed class DrawnLabelStyleTests : IDisposable
 		app.UserAppTheme = AppTheme.Dark;
 
 		WeekdayTitleColor(calendar).Should().Be(Colors.White);
+	}
+
+	[Fact]
+	public void NoCharacterSpacing_IsTheNormalSpacingOfASkiaLabel()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+
+		Cell(calendar).Label.CharacterSpacing.Should().Be(1);
+		DrawnGrid(calendar).TitleLabels.Should().OnlyContain(label => label.CharacterSpacing == 1);
 	}
 
 	[Fact]
