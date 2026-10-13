@@ -1,4 +1,3 @@
-using CommunityToolkit.Mvvm.Messaging;
 using FluentAssertions;
 using Microsoft.Maui.Controls;
 using Plugin.Maui.Calendar.Controls;
@@ -80,22 +79,15 @@ public class DayViewTests
     }
 
     [Fact]
-    public void Tap_OnACellOutsideACalendar_IsSentToEveryCalendar()
+    public void Tap_OnACellOutsideACalendar_ChangesNoCalendar()
     {
         var dayView = new DayView { BindingContext = VisibleDay() };
         dayView.EnsureContent();
         var calendar = new TestCalendar { ShownDate = May10 };
-        calendar.AttachHandler();
-        try
-        {
-            dayView.Tap();
 
-            calendar.SelectedDate.Should().Be(May10);
-        }
-        finally
-        {
-            calendar.Handler = null;
-        }
+        dayView.Tap();
+
+        calendar.SelectedDate.Should().BeNull("only the calendar that holds a cell handles its taps");
     }
 
     [Fact]
@@ -106,23 +98,16 @@ public class DayViewTests
         var hidden = VisibleDay();
         hidden.IsThisMonth = false;
         var taps = new List<DateTime>();
-        WeakReferenceMessenger.Default.Register<DayTappedMessage>(taps, static (recipient, message) => ((List<DateTime>)recipient).Add(message.Value));
-        try
+        foreach (var day in new[] { disabled, hidden })
         {
-            foreach (var day in new[] { disabled, hidden })
-            {
-                var dayView = new DayView { BindingContext = day };
-                dayView.EnsureContent();
-                dayView.Tap();
-                day.IsSelected.Should().BeFalse();
-            }
+            day.DayTappedCommand = new Command<DateTime>(taps.Add);
+            var dayView = new DayView { BindingContext = day };
+            dayView.EnsureContent();
+            dayView.Tap();
+            day.IsSelected.Should().BeFalse();
+        }
 
-            taps.Should().BeEmpty();
-        }
-        finally
-        {
-            WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(taps);
-        }
+        taps.Should().BeEmpty();
     }
 
     [Fact]

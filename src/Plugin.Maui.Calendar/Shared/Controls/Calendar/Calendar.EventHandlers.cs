@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Plugin.Maui.Calendar.Models;
-
-namespace Plugin.Maui.Calendar.Controls;
+﻿namespace Plugin.Maui.Calendar.Controls;
 
 public partial class Calendar : ContentView, IDisposable
 {
@@ -64,7 +61,6 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		isHandlerAttached = true;
 		calendarContainer.SizeChanged += OnCalendarContainerSizeChanged;
-		WeakReferenceMessenger.Default.Register<Calendar, DayTappedMessage>(this, static (calendar, message) => calendar.OnDayTappedMessage(message));
 
 		// DetachHandler disposes the calendar, which stops observing Events. A calendar that gets a
 		// handler again (for example a cached page that is shown again) observes Events again and
@@ -84,7 +80,6 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		isHandlerAttached = false;
 		calendarContainer.SizeChanged -= OnCalendarContainerSizeChanged;
-		WeakReferenceMessenger.Default.Unregister<DayTappedMessage>(this);
 		RemoveSwipeGestures();
 
 		//Todo remove later/when all event and properties will be refactored
@@ -135,18 +130,6 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		swipeGestures = null;
-	}
-
-	// Every calendar on screen receives every DayTappedMessage, so a tap is only handled by the
-	// calendar that owns the tapped cell (a message without a source is handled by all, as before).
-	void OnDayTappedMessage(DayTappedMessage message)
-	{
-		if (message.Source is Calendar owner && owner != this)
-		{
-			return;
-		}
-
-		OnDayTappedHandler(message.Value);
 	}
 
 	// Idempotent, so it can run whether or not Events is already observed.

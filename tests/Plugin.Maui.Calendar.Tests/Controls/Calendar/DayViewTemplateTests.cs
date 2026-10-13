@@ -1,4 +1,3 @@
-using CommunityToolkit.Mvvm.Messaging;
 using FluentAssertions;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
@@ -762,7 +761,7 @@ public class DayViewTemplateTests
         var cell = calendar.CellFor(date);
         var changes = cell.Day().RecordPropertyChanges();
 
-        calendar.WithTapHandling(cell.Tap);
+        cell.Tap();
 
         cell.Day().IsSelected.Should().BeTrue();
         changes.Should().Contain(nameof(ICalendarDay.IsSelected));
@@ -784,7 +783,7 @@ public class DayViewTemplateTests
         calendar.EnsureAllContent();
         var cell = calendar.CellFor(disabledDate);
 
-        calendar.WithTapHandling(cell.Tap);
+        cell.Tap();
 
         cell.Day().IsDisabled.Should().BeTrue();
         cell.Day().IsSelected.Should().BeFalse();
@@ -794,13 +793,13 @@ public class DayViewTemplateTests
     [Fact]
     public void TappingCell_SelectsDayOnlyInItsOwnCalendar()
     {
-        // Every calendar on screen receives the tap message; only the owner of the cell may handle it.
+        // Only the calendar that owns the tapped cell handles the tap.
         var date = new DateTime(2025, 5, 12);
         var tapped = new TestCalendar { ShownDate = May15, DayViewTemplate = CalendarTestExtensions.DayLabelTemplate() };
         var other = new TestCalendar { ShownDate = May15 };
         tapped.EnsureAllContent();
 
-        other.WithTapHandling(() => tapped.WithTapHandling(tapped.CellFor(date).Tap));
+        tapped.CellFor(date).Tap();
 
         tapped.SelectedDate.Should().Be(date);
         other.SelectedDate.Should().BeNull("a tap in one calendar must not select the date in another calendar");
@@ -816,24 +815,10 @@ public class DayViewTemplateTests
         var calendar = new TestCalendar { ShownDate = May15 };
         calendar.DayTappedCommand = new Command(() => calendar.CalendarLayout = WeekLayout.Week);
 
-        calendar.WithTapHandling(calendar.CellFor(date).Tap);
+        calendar.CellFor(date).Tap();
 
         calendar.CalendarLayout.Should().Be(WeekLayout.Week);
         calendar.SelectedDate.Should().Be(date, "the calendar that owned the tapped cell must still handle its tap");
-    }
-
-    [Fact]
-    public void DayTappedMessageSentByOtherCode_StillHandledByEveryCalendar()
-    {
-        var date = new DateTime(2025, 5, 12);
-        var first = new TestCalendar { ShownDate = May15 };
-        var second = new TestCalendar { ShownDate = May15 };
-
-        first.WithTapHandling(() => second.WithTapHandling(() =>
-            WeakReferenceMessenger.Default.Send(new DayTappedMessage(date))));
-
-        first.SelectedDate.Should().Be(date);
-        second.SelectedDate.Should().Be(date);
     }
 
     // ── Week and TwoWeek layouts ─────────────────────────────────────────────
@@ -971,7 +956,7 @@ public class DayViewTemplateTests
         cells.EnsureAllContent();
         cells.DayViews.Should().OnlyContain(dayView => dayView.ShowsTemplateContent());
 
-        calendar.WithTapHandling(cells.CellFor(tapped).Tap);
+        cells.CellFor(tapped).Tap();
 
         // A week selection selects the tapped day's whole week (Sunday May 11 to Saturday May 17).
         var expected = calendar is WeekSelectionCalendar
@@ -1000,13 +985,13 @@ public class DayViewTemplateTests
         var calendar = new TestRangeSelectionCalendar { ShownDate = May15, DayViewTemplate = CalendarTestExtensions.DayLabelTemplate() };
         calendar.EnsureAllContent();
 
-        calendar.WithTapHandling(calendar.CellFor(start).Tap);
+        calendar.CellFor(start).Tap();
 
         var startDay = (ICalendarDay)calendar.CellFor(start).TemplateContent.BindingContext;
         startDay.IsRangeStart.Should().BeTrue("a single-day range starts and ends on the same day");
         startDay.IsRangeEnd.Should().BeTrue();
 
-        calendar.WithTapHandling(calendar.CellFor(end).Tap);
+        calendar.CellFor(end).Tap();
 
         calendar.Days().Where(day => day.IsSelected).Select(day => day.Date)
             .Should().Equal(Enumerable.Range(10, 5).Select(day => new DateTime(2025, 5, day)));

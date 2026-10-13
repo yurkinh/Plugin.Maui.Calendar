@@ -334,7 +334,7 @@ public class NavigationTests
         var calendar = new TestCalendar { ShownDate = May15, AutoChangeMonthOnDayTap = true };
         var changes = RecordMonthChanges(calendar);
 
-        calendar.WithTapHandling(() => calendar.CellFor(new DateTime(2025, 6, 2)).Tap());
+        calendar.CellFor(new DateTime(2025, 6, 2)).Tap();
 
         calendar.ShownDate.Should().Be(new DateTime(2025, 6, 2));
         calendar.SelectedDate.Should().Be(new DateTime(2025, 6, 2));
@@ -347,7 +347,7 @@ public class NavigationTests
         var calendar = new TestCalendar { ShownDate = May15, AutoChangeMonthOnDayTap = true };
         var changes = RecordMonthChanges(calendar);
 
-        calendar.WithTapHandling(() => calendar.CellFor(new DateTime(2025, 5, 20)).Tap());
+        calendar.CellFor(new DateTime(2025, 5, 20)).Tap();
 
         calendar.ShownDate.Should().Be(May15);
         changes.Should().BeEmpty();
@@ -358,7 +358,7 @@ public class NavigationTests
     {
         var calendar = new TestCalendar { ShownDate = May15 };
 
-        calendar.WithTapHandling(() => calendar.CellFor(new DateTime(2025, 6, 2)).Tap());
+        calendar.CellFor(new DateTime(2025, 6, 2)).Tap();
 
         calendar.ShownDate.Should().Be(May15);
         calendar.SelectedDate.Should().Be(new DateTime(2025, 6, 2));

@@ -255,23 +255,6 @@ static class CalendarTestExtensions
         sendTapped.Invoke(recognizer, [container, null]);
     }
 
-    /// <summary>
-    /// Runs <paramref name="action"/> while the calendar listens for day taps. The calendar
-    /// normally subscribes when it gets a handler, which never happens in unit tests.
-    /// </summary>
-    public static void WithTapHandling(this CalendarControl calendar, Action action)
-    {
-        InvokePrivate(calendar, "AttachHandler");
-        try
-        {
-            action();
-        }
-        finally
-        {
-            InvokePrivate(calendar, "DetachHandler");
-        }
-    }
-
     /// <summary>Does what the calendar does when it gets a handler (it never gets one in unit tests).</summary>
     public static void SimulateHandlerAttached(this CalendarControl calendar) => InvokePrivate(calendar, "AttachHandler");
 
