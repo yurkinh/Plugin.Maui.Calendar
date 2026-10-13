@@ -12,7 +12,7 @@ namespace Plugin.Maui.Calendar.Controls.Drawn;
 /// <see cref="DayView"/> would bind to. Only the built-in cell is drawn; a calendar with a
 /// <c>DayViewTemplate</c> keeps the native cells.
 /// </summary>
-sealed class DrawnDayGrid : SkiaGrid
+sealed class DrawnDayGrid : SkiaGrid, IDrawnDayGrid
 {
 	const int daysInWeek = 7;
 
@@ -48,10 +48,10 @@ sealed class DrawnDayGrid : SkiaGrid
 	internal IReadOnlyList<SkiaLabel> TitleLabels => titleLabels;
 
 	/// <summary>Raised with the cell's day when a day is tapped.</summary>
-	internal Action<DayModel> DayTapped { get; set; }
+	public Action<DayModel> DayTapped { get; set; }
 
 	/// <summary>Raised when a swipe over the grid ends, with its direction.</summary>
-	internal Action<SwipeDirection> Swiped { get; set; }
+	public Action<SwipeDirection> Swiped { get; set; }
 
 	/// <param name="styleOwner">
 	/// The calendar: the styles are resolved below it, so they get its resources and the app's.
@@ -96,7 +96,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	/// Whether the week runs from right to left, as a native grid does on its own for a right-to-left
 	/// FlowDirection: the first day of the week is then in the rightmost column.
 	/// </summary>
-	internal bool IsRightToLeft
+	public bool IsRightToLeft
 	{
 		get => isRightToLeft;
 		set
@@ -129,7 +129,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	int ColumnOf(int dayOfWeekColumn) => isRightToLeft ? daysInWeek - 1 - dayOfWeekColumn : dayOfWeekColumn;
 
 	/// <summary>The culture the screen reader names the days in (the calendar's formatting culture).</summary>
-	internal System.Globalization.CultureInfo Culture
+	public System.Globalization.CultureInfo Culture
 	{
 		get => culture;
 		set
@@ -152,7 +152,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	/// (a month change only gives them other days); a layout with another number of weeks
 	/// creates them again.
 	/// </summary>
-	internal void SetDays(IReadOnlyList<DayModel> days)
+	public void SetDays(IReadOnlyList<DayModel> days)
 	{
 		if (cells.Count != days.Count)
 		{
@@ -187,7 +187,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	/// is set). The cells are kept for the next time the grid is shown; <see cref="SetDays"/> gives
 	/// them days again.
 	/// </summary>
-	internal void ReleaseDays()
+	public void ReleaseDays()
 	{
 		foreach (var cell in cells)
 		{
@@ -204,7 +204,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	/// column, reaching half the row spacing above and below its row so the bands of consecutive
 	/// weeks touch, and ignoring touches. A transparent <paramref name="color"/> shows no bands.
 	/// </summary>
-	internal void SetWeekendBands(Color color, double cornerRadius, DayOfWeek firstDayOfWeek)
+	public void SetWeekendBands(Color color, double cornerRadius, DayOfWeek firstDayOfWeek)
 	{
 		RemoveWeekendBands();
 
@@ -269,7 +269,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	}
 
 	/// <summary>The style of the day numbers (<c>DaysLabelStyle</c>).</summary>
-	internal Style DayLabelStyle
+	public Style DayLabelStyle
 	{
 		get => dayLabelStyle.Style;
 		set => dayLabelStyle.Style = value;
@@ -279,7 +279,7 @@ sealed class DrawnDayGrid : SkiaGrid
 	/// Shows the day-of-week titles (see Calendar.UpdateDayTitles): the weekend days with
 	/// <paramref name="weekendStyle"/>, the others with <paramref name="style"/>.
 	/// </summary>
-	internal void SetTitles(IReadOnlyList<string> texts, IReadOnlyList<bool> weekend, Style style, Style weekendStyle)
+	public void SetTitles(IReadOnlyList<string> texts, IReadOnlyList<bool> weekend, Style style, Style weekendStyle)
 	{
 		titleTexts = [.. texts];
 		weekendTitles = [.. weekend];

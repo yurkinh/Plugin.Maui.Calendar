@@ -32,6 +32,17 @@ public class MainActivity : MauiAppCompatActivity
 			AppContext.SetSwitch("Plugin.Maui.Calendar.DrawnDayGrid", true);
 		}
 
+		// --ez calgraphics true draws them with Microsoft.Maui.Graphics instead: the grid below on the
+		// parity page, otherwise the day grids of every page.
+		if (Intent?.GetBooleanExtra("calgraphics", false) == true)
+		{
+			Views.DrawnParityPage.Graphics = true;
+			if (Views.DrawnParityPage.Scenario < 0)
+			{
+				AppContext.SetSwitch("Plugin.Maui.Calendar.GraphicsDayGrid", true);
+			}
+		}
+
 		base.OnCreate(savedInstanceState);
 	}
 }

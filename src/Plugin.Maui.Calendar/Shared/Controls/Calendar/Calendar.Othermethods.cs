@@ -181,7 +181,23 @@ public partial class Calendar : ContentView, IDisposable
 			_ => new MonthViewEngine(FirstDayOfWeek),
 		};
 
-		daysControl.Children.Clear();
+		// The drawn grid's canvas stays where it is when the next layout is drawn too: taken out and put
+		// back, it no longer gets touches on iOS.
+		if (UsesDrawnDayGrid && drawnDayCanvas is not null && daysControl.Contains(drawnDayCanvas))
+		{
+			for (int i = daysControl.Children.Count - 1; i >= 0; i--)
+			{
+				if (!ReferenceEquals(daysControl.Children[i], drawnDayCanvas))
+				{
+					daysControl.Children.RemoveAt(i);
+				}
+			}
+		}
+		else
+		{
+			daysControl.Children.Clear();
+		}
+
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
 
@@ -338,6 +354,9 @@ public partial class Calendar : ContentView, IDisposable
 		{
 			Events.CollectionChanged -= OnEventsCollectionChanged;
 			StopTodayRefresh();
+
+			// The Microsoft.Maui.Graphics grid follows the days and the label styles until it is disposed.
+			(drawnDayGrid as Controls.Drawn.GraphicsDayGrid)?.Dispose();
 		}
 	}
 

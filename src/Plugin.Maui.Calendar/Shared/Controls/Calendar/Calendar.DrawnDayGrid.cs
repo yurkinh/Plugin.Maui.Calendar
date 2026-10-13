@@ -14,7 +14,17 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	internal const string DrawnDayGridSwitch = "Plugin.Maui.Calendar.DrawnDayGrid";
 
-	static bool IsDrawnDayGridEnabled => AppContext.TryGetSwitch(DrawnDayGridSwitch, out var enabled) && enabled;
+	/// <summary>
+	/// The <see cref="AppContext"/> switch that draws the day grid with Microsoft.Maui.Graphics instead
+	/// (the proof of concept of the migration away from DrawnUI). It is read when a calendar creates
+	/// its drawn grid, and wins over <see cref="DrawnDayGridSwitch"/>.
+	/// </summary>
+	internal const string GraphicsDayGridSwitch = "Plugin.Maui.Calendar.GraphicsDayGrid";
+
+	static bool IsGraphicsDayGridEnabled => AppContext.TryGetSwitch(GraphicsDayGridSwitch, out var enabled) && enabled;
+
+	static bool IsDrawnDayGridEnabled =>
+		IsGraphicsDayGridEnabled || (AppContext.TryGetSwitch(DrawnDayGridSwitch, out var enabled) && enabled);
 
 	/// <summary>
 	/// Whether the day grid should be drawn: the drawn grid shows the built-in cell only, so a
@@ -28,8 +38,8 @@ public partial class Calendar : ContentView, IDisposable
 	// Created the first time the drawn grid is shown and kept for the life of the calendar: across
 	// layout changes, switches to the native grid and back, and handler changes (a Canvas that
 	// gets a new handler draws its content again).
-	Canvas drawnDayCanvas;
-	DrawnDayGrid drawnDayGrid;
+	View drawnDayCanvas;
+	IDrawnDayGrid drawnDayGrid;
 
 	/// <summary>The drawn grid, created on first use.</summary>
 	void EnsureDrawnDayGrid()
@@ -39,11 +49,24 @@ public partial class Calendar : ContentView, IDisposable
 			return;
 		}
 
+		// The Microsoft.Maui.Graphics grid is a view of its own: it needs no canvas around it.
+		if (IsGraphicsDayGridEnabled)
+		{
+			var graphicsDayGrid = new GraphicsDayGrid(this) { DayTapped = day => DayView.Tap(day, this) };
+#if ANDROID
+			graphicsDayGrid.Swiped = OnDrawnDaySwiped;
+#endif
+			drawnDayGrid = graphicsDayGrid;
+			drawnDayCanvas = graphicsDayGrid;
+			return;
+		}
+
 		// DrawnUI may report gestures on a thread of its own: the calendar handles them on the UI thread.
-		drawnDayGrid = new DrawnDayGrid(this)
+		var grid = new DrawnDayGrid(this)
 		{
 			DayTapped = day => OnUiThread(() => DayView.Tap(day, this)),
 		};
+		drawnDayGrid = grid;
 
 #if ANDROID
 		// As with the native cells (see DayView): on Android the canvas takes the whole touch, so the
@@ -62,7 +85,7 @@ public partial class Calendar : ContentView, IDisposable
 			Gestures = GesturesMode.SoftLock,
 			HorizontalOptions = LayoutOptions.Fill,
 			VerticalOptions = LayoutOptions.Start,
-			Content = drawnDayGrid,
+			Content = grid,
 		};
 #else
 		drawnDayCanvas = null;
@@ -112,7 +135,15 @@ public partial class Calendar : ContentView, IDisposable
 	/// use. Without a platform (the net10.0 target, where nothing is rendered) the grid has no Canvas:
 	/// a Canvas needs the platform's main thread as soon as it is created.
 	/// </summary>
-	internal DrawnDayGrid DrawnDayGrid
+	internal DrawnDayGrid DrawnDayGrid => ShownDrawnDayGrid as DrawnDayGrid;
+
+	/// <summary>
+	/// The grid drawn with Microsoft.Maui.Graphics while the calendar shows it (see
+	/// <see cref="GraphicsDayGridSwitch"/>), otherwise <see langword="null"/>; created on first use.
+	/// </summary>
+	internal GraphicsDayGrid GraphicsDayGrid => ShownDrawnDayGrid as GraphicsDayGrid;
+
+	IDrawnDayGrid ShownDrawnDayGrid
 	{
 		get
 		{
@@ -150,6 +181,14 @@ public partial class Calendar : ContentView, IDisposable
 		if (drawnDayCanvas is not null && !daysControl.Contains(drawnDayCanvas))
 		{
 			daysControl.Add(drawnDayCanvas);
+
+			// Back after the native grid was shown (a DayViewTemplate was set and cleared): the canvas
+			// attaches its touch handling again, which it lost with its place in the view tree.
+			if (drawnDayCanvas is Canvas canvas)
+			{
+				canvas.Gestures = GesturesMode.Disabled;
+				canvas.Gestures = GesturesMode.SoftLock;
+			}
 		}
 	}
 }

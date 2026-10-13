@@ -18,6 +18,13 @@ public partial class App : Application
             AppContext.SetSwitch("Plugin.Maui.Calendar.DrawnDayGrid", true);
         }
 
+        // The proof of concept of the migration away from DrawnUI: CALGRAPHICS=1 (or the calgraphics
+        // intent extra on Android) draws them with Microsoft.Maui.Graphics instead.
+        if (Environment.GetEnvironmentVariable("CALGRAPHICS") == "1" && Views.DrawnParityPage.Scenario < 0)
+        {
+            AppContext.SetSwitch("Plugin.Maui.Calendar.GraphicsDayGrid", true);
+        }
+
         InitializeComponent();
 
         // Before the first page is created, so its calendars start with the saved choices

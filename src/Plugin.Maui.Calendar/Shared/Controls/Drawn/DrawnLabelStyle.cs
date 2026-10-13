@@ -69,6 +69,21 @@ sealed class DrawnLabelStyle : IDisposable
 	/// <summary>The resolved font family, or <see langword="null"/> for the default font.</summary>
 	internal string FontFamily => resolver.FontFamily;
 
+	// The resolved text settings, with the defaults of a native label (see ApplyTo), for a grid that
+	// paints its texts itself.
+	internal Color TextColor => resolver.TextColor ?? DefaultTextColor;
+	internal double FontSize => resolver.IsSet(Label.FontSizeProperty) ? resolver.FontSize : DrawnText.DefaultLabelFontSize;
+	internal FontAttributes FontAttributes => resolver.FontAttributes;
+	internal double CharacterSpacing => resolver.CharacterSpacing;
+	internal Thickness Margin => resolver.Margin;
+	internal Thickness Padding => resolver.Padding;
+	internal double Opacity => resolver.Opacity;
+	internal Microsoft.Maui.TextTransform TextTransform => resolver.TextTransform;
+
+	/// <summary>The resolved horizontal alignment, or <paramref name="defaultAlignment"/> when the style sets none.</summary>
+	internal TextAlignment HorizontalAlignment(TextAlignment defaultAlignment) =>
+		resolver.IsSet(Label.HorizontalTextAlignmentProperty) ? resolver.HorizontalTextAlignment : defaultAlignment;
+
 	void OnResolverPropertyChanged(object sender, PropertyChangedEventArgs e)
 	{
 		if (e.PropertyName is { } name && (shownProperties.Contains(name) || name == nameof(Label.Style)))

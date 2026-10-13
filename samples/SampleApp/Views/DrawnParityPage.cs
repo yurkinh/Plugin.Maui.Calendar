@@ -16,6 +16,13 @@ namespace SampleApp.Views;
 public sealed class DrawnParityPage : ContentPage
 {
 	const string drawnDayGridSwitch = "Plugin.Maui.Calendar.DrawnDayGrid";
+	const string graphicsDayGridSwitch = "Plugin.Maui.Calendar.GraphicsDayGrid";
+
+	/// <summary>
+	/// Whether the grid below is drawn with Microsoft.Maui.Graphics instead of DrawnUI (the proof of
+	/// concept of the migration away from DrawnUI): CALGRAPHICS=1 or the calgraphics intent extra.
+	/// </summary>
+	public static bool Graphics { get; set; } = Environment.GetEnvironmentVariable("CALGRAPHICS") == "1";
 
 	static readonly DateTime october = new(2026, 10, 1);
 
@@ -115,10 +122,31 @@ public sealed class DrawnParityPage : ContentPage
 		("16 input: inside a ScrollView", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
 		("17 input: no ScrollView", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
 		("18 DayViewTemplate set at 3 s, cleared at 6 s", () => new Calendar { Events = Events(), SelectedDate = Oct(14) }),
+		("19 text: character spacing, italic, lowercase and uppercase", () => new Calendar
+		{
+			Events = Events(), SelectedDate = Oct(14),
+			DaysLabelStyle = TextStyle(fontSize: 14, attributes: FontAttributes.Italic, characterSpacing: 2),
+			DaysTitleLabelStyle = TextStyle(fontSize: 13, characterSpacing: 3, transform: TextTransform.Lowercase),
+			WeekendTitleStyle = TextStyle(fontSize: 13, attributes: FontAttributes.Bold | FontAttributes.Italic, transform: TextTransform.Uppercase),
+		}),
+		("20 text: margin, padding, opacity, end alignment, custom italic font", () => new Calendar
+		{
+			Events = Events(), SelectedDate = Oct(14),
+			DaysLabelStyle = TextStyle(fontSize: 15, fontFamily: "OpenSansRegular", attributes: FontAttributes.Italic, opacity: 0.6),
+			DaysTitleLabelStyle = TextStyle(fontSize: 12, margin: new Thickness(2, 6, 8, 4), padding: new Thickness(0, 3, 0, 1), alignment: TextAlignment.End),
+			WeekendTitleStyle = TextStyle(fontSize: 12, margin: new Thickness(2, 6, 8, 4), alignment: TextAlignment.Start, opacity: 0.5),
+		}),
+		("21 text: ar-EG with character spacing and bold", () => new Calendar
+		{
+			Culture = new CultureInfo("ar-EG"), UseNativeDigits = true, Events = Events(), SelectedDate = Oct(14),
+			DaysLabelStyle = TextStyle(fontSize: 15, attributes: FontAttributes.Bold, characterSpacing: 2),
+			DaysTitleLabelStyle = TextStyle(fontSize: 14, characterSpacing: 2),
+			WeekendTitleStyle = TextStyle(fontSize: 14, attributes: FontAttributes.Bold),
+		}),
 	];
 
 	// The input scenarios show what each calendar received, under it.
-	static bool IsInputScenario => Scenario >= 16;
+	static bool IsInputScenario => Scenario is >= 16 and <= 18;
 
 	public DrawnParityPage()
 	{
@@ -126,7 +154,8 @@ public sealed class DrawnParityPage : ContentPage
 
 		Calendar Create(bool drawn)
 		{
-			AppContext.SetSwitch(drawnDayGridSwitch, drawn);
+			AppContext.SetSwitch(drawnDayGridSwitch, drawn && !Graphics);
+			AppContext.SetSwitch(graphicsDayGridSwitch, drawn && Graphics);
 			var calendar = create();
 			calendar.ShownDate = calendar.ShownDate == default || calendar.CalendarLayout == WeekLayout.Month ? october : calendar.ShownDate;
 			calendar.HeaderSectionVisible = false;
@@ -144,7 +173,7 @@ public sealed class DrawnParityPage : ContentPage
 		{
 			Padding = new Thickness(8, 50, 8, 8),
 			Spacing = 10,
-			Children = { new Label { Text = name, FontSize = 12 }, native },
+			Children = { new Label { Text = (Graphics ? "[Maui.Graphics] " : "[DrawnUI] ") + name, FontSize = 12 }, native },
 		};
 
 		if (IsInputScenario)
@@ -175,6 +204,17 @@ public sealed class DrawnParityPage : ContentPage
 			});
 		}
 
+		// CALSHOT=1: the page saves a picture of itself, where the screen cannot be captured from
+		// outside the app (Mac Catalyst); the path is written to the console with a CALSHOT prefix.
+		if (Environment.GetEnvironmentVariable("CALSHOT") == "1")
+		{
+			Dispatcher.StartTimer(TimeSpan.FromSeconds(4), () =>
+			{
+				_ = SavePicture();
+				return false;
+			});
+		}
+
 		// Scenario 16: content below the calendars, so the page scrolls.
 		if (Scenario == 16)
 		{
@@ -184,6 +224,25 @@ public sealed class DrawnParityPage : ContentPage
 		else
 		{
 			Content = stack;
+		}
+	}
+
+	async Task SavePicture()
+	{
+		try
+		{
+			var picture = Screenshot.Default.IsCaptureSupported ? await Screenshot.Default.CaptureAsync() : await this.CaptureAsync();
+			var path = Path.Combine(FileSystem.CacheDirectory, $"parity-{(Graphics ? "graphics" : "drawn")}-{Scenario}.png");
+			await using (var file = File.Create(path))
+			{
+				await picture.CopyToAsync(file, ScreenshotFormat.Png);
+			}
+
+			Console.WriteLine($"CALSHOT {path}");
+		}
+		catch (Exception exception)
+		{
+			Console.WriteLine($"CALSHOT failed: {exception.Message}");
 		}
 	}
 
@@ -273,6 +332,33 @@ public sealed class DrawnParityPage : ContentPage
 	{
 		var style = LabelStyle(fontSize: 15);
 		style.Setters.Add(new Setter { Property = Label.FontFamilyProperty, Value = new Microsoft.Maui.Controls.Internals.DynamicResource(key) });
+		return style;
+	}
+
+	// A label style that sets only what it is given.
+	static Style TextStyle(
+		double? fontSize = null,
+		string fontFamily = null,
+		FontAttributes attributes = FontAttributes.None,
+		double characterSpacing = 0,
+		TextTransform? transform = null,
+		Thickness? margin = null,
+		Thickness? padding = null,
+		TextAlignment? alignment = null,
+		double? opacity = null)
+	{
+		var style = new Style(typeof(Label));
+		void Set(BindableProperty property, object value) => style.Setters.Add(new Setter { Property = property, Value = value });
+
+		if (fontSize is { } size) { Set(Label.FontSizeProperty, size); }
+		if (fontFamily is not null) { Set(Label.FontFamilyProperty, fontFamily); }
+		if (attributes != FontAttributes.None) { Set(Label.FontAttributesProperty, attributes); }
+		if (characterSpacing != 0) { Set(Label.CharacterSpacingProperty, characterSpacing); }
+		if (transform is { } textTransform) { Set(Label.TextTransformProperty, textTransform); }
+		if (margin is { } labelMargin) { Set(View.MarginProperty, labelMargin); }
+		if (padding is { } labelPadding) { Set(Label.PaddingProperty, labelPadding); }
+		if (alignment is { } textAlignment) { Set(Label.HorizontalTextAlignmentProperty, textAlignment); }
+		if (opacity is { } labelOpacity) { Set(VisualElement.OpacityProperty, labelOpacity); }
 		return style;
 	}
 

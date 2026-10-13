@@ -12,6 +12,7 @@ namespace SampleApp.Views;
 public sealed class DrawnSpikeBenchmarkPage : ContentPage
 {
 	const string drawnDayGridSwitch = "Plugin.Maui.Calendar.DrawnDayGrid";
+	const string graphicsDayGridSwitch = "Plugin.Maui.Calendar.GraphicsDayGrid";
 	const int rounds = 5;
 	const int navigations = 24;
 
@@ -38,17 +39,21 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 		// A warm-up of both modes, so JIT and first-use costs are not counted.
 		await Measure(drawn: false);
 		await Measure(drawn: true);
+		await Measure(drawn: true, graphics: true);
 
 		var native = new List<Result>();
 		var drawn = new List<Result>();
+		var graphics = new List<Result>();
 		for (var round = 0; round < rounds; round++)
 		{
 			native.Add(await Measure(drawn: false));
 			drawn.Add(await Measure(drawn: true));
+			graphics.Add(await Measure(drawn: true, graphics: true));
 		}
 
 		Report("native", native);
 		Report("drawn", drawn);
+		Report("graphics", graphics);
 
 		// A DayViewTemplate set as XAML sets it: the drawn-enabled calendar renders its drawn grid in
 		// the constructor first, then the native grid for the template.
@@ -76,6 +81,7 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 		Calendar Create(bool drawn)
 		{
 			AppContext.SetSwitch(drawnDayGridSwitch, drawn);
+			AppContext.SetSwitch(graphicsDayGridSwitch, false);
 			return new Calendar
 			{
 				ShownDate = new DateTime(2026, 10, 1),
@@ -92,9 +98,10 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 		host.Content = new VerticalStackLayout { Spacing = 12, Children = { Create(drawn: false), Create(drawn: true) } };
 	}
 
-	async Task<Result> Measure(bool drawn, bool template = false)
+	async Task<Result> Measure(bool drawn, bool template = false, bool graphics = false)
 	{
-		AppContext.SetSwitch(drawnDayGridSwitch, drawn);
+		AppContext.SetSwitch(drawnDayGridSwitch, drawn && !graphics);
+		AppContext.SetSwitch(graphicsDayGridSwitch, drawn && graphics);
 		host.Content = null;
 		await NextFrames();
 
@@ -166,7 +173,7 @@ public sealed class DrawnSpikeBenchmarkPage : ContentPage
 			return sorted[sorted.Length / 2];
 		}
 
-		Log($"{mode,-7} firstRender={Median(list.Select(r => r.FirstRender)),7:F1}ms " +
+		Log($"{mode,-9} firstRender={Median(list.Select(r => r.FirstRender)),7:F1}ms " +
 			$"navSync={Median(list.Select(r => r.NavigationSync)),6:F2}ms " +
 			$"navToScreen={Median(list.Select(r => r.NavigationToScreen)),6:F1}ms " +
 			$"nativeViews={list[0].NativeViews}");

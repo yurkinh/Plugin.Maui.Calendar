@@ -24,6 +24,9 @@ sealed class DrawnDayCell : SkiaLayer
 	const int maximumDots = 5;
 	const double dotSize = 8;
 
+	// How far (in points) a finger may move during a tap.
+	const float tapSlop = 10f;
+
 	readonly Action<DayModel> tapped;
 	readonly DrawnLabelStyle labelStyle;
 	readonly Func<System.Globalization.CultureInfo> culture;
@@ -257,11 +260,21 @@ sealed class DrawnDayCell : SkiaLayer
 
 	void OnCellGestures(object sender, SkiaGesturesInfo e)
 	{
-		if (e.Args.Type == TouchActionResult.Tapped && day is not null)
+		if (e.Args.Type != TouchActionResult.Tapped || day is null)
 		{
-			e.Consumed = true;
-			Tap();
+			return;
 		}
+
+		// On iOS a vertical swipe the grid leaves to the calendar (see DrawnDayGrid) also ends as a tap
+		// on the cell it started on: a finger that moved is not a tap.
+		var moved = e.Args.Event.Distance.Total;
+		if (Math.Max(Math.Abs(moved.X), Math.Abs(moved.Y)) > tapSlop * RenderingScale)
+		{
+			return;
+		}
+
+		e.Consumed = true;
+		Tap();
 	}
 
 	/// <summary>Handles a tap on the cell, as a touch does.</summary>
