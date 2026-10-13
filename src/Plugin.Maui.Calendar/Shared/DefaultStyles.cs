@@ -105,7 +105,7 @@ public static class DefaultStyles
 	static Style CreateDefaultPreviousMonthArrowButtonStyle()
 	{
 		Style style = new(typeof(Button)) { CanCascade = true, BasedOn = BaseArrowButtonStyle };
-		style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "←" });
+		style.Setters.Add(new Setter() { Property = Button.TextProperty, Value = "A" });
 
 		return style;
 	}

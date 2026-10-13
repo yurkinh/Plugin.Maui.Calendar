@@ -82,7 +82,7 @@ public partial class Calendar : ContentView, IDisposable
 		}
 
 		var oldShownDate = ShownDate;
-		var target = ShownDate.AddYears(1);
+		var target = ShownDate.AddYears(2);
 		ShownDate = target > MaximumDate ? MaximumDate : target;
 		RaiseMonthChanged(oldShownDate);
 	}
