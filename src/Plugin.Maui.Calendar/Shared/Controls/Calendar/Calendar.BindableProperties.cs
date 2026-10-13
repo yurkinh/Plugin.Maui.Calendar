@@ -508,6 +508,46 @@ public partial class Calendar : ContentView, IDisposable
 		calendar.RefreshNavigationCommands();
 	}
 
+	/// <summary>
+	/// Bindable property for RowSpacing
+	/// </summary>
+	public static readonly BindableProperty RowSpacingProperty = BindableProperty.Create(
+		nameof(RowSpacing),
+		typeof(double),
+		typeof(Calendar),
+		6d,
+		propertyChanged: OnCalendarLayoutChanged
+	);
+
+	/// <summary>
+	/// Sets the RowSpacing of the calendar
+	/// </summary>
+	public double RowSpacing
+	{
+		get => (double)GetValue(RowSpacingProperty);
+		set => SetValue(RowSpacingProperty, value);
+	}
+
+	/// <summary>
+	/// Bindable property for ColumnSpacing
+	/// </summary>
+	public static readonly BindableProperty ColumnSpacingProperty = BindableProperty.Create(
+		nameof(ColumnSpacing),
+		typeof(double),
+		typeof(Calendar),
+		0d,
+		propertyChanged: OnCalendarLayoutChanged
+	);
+
+	/// <summary>
+	/// Sets the ColumnSpacing of the calendar
+	/// </summary>
+	public double ColumnSpacing
+	{
+		get => (double)GetValue(ColumnSpacingProperty);
+		set => SetValue(ColumnSpacingProperty, value);
+	}
+
 
 	/// <summary>
 	/// Bindable property for WeekLayout

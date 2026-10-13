@@ -62,11 +62,13 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 			Calendar calendar,
 			ICommand dayTappedCommand,
 			DataTemplate dayViewTemplate,
-			int numberOfWeeks
+			int numberOfWeeks,
+			double columnSpacing,
+			double rowSpacing
 	)
 	{
-		targetGrid.ColumnSpacing = 0d;
-		targetGrid.RowSpacing = 6d;
+		targetGrid.ColumnSpacing = columnSpacing;
+		targetGrid.RowSpacing = rowSpacing;
 
 		// Header row (day-of-week titles)
 		targetGrid.RowDefinitions.Add(new RowDefinition());

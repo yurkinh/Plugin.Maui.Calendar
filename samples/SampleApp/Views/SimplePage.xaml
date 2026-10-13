@@ -20,6 +20,7 @@
     <plugin:Calendar
         x:Name="calendar"
         AllowDeselecting="False"
+        ColumnSpacing="0"
         Day="{Binding Day}"
         DayViewBorderMargin="6,4,6,8"
         EmptyTemplate="{StaticResource NoEventsTemplate}"
@@ -30,6 +31,7 @@
         Month="{Binding Month}"
         MonthChangedCommand="{Binding MonthChangedCommand}"
         OtherMonthWeekIsVisible="False"
+        RowSpacing="6"
         SelectedDate="{Binding SelectedDate}"
         Style="{StaticResource SampleCalendarStyle}"
         SwipeDetectionDisabled="False"

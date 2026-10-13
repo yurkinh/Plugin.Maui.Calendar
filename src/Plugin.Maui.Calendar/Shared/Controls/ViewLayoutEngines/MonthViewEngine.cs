@@ -12,7 +12,9 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 		List<DayView> dayViews,
 		Calendar calendar,
 		ICommand dayTappedCommand,
-		DataTemplate dayViewTemplate
+		DataTemplate dayViewTemplate,
+		double columnSpacing,
+		double rowSpacing
 	)
 	{
 		GenerateWeekLayout(
@@ -21,7 +23,9 @@ sealed class MonthViewEngine(DayOfWeek firstDayOfWeek) : ViewLayoutBase(firstDay
 			calendar,
 			dayTappedCommand,
 			dayViewTemplate,
-			monthNumberOfWeeks
+			monthNumberOfWeeks,
+			columnSpacing,
+			rowSpacing
 		);
 	}
 
