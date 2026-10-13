@@ -100,7 +100,8 @@ every merge into `main`, and on demand from the Actions tab:
   recorded on, so only the behavior is checked.
 
 The workflow pins the .NET SDK, the workload set and Xcode. Each .NET for iOS version needs one Xcode version, so
-update them together. When a run fails, its artifacts hold the screenshots, the test results and the Appium log.
+update them together. The summary of a run lists the result of every test for each platform, with the messages of
+the failures. When a run fails, its artifacts hold the screenshots, the test results and the Appium log.
 
 ## Screenshots and baselines
 

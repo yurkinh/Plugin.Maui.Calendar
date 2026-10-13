@@ -36,6 +36,19 @@ jobs:
       # In Debug: in a Release build the compiler splits some conditions into more branches than the
       # source has, so the branch coverage measured there does not match the source.
       run: dotnet test tests\Plugin.Maui.Calendar.Tests\Plugin.Maui.Calendar.Tests.csproj --logger trx /p:CollectCoverage=true
+    - name: Publish Test Results
+      # Shows the results of every test in the run's summary. It writes the job summary rather than a check
+      # run, so it needs no write permission and works for pull requests from forks too. The test step
+      # already fails the job when a test fails.
+      uses: dorny/test-reporter@v3
+      if: ${{ !cancelled() }}
+      with:
+        name: Unit tests
+        report-title: Unit tests
+        path: tests/Plugin.Maui.Calendar.Tests/TestResults/*.trx
+        reporter: dotnet-trx
+        fail-on-error: false
+        fail-on-empty: false
     - name: Upload Test Results
       uses: actions/upload-artifact@v6
       if: always()
