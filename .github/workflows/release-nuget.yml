@@ -16,8 +16,11 @@ jobs:
         run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
           git branch --remote --contains | grep origin/main
-      - name: Set VERSION variable from tag
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV  
+      # A v1.2.3 tag packs version 1.2.3; a manual run packs the PackageVersion of the project.
+      - name: Take the package version from the tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: echo "PACK_VERSION=-p:PackageVersion=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
@@ -27,7 +30,7 @@ jobs:
       - name: Build
         run: dotnet build src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -c Release 
       - name: Pack
-        run: dotnet pack src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -c Release  --no-build --output .
+        run: dotnet pack src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -c Release --no-build --output . ${{ env.PACK_VERSION }}
       - name: Push
         run: dotnet nuget push Plugin.Maui.Calendar.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
         env:
