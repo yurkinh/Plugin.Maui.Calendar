@@ -27,6 +27,10 @@ sealed class DrawnDayGrid : SkiaGrid
 	// while WeekendDayBackgroundColor is not set.
 	readonly List<SkiaShape> weekendBands = [];
 
+	// The column of every band, counted from the first day of the week.
+	readonly List<int> weekendBandColumns = [];
+	bool isRightToLeft;
+
 	// The styles of the day labels and of the titles, resolved as the native labels resolve them.
 	readonly DrawnLabelStyle dayLabelStyle;
 	readonly DrawnLabelStyle titleStyle;
@@ -76,7 +80,7 @@ sealed class DrawnDayGrid : SkiaGrid
 		{
 			// Read as text, as the native title labels are.
 			var title = new SkiaLabel { HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleText };
-			Grid.SetColumn(title, column);
+			Grid.SetColumn(title, ColumnOf(column));
 			titleLabels.Add(title);
 			AddSubView(title);
 		}
@@ -87,6 +91,42 @@ sealed class DrawnDayGrid : SkiaGrid
 
 		ConsumeGestures += OnGridGestures;
 	}
+
+	/// <summary>
+	/// Whether the week runs from right to left, as a native grid does on its own for a right-to-left
+	/// FlowDirection: the first day of the week is then in the rightmost column.
+	/// </summary>
+	internal bool IsRightToLeft
+	{
+		get => isRightToLeft;
+		set
+		{
+			if (isRightToLeft == value)
+			{
+				return;
+			}
+
+			isRightToLeft = value;
+
+			for (var i = 0; i < titleLabels.Count; i++)
+			{
+				Grid.SetColumn(titleLabels[i], ColumnOf(i));
+			}
+			for (var i = 0; i < cells.Count; i++)
+			{
+				Grid.SetColumn(cells[i], ColumnOf(i % daysInWeek));
+			}
+			for (var i = 0; i < weekendBands.Count; i++)
+			{
+				Grid.SetColumn(weekendBands[i], ColumnOf(weekendBandColumns[i]));
+			}
+
+			Invalidate();
+		}
+	}
+
+	// The grid column of a day, counted from the first day of the week.
+	int ColumnOf(int dayOfWeekColumn) => isRightToLeft ? daysInWeek - 1 - dayOfWeekColumn : dayOfWeekColumn;
 
 	/// <summary>The culture the screen reader names the days in (the calendar's formatting culture).</summary>
 	internal System.Globalization.CultureInfo Culture
@@ -126,7 +166,7 @@ sealed class DrawnDayGrid : SkiaGrid
 			for (var i = 0; i < days.Count; i++)
 			{
 				var cell = new DrawnDayCell(day => DayTapped?.Invoke(day), dayLabelStyle, () => culture);
-				Grid.SetColumn(cell, i % daysInWeek);
+				Grid.SetColumn(cell, ColumnOf(i % daysInWeek));
 				Grid.SetRow(cell, 1 + (i / daysInWeek));
 				cells.Add(cell);
 				AddSubView(cell);
@@ -193,7 +233,8 @@ sealed class DrawnDayGrid : SkiaGrid
 					Margin = new Thickness(0, -bleed, 0, -bleed),
 					InputTransparent = true,
 				};
-				Grid.SetColumn(band, column);
+				Grid.SetColumn(band, ColumnOf(column));
+				weekendBandColumns.Add(column);
 				Grid.SetRow(band, week);
 				weekendBands.Add(band);
 			}
@@ -216,6 +257,8 @@ sealed class DrawnDayGrid : SkiaGrid
 
 	void RemoveWeekendBands()
 	{
+		weekendBandColumns.Clear();
+
 		foreach (var band in weekendBands)
 		{
 			RemoveSubView(band);

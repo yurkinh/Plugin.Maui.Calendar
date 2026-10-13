@@ -81,6 +81,20 @@ public partial class Calendar : ContentView, IDisposable
 		}
 	}
 
+	// The native grid is mirrored by the platform for a right-to-left FlowDirection (the calendar's own
+	// or an inherited one); the drawn grid mirrors its columns itself.
+	bool IsRightToLeft => (((IVisualElementController)this).EffectiveFlowDirection & EffectiveFlowDirection.RightToLeft) != 0;
+
+	protected override void OnPropertyChanged(string propertyName = null)
+	{
+		base.OnPropertyChanged(propertyName);
+
+		if (propertyName == nameof(FlowDirection) && drawnDayGrid is not null)
+		{
+			drawnDayGrid.IsRightToLeft = IsRightToLeft;
+		}
+	}
+
 	void OnUiThread(Action action)
 	{
 		if (Dispatcher.IsDispatchRequired)
@@ -127,6 +141,7 @@ public partial class Calendar : ContentView, IDisposable
 	{
 		EnsureDrawnDayGrid();
 
+		drawnDayGrid.IsRightToLeft = IsRightToLeft;
 		drawnDayGrid.DayLabelStyle = DaysLabelStyle;
 		drawnDayGrid.SetDays([.. dayViews.Select(dayView => (DayModel)dayView.BindingContext)]);
 		UpdateDayTitles();

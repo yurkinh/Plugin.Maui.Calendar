@@ -566,6 +566,40 @@ public sealed class DrawnDayGridTests : IDisposable
 		DrawnGrid(calendar).TitleLabels.Should().OnlyContain(label => label.AccessibilityRole == Aria.RoleText);
 	}
 
+	// ── Right to left ────────────────────────────────────────────────────────
+
+	[Fact]
+	public void RightToLeft_MirrorsTheColumns_AsTheNativeGridIsMirrored()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, WeekendDayBackgroundColor = Colors.LightGray };
+		var grid = DrawnGrid(calendar);
+
+		calendar.FlowDirection = FlowDirection.RightToLeft;
+
+		grid.TitleLabels.Select(Grid.GetColumn).Should().Equal(6, 5, 4, 3, 2, 1, 0);
+		grid.Cells.Take(7).Select(Grid.GetColumn).Should().Equal(6, 5, 4, 3, 2, 1, 0);
+		Grid.GetRow(grid.Cells[0]).Should().Be(1);
+		grid.WeekendBands.Select(Grid.GetColumn).Distinct().Should().BeEquivalentTo([0, 6]);
+
+		calendar.FlowDirection = FlowDirection.LeftToRight;
+
+		grid.Cells.Take(7).Select(Grid.GetColumn).Should().Equal(0, 1, 2, 3, 4, 5, 6);
+	}
+
+	[Fact]
+	public void RightToLeft_SetBeforeTheGridIsCreated_AndKeptAcrossLayouts()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, FlowDirection = FlowDirection.RightToLeft };
+
+		DrawnGrid(calendar).Cells.Take(7).Select(Grid.GetColumn).Should().Equal(6, 5, 4, 3, 2, 1, 0);
+
+		calendar.CalendarLayout = WeekLayout.Week;
+		calendar.WeekendDayBackgroundColor = Colors.LightGray;
+
+		DrawnGrid(calendar).Cells.Select(Grid.GetColumn).Should().Equal(6, 5, 4, 3, 2, 1, 0);
+		DrawnGrid(calendar).WeekendBands.Select(Grid.GetColumn).Should().BeEquivalentTo([6, 0]);
+	}
+
 	// ── Titles ───────────────────────────────────────────────────────────────
 
 	[Fact]

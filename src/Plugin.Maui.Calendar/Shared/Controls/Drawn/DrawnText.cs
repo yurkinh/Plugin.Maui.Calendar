@@ -31,6 +31,16 @@ static class DrawnText
 		var styleFamily = fontFamily;
 		label.Text = text;
 
+#if ANDROID || IOS || MACCATALYST || WINDOWS
+		// Bold or italic without a font family: a native label uses the bold or italic system font,
+		// and so does the drawn one, rather than a synthetic bold of the regular font.
+		if (string.IsNullOrEmpty(styleFamily) && label.FontAttributes != FontAttributes.None)
+		{
+			styleFamily = DefaultFontAlias(label.FontAttributes);
+			label.FontAttributes = FontAttributes.None;
+		}
+#endif
+
 		// The label is first given the style's font, so the check looks at that font.
 		var autoFont = label.AutoFont;
 		label.AutoFont = false;
@@ -77,6 +87,24 @@ static class DrawnText
 		return null;
 #endif
 	}
+
+#if ANDROID || IOS || MACCATALYST || WINDOWS
+	// The alias under which DrawnUI's font manager knows the system's default font with these attributes.
+	static string DefaultFontAlias(FontAttributes attributes)
+	{
+		var alias = $"Plugin.Maui.Calendar.Default.{attributes}";
+		if (!SkiaFontManager.Instance.Fonts.ContainsKey(alias))
+		{
+			SkiaFontManager.Instance.Fonts[alias] = SKTypeface.FromFamilyName(
+				SkiaFontManager.DefaultTypeface.FamilyName,
+				attributes.HasFlag(FontAttributes.Bold) ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
+				SKFontStyleWidth.Normal,
+				attributes.HasFlag(FontAttributes.Italic) ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright);
+		}
+
+		return alias;
+	}
+#endif
 
 	// A label keeps the typeface AutoFont chose until its font family changes. Without a platform
 	// (the net10.0 target, where nothing is drawn) DrawnUI's font manager throws for any family.
