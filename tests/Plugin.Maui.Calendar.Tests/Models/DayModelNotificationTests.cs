@@ -63,10 +63,12 @@ public class DayModelNotificationTests
     public void NewValue_RaisesTheMemberAndTheValuesComputedFromIt(string member, string[] expected)
     {
         var day = new DayModel();
-        var property = typeof(DayModel).GetProperty(member)!;
+        var property = typeof(DayModel).GetProperty(member)
+            ?? throw new MissingMemberException(nameof(DayModel), member);
         var value = DifferentValue(property.PropertyType, property.GetValue(day));
         var raised = new List<string>();
-        day.PropertyChanged += (_, e) => raised.Add(e.PropertyName!);
+        day.PropertyChanged += (_, e) => raised.Add(e.PropertyName
+            ?? throw new InvalidOperationException($"Setting {member} raised PropertyChanged without a property name."));
 
         property.SetValue(day, value);
 
@@ -92,7 +94,7 @@ public class DayModelNotificationTests
 
     static object DifferentValue(Type type, object? current) => type switch
     {
-        _ when type == typeof(bool) => !(bool)current!,
+        _ when type == typeof(bool) => current is false,
         _ when type == typeof(DateTime) => new DateTime(2025, 5, 20),
         _ when type == typeof(string) => "20",
         _ when type == typeof(int) => 3,
