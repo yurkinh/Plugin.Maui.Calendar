@@ -29,6 +29,10 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 ### Changed
 - The trimming, AOT and single-file analyzers check the library on every build; the MAUI build used to turn the trimming analyzer off. The library is still not marked trimmable, so apps keep all of it in their default trimming. By @MykhailoDav
 
+### Removed
+- **Breaking:** the dependency on CommunityToolkit.Mvvm; the package depends on nothing but .NET MAUI now. An app that uses the toolkit in its own code (for example `[ObservableProperty]` in its view models) and got it through this package adds it itself: `dotnet add package CommunityToolkit.Mvvm`. By @MykhailoDav
+- **Breaking:** `DayTappedMessage`. A tapped day no longer sends it to every calendar through `WeakReferenceMessenger`; the day goes straight to its own calendar. To react to taps, use `DayTappedCommand`. By @MykhailoDav
+
 ## [3.1.1] - 2026-10-01
 
 ### Added

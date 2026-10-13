@@ -17,7 +17,7 @@ Human documentation: README.md. History: CHANGELOG.md.
 - Requires .NET 10 and the MAUI workload (package 3.x). Package 2.x targets .NET 9, 1.x targets .NET 8.
 - Minimum OS: Android API 21, iOS 15.0, Mac Catalyst 15.2, Windows 10.0.17763.
 - NO registration is needed in `MauiProgram.cs`. There is no `UseMauiCalendar()` or similar builder method; do not add one.
-- Depends on CommunityToolkit.Mvvm (comes transitively).
+- Depends on nothing but .NET MAUI. Versions up to 3.1.1 brought CommunityToolkit.Mvvm along; an app that uses the toolkit references the package itself.
 - XAML namespace (use the `plugin` prefix, as the sample app does):
   `xmlns:plugin="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"`
 - Other namespaces:
@@ -244,7 +244,7 @@ public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent, IMultiEve
 
 ## 7. Recipes
 
-View model code below uses CommunityToolkit.Mvvm 8.4+, the style of the sample app: `[ObservableProperty]` on `public partial` properties, not on fields (the toolkit's analyzers, MVVMTK0045/MVVMTK0056, suggest partial properties, and Native AOT on Windows needs them), and `[RelayCommand]` on methods. The calendar works with any `INotifyPropertyChanged` implementation.
+View model code below uses CommunityToolkit.Mvvm 8.4+ (a package the app references itself), the style of the sample app: `[ObservableProperty]` on `public partial` properties, not on fields (the toolkit's analyzers, MVVMTK0045/MVVMTK0056, suggest partial properties, and Native AOT on Windows needs them), and `[RelayCommand]` on methods. The calendar works with any `INotifyPropertyChanged` implementation.
 
 ### Single date with events list
 ```xml
