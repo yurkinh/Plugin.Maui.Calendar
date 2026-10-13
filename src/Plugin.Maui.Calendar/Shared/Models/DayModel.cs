@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.Layouts;
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Interfaces;
@@ -8,169 +8,137 @@ using Plugin.Maui.Calendar.Styles;
 
 namespace Plugin.Maui.Calendar.Models;
 
-sealed partial class DayModel : ObservableObject, ICalendarDay
+sealed class DayModel : ICalendarDay
 {
+	public event PropertyChangedEventHandler PropertyChanged;
+
 	// TextColor depends on IsToday and IsWeekendColored, both derived from Date, so it must be
 	// re-notified here: a reused cell can change date without any other TextColor input changing.
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	[NotifyPropertyChangedFor(nameof(OutlineColor))]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	[NotifyPropertyChangedFor(nameof(IsToday))]
-	[NotifyPropertyChangedFor(nameof(IsWeekend))]
-	public partial DateTime Date { get; set; }
+	public DateTime Date
+	{
+		get;
+		set
+		{
+			if (field == value)
+			{
+				return;
+			}
 
-	[ObservableProperty]
-	public partial string Day { get; set; }
+			field = value;
 
-	[ObservableProperty]
-	public partial Thickness DayViewBorderMargin { get; set; } = new(0, 0, 0, 0);
+			// Cached before any notification, so a handler of these notifications reads the new IsToday.
+			isToday = value.Date == Today.Date;
+			OnPropertyChanged(nameof(Date));
+			OnPropertyChanged(nameof(BackgroundColor));
+			OnPropertyChanged(nameof(OutlineColor));
+			OnPropertyChanged(nameof(TextColor));
+			OnPropertyChanged(nameof(IsToday));
+			OnPropertyChanged(nameof(IsWeekend));
+		}
+	}
 
-	[ObservableProperty]
-	double dayViewSize;
+	public string Day { get; set => SetProperty(ref field, value); }
+
+	public Thickness DayViewBorderMargin { get; set => SetProperty(ref field, value); } = new(0, 0, 0, 0);
+
+	public double DayViewSize { get; set => SetProperty(ref field, value); }
 
 	/// <summary>
 	/// Height of the cell: <see cref="Controls.Calendar.DayViewHeight"/>, or <see cref="DayViewSize"/> when that is -1.
 	/// </summary>
-	[ObservableProperty]
-	public partial double DayViewHeight { get; set; }
+	public double DayViewHeight { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	public partial float DayViewCornerRadius { get; set; }
+	public float DayViewCornerRadius { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	public partial Style DaysLabelStyle { get; set; } = DefaultStyles.DefaultLabelStyle;
+	public Style DaysLabelStyle { get; set => SetProperty(ref field, value); } = DefaultStyles.DefaultLabelStyle;
 
-	[ObservableProperty]
-	public partial ICommand DayTappedCommand { get; set; }
+	public ICommand DayTappedCommand { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(TextColor),
-		nameof(BackgroundColor),
-		nameof(BackgroundEventIndicator),
-		nameof(BackgroundFullEventColor)
-	)]
-	public partial bool HasEvents { get; set; }
+	public bool HasEvents
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(TextColor), nameof(BackgroundColor), nameof(BackgroundEventIndicator), nameof(BackgroundFullEventColor)]);
+	}
 
-	[ObservableProperty]
-	public partial int EventCount { get; set; }
+	public int EventCount { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	public partial IReadOnlyList<object> Events { get; set; } = [];
+	public IReadOnlyList<object> Events { get; set => SetProperty(ref field, value); } = [];
 
-	[ObservableProperty]
-	public partial bool IsRangeStart { get; set; }
+	public bool IsRangeStart { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	public partial bool IsRangeEnd { get; set; }
+	public bool IsRangeEnd { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible), nameof(BackgroundFullEventColor))]
-	public partial bool IsThisMonth { get; set; }
+	public bool IsThisMonth
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(TextColor), nameof(IsVisible), nameof(IsControlVisible), nameof(BackgroundFullEventColor)]);
+	}
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(TextColor),
-		nameof(BackgroundColor),
-		nameof(OutlineColor),
-		nameof(BackgroundFullEventColor)
-	)]
-	public partial bool IsSelected { get; set; }
+	public bool IsSelected
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(TextColor), nameof(BackgroundColor), nameof(OutlineColor), nameof(BackgroundFullEventColor)]);
+	}
 
-	[ObservableProperty]
-	public partial bool AllowDeselect { get; set; }
+	public bool AllowDeselect { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(IsVisible), nameof(BackgroundFullEventColor))]
-	public partial bool OtherMonthIsVisible { get; set; }
+	public bool OtherMonthIsVisible
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(IsVisible), nameof(BackgroundFullEventColor)]);
+	}
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(IsControlVisible))]
-	public partial bool OtherMonthWeekIsVisible { get; set; }
+	public bool OtherMonthWeekIsVisible { get; set => SetProperty(ref field, value, [nameof(IsControlVisible)]); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial bool IsDisabled { get; set; }
+	public bool IsDisabled { get; set => SetProperty(ref field, value, [nameof(TextColor)]); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color SelectedTextColor { get; set; } = Colors.White;
+	public Color SelectedTextColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.White;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color SelectedTodayTextColor { get; set; } = Colors.Transparent;
+	public Color SelectedTodayTextColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.Transparent;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color OtherMonthColor { get; set; } = Colors.Silver;
+	public Color OtherMonthColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.Silver;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color OtherMonthSelectedColor { get; set; } = Colors.Gray;
+	public Color OtherMonthSelectedColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.Gray;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color WeekendDayColor { get; set; } = Colors.Transparent;
+	public Color WeekendDayColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.Transparent;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color DeselectedTextColor { get; set; } = Colors.Transparent;
+	public Color DeselectedTextColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.Transparent;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	public partial Color SelectedBackgroundColor { get; set; } = Color.FromArgb("#2196F3");
+	public Color SelectedBackgroundColor { get; set => SetProperty(ref field, value, [nameof(BackgroundColor)]); } = Color.FromArgb("#2196F3");
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	public partial Color DeselectedBackgroundColor { get; set; } = Colors.Transparent;
+	public Color DeselectedBackgroundColor { get; set => SetProperty(ref field, value, [nameof(BackgroundColor)]); } = Colors.Transparent;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(BackgroundEventIndicator),
-		nameof(BackgroundColor),
-		nameof(BackgroundFullEventColor),
-		nameof(EventLayoutDirection)
-	)]
-	public partial EventIndicatorType EventIndicatorType { get; set; } = EventIndicatorType.BottomDot;
+	public EventIndicatorType EventIndicatorType
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(BackgroundEventIndicator), nameof(BackgroundColor), nameof(BackgroundFullEventColor), nameof(EventLayoutDirection)]);
+	} = EventIndicatorType.BottomDot;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(BackgroundColor),
-		nameof(BackgroundFullEventColor)
-	)]
-	public partial Color EventIndicatorColor { get; set; } = Color.FromArgb("#FF4081");
+	public Color EventIndicatorColor
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(BackgroundColor), nameof(BackgroundFullEventColor)]);
+	} = Color.FromArgb("#FF4081");
 
-	[ObservableProperty]
-	public partial IReadOnlyList<Color> EventColors { get; set; }
+	public IReadOnlyList<Color> EventColors { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(
-		nameof(BackgroundColor),
-		nameof(BackgroundFullEventColor)
-	)]
-	public partial Color EventIndicatorSelectedColor { get; set; }
+	public Color EventIndicatorSelectedColor
+	{
+		get;
+		set => SetProperty(ref field, value, [nameof(BackgroundColor), nameof(BackgroundFullEventColor)]);
+	}
 
-	[ObservableProperty]
-	public partial Color EventIndicatorTextColor { get; set; }
+	public Color EventIndicatorTextColor { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	public partial Color EventIndicatorSelectedTextColor { get; set; }
+	public Color EventIndicatorSelectedTextColor { get; set => SetProperty(ref field, value); }
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(OutlineColor))]
-	public partial Color TodayOutlineColor { get; set; } = Color.FromArgb("#FF4081");
+	public Color TodayOutlineColor { get; set => SetProperty(ref field, value, [nameof(OutlineColor)]); } = Color.FromArgb("#FF4081");
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TextColor))]
-	public partial Color TodayTextColor { get; set; } = Colors.Transparent;
+	public Color TodayTextColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); } = Colors.Transparent;
 
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(BackgroundColor))]
-	public partial Color TodayFillColor { get; set; } = Colors.Transparent;
+	public Color TodayFillColor { get; set => SetProperty(ref field, value, [nameof(BackgroundColor)]); } = Colors.Transparent;
 
-	[ObservableProperty]
-	public partial Color DisabledColor { get; set; } = Color.FromArgb("#ECECEC");
+	public Color DisabledColor { get; set => SetProperty(ref field, value); } = Color.FromArgb("#ECECEC");
 
 	// Applies to every cell, not only to days with events: the (possibly empty) dot row then sits
 	// above the day number in all cells, so the numbers stay aligned across the grid.
@@ -236,9 +204,9 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 	public bool IsVisible => IsThisMonth || OtherMonthIsVisible;
 
 	public bool IsControlVisible => IsThisMonth || OtherMonthWeekIsVisible;
-	
-	// Cached result of Date.Date == Today; updated in OnDateChanged via the MVVM Toolkit partial
-	// hook so that the BackgroundColor, TextColor and OutlineColor getters don't compare dates.
+
+	// Cached result of Date.Date == Today; updated by the Date setter so that the BackgroundColor,
+	// TextColor and OutlineColor getters don't compare dates.
 	bool isToday;
 
 	/// <summary>
@@ -247,13 +215,6 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 	/// raises no change notification: <see cref="RefreshIsToday"/> does that for a date that stays.
 	/// </summary>
 	internal DateTime Today { get; set; } = DateTime.Today;
-
-	// Runs before the generated setter raises PropertyChanged for Date and its dependents
-	// (including IsToday), so the cache is set silently here.
-	partial void OnDateChanged(DateTime value)
-	{
-		isToday = value.Date == Today.Date;
-	}
 
 	public bool IsToday => isToday;
 
@@ -286,4 +247,23 @@ sealed partial class DayModel : ObservableObject, ICalendarDay
 	// Drives the WeekendDayColor branch of TextColor: a weekend day is only coloured
 	// differently when a visible WeekendDayColor has been set.
 	public bool IsWeekendColored => IsWeekend && WeekendDayColor != Colors.Transparent;
+
+	// Stores a new value, then raises PropertyChanged for the member and for the values computed from
+	// it, in that order. The same value again raises nothing.
+	void SetProperty<T>(ref T storage, T value, ReadOnlySpan<string> computedFromIt = default, [CallerMemberName] string propertyName = "")
+	{
+		if (EqualityComparer<T>.Default.Equals(storage, value))
+		{
+			return;
+		}
+
+		storage = value;
+		OnPropertyChanged(propertyName);
+		foreach (var computed in computedFromIt)
+		{
+			OnPropertyChanged(computed);
+		}
+	}
+
+	void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
