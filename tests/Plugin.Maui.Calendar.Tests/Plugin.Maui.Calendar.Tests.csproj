@@ -10,7 +10,7 @@
 
   <!--
     Code coverage, collected with: dotnet test /p:CollectCoverage=true
-    Only the library's own code counts: the code generated from XAML and by the MVVM toolkit (under obj)
+    Only the library's own code counts: the code generated from XAML (under obj)
     is left out. The run fails when line or branch coverage of the library drops below 100%.
   -->
   <PropertyGroup Condition="'$(CollectCoverage)' == 'true'">
@@ -37,7 +37,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
 
   <ItemGroup>
