@@ -2,7 +2,8 @@ namespace Plugin.Maui.Calendar.UITests.HostApp;
 
 /// <summary>
 /// The first page: the UI tests type a scenario name in <c>ScenarioEntry</c> and press <c>GoButton</c>.
-/// The list below is for people browsing the scenarios.
+/// The list below is for people browsing the scenarios. <c>DrawnButton</c> switches the calendars of the
+/// scenarios opened next between the native day grid and the drawn one (<c>DrawnMode</c> shows which).
 /// </summary>
 sealed class GalleryPage : ContentPage
 {
@@ -19,6 +20,14 @@ sealed class GalleryPage : ContentPage
 		};
 		var go = new Button { AutomationId = "GoButton", Text = "Go" };
 		var error = new Label { AutomationId = "GalleryError", TextColor = Colors.Red };
+
+		var drawnMode = new Label { AutomationId = "DrawnMode", Text = DrawnMode.Text, VerticalOptions = LayoutOptions.Center };
+		var drawnButton = new Button { AutomationId = "DrawnButton", Text = "Native / drawn grid" };
+		drawnButton.Clicked += (_, _) =>
+		{
+			DrawnMode.IsOn = !DrawnMode.IsOn;
+			drawnMode.Text = DrawnMode.Text;
+		};
 
 		void Open()
 		{
@@ -56,7 +65,7 @@ sealed class GalleryPage : ContentPage
 
 		Content = new Grid
 		{
-			RowDefinitions = [new(GridLength.Auto), new(GridLength.Auto), new(GridLength.Star)],
+			RowDefinitions = [new(GridLength.Auto), new(GridLength.Auto), new(GridLength.Auto), new(GridLength.Star)],
 			ColumnDefinitions = [new(GridLength.Star), new(GridLength.Auto)],
 			Padding = new Thickness(12),
 			ColumnSpacing = 8,
@@ -64,8 +73,10 @@ sealed class GalleryPage : ContentPage
 			{
 				entry,
 				Cell(go, column: 1),
-				Cell(error, row: 1, columnSpan: 2),
-				Cell(list, row: 2, columnSpan: 2),
+				Cell(drawnMode, row: 1),
+				Cell(drawnButton, row: 1, column: 1),
+				Cell(error, row: 2, columnSpan: 2),
+				Cell(list, row: 3, columnSpan: 2),
 			},
 		};
 	}
@@ -77,4 +88,18 @@ sealed class GalleryPage : ContentPage
 		Grid.SetColumnSpan(view, columnSpan);
 		return view;
 	}
+}
+
+/// <summary>Whether the calendars of the scenarios draw their day grid (the DrawnUI migration).</summary>
+static class DrawnMode
+{
+	const string drawnDayGridSwitch = "Plugin.Maui.Calendar.DrawnDayGrid";
+
+	public static bool IsOn
+	{
+		get => AppContext.TryGetSwitch(drawnDayGridSwitch, out var on) && on;
+		set => AppContext.SetSwitch(drawnDayGridSwitch, value);
+	}
+
+	public static string Text => IsOn ? "drawn" : "native";
 }

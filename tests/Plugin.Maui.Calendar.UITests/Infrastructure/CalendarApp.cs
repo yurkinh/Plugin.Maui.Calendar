@@ -168,6 +168,14 @@ public sealed class CalendarApp : IDisposable
 			}
 		}
 
+		// The day grid the tests are about: native or drawn (see UITEST_DRAWN).
+		var mode = UITestSettings.DrawnGrid ? "drawn" : "native";
+		if (Text("DrawnMode") != mode)
+		{
+			Tap("DrawnButton");
+			WaitForText("DrawnMode", mode);
+		}
+
 		var entry = Element("ScenarioEntry");
 		entry.Click();
 		entry.Clear();
@@ -195,8 +203,8 @@ public sealed class CalendarApp : IDisposable
 	public DateTime VisibleStartDate =>
 		DateTime.ParseExact(Text("VisibleDates")[..10], "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-	/// <summary>The automation id of the cell that shows <paramref name="date"/>.</summary>
-	public string DayCell(DateTime date)
+	/// <summary>The position of the cell that shows <paramref name="date"/> (<c>Day0</c> is the first).</summary>
+	int DayIndex(DateTime date)
 	{
 		var index = (date.Date - VisibleStartDate).Days;
 		if (index is < 0 or > 41)
@@ -204,10 +212,75 @@ public sealed class CalendarApp : IDisposable
 			throw new ArgumentOutOfRangeException(nameof(date), date, "The calendar does not show this date.");
 		}
 
-		return $"Day{index}";
+		return index;
 	}
 
-	public void TapDay(DateTime date) => Tap(DayCell(date));
+	/// <summary>The automation id of the native cell that shows <paramref name="date"/>.</summary>
+	public string DayCell(DateTime date) => $"Day{DayIndex(date)}";
+
+	/// <summary>
+	/// Taps the day <paramref name="date"/>: its native cell, or with the drawn grid (which has no platform
+	/// views to find) the center of its cell, from the positions the host app reports in <c>DrawnCells</c>.
+	/// A calendar with a DayViewTemplate shows native cells with either setting.
+	/// </summary>
+	public void TapDay(DateTime date)
+	{
+		if (!UITestSettings.DrawnGrid || Exists(DayCell(date)))
+		{
+			Tap(DayCell(date));
+			return;
+		}
+
+		var index = DayIndex(date);
+		var (calendarWidth, cells) = ReadDrawnCells();
+		var calendar = Element("Calendar");
+
+		// The host app reports device-independent units; the element's rectangle is in the driver's units.
+		var scale = calendar.Size.Width / calendarWidth;
+		var (x, y) = cells[index];
+		TapAt(calendar.Location.X + (x * scale), calendar.Location.Y + (y * scale));
+	}
+
+	(double CalendarWidth, (double X, double Y)[] Cells) ReadDrawnCells()
+	{
+		var text = Wait(null).Until(_ => Text("DrawnCells") is { Length: > 1 } value && value.Contains('|') ? value : null)!;
+		var parts = text.Split('|');
+		var cells = parts[1].Split(';').Select(cell =>
+		{
+			var xy = cell.Split(',');
+			return (double.Parse(xy[0], CultureInfo.InvariantCulture), double.Parse(xy[1], CultureInfo.InvariantCulture));
+		}).ToArray();
+
+		return (double.Parse(parts[0], CultureInfo.InvariantCulture), cells);
+	}
+
+	/// <summary>The text of the weekday title in <paramref name="column"/> (0 is the first day of the week).</summary>
+	public string TitleText(int column)
+	{
+		if (!UITestSettings.DrawnGrid)
+		{
+			return Text($"Title{column}");
+		}
+
+		// The host app reports the drawn titles four times a second: one report after the change is read.
+		Thread.Sleep(300);
+		var titles = Wait(null).Until(_ => Text("DrawnTitles") is var value && value.Count(c => c == ',') == 6 ? value : null)!;
+		return titles.Split(',')[column];
+	}
+
+	/// <summary>Taps the screen at (<paramref name="x"/>, <paramref name="y"/>), in the driver's units.</summary>
+	void TapAt(double x, double y)
+	{
+		var isTouch = UITestSettings.Platform is TestPlatform.iOS or TestPlatform.Android;
+		var pointer = new PointerInputDevice(isTouch ? PointerKind.Touch : PointerKind.Mouse, "finger");
+		var button = isTouch ? MouseButton.Touch : MouseButton.Left;
+		var tap = new ActionSequence(pointer, 0);
+		tap.AddAction(pointer.CreatePointerMove(CoordinateOrigin.Viewport, (int)x, (int)y, TimeSpan.Zero));
+		tap.AddAction(pointer.CreatePointerDown(button));
+		tap.AddAction(pointer.CreatePause(TimeSpan.FromMilliseconds(50)));
+		tap.AddAction(pointer.CreatePointerUp(button));
+		driver.PerformActions([tap]);
+	}
 
 	// ── Gestures ─────────────────────────────────────────────────────────────
 

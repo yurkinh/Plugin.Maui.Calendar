@@ -121,9 +121,41 @@ public partial class Calendar : ContentView, IDisposable
 	// daysControl.Children.OfType<Label>() on every invocation.
 	void UpdateDayTitles()
 	{
+		var titles = GetDayTitles();
+
+		for (int column = 0; column < dayTitleLabels.Length; column++)
+		{
+			dayTitleLabels[column].Text = titles[column].Text;
+
+			// The other titles keep their binding to DaysTitleLabelStyle.
+			if (titles[column].IsWeekend)
+			{
+				dayTitleLabels[column].Style = WeekendTitleStyle;
+			}
+		}
+
+		if (IsDrawnDayGridShown)
+		{
+			// The titles follow the culture, and so do the dates a screen reader says.
+			drawnDayGrid.Culture = FormattingCulture;
+			drawnDayGrid.SetTitles(
+				[.. titles.Select(title => title.Text)],
+				[.. titles.Select(title => title.IsWeekend)],
+				DaysTitleLabelStyle,
+				WeekendTitleStyle);
+		}
+	}
+
+	/// <summary>
+	/// The texts of the 7 day-of-week titles, from <see cref="FirstDayOfWeek"/>, and whether each is a
+	/// weekend day (styled with <see cref="WeekendTitleStyle"/>).
+	/// </summary>
+	(string Text, bool IsWeekend)[] GetDayTitles()
+	{
+		var titles = new (string Text, bool IsWeekend)[7];
 		var dayNumber = (int)FirstDayOfWeek;
 
-		foreach (var dayLabel in dayTitleLabels)
+		for (int column = 0; column < titles.Length; column++)
 		{
 			var fullName = (UseAbbreviatedDayNames
 				? Culture.DateTimeFormat.AbbreviatedDayNames[dayNumber]
@@ -141,15 +173,11 @@ public partial class Calendar : ContentView, IDisposable
 							? dayName[..1].ToUpperInvariant() + dayName[1..].ToLowerInvariant()
 							: dayName.ToUpperInvariant();
 
-			dayLabel.Text = titleText;
-
-			// Detect weekend days	
-			if (dayNumber == (int)DayOfWeek.Saturday || dayNumber == (int)DayOfWeek.Sunday)
-			{
-				dayLabel.Style = WeekendTitleStyle;
-			}
+			titles[column] = (titleText, dayNumber is (int)DayOfWeek.Saturday or (int)DayOfWeek.Sunday);
 			dayNumber = (dayNumber + 1) % 7;
 		}
+
+		return titles;
 	}
 
 	void UpdateDays()
@@ -248,6 +276,12 @@ public partial class Calendar : ContentView, IDisposable
 	/// </summary>
 	void UpdateDayGlobalProperties()
 	{
+		// The drawn grid resolves the day label style once for all its cells.
+		if (IsDrawnDayGridShown)
+		{
+			drawnDayGrid.DayLabelStyle = DaysLabelStyle;
+		}
+
 		foreach (var dayView in dayViews)
 		{
 			var dayModel = (DayModel)dayView.BindingContext;
@@ -329,6 +363,13 @@ public partial class Calendar : ContentView, IDisposable
 		// Start from a clean slate so a colour change can never leave stale boxes behind; they
 		// are rebuilt below only when a visible colour is set.
 		RemoveWeekendBands();
+
+		// The drawn grid draws the same bands behind its cells.
+		if (IsDrawnDayGridShown)
+		{
+			drawnDayGrid.SetWeekendBands(WeekendDayBackgroundColor, WeekendDayBackgroundCornerRadius, FirstDayOfWeek);
+			return;
+		}
 
 		if (WeekendDayBackgroundColor is not { Alpha: > 0 })
 		{

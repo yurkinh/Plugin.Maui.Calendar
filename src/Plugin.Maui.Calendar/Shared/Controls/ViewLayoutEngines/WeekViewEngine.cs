@@ -26,6 +26,11 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 		);
 	}
 
+	public void CreateDays(List<DayView> dayViews, ICommand dayTappedCommand, DataTemplate dayViewTemplate)
+	{
+		CreateWeekDays(dayViews, dayTappedCommand, dayViewTemplate, numberOfWeeks);
+	}
+
 	public DateTime GetFirstDate(DateTime dateToShow)
 	{
 		return GetFirstDateOfWeek(dateToShow);

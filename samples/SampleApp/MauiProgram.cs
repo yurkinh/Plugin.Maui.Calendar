@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using DrawnUi.Draw;
 using MemoryToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
@@ -20,6 +21,8 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .ConfigureMopups()
             .UseMauiCommunityToolkit()
+            // Required by the drawn day grid of the calendar (DrawnUI migration)
+            .UseDrawnUi()
             .InjectServices()
             .InjectViewsAndViewModels()
             .ConfigureFonts(fonts =>

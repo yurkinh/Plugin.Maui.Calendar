@@ -23,6 +23,13 @@ interface IViewLayoutEngine
 		DataTemplate dayViewTemplate
 	);
 
+	/// <summary>
+	/// Fills <paramref name="dayViews"/> with the day cells of the layout (created with
+	/// <paramref name="dayViewTemplate"/>), in grid order, without building a native grid: the drawn
+	/// day grid shows their day models. <see cref="GenerateLayout"/> creates the same cells.
+	/// </summary>
+	void CreateDays(List<DayView> dayViews, ICommand dayTappedCommand, DataTemplate dayViewTemplate);
+
 	DateTime GetFirstDate(DateTime dateToShow);
 
 	DateTime GetLastDate(DateTime dateToShow);

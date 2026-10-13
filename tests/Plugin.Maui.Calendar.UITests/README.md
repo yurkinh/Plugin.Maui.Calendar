@@ -72,6 +72,7 @@ The tests read these environment variables:
 | `UITEST_APPIUM_URL` | An Appium server that is already running (otherwise the tests start one) |
 | `UITEST_UPDATE_BASELINES` | `1` saves the screenshots as the new baselines instead of comparing them |
 | `UITEST_SCREENSHOTS` | `off` skips the screenshot comparisons and checks the behavior only |
+| `UITEST_DRAWN` | `1` tests the calendars with the day grid drawn by DrawnUI (see below) |
 
 The Appium log of a run is in `TestResults/Screenshots/<platform>/appium.log`.
 
@@ -128,10 +129,32 @@ When a change is meant to change the look:
 3. Run with `--update-baselines` (or `UITEST_UPDATE_BASELINES=1`) to save the new screenshots.
 4. Review the changed images in `git diff` before you commit them.
 
+## The drawn day grid
+
+The calendar can draw its day grid with [DrawnUI](https://github.com/DrawnUi/DrawnUi.Net) instead of native views
+(the `Plugin.Maui.Calendar.DrawnDayGrid` `AppContext` switch). With `UITEST_DRAWN=1` every test runs against the
+drawn grid: before it opens a scenario, the test switches the host app's gallery page to it (`DrawnButton`,
+`DrawnMode` shows `native` or `drawn`).
+
+The drawn days have no platform views, so they have no automation ids (screen readers see them only while TalkBack
+or VoiceOver runs). The host app reports instead where they are: `DrawnCells` holds the calendar's width and the
+center of every cell from the calendar's top left corner, and `DrawnTitles` the weekday titles.
+`CalendarApp.TapDay(date)` taps the cell's center and `CalendarApp.TitleText(column)` reads a title, so a test works
+the same with either grid. Use them rather than the `Day*` and `Title*` ids.
+
+Drawn text and shapes are not drawn exactly like native ones, so the drawn grid has baselines of its own in
+`Baselines/<platform>-Drawn`, recorded on the same devices:
+
+```bash
+UITEST_DRAWN=1 UITEST_PLATFORM=android dotnet test tests/Plugin.Maui.Calendar.UITests
+UITEST_DRAWN=1 UITEST_UPDATE_BASELINES=1 UITEST_PLATFORM=ios dotnet test tests/Plugin.Maui.Calendar.UITests
+```
+
 ## Adding a test
 
 1. Add a scenario to `ScenarioCatalog` in the host app (or an action to the `Interactive` scenario).
-2. Write the test: `App.OpenScenario("Name")`, then `App.TapDay(...)`, `App.Tap("NextMonthArrow")`,
+2. Write the test: `App.OpenScenario("Name")`, then `App.TapDay(...)`, `App.TitleText(...)`, `App.Tap("NextMonthArrow")`,
    `App.SwipeOver("DaysGrid", Swipe.Left)`, `App.Text("SelectedDate")` and `CalendarMatchesBaseline("Name")`.
    A look-only scenario just needs its name in `AppearanceTests`.
-3. Run it with `--update-baselines` on every platform that has baselines, check the new images and commit them.
+3. Run it with `--update-baselines` on every platform that has baselines, with and without `UITEST_DRAWN=1`, check
+   the new images and commit them.

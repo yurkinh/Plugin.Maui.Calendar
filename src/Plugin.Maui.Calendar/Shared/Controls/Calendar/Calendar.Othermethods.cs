@@ -185,28 +185,54 @@ public partial class Calendar : ContentView, IDisposable
 		daysControl.RowDefinitions.Clear();
 		daysControl.ColumnDefinitions.Clear();
 
-		// Item 3: GenerateLayout now populates daysControl directly, eliminating the
-		// intermediate Grid allocation and the O(n) copy loops.
-		CurrentViewLayoutEngine.GenerateLayout(
-			daysControl,
-			dayViews,
-			this,
-			DayTappedCommand,
-			DayViewTemplate
-		);
+		// Both grids show the same day models: the drawn one only needs the cells (which hold the
+		// models, see dayViews), the native one also the title labels and the grid rows.
+		isDayGridDrawn = UsesDrawnDayGrid;
 
-		dayTitleLabels = [.. daysControl.Children.OfType<Label>()];
+		if (isDayGridDrawn)
+		{
+			CurrentViewLayoutEngine.CreateDays(dayViews, DayTappedCommand, DayViewTemplate);
+			dayTitleLabels = [];
+		}
+		else
+		{
+			// Item 3: GenerateLayout now populates daysControl directly, eliminating the
+			// intermediate Grid allocation and the O(n) copy loops.
+			CurrentViewLayoutEngine.GenerateLayout(
+				daysControl,
+				dayViews,
+				this,
+				DayTappedCommand,
+				DayViewTemplate
+			);
+
+			dayTitleLabels = [.. daysControl.Children.OfType<Label>()];
+
+			// A drawn grid shown before (until a DayViewTemplate was set) no longer follows the old days.
+			drawnDayGrid?.ReleaseDays();
+		}
 
 		UpdateDayGlobalProperties();
 		UpdateDayTitles();
 		UpdateDays();
 
-		// The cells join the grid only now that their models hold real data. On a calendar that is
-		// already on screen they are rendered (and their DayViewTemplate content, including a
-		// selector's choice, is created) once, for the right day, instead of first for empty models.
-		foreach (var dayView in dayViews)
+		if (isDayGridDrawn)
 		{
-			daysControl.Add(dayView);
+			// Created when the calendar is about to be shown (see ShowDrawnDayGrid), unless it exists.
+			if (drawnDayGrid is not null || isHandlerAttached)
+			{
+				ShowDrawnDayGrid();
+			}
+		}
+		else
+		{
+			// The cells join the grid only now that their models hold real data. On a calendar that is
+			// already on screen they are rendered (and their DayViewTemplate content, including a
+			// selector's choice, is created) once, for the right day, instead of first for empty models.
+			foreach (var dayView in dayViews)
+			{
+				daysControl.Add(dayView);
+			}
 		}
 
 		UpdateWeekendBackground();

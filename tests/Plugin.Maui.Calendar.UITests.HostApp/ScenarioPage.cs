@@ -71,7 +71,7 @@ public sealed class ScenarioPage : ContentPage
 		}
 
 		var status = new Grid { ColumnDefinitions = [new(GridLength.Auto), new(GridLength.Star)], ColumnSpacing = 8 };
-		foreach (var key in new[] { "SelectedDates", "SelectedDate", "ShownDate", "VisibleDates", "LayoutUnit", "SelectedText", "SectionShown", "MonthChanged", "DayTapped", "Swiped", "Arrows", "Range" })
+		foreach (var key in new[] { "SelectedDates", "SelectedDate", "ShownDate", "VisibleDates", "LayoutUnit", "SelectedText", "SectionShown", "MonthChanged", "DayTapped", "Swiped", "Arrows", "Range", "DrawnTitles", "DrawnCells" })
 		{
 			var row = status.RowDefinitions.Count;
 			status.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
@@ -106,6 +106,55 @@ public sealed class ScenarioPage : ContentPage
 
 		TagCalendarElements();
 		UpdateStatus();
+
+		// The drawn day grid has no platform views to find: where its cells are is reported as text.
+		Dispatcher.StartTimer(TimeSpan.FromMilliseconds(250), () =>
+		{
+			UpdateDrawnGridStatus();
+			return Window is not null || Handler is null;
+		});
+	}
+
+	/// <summary>
+	/// With the drawn day grid (see DrawnMode), shows its weekday titles (<c>DrawnTitles</c>: the 7 texts) and
+	/// where its days are (<c>DrawnCells</c>: the calendar's width, then the center of every cell, in
+	/// device-independent units from the calendar's top left corner, in the order of <c>Day0</c>..<c>Day41</c>).
+	/// The UI tests scale the positions by the size the calendar has on screen.
+	/// </summary>
+	void UpdateDrawnGridStatus()
+	{
+		if (calendar.Handler is null || calendar.DrawnDayGrid is not { } grid || grid.Superview is not VisualElement canvas)
+		{
+			Set("DrawnTitles", string.Empty);
+			Set("DrawnCells", string.Empty);
+			return;
+		}
+
+		var invariant = System.Globalization.CultureInfo.InvariantCulture;
+		var scale = grid.RenderingScale;
+		var origin = OffsetIn(canvas, calendar);
+		var cells = grid.Cells.Select(cell => string.Format(invariant, "{0:0.#},{1:0.#}",
+			origin.X + (cell.DrawingRect.MidX / scale),
+			origin.Y + (cell.DrawingRect.MidY / scale)));
+
+		Set("DrawnTitles", string.Join(",", grid.TitleLabels.Select(label => label.Text)));
+		Set("DrawnCells", string.Format(invariant, "{0:0.#}|", calendar.Width) + string.Join(";", cells));
+	}
+
+	// The position of view's top left corner in ancestor.
+	static Point OffsetIn(VisualElement view, Element ancestor)
+	{
+		double x = 0, y = 0;
+		for (Element element = view; element is not null && element != ancestor; element = element.Parent)
+		{
+			if (element is VisualElement visual)
+			{
+				x += visual.X + visual.TranslationX;
+				y += visual.Y + visual.TranslationY;
+			}
+		}
+
+		return new Point(x, y);
 	}
 
 	void OnCalendarPropertyChanged(object? sender, PropertyChangedEventArgs e) => UpdateStatus();
