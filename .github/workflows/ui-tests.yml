@@ -71,6 +71,19 @@ jobs:
       run: xcrun simctl bootstatus "$SIMULATOR_UDID"
     - name: Run the UI tests
       run: dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
+    # Shows the results of every test in the run's summary. It writes the job summary rather than a check run,
+    # so it needs no write permission and works for pull requests from forks too. The test step already fails
+    # the job when a test fails.
+    - name: Publish the test results
+      uses: dorny/test-reporter@v3
+      if: ${{ !cancelled() }}
+      with:
+        name: UI tests (iOS)
+        report-title: UI tests (iOS)
+        path: tests/Plugin.Maui.Calendar.UITests/TestResults/*.trx
+        reporter: dotnet-trx
+        fail-on-error: false
+        fail-on-empty: false
     - uses: actions/upload-artifact@v6
       if: always()
       with:
@@ -125,6 +138,16 @@ jobs:
           adb shell settings put global hide_error_dialogs 1
           adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
           dotnet test tests/Plugin.Maui.Calendar.UITests --logger trx --logger "console;verbosity=normal"
+    - name: Publish the test results
+      uses: dorny/test-reporter@v3
+      if: ${{ !cancelled() }}
+      with:
+        name: UI tests (Android)
+        report-title: UI tests (Android)
+        path: tests/Plugin.Maui.Calendar.UITests/TestResults/*.trx
+        reporter: dotnet-trx
+        fail-on-error: false
+        fail-on-empty: false
     - uses: actions/upload-artifact@v6
       if: always()
       with:
