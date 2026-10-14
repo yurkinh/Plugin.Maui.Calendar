@@ -27,6 +27,17 @@ sealed class DrawnLabelStyle : IDisposable
 		nameof(Label.Opacity),
 	];
 
+	/// <summary>
+	/// The font size of a native day or title label whose style sets none: the platform's own label
+	/// size, which the labels resolve before they are on screen (see DayView.AddBuiltInContent).
+	/// </summary>
+	internal const double DefaultLabelFontSize =
+#if IOS || MACCATALYST
+		17;
+#else
+		14;
+#endif
+
 	readonly Element owner;
 	readonly Label resolver = new();
 
@@ -72,7 +83,7 @@ sealed class DrawnLabelStyle : IDisposable
 	// The resolved text settings, with the defaults of a native label (see ApplyTo), for a grid that
 	// paints its texts itself.
 	internal Color TextColor => resolver.TextColor ?? DefaultTextColor;
-	internal double FontSize => resolver.IsSet(Label.FontSizeProperty) ? resolver.FontSize : DrawnText.DefaultLabelFontSize;
+	internal double FontSize => resolver.IsSet(Label.FontSizeProperty) ? resolver.FontSize : DefaultLabelFontSize;
 	internal FontAttributes FontAttributes => resolver.FontAttributes;
 	internal double CharacterSpacing => resolver.CharacterSpacing;
 	internal Thickness Margin => resolver.Margin;
@@ -100,7 +111,7 @@ sealed class DrawnLabelStyle : IDisposable
 	internal void ApplyTo(SkiaLabel label, TextAlignment defaultAlignment)
 	{
 		label.TextColor = resolver.TextColor ?? DefaultTextColor;
-		label.FontSize = resolver.IsSet(Label.FontSizeProperty) ? resolver.FontSize : DrawnText.DefaultLabelFontSize;
+		label.FontSize = FontSize;
 		label.FontAttributes = resolver.FontAttributes;
 		// A SkiaLabel spaces its characters by CharacterSpacing - 1 points: 1 is the normal spacing, which
 		// is 0 for a native label.

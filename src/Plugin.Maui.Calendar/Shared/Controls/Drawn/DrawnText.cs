@@ -9,16 +9,8 @@ namespace Plugin.Maui.Calendar.Controls.Drawn;
 /// </summary>
 static class DrawnText
 {
-	/// <summary>
-	/// The font size of a native day or title label whose style sets none: the platform's own label
-	/// size, which the labels resolve before they are on screen (see DayView.AddBuiltInContent).
-	/// </summary>
-	internal const double DefaultLabelFontSize =
-#if IOS || MACCATALYST
-		17;
-#else
-		14;
-#endif
+	/// <summary>The font size of a native day or title label whose style sets none (see <see cref="DrawnLabelStyle.DefaultLabelFontSize"/>).</summary>
+	internal const double DefaultLabelFontSize = DrawnLabelStyle.DefaultLabelFontSize;
 
 	/// <summary>
 	/// Shows <paramref name="text"/> in <paramref name="fontFamily"/> (the label's resolved font).
