@@ -13,9 +13,7 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 		List<DayView> dayViews,
 		Calendar calendar,
 		ICommand dayTappedCommand,
-		DataTemplate dayViewTemplate,
-		double columnSpacing,
-		double rowSpacing
+		DataTemplate dayViewTemplate
 	)
 	{
 		GenerateWeekLayout(
@@ -24,9 +22,7 @@ sealed class WeekViewEngine(int numberOfWeeks, DayOfWeek firstDayOfWeek) : ViewL
 			calendar,
 			dayTappedCommand,
 			dayViewTemplate,
-			numberOfWeeks,
-			columnSpacing,
-			rowSpacing
+			numberOfWeeks
 		);
 	}
 

@@ -49,7 +49,9 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 	/// <summary>
 	/// Populates <paramref name="targetGrid"/> with the day-of-week header row (styled with the
 	/// <see cref="Calendar.DaysTitleLabelStyle"/> of <paramref name="calendar"/>) and the rows and
-	/// columns for <paramref name="numberOfWeeks"/> × 7 day cells, and fills
+	/// columns for <paramref name="numberOfWeeks"/> × 7 day cells, spaced by the
+	/// <see cref="Calendar.ColumnSpacing"/> and <see cref="Calendar.RowSpacing"/> of
+	/// <paramref name="calendar"/>, and fills
 	/// <paramref name="dayViews"/> with those <see cref="DayView"/> cells, each already assigned its
 	/// grid row and column. The cells are not added to <paramref name="targetGrid"/>: the caller adds
 	/// them once their day models hold real data (see <c>Calendar.RenderLayout</c>).
@@ -62,13 +64,11 @@ abstract class ViewLayoutBase(DayOfWeek firstDayOfWeek)
 			Calendar calendar,
 			ICommand dayTappedCommand,
 			DataTemplate dayViewTemplate,
-			int numberOfWeeks,
-			double columnSpacing,
-			double rowSpacing
+			int numberOfWeeks
 	)
 	{
-		targetGrid.ColumnSpacing = columnSpacing;
-		targetGrid.RowSpacing = rowSpacing;
+		targetGrid.ColumnSpacing = calendar.ColumnSpacing;
+		targetGrid.RowSpacing = calendar.RowSpacing;
 
 		// Header row (day-of-week titles)
 		targetGrid.RowDefinitions.Add(new RowDefinition());

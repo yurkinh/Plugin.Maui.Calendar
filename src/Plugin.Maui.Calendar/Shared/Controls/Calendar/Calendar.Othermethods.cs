@@ -192,9 +192,7 @@ public partial class Calendar : ContentView, IDisposable
 			dayViews,
 			this,
 			DayTappedCommand,
-			DayViewTemplate,
-			ColumnSpacing,
-			RowSpacing
+			DayViewTemplate
 		);
 
 		dayTitleLabels = [.. daysControl.Children.OfType<Label>()];

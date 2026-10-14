@@ -20,9 +20,7 @@ interface IViewLayoutEngine
 		List<DayView> dayViews,
 		Controls.Calendar calendar,
 		ICommand dayTappedCommand,
-		DataTemplate dayViewTemplate,
-		double columnSpacing,
-		double rowSpacing
+		DataTemplate dayViewTemplate
 	);
 
 	DateTime GetFirstDate(DateTime dateToShow);

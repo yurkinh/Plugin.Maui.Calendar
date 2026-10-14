@@ -516,11 +516,11 @@ public partial class Calendar : ContentView, IDisposable
 		typeof(double),
 		typeof(Calendar),
 		6d,
-		propertyChanged: OnCalendarLayoutChanged
+		propertyChanged: OnDaysSpacingChanged
 	);
 
 	/// <summary>
-	/// Sets the RowSpacing of the calendar
+	/// Space between the rows of days, and between the row of weekday titles and the first week
 	/// </summary>
 	public double RowSpacing
 	{
@@ -536,16 +536,27 @@ public partial class Calendar : ContentView, IDisposable
 		typeof(double),
 		typeof(Calendar),
 		0d,
-		propertyChanged: OnCalendarLayoutChanged
+		propertyChanged: OnDaysSpacingChanged
 	);
 
 	/// <summary>
-	/// Sets the ColumnSpacing of the calendar
+	/// Space between the columns of days
 	/// </summary>
 	public double ColumnSpacing
 	{
 		get => (double)GetValue(ColumnSpacingProperty);
 		set => SetValue(ColumnSpacingProperty, value);
+	}
+
+	// Only the grid's spacing changes, so the day cells are kept; the weekend boxes are rebuilt
+	// because they reach into half the row spacing.
+	static void OnDaysSpacingChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		var calendar = (Calendar)bindable;
+
+		calendar.daysControl.ColumnSpacing = calendar.ColumnSpacing;
+		calendar.daysControl.RowSpacing = calendar.RowSpacing;
+		calendar.UpdateWeekendBackground();
 	}
 
 
