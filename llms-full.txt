@@ -102,6 +102,8 @@ All are bindable properties of `Calendar` (inherited by the other three controls
 | DayViewBorderMargin | Thickness | 0 | Inset of those backgrounds |
 | WeekendDayBackgroundColor | Color | Transparent | Box behind every Saturday/Sunday cell (not the title row) |
 | WeekendDayBackgroundCornerRadius | float | 0 | Corner radius of those boxes |
+| ColumnSpacing | double | 0 | Space between the columns of days |
+| RowSpacing | double | 6 | Space between the rows of days and below the weekday titles. Weekend boxes reach into half of it |
 
 ### Culture and text
 | Property | Type | Default | Notes |
