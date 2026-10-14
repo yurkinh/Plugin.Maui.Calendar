@@ -746,8 +746,8 @@ The tables list every bindable property of `Calendar`, which the other three con
 | `DayViewCornerRadius` | `float` | `20` | Corner radius of the selection, today and event backgrounds |
 | `DayViewBorderMargin` | `Thickness` | `0` | Inset of those backgrounds in the cell |
 | `WeekendDayBackgroundCornerRadius` | `float` | `0` | Corner radius of the weekend column boxes |
-| `ColumnSpacing` | `double` | `0` | Column Spacing of Calendar Layout |
-| `RowSpacing` | `double` | `6` | Row Spacing of Calendar Layout |
+| `ColumnSpacing` | `double` | `0` | Space between the columns of days |
+| `RowSpacing` | `double` | `6` | Space between the rows of days, and below the weekday titles. The weekend boxes reach into half of it, so the boxes of a column still touch |
 
 ### Culture and text
 
