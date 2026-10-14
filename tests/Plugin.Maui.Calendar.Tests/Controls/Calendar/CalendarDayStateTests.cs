@@ -665,8 +665,8 @@ public class CalendarDayStateTests
     public void SelectedEndDateSetFromCode_AppliedAfterRangeWasExtendedAtItsStart()
     {
         var calendar = new TestRangeSelectionCalendar { ShownDate = May15 };
-        calendar.WithTapHandling(calendar.CellFor(May(14)).Tap);
-        calendar.WithTapHandling(calendar.CellFor(May(10)).Tap);
+        calendar.CellFor(May(14)).Tap();
+        calendar.CellFor(May(10)).Tap();
         calendar.SelectedStartDate.Should().Be(May(10), "tapping an earlier day extends the range at its start");
         calendar.SelectedEndDate.Should().Be(May(14));
 

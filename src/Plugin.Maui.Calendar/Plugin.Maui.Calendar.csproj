@@ -40,7 +40,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>3.1.1</PackageVersion>
+		<PackageVersion>4.0.0</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -57,12 +57,18 @@
 		<DebugType>portable</DebugType>
 		<PackageIcon>nuget.png</PackageIcon>
 		<PackageReleaseNotes>
-                        * Added DayViewHeight: the height of the day cells, while DayViewSize stays their width (-1, the default, keeps square cells), so a DayViewTemplate can list the events of a day in a month grid
-                        * Added observed day collections: a day of the EventCollection stored as an ObservableCollection&lt;T&gt; (any INotifyCollectionChanged) is observed, so adding, removing or replacing its events updates the day cell and the event list without assigning the day again (#20)
-                        * Added runtime SwipeDetectionDisabled: it can be changed at any time; it used to be read only when the calendar was shown
-                        * Added Google Calendar sample page: the Schedule, Day, Week and Month views of the Google Calendar app
-                        * Fix: a calendar with gesture recognizers of its own no longer throws NullReferenceException when its page is closed after SwipeDetectionDisabled was switched from True to False
-                        * Fix: a calendar whose handler is replaced by another one keeps handling day taps and changes of Events
+                        * Breaking: the package no longer depends on CommunityToolkit.Mvvm; an app that uses the toolkit adds the package itself
+                        * Breaking: DayTappedMessage is removed; use DayTappedCommand to react to taps
+                        * Added TimeProvider: tells the calendar which day is today, so tests and screenshots can pin it
+                        * Added DayViewHeight: the height of the day cells, while DayViewSize stays their width, so a DayViewTemplate can list the events of a day in a month grid
+                        * Added observed day collections: a day of the EventCollection stored as an ObservableCollection&lt;T&gt; updates its cell and the event list when its events change (#20)
+                        * Added runtime SwipeDetectionDisabled: it can be changed at any time
+                        * Fix: the arrows and swipes stay within MinimumDate and MaximumDate, and the year arrows raise MonthChanged
+                        * Fix: week numbers are counted from FirstDayOfWeek, and cultures with a non-Gregorian calendar show Gregorian month names and years
+                        * Fix: crashes with ShownDate set to default(DateTime), near the ends of DateTime, with Events or Culture set to null, and in Native AOT apps when the footer was shown
+                        * Fix: on Android a swipe that starts on a day changes the month
+                        * Fix: a calendar whose handler is replaced by another one keeps handling day taps and changes of Events (#270)
+                        * The full list is in CHANGELOG.md
     </PackageReleaseNotes>
 	</PropertyGroup>	
 
@@ -72,7 +78,6 @@
 	<ItemGroup>
 
 	  <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />		
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Shared\" />

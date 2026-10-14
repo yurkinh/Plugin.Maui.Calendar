@@ -101,7 +101,8 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDays();
 	}
 
-	void OnDayTappedHandler(DateTime value)
+	// Called by the tapped DayView of this calendar.
+	internal void OnDayTappedHandler(DateTime value)
 	{
 		if (AutoChangeMonthOnDayTap)
 		{

@@ -18,8 +18,7 @@ static class MauiTestEnvironment
 /// <summary>
 /// Groups every test that creates MAUI controls and runs them one at a time, never alongside
 /// other tests. Controls share process-wide state that is not safe to use from parallel test
-/// threads: the library's default styles, <c>WeakReferenceMessenger.Default</c> (day taps) and
-/// the timers recorded by <see cref="SyncDispatcher"/>.
+/// threads: the library's default styles and the timers recorded by <see cref="SyncDispatcher"/>.
 /// </summary>
 [CollectionDefinition(Name, DisableParallelization = true)]
 public sealed class MauiControlsCollection

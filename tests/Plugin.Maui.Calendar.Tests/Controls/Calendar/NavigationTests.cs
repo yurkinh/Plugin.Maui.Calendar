@@ -203,9 +203,15 @@ public class NavigationTests
             calendar.NextYearCommand,
         };
         var raised = commands.ToDictionary(command => command, _ => 0);
+
+        // Command keeps its CanExecuteChanged handlers through weak references, so a garbage
+        // collection during the test would drop handlers that nothing else references.
+        var handlers = new List<EventHandler>();
         foreach (var command in commands)
         {
-            command.CanExecuteChanged += (_, _) => raised[command]++;
+            EventHandler handler = (_, _) => raised[command]++;
+            handlers.Add(handler);
+            command.CanExecuteChanged += handler;
         }
 
         void ExpectRaisedBy(Action change, string because)
@@ -225,6 +231,8 @@ public class NavigationTests
         ExpectRaisedBy(() => calendar.MaximumDate = new DateTime(2025, 8, 1), "the maximum date changed");
         ExpectRaisedBy(() => calendar.CalendarLayout = WeekLayout.Week, "the layout changed");
         ExpectRaisedBy(() => calendar.FirstDayOfWeek = DayOfWeek.Monday, "the first day of the week changed");
+
+        GC.KeepAlive(handlers);
     }
 
     // ── Year arrows ──────────────────────────────────────────────────────────
@@ -334,7 +342,7 @@ public class NavigationTests
         var calendar = new TestCalendar { ShownDate = May15, AutoChangeMonthOnDayTap = true };
         var changes = RecordMonthChanges(calendar);
 
-        calendar.WithTapHandling(() => calendar.CellFor(new DateTime(2025, 6, 2)).Tap());
+        calendar.CellFor(new DateTime(2025, 6, 2)).Tap();
 
         calendar.ShownDate.Should().Be(new DateTime(2025, 6, 2));
         calendar.SelectedDate.Should().Be(new DateTime(2025, 6, 2));
@@ -347,7 +355,7 @@ public class NavigationTests
         var calendar = new TestCalendar { ShownDate = May15, AutoChangeMonthOnDayTap = true };
         var changes = RecordMonthChanges(calendar);
 
-        calendar.WithTapHandling(() => calendar.CellFor(new DateTime(2025, 5, 20)).Tap());
+        calendar.CellFor(new DateTime(2025, 5, 20)).Tap();
 
         calendar.ShownDate.Should().Be(May15);
         changes.Should().BeEmpty();
@@ -358,7 +366,7 @@ public class NavigationTests
     {
         var calendar = new TestCalendar { ShownDate = May15 };
 
-        calendar.WithTapHandling(() => calendar.CellFor(new DateTime(2025, 6, 2)).Tap());
+        calendar.CellFor(new DateTime(2025, 6, 2)).Tap();
 
         calendar.ShownDate.Should().Be(May15);
         calendar.SelectedDate.Should().Be(new DateTime(2025, 6, 2));

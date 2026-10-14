@@ -3,7 +3,7 @@
 All notable changes to [Plugin.Maui.Calendar](https://www.nuget.org/packages/Plugin.Maui.Calendar/) are listed here, newest first.
 Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/#versions-body-tab) and has a matching tag in this repository.
 
-## [Unreleased]
+## [4.0.0] - Unreleased
 
 ### Added
 - `TimeProvider`: tells the calendar which day is today. The default, `TimeProvider.System`, follows the device clock; another provider pins today, for example for tests and screenshots. By @MykhailoDav
@@ -29,7 +29,13 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 ### Changed
 - The trimming, AOT and single-file analyzers check the library on every build; the MAUI build used to turn the trimming analyzer off. The library is still not marked trimmable, so apps keep all of it in their default trimming. By @MykhailoDav
 
+### Removed
+- **Breaking:** the dependency on CommunityToolkit.Mvvm; the package depends on nothing but .NET MAUI now. An app that uses the toolkit in its own code (for example `[ObservableProperty]` in its view models) and got it through this package adds it itself: `dotnet add package CommunityToolkit.Mvvm`. By @MykhailoDav
+- **Breaking:** `DayTappedMessage`. A tapped day no longer sends it to every calendar through `WeakReferenceMessenger`; the day goes straight to its own calendar. To react to taps, use `DayTappedCommand`. By @MykhailoDav
+
 ## [3.1.1] - 2026-10-01
+
+> Not published on NuGet: these changes first ship in 4.0.0.
 
 ### Added
 - `DayViewHeight`: the height of the day cells, while `DayViewSize` stays their width. The default, `-1`, keeps square cells. Taller cells can list the events of a day in a `DayViewTemplate`, as in a month grid. By @MykhailoDav

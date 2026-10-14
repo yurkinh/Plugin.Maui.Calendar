@@ -84,7 +84,7 @@ public class SelectionTests
         var calendar = new TestCalendar { ShownDate = May15, SelectedDate = May(10, 15) };
         SelectedCells(calendar).Should().Equal(May(10));
 
-        calendar.WithTapHandling(() => calendar.CellFor(May(10)).Tap());
+        calendar.CellFor(May(10)).Tap();
 
         calendar.SelectedDate.Should().BeNull();
     }
@@ -104,7 +104,7 @@ public class SelectionTests
 
         calendar.DayFor(May(20)).IsDisabled.Should().BeTrue();
 
-        calendar.WithTapHandling(() => calendar.CellFor(May(20)).Tap());
+        calendar.CellFor(May(20)).Tap();
         calendar.SelectedDate.Should().BeNull();
     }
 
@@ -125,7 +125,7 @@ public class SelectionTests
     {
         var calendar = new TestCalendar { ShownDate = May15, AllowDeselecting = false, SelectedDate = May(10) };
 
-        calendar.WithTapHandling(() => calendar.CellFor(May(10)).Tap());
+        calendar.CellFor(May(10)).Tap();
 
         calendar.SelectedDate.Should().Be(May(10));
         calendar.DayFor(May(10)).AllowDeselect.Should().BeFalse();
@@ -198,11 +198,8 @@ public class SelectionTests
     {
         var calendar = new TestRangeSelectionCalendar { ShownDate = May15 };
 
-        calendar.WithTapHandling(() =>
-        {
-            calendar.CellFor(May(10)).Tap();
-            calendar.CellFor(May(12)).Tap();
-        });
+        calendar.CellFor(May(10)).Tap();
+        calendar.CellFor(May(12)).Tap();
 
         calendar.SelectedStartDate.Should().Be(May(10));
         calendar.SelectedEndDate.Should().Be(May(12));
@@ -247,7 +244,7 @@ public class SelectionTests
     {
         var calendar = new TestWeekSelectionCalendar { ShownDate = May15, FirstDayOfWeek = DayOfWeek.Monday };
 
-        calendar.WithTapHandling(() => calendar.CellFor(May(15)).Tap());
+        calendar.CellFor(May(15)).Tap();
 
         SelectedCells(calendar).Should().Equal(Enumerable.Range(12, 7).Select(day => May(day)));
     }

@@ -1,4 +1,3 @@
-using CommunityToolkit.Mvvm.Messaging;
 using FluentAssertions;
 using Microsoft.Maui.Controls;
 using Plugin.Maui.Calendar.Models;
@@ -100,23 +99,6 @@ public class HandlerLifecycleTests
     }
 
     [Fact]
-    public void Handler_DayTapsAreOnlyHandledWhileTheCalendarHasAHandler()
-    {
-        var calendar = new TestCalendar { ShownDate = May15 };
-
-        calendar.CellFor(new DateTime(2025, 5, 20)).Tap();
-        calendar.SelectedDate.Should().BeNull();
-
-        calendar.AttachHandler();
-        calendar.CellFor(new DateTime(2025, 5, 21)).Tap();
-        calendar.SelectedDate.Should().Be(new DateTime(2025, 5, 21));
-
-        calendar.Handler = null;
-        calendar.CellFor(new DateTime(2025, 5, 22)).Tap();
-        calendar.SelectedDate.Should().Be(new DateTime(2025, 5, 21));
-    }
-
-    [Fact]
     public void Handler_EventsChangedWhileItWasRemoved_AreShownWhenItIsAttachedAgain()
     {
         var calendar = new TestCalendar { ShownDate = May15 };
@@ -130,26 +112,5 @@ public class HandlerLifecycleTests
 
         calendar.DayFor(new DateTime(2025, 5, 20)).HasEvents.Should().BeTrue();
         calendar.Handler = null;
-    }
-
-    [Fact]
-    public void DayTappedMessage_WithoutSource_IsHandledByEveryCalendar()
-    {
-        var first = new TestCalendar { ShownDate = May15 };
-        var second = new TestCalendar { ShownDate = May15 };
-        first.AttachHandler();
-        second.AttachHandler();
-        try
-        {
-            WeakReferenceMessenger.Default.Send(new DayTappedMessage(new DateTime(2025, 5, 20)));
-
-            first.SelectedDate.Should().Be(new DateTime(2025, 5, 20));
-            second.SelectedDate.Should().Be(new DateTime(2025, 5, 20));
-        }
-        finally
-        {
-            first.Handler = null;
-            second.Handler = null;
-        }
     }
 }

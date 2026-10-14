@@ -847,7 +847,7 @@ For Plugin.Maui.Calendar, follow https://raw.githubusercontent.com/yurkinh/Plugi
 
 ## Changelog, contributing and license
 
-* [CHANGELOG.md](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/CHANGELOG.md) lists the changes of every version, including the breaking changes of 2.0.
+* [CHANGELOG.md](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/CHANGELOG.md) lists the changes of every version, including the breaking changes of 2.0 and 4.0.
 * Bugs and ideas are welcome in the [issues](https://github.com/yurkinh/Plugin.Maui.Calendar/issues), and pull requests too.
 * A video walkthrough is on [YouTube](https://www.youtube.com/watch?v=bmkizbS4jb4).
 * Licensed under the [MIT License](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/LICENSE).
