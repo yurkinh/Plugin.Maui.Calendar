@@ -112,6 +112,14 @@ public sealed class CalendarApp : IDisposable
 		Wait(timeout).Until(driver => driver.FindElements(ByAutomationId(automationId)).FirstOrDefault())
 			?? throw new NoSuchElementException(automationId);
 
+	/// <summary>
+	/// The element a screen reader names <paramref name="name"/> (its accessibility label on iOS, its content
+	/// description on Android), waiting until it exists.
+	/// </summary>
+	public IWebElement ElementNamed(string name, TimeSpan? timeout = null) =>
+		Wait(timeout).Until(driver => driver.FindElements(MobileBy.AccessibilityId(name)).FirstOrDefault())
+			?? throw new NoSuchElementException(name);
+
 	public bool Exists(string automationId) =>
 		driver.FindElements(ByAutomationId(automationId)).Count > 0;
 
@@ -168,13 +176,15 @@ public sealed class CalendarApp : IDisposable
 			}
 		}
 
-		// The day grid the tests are about: native or drawn (see UITEST_DRAWN).
-		var mode = UITestSettings.DrawnGrid ? "drawn" : "native";
-		if (Text("DrawnMode") != mode)
+		// The day grid the tests are about: native, drawn or graphics (see UITEST_DRAWN). The button
+		// switches to the next one in turn.
+		var mode = UITestSettings.GridMode;
+		for (var taps = 0; taps < 3 && Text("DrawnMode") != mode; taps++)
 		{
 			Tap("DrawnButton");
-			WaitForText("DrawnMode", mode);
 		}
+
+		WaitForText("DrawnMode", mode);
 
 		var entry = Element("ScenarioEntry");
 		entry.Click();

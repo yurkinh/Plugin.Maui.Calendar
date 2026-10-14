@@ -72,9 +72,13 @@ The tests read these environment variables:
 | `UITEST_APPIUM_URL` | An Appium server that is already running (otherwise the tests start one) |
 | `UITEST_UPDATE_BASELINES` | `1` saves the screenshots as the new baselines instead of comparing them |
 | `UITEST_SCREENSHOTS` | `off` skips the screenshot comparisons and checks the behavior only |
-| `UITEST_DRAWN` | `1` tests the calendars with the day grid drawn by DrawnUI (see below) |
+| `UITEST_DRAWN` | `1` tests the calendars with the day grid drawn by DrawnUI, `graphics` with the one drawn with Microsoft.Maui.Graphics (see below) |
 
 The Appium log of a run is in `TestResults/Screenshots/<platform>/appium.log`.
+
+When a run fails before any test starts (wrong Node.js version, the wrong simulator, an emulator that is still
+booting, a phone connected next to the emulator), see [appium.md](appium.md) for the known problems and their
+workarounds.
 
 ### Native AOT
 
@@ -131,10 +135,12 @@ When a change is meant to change the look:
 
 ## The drawn day grid
 
-The calendar can draw its day grid with [DrawnUI](https://github.com/DrawnUi/DrawnUi.Net) instead of native views
-(the `Plugin.Maui.Calendar.DrawnDayGrid` `AppContext` switch). With `UITEST_DRAWN=1` every test runs against the
-drawn grid: before it opens a scenario, the test switches the host app's gallery page to it (`DrawnButton`,
-`DrawnMode` shows `native` or `drawn`).
+The calendar can draw its day grid instead of building it from native views: with
+[DrawnUI](https://github.com/DrawnUi/DrawnUi.Net) (the `Plugin.Maui.Calendar.DrawnDayGrid` `AppContext` switch) or
+with Microsoft.Maui.Graphics (`Plugin.Maui.Calendar.GraphicsDayGrid`, which is replacing DrawnUI). With
+`UITEST_DRAWN=1` every test runs against the DrawnUI grid, with `UITEST_DRAWN=graphics` against the
+Microsoft.Maui.Graphics one: before it opens a scenario, the test switches the host app's gallery page to it
+(`DrawnButton` goes to the next grid in turn, `DrawnMode` shows `native`, `drawn` or `graphics`).
 
 The drawn days have no platform views, so they have no automation ids (screen readers see them only while TalkBack
 or VoiceOver runs). The host app reports instead where they are: `DrawnCells` holds the calendar's width and the
@@ -142,8 +148,13 @@ center of every cell from the calendar's top left corner, and `DrawnTitles` the 
 `CalendarApp.TapDay(date)` taps the cell's center and `CalendarApp.TitleText(column)` reads a title, so a test works
 the same with either grid. Use them rather than the `Day*` and `Title*` ids.
 
-Drawn text and shapes are not drawn exactly like native ones, so the drawn grid has baselines of its own in
-`Baselines/<platform>-Drawn`, recorded on the same devices:
+The Microsoft.Maui.Graphics grid also gives screen readers an element for every day, a button named with the full
+date (`Wednesday, May 14, 2025`): `CalendarApp.ElementNamed(name)` finds it, and `AccessibilityTests` checks it.
+The DrawnUI grid's elements exist only while TalkBack or VoiceOver runs, and native cells have no such names, so
+these tests run with `UITEST_DRAWN=graphics` only.
+
+Drawn text and shapes are not drawn exactly like native ones, so the drawn grids have baselines of their own in
+`Baselines/<platform>-Drawn` and `Baselines/<platform>-Graphics`, recorded on the same devices:
 
 ```bash
 UITEST_DRAWN=1 UITEST_PLATFORM=android dotnet test tests/Plugin.Maui.Calendar.UITests

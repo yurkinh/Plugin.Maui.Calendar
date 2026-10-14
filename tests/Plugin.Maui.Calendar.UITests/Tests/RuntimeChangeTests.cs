@@ -111,7 +111,11 @@ public class RuntimeChangeTests : UITest
 		App.TapDay(May(9));
 		Assert.That(App.WaitForText("SelectedDate", "2025-05-09"), Is.EqualTo("2025-05-09"));
 
+		// The built-in cells are back, and take taps again.
 		App.Tap("ActionTemplate");
+		App.TapDay(May(12));
+		Assert.That(App.WaitForText("SelectedDate", "2025-05-12"), Is.EqualTo("2025-05-12"));
+
 		App.Tap("ActionClear");
 		Assert.That(App.WaitForText("SelectedDate", "none"), Is.EqualTo("none"));
 		App.Tap("ActionRemoveEvents");

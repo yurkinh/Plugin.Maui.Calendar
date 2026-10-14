@@ -152,4 +152,101 @@ public sealed class GraphicsDayGridTests : IDisposable
 
 		paint.Should().NotThrow();
 	}
+
+	// ── Accessibility ────────────────────────────────────────────────────────
+
+	// The grid's screen reader elements once it is laid out (they are where the days are drawn).
+	static IReadOnlyList<GraphicsGridElement> Elements(CalendarControl calendar)
+	{
+		var grid = Grid(calendar);
+		grid.Frame = new Rect(0, 0, width, grid.HeightRequest);
+		return grid.AccessibleElements();
+	}
+
+	static GraphicsGridElement Day(CalendarControl calendar, DateTime date)
+	{
+		var grid = Grid(calendar);
+		var index = grid.GridDrawable.Days.ToList().FindIndex(day => day.Date == date);
+		return Elements(calendar).Single(element => element.IsDay && element.Id == index);
+	}
+
+	[Fact]
+	public void Accessibility_EveryShownDayIsAButton_NamedWithItsFullDate()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, Culture = new System.Globalization.CultureInfo("en-US") };
+
+		var day = Day(calendar, new DateTime(2025, 5, 14));
+
+		day.Label.Should().Be("Wednesday, May 14, 2025");
+		day.IsEnabled.Should().BeTrue();
+		day.IsSelected.Should().BeFalse();
+		Elements(calendar).Count(element => element.IsDay).Should().Be(42);
+	}
+
+	[Fact]
+	public void Accessibility_FollowsTheCalendarCulture()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, Culture = new System.Globalization.CultureInfo("en-US") };
+
+		calendar.Culture = new System.Globalization.CultureInfo("de-DE");
+
+		Day(calendar, new DateTime(2025, 5, 14)).Label.Should().Be("Mittwoch, 14. Mai 2025");
+	}
+
+	[Fact]
+	public void Accessibility_SelectedDayIsSelected_DisabledDayCannotBeUsed()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, SelectedDate = new DateTime(2025, 5, 14), DisabledDates = [new DateTime(2025, 5, 20)] };
+
+		Day(calendar, new DateTime(2025, 5, 14)).IsSelected.Should().BeTrue();
+		Day(calendar, new DateTime(2025, 5, 20)).IsEnabled.Should().BeFalse("a disabled day is still read, as unavailable");
+	}
+
+	[Fact]
+	public void Accessibility_HiddenDays_AreLeftOut()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, OtherMonthDayIsVisible = false };
+
+		Elements(calendar).Should().NotContain(element => element.Label.Contains("April"));
+		Elements(calendar).Count(element => element.IsDay).Should().Be(31);
+	}
+
+	[Fact]
+	public void Accessibility_TitlesAreTextFirst_InTheFirstRow()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, Culture = new System.Globalization.CultureInfo("en-US") };
+
+		var titles = Elements(calendar).Take(7).ToList();
+
+		titles.Should().OnlyContain(element => !element.IsDay && element.Row == 0);
+		titles.Select(element => element.Column).Should().Equal(0, 1, 2, 3, 4, 5, 6);
+		titles.Select(element => element.Label).Should().Equal(Grid(calendar).GridDrawable.ShownTitles);
+		titles[0].Label.Should().Be("SUN", "a title is read as it is shown (the default title style upper-cases it)");
+	}
+
+	[Fact]
+	public void Accessibility_ElementsAreWhereTheDaysAreDrawn()
+	{
+		var calendar = new TestCalendar { ShownDate = May15, FlowDirection = FlowDirection.RightToLeft };
+		var drawable = Grid(calendar).GridDrawable;
+
+		foreach (var element in Elements(calendar).Where(element => element.IsDay))
+		{
+			element.Bounds.Should().Be(drawable.CellBounds(element.Id, width));
+			element.Row.Should().Be(1 + (element.Id / 7));
+		}
+	}
+
+	[Fact]
+	public void Accessibility_ActivatingADay_TapsIt_AndATitleOrADisabledDayDoesNothing()
+	{
+		var calendar = new TestCalendar { ShownDate = May15 };
+		var grid = Grid(calendar);
+		var index = grid.GridDrawable.Days.ToList().FindIndex(day => day.Date == new DateTime(2025, 5, 20));
+
+		calendar.WithTapHandling(() => grid.Activate(index).Should().BeTrue());
+		calendar.SelectedDate.Should().Be(new DateTime(2025, 5, 20));
+
+		grid.Activate(GraphicsDayGrid.TitleId).Should().BeFalse();
+	}
 }

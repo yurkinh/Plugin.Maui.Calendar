@@ -3,7 +3,8 @@ namespace Plugin.Maui.Calendar.UITests.HostApp;
 /// <summary>
 /// The first page: the UI tests type a scenario name in <c>ScenarioEntry</c> and press <c>GoButton</c>.
 /// The list below is for people browsing the scenarios. <c>DrawnButton</c> switches the calendars of the
-/// scenarios opened next between the native day grid and the drawn one (<c>DrawnMode</c> shows which).
+/// scenarios opened next between the native day grid, the one drawn with DrawnUI and the one drawn with
+/// Microsoft.Maui.Graphics, in turn (<c>DrawnMode</c> shows which).
 /// </summary>
 sealed class GalleryPage : ContentPage
 {
@@ -22,10 +23,10 @@ sealed class GalleryPage : ContentPage
 		var error = new Label { AutomationId = "GalleryError", TextColor = Colors.Red };
 
 		var drawnMode = new Label { AutomationId = "DrawnMode", Text = DrawnMode.Text, VerticalOptions = LayoutOptions.Center };
-		var drawnButton = new Button { AutomationId = "DrawnButton", Text = "Native / drawn grid" };
+		var drawnButton = new Button { AutomationId = "DrawnButton", Text = "Native / drawn / graphics grid" };
 		drawnButton.Clicked += (_, _) =>
 		{
-			DrawnMode.IsOn = !DrawnMode.IsOn;
+			DrawnMode.Next();
 			drawnMode.Text = DrawnMode.Text;
 		};
 
@@ -90,16 +91,30 @@ sealed class GalleryPage : ContentPage
 	}
 }
 
-/// <summary>Whether the calendars of the scenarios draw their day grid (the DrawnUI migration).</summary>
+/// <summary>
+/// Which day grid the calendars of the scenarios show: <c>native</c>, <c>drawn</c> (DrawnUI) or <c>graphics</c>
+/// (Microsoft.Maui.Graphics, which replaces DrawnUI).
+/// </summary>
 static class DrawnMode
 {
 	const string drawnDayGridSwitch = "Plugin.Maui.Calendar.DrawnDayGrid";
+	const string graphicsDayGridSwitch = "Plugin.Maui.Calendar.GraphicsDayGrid";
 
-	public static bool IsOn
+	static bool IsSet(string name) => AppContext.TryGetSwitch(name, out var on) && on;
+
+	public static string Text => IsSet(graphicsDayGridSwitch) ? "graphics" : IsSet(drawnDayGridSwitch) ? "drawn" : "native";
+
+	/// <summary>Switches to the next grid: native, drawn, graphics, native again.</summary>
+	public static void Next()
 	{
-		get => AppContext.TryGetSwitch(drawnDayGridSwitch, out var on) && on;
-		set => AppContext.SetSwitch(drawnDayGridSwitch, value);
-	}
+		var next = Text switch
+		{
+			"native" => "drawn",
+			"drawn" => "graphics",
+			_ => "native",
+		};
 
-	public static string Text => IsOn ? "drawn" : "native";
+		AppContext.SetSwitch(drawnDayGridSwitch, next == "drawn");
+		AppContext.SetSwitch(graphicsDayGridSwitch, next == "graphics");
+	}
 }

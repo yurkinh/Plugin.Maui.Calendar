@@ -145,6 +145,9 @@ sealed class GraphicsDayGridDrawable : IDrawable
 		return y;
 	}
 
+	/// <summary>The 7 titles as their labels show them, from the first day of the week.</summary>
+	internal IEnumerable<string> ShownTitles => Enumerable.Range(0, titleTexts.Length).Select(TitleText);
+
 	// A title as its label shows it.
 	string TitleText(int column) => GraphicsText.Transform(titleTexts[column], TitleOf(column).Style.TextTransform);
 
@@ -162,6 +165,16 @@ sealed class GraphicsDayGridDrawable : IDrawable
 		var week = index / daysInWeek;
 		return new RectF(ColumnOf(index % daysInWeek) * columnWidth, weekTops[week], columnWidth, weekHeights[week]);
 	}
+
+	/// <summary>The place of the title in <paramref name="column"/> (counted from the first day of the week) in a grid <paramref name="width"/> wide.</summary>
+	internal RectF TitleBounds(int column, float width)
+	{
+		var columnWidth = width / daysInWeek;
+		return new RectF(ColumnOf(column) * columnWidth, 0, columnWidth, titleRowHeight);
+	}
+
+	/// <summary>The number of weeks the grid shows.</summary>
+	internal int Weeks => weekTops.Length;
 
 	/// <summary>The day whose cell is at <paramref name="point"/> in a grid <paramref name="width"/> wide, or <see langword="null"/>.</summary>
 	internal DayModel DayAt(Point point, double width)

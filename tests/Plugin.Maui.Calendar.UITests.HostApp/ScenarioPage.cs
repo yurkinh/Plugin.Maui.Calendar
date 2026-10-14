@@ -26,8 +26,13 @@ public sealed class ScenarioPage : ContentPage
 	readonly List<string> monthChanges = [];
 	readonly List<DateTime> dayTaps = [];
 	int swipedLeft, swipedRight, swipedUp, swipedDown;
+	double scrollY;
 
-	public ScenarioPage(string name, CalendarControl calendar, IReadOnlyList<ScenarioAction>? actions = null, double? calendarHeight = null)
+	/// <param name="inScrollView">
+	/// Puts the calendar in a <c>CalendarScroll</c> ScrollView with content below it, so the page scrolls:
+	/// how far it scrolled is shown in <c>ScrollY</c>.
+	/// </param>
+	public ScenarioPage(string name, CalendarControl calendar, IReadOnlyList<ScenarioAction>? actions = null, double? calendarHeight = null, bool inScrollView = false)
 	{
 		Title = name;
 		this.calendar = calendar;
@@ -71,7 +76,7 @@ public sealed class ScenarioPage : ContentPage
 		}
 
 		var status = new Grid { ColumnDefinitions = [new(GridLength.Auto), new(GridLength.Star)], ColumnSpacing = 8 };
-		foreach (var key in new[] { "SelectedDates", "SelectedDate", "ShownDate", "VisibleDates", "LayoutUnit", "SelectedText", "SectionShown", "MonthChanged", "DayTapped", "Swiped", "Arrows", "Range", "DrawnTitles", "DrawnCells" })
+		foreach (var key in new[] { "SelectedDates", "SelectedDate", "ShownDate", "VisibleDates", "LayoutUnit", "SelectedText", "SectionShown", "MonthChanged", "DayTapped", "Swiped", "Arrows", "Range", "ScrollY", "DrawnTitles", "DrawnCells" })
 		{
 			var row = status.RowDefinitions.Count;
 			status.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
@@ -98,7 +103,25 @@ public sealed class ScenarioPage : ContentPage
 			BackgroundColor = Colors.White,
 		};
 		layout.Add(top, 0, 0);
-		layout.Add(calendar, 0, 1);
+		if (inScrollView)
+		{
+			var scroll = new ScrollView
+			{
+				AutomationId = "CalendarScroll",
+				HeightRequest = 420,
+				Content = new VerticalStackLayout { Children = { calendar, new BoxView { HeightRequest = 1200, Color = Colors.LightBlue } } },
+			};
+			scroll.Scrolled += (_, e) =>
+			{
+				scrollY = e.ScrollY;
+				UpdateStatus();
+			};
+			layout.Add(scroll, 0, 1);
+		}
+		else
+		{
+			layout.Add(calendar, 0, 1);
+		}
 		layout.Add(details, 0, 2);
 
 		BackgroundColor = Colors.White;
@@ -123,6 +146,23 @@ public sealed class ScenarioPage : ContentPage
 	/// </summary>
 	void UpdateDrawnGridStatus()
 	{
+		// The grid drawn with Microsoft.Maui.Graphics is a view of its own, which knows where its cells are.
+		if (calendar.Handler is not null && calendar.GraphicsDayGrid is { Width: > 0 } graphicsGrid)
+		{
+			var invariantCulture = System.Globalization.CultureInfo.InvariantCulture;
+			var gridOrigin = OffsetIn(graphicsGrid, calendar);
+			var drawable = graphicsGrid.GridDrawable;
+			var centers = Enumerable.Range(0, drawable.Days.Count).Select(index =>
+			{
+				var center = drawable.CellBounds(index, (float)graphicsGrid.Width).Center;
+				return string.Format(invariantCulture, "{0:0.#},{1:0.#}", gridOrigin.X + center.X, gridOrigin.Y + center.Y);
+			});
+
+			Set("DrawnTitles", string.Join(",", drawable.ShownTitles));
+			Set("DrawnCells", string.Format(invariantCulture, "{0:0.#}|", calendar.Width) + string.Join(";", centers));
+			return;
+		}
+
 		if (calendar.Handler is null || calendar.DrawnDayGrid is not { } grid || grid.Superview is not VisualElement canvas)
 		{
 			Set("DrawnTitles", string.Empty);
@@ -231,6 +271,7 @@ public sealed class ScenarioPage : ContentPage
 		Set("MonthChanged", monthChanges.Count == 0 ? "0" : $"{monthChanges.Count} {monthChanges[^1]}");
 		Set("DayTapped", dayTaps.Count == 0 ? "0" : $"{dayTaps.Count} {Format(dayTaps[^1])}");
 		Set("Swiped", $"L{swipedLeft} R{swipedRight} U{swipedUp} D{swipedDown}");
+		Set("ScrollY", scrollY.ToString("0", System.Globalization.CultureInfo.InvariantCulture));
 		Set("Arrows", string.Join(",",
 			calendar.PrevLayoutUnitCommand.CanExecute(null),
 			calendar.NextLayoutUnitCommand.CanExecute(null),

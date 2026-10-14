@@ -25,6 +25,25 @@ public class GestureTests : UITest
 	}
 
 	[Test]
+	public void InScrollView_HorizontalSwipeShowsTheNextMonth_AndVerticalDragScrollsThePage()
+	{
+		App.OpenScenario("InScrollView");
+
+		App.SwipeOver("DaysGrid", Swipe.Left);
+
+		Assert.That(App.WaitForText("LayoutUnit", "June"), Is.EqualTo("June"));
+		Assert.That(App.Text("Swiped"), Is.EqualTo("L1 R0 U0 D0"));
+
+		// The ScrollView around the calendar gets the vertical movement over the days: the page scrolls,
+		// and the calendar sees no swipe up (which would hide its section).
+		App.SwipeOver("DaysGrid", Swipe.Up);
+
+		Assert.That(int.Parse(App.Text("ScrollY"), System.Globalization.CultureInfo.InvariantCulture), Is.GreaterThan(0));
+		Assert.That(App.Text("Swiped"), Is.EqualTo("L1 R0 U0 D0"));
+		Assert.That(App.Text("SectionShown"), Is.EqualTo("True"));
+	}
+
+	[Test]
 	public void SwipeUp_HidesTheCalendarSectionAndTheFooterArrowShowsItAgain()
 	{
 		App.OpenScenario("Default");

@@ -10,7 +10,7 @@ namespace Plugin.Maui.Calendar.Controls.Drawn;
 /// values to its <see cref="GraphicsDayGridDrawable"/> (which paints them), is as high as the rows
 /// the drawable measures, and gives a tap to the day under it.
 /// </summary>
-sealed class GraphicsDayGrid : GraphicsView, IDrawnDayGrid, IDisposable
+sealed partial class GraphicsDayGrid : GraphicsView, IDrawnDayGrid, IDisposable
 {
 	// The styles of the day labels and of the titles, resolved as the native labels resolve them.
 	readonly DrawnLabelStyle dayLabelStyle;
@@ -24,7 +24,21 @@ sealed class GraphicsDayGrid : GraphicsView, IDrawnDayGrid, IDisposable
 
 	public Action<SwipeDirection> Swiped { get; set; }
 
-	public System.Globalization.CultureInfo Culture { get; set; } = System.Globalization.CultureInfo.CurrentCulture;
+	/// <summary>The culture the screen reader names the days in (the calendar's formatting culture).</summary>
+	public System.Globalization.CultureInfo Culture
+	{
+		get => culture;
+		set
+		{
+			if (!Equals(culture, value))
+			{
+				culture = value;
+				Refresh();
+			}
+		}
+	}
+
+	System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
 
 	/// <param name="styleOwner">
 	/// The calendar: the styles are resolved below it, so they get its resources and the app's.
@@ -161,6 +175,7 @@ sealed class GraphicsDayGrid : GraphicsView, IDrawnDayGrid, IDisposable
 		}
 
 		Invalidate();
+		UpdateAccessibility();
 	}
 
 	/// <summary>Handles a tap at <paramref name="point"/>, as a touch does.</summary>

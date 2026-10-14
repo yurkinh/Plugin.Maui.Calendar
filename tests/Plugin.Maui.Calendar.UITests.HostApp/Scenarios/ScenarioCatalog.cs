@@ -146,6 +146,7 @@ public static class ScenarioCatalog
 			calendar.SelectedDate = TestEnvironment.Today;
 		}, calendarHeight: 560),
 		Simple("SectionHidden", calendar => calendar.CalendarSectionShown = false),
+		Scenario("InScrollView", _ => { }, inScrollView: true),
 
 		// ── Behavior ────────────────────────────────────────────────────────
 		Scenario("Interactive", calendar => calendar.Events = Events(), actions: calendar =>
@@ -197,7 +198,8 @@ public static class ScenarioCatalog
 		Action<CalendarControl> configure,
 		Func<CalendarControl, IReadOnlyList<ScenarioAction>>? actions = null,
 		Func<CalendarControl>? create = null,
-		double? calendarHeight = null) =>
+		double? calendarHeight = null,
+		bool inScrollView = false) =>
 		new(name, () =>
 		{
 			var calendar = (create ?? (() => new CalendarControl()))();
@@ -208,6 +210,6 @@ public static class ScenarioCatalog
 			calendar.ShownDate = TestEnvironment.Today;
 
 			configure(calendar);
-			return new ScenarioPage(name, calendar, actions?.Invoke(calendar), calendarHeight);
+			return new ScenarioPage(name, calendar, actions?.Invoke(calendar), calendarHeight, inScrollView);
 		});
 }
