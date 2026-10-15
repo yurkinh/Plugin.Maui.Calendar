@@ -143,6 +143,16 @@ public sealed class DrawnParityPage : ContentPage
 			DaysTitleLabelStyle = TextStyle(fontSize: 14, characterSpacing: 2),
 			WeekendTitleStyle = TextStyle(fontSize: 14, attributes: FontAttributes.Bold),
 		}),
+		("22 right to left: ar-EG, Saturday first, native digits", () => new Calendar
+		{
+			Culture = new CultureInfo("ar-EG"), FirstDayOfWeek = DayOfWeek.Saturday, UseNativeDigits = true,
+			Events = Events(), SelectedDate = Oct(14), FlowDirection = FlowDirection.RightToLeft,
+		}),
+		("23 right to left: en-US", () => new Calendar
+		{
+			Events = Events(), SelectedDate = Oct(14), FlowDirection = FlowDirection.RightToLeft,
+			WeekendDayBackgroundColor = Colors.LightGray,
+		}),
 	];
 
 	// The input scenarios show what each calendar received, under it.
@@ -214,6 +224,26 @@ public sealed class DrawnParityPage : ContentPage
 				return false;
 			});
 		}
+
+		// TEMPORARY (RTL investigation): how the platform shows the drawn grid's view.
+		Dispatcher.StartTimer(TimeSpan.FromSeconds(3), () =>
+		{
+			foreach (var view in ((IVisualTreeElement)drawn).GetVisualTreeDescendants().OfType<GraphicsView>())
+			{
+#if IOS || MACCATALYST
+				if (view.Handler?.PlatformView is UIKit.UIView platformView)
+				{
+					Console.WriteLine($"CALRTL transform={platformView.Transform} layer={platformView.Layer.Transform.M11} semantic={platformView.SemanticContentAttribute} direction={platformView.EffectiveUserInterfaceLayoutDirection} superTransform={platformView.Superview?.Transform}");
+				}
+#elif ANDROID
+				if (view.Handler?.PlatformView is Android.Views.View platformView)
+				{
+					Console.WriteLine($"CALRTL scaleX={platformView.ScaleX} rotationY={platformView.RotationY} layoutDirection={platformView.LayoutDirection} parentScaleX={(platformView.Parent as Android.Views.View)?.ScaleX}");
+				}
+#endif
+			}
+			return false;
+		});
 
 		// Scenario 16: content below the calendars, so the page scrolls.
 		if (Scenario == 16)
