@@ -381,6 +381,17 @@ sealed class GraphicsDayGridDrawable : IDrawable
 
 		canvas.Antialias = true;
 
+#if ANDROID || IOS || MACCATALYST
+		// A right-to-left GraphicsView is shown mirrored by the platform, text included. The grid places
+		// its columns right to left itself (as touches and screen readers see them), so the mirror is
+		// undone: what is drawn appears where the grid placed it, and text reads the right way.
+		if (isRightToLeft)
+		{
+			canvas.Translate(width, 0);
+			canvas.Scale(-1, 1);
+		}
+#endif
+
 		foreach (var band in WeekendBands(width))
 		{
 			canvas.FillColor = band.Color;

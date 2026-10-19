@@ -34,4 +34,18 @@ public class LocalizationTests : UITest
 		Assert.That(App.Text("SelectedText"), Is.EqualTo("٢٠ مايو ٢٠٢٥"));
 		Assert.That(App.Text("YearLabel"), Is.EqualTo("٢٠٢٥"));
 	}
+
+	[Test]
+	public void RightToLeft_TapSelectsTheDayUnderTheFinger()
+	{
+		// The grid runs from right to left (FlowDirection), Saturday first: the tap lands on the day
+		// that is shown there.
+		App.OpenScenario("ArabicNativeDigits");
+
+		App.TapDay(May(12));
+		Assert.That(App.WaitForText("SelectedDate", "2025-05-12"), Is.EqualTo("2025-05-12"));
+
+		App.TapDay(May(16));
+		Assert.That(App.WaitForText("SelectedDate", "2025-05-16"), Is.EqualTo("2025-05-16"));
+	}
 }

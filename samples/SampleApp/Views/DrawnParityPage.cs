@@ -225,26 +225,6 @@ public sealed class DrawnParityPage : ContentPage
 			});
 		}
 
-		// TEMPORARY (RTL investigation): how the platform shows the drawn grid's view.
-		Dispatcher.StartTimer(TimeSpan.FromSeconds(3), () =>
-		{
-			foreach (var view in ((IVisualTreeElement)drawn).GetVisualTreeDescendants().OfType<GraphicsView>())
-			{
-#if IOS || MACCATALYST
-				if (view.Handler?.PlatformView is UIKit.UIView platformView)
-				{
-					Console.WriteLine($"CALRTL transform={platformView.Transform} layer={platformView.Layer.Transform.M11} semantic={platformView.SemanticContentAttribute} direction={platformView.EffectiveUserInterfaceLayoutDirection} superTransform={platformView.Superview?.Transform}");
-				}
-#elif ANDROID
-				if (view.Handler?.PlatformView is Android.Views.View platformView)
-				{
-					Console.WriteLine($"CALRTL scaleX={platformView.ScaleX} rotationY={platformView.RotationY} layoutDirection={platformView.LayoutDirection} parentScaleX={(platformView.Parent as Android.Views.View)?.ScaleX}");
-				}
-#endif
-			}
-			return false;
-		});
-
 		// Scenario 16: content below the calendars, so the page scrolls.
 		if (Scenario == 16)
 		{
