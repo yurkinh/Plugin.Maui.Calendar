@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 <img src="https://raw.githubusercontent.com/yurkinh/Plugin.Maui.Calendar/main/nuget.png" alt="Plugin.Maui.Calendar" width="130" />
 
@@ -721,6 +721,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 | `EventTemplate` | `DataTemplate` | `null` | One event of the list; the binding context is your event object |
 | `EmptyTemplate` | `DataTemplate` | `null` | Shown in the list when there are no events |
 | `SelectedDayEvents` | `ICollection` | Set by the calendar | The events of the selected days. Bind with `Mode=OneWayToSource` |
+| `KeepEventsScrollPositionOnRefresh` | `bool` | `true` | Keeps the list's scroll position when `Events` changes for the same selected days; off, every change scrolls to the top |
 | `EventIndicatorType` | `EventIndicatorType` | `BottomDot` | `BottomDot`, `TopDot`, `Background` or `BackgroundFull` |
 
 ### Layout and sections
