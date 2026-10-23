@@ -28,6 +28,13 @@ public partial class Calendar : ContentView, IDisposable
 	// (the default), so nothing extra is added to the visual tree.
 	Border[] weekendBackgroundBands;
 
+	// The dates the event list was last built for (sorted); null until the first build. A build
+	// for the same dates is a refresh of the list, which keeps its scroll position.
+	DateTime[] eventsListSelection;
+
+	// Restores the list's scroll position after its rows were recreated; null while none is pending.
+	EventHandler pendingEventsScrollRestore;
+
 	// Whether the calendar has a handler. Set in OnHandlerChanging, where the Handler property
 	// still holds the previous handler.
 	bool isHandlerAttached;

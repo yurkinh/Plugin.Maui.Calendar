@@ -2,6 +2,7 @@
 using Plugin.Maui.Calendar.Enums;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Shared.Extensions;
+using System.Collections;
 using System.Collections.ObjectModel;
 
 namespace Plugin.Maui.Calendar.Controls;
@@ -10,9 +11,109 @@ public partial class Calendar : ContentView, IDisposable
 {
 	void UpdateEvents()
 	{
-		SelectedDayEvents = CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents) ? selectedEvents : null;
+		var selectedEvents = CurrentSelectionEngine.TryGetSelectedEvents(Events, out var events) ? events : null;
+		var selection = SelectedDates is { } dates ? dates.Select(date => date.Date).Order().ToArray() : [];
+		var isRefresh = eventsListSelection is not null && selection.SequenceEqual(eventsListSelection);
+		eventsListSelection = selection;
 
-		eventsScrollView.ScrollToAsync(0, 0, false);
+		if (isRefresh && KeepEventsScrollPositionOnRefresh)
+		{
+			RefreshEventsList(selectedEvents);
+			return;
+		}
+
+		SelectedDayEvents = selectedEvents;
+		ScrollEventsTo(0);
+	}
+
+	// Events changed while the selection stayed, so the user may be reading the list: it keeps its
+	// scroll position. Reassigning SelectedDayEvents makes BindableLayout recreate every row (and
+	// the scroll view clamps to the top meanwhile), so the list is only reassigned when its items
+	// changed, and the position is restored afterwards.
+	void RefreshEventsList(ICollection selectedEvents)
+	{
+		if (HaveSameItems(SelectedDayEvents, selectedEvents))
+		{
+			return;
+		}
+
+		var scrollY = eventsScrollView.ScrollY;
+		SelectedDayEvents = selectedEvents;
+
+		if (scrollY > 0)
+		{
+			RestoreEventsScroll(scrollY);
+		}
+	}
+
+	// Null and an empty collection both show the empty view, so they count as the same items.
+	internal static bool HaveSameItems(ICollection current, ICollection updated)
+	{
+		var count = current?.Count ?? 0;
+		if (count != (updated?.Count ?? 0))
+		{
+			return false;
+		}
+
+		if (count == 0)
+		{
+			return true;
+		}
+
+		var updatedItems = updated.GetEnumerator();
+		foreach (var item in current)
+		{
+			updatedItems.MoveNext();
+			if (!Equals(item, updatedItems.Current))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// The recreated rows get their size in the next layout pass, so the position is restored once
+	// right away (the platform clamps it to the rows that exist by then) and once more when the
+	// content's size changes, which is when a shorter or longer list could have moved it.
+	void RestoreEventsScroll(double scrollY)
+	{
+		CancelEventsScrollRestore();
+
+		void Restore(object sender, EventArgs e)
+		{
+			CancelEventsScrollRestore();
+			ScrollEventsTo(ClampEventsScroll(scrollY, eventsContent.Height, eventsScrollView.Height));
+		}
+
+		pendingEventsScrollRestore = Restore;
+		eventsContent.SizeChanged += Restore;
+		Dispatcher.Dispatch(() =>
+		{
+			if (pendingEventsScrollRestore == Restore)
+			{
+				ScrollEventsTo(ClampEventsScroll(scrollY, eventsContent.Height, eventsScrollView.Height));
+			}
+		});
+	}
+
+	void CancelEventsScrollRestore()
+	{
+		if (pendingEventsScrollRestore is { } restore)
+		{
+			eventsContent.SizeChanged -= restore;
+			pendingEventsScrollRestore = null;
+		}
+	}
+
+	// A view that has not been laid out yet reports -1 for both sizes, which gives 0.
+	internal static double ClampEventsScroll(double scrollY, double contentHeight, double viewportHeight) =>
+		Math.Clamp(scrollY, 0, Math.Max(0, contentHeight - viewportHeight));
+
+	void ScrollEventsTo(double scrollY)
+	{
+		eventsScrollView.ScrollToAsync(0, scrollY, false);
+		EventsScrollRequested?.Invoke(this, scrollY);
 	}
 
 	void UpdateLayoutUnitLabel()
