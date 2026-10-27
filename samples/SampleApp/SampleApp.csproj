@@ -113,4 +113,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+
+	<ItemGroup>
+		<!-- toolkit:AppThemeResource binds to AppThemeSource.RequestedTheme by name; without this the Release trimmer removes it and the theme stops switching -->
+		<TrimmerRootDescriptor Include="TrimmerRoots.xml" />
+	</ItemGroup>
 </Project>
