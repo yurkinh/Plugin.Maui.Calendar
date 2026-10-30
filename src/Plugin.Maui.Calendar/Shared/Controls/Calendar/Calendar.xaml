@@ -39,6 +39,7 @@
             Grid.Row="2"
             IsVisible="{Binding EventsScrollViewVisible, Source={x:Reference calendar}, x:DataType=controls:Calendar}">
             <VerticalStackLayout
+                x:Name="eventsContent"
                 BindableLayout.EmptyViewTemplate="{Binding EmptyTemplate, Source={x:Reference calendar}, x:DataType=controls:Calendar}"
                 BindableLayout.ItemTemplate="{Binding EventTemplate, Source={x:Reference calendar}, x:DataType=controls:Calendar}"
                 BindableLayout.ItemsSource="{Binding SelectedDayEvents, Source={x:Reference calendar}, x:DataType=controls:Calendar}"/>

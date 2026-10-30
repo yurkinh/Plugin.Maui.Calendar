@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to [Plugin.Maui.Calendar](https://www.nuget.org/packages/Plugin.Maui.Calendar/) are listed here, newest first.
 Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/#versions-body-tab) and has a matching tag in this repository.
@@ -7,6 +7,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 
 ### Added
 - `TimeProvider`: tells the calendar which day is today. The default, `TimeProvider.System`, follows the device clock; another provider pins today, for example for tests and screenshots. By @MykhailoDav
+- `KeepEventsScrollPositionOnRefresh` (default `true`): the event list keeps its scroll position when `Events` changes while the selected days stay the same. By @shalinasanga
 - Unit tests that cover all of the library's code (100 % of lines and branches, checked by CI), and UI tests that drive a test app with Appium, check the calendar's behavior and compare screenshots of every look with baselines (recorded for iOS and Android). By @MykhailoDav
 
 ### Fixed
@@ -23,6 +24,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 - On Android a swipe that started on a day did nothing, because the day's tap handling took the whole touch; only swipes over the weekday titles or between the rows changed the month. The days now pass their swipes to the calendar. By @MykhailoDav
 - `RangeSelectionCalendar` put disabled days in `SelectedDates` when `SelectedEndDate` was set from code. By @MykhailoDav
 - The default `ShownDate`, `Day`, `Month` and `Year` are the day the calendar is created, not the day the app first created a calendar. By @MykhailoDav
+- Every change of `Events` (a replaced collection or an added, removed or replaced event) scrolled the event list to the top and recreated all of its rows, so an app that refreshes its events periodically threw the user back to the top of the list. The list is only rebuilt when its events changed, keeps its scroll position for the same selected days, and scrolls to the top when the selection changes. By @shalinasanga
 - The visibility of the footer and the event list were bound by name, through reflection, which Native AOT and full trimming can break; they use compiled bindings now. By @MykhailoDav
 - A Native AOT app crashed as soon as the calendar's footer was shown: the default footer styles gave `VerticalTextAlignment` a `LayoutOptions` value, which MAUI otherwise drops (so the footer's texts were not centered vertically either). The default styles now give every property a value of its own type. By @MykhailoDav
 

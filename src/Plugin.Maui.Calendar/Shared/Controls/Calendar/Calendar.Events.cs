@@ -17,4 +17,8 @@ public partial class Calendar : ContentView, IDisposable
 	public event EventHandler SwipedRight;
 	public event EventHandler SwipedUp;
 	public event EventHandler SwipedDown;
+
+	// Raised with the target position whenever the calendar scrolls its event list; lets the unit
+	// tests observe the scrolling, which has no visible effect without a platform handler.
+	internal event EventHandler<double> EventsScrollRequested;
 }

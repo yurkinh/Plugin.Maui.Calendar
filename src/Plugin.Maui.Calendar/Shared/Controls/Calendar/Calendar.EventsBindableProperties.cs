@@ -222,6 +222,27 @@ public partial class Calendar : ContentView, IDisposable
 	}
 
 	/// <summary>
+	/// Bindable property for KeepEventsScrollPositionOnRefresh
+	/// </summary>
+	public static readonly BindableProperty KeepEventsScrollPositionOnRefreshProperty = BindableProperty.Create(
+		nameof(KeepEventsScrollPositionOnRefresh),
+		typeof(bool),
+		typeof(Calendar),
+		true
+	);
+
+	/// <summary>
+	/// Whether the event list keeps its scroll position when <see cref="Events"/> changes while the
+	/// selected dates stay the same (for example a periodic refresh of the events). When off, every
+	/// change of <see cref="Events"/> scrolls the list to the top, as a change of the selection does.
+	/// </summary>
+	public bool KeepEventsScrollPositionOnRefresh
+	{
+		get => (bool)GetValue(KeepEventsScrollPositionOnRefreshProperty);
+		set => SetValue(KeepEventsScrollPositionOnRefreshProperty, value);
+	}
+
+	/// <summary>
 	/// Bindable property for EventTemplate
 	/// </summary>
 	public static readonly BindableProperty EventTemplateProperty = BindableProperty.Create(
