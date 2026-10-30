@@ -6,6 +6,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 ## [4.0.0] - Unreleased
 
 ### Added
+- `ColumnSpacing` and `RowSpacing`: the space between the columns and the rows of days (0 and 6 by default, as before). By @kerberosargos
 - `TimeProvider`: tells the calendar which day is today. The default, `TimeProvider.System`, follows the device clock; another provider pins today, for example for tests and screenshots. By @MykhailoDav
 - Unit tests that cover all of the library's code (100 % of lines and branches, checked by CI), and UI tests that drive a test app with Appium, check the calendar's behavior and compare screenshots of every look with baselines (recorded for iOS and Android). By @MykhailoDav
 
