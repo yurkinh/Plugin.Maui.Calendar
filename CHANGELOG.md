@@ -25,6 +25,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 - The default `ShownDate`, `Day`, `Month` and `Year` are the day the calendar is created, not the day the app first created a calendar. By @MykhailoDav
 - The visibility of the footer and the event list were bound by name, through reflection, which Native AOT and full trimming can break; they use compiled bindings now. By @MykhailoDav
 - A Native AOT app crashed as soon as the calendar's footer was shown: the default footer styles gave `VerticalTextAlignment` a `LayoutOptions` value, which MAUI otherwise drops (so the footer's texts were not centered vertically either). The default styles now give every property a value of its own type. By @MykhailoDav
+- A day with events kept the text colour it had when `HasEvents` was set, because `EventIndicatorTextColor` and `EventIndicatorSelectedTextColor` did not re-notify `TextColor` and the event colours are assigned after `HasEvents`; the day only recoloured on a later selection change. By @otretiak
 
 ### Changed
 - The trimming, AOT and single-file analyzers check the library on every build; the MAUI build used to turn the trimming analyzer off. The library is still not marked trimmable, so apps keep all of it in their default trimming. By @MykhailoDav

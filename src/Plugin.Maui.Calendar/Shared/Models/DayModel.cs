@@ -128,9 +128,9 @@ sealed class DayModel : ICalendarDay
 		set => SetProperty(ref field, value, [nameof(BackgroundColor), nameof(BackgroundFullEventColor)]);
 	}
 
-	public Color EventIndicatorTextColor { get; set => SetProperty(ref field, value); }
+	public Color EventIndicatorTextColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); }
 
-	public Color EventIndicatorSelectedTextColor { get; set => SetProperty(ref field, value); }
+	public Color EventIndicatorSelectedTextColor { get; set => SetProperty(ref field, value, [nameof(TextColor)]); }
 
 	public Color TodayOutlineColor { get; set => SetProperty(ref field, value, [nameof(OutlineColor)]); } = Color.FromArgb("#FF4081");
 
