@@ -507,6 +507,57 @@ public partial class Calendar : ContentView, IDisposable
 		calendar.RefreshNavigationCommands();
 	}
 
+	/// <summary>
+	/// Bindable property for RowSpacing
+	/// </summary>
+	public static readonly BindableProperty RowSpacingProperty = BindableProperty.Create(
+		nameof(RowSpacing),
+		typeof(double),
+		typeof(Calendar),
+		6d,
+		propertyChanged: OnDaysSpacingChanged
+	);
+
+	/// <summary>
+	/// Space between the rows of days, and between the row of weekday titles and the first week
+	/// </summary>
+	public double RowSpacing
+	{
+		get => (double)GetValue(RowSpacingProperty);
+		set => SetValue(RowSpacingProperty, value);
+	}
+
+	/// <summary>
+	/// Bindable property for ColumnSpacing
+	/// </summary>
+	public static readonly BindableProperty ColumnSpacingProperty = BindableProperty.Create(
+		nameof(ColumnSpacing),
+		typeof(double),
+		typeof(Calendar),
+		0d,
+		propertyChanged: OnDaysSpacingChanged
+	);
+
+	/// <summary>
+	/// Space between the columns of days
+	/// </summary>
+	public double ColumnSpacing
+	{
+		get => (double)GetValue(ColumnSpacingProperty);
+		set => SetValue(ColumnSpacingProperty, value);
+	}
+
+	// Only the grid's spacing changes, so the day cells are kept; the weekend boxes are rebuilt
+	// because they reach into half the row spacing.
+	static void OnDaysSpacingChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		var calendar = (Calendar)bindable;
+
+		calendar.daysControl.ColumnSpacing = calendar.ColumnSpacing;
+		calendar.daysControl.RowSpacing = calendar.RowSpacing;
+		calendar.UpdateWeekendBackground();
+	}
+
 
 	/// <summary>
 	/// Bindable property for WeekLayout

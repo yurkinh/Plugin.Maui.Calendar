@@ -19,6 +19,16 @@ jobs:
     - name: Install .NET MAUI
       run: dotnet workload install maui
     - name: Build (Android)
-      run: dotnet build samples\SampleApp\SampleApp.csproj -c Release -f net10.0-android
+      # An APK rather than the default AAB, so it can be installed on a phone straight from the run's artifacts.
+      # Signed with the debug key the SDK generates on the runner, which differs every run: uninstall the
+      # previous one before installing.
+      run: |
+        dotnet publish samples\SampleApp\SampleApp.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=apk -o artifacts\android
+        Move-Item artifacts\android\*-Signed.apk artifacts\Plugin.Maui.Calendar.SampleApp.apk
+    - name: Upload the APK
+      uses: actions/upload-artifact@v6
+      with:
+        name: Plugin.Maui.Calendar.SampleApp-android
+        path: artifacts/Plugin.Maui.Calendar.SampleApp.apk
     - name: Build (Windows)
       run: dotnet build samples\SampleApp\SampleApp.csproj -c Release -f net10.0-windows10.0.19041.0

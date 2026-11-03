@@ -1,0 +1,7 @@
+<linker>
+	<assembly fullname="CommunityToolkit.Maui">
+		<type fullname="CommunityToolkit.Maui.AppThemeObject`1/AppThemeSource">
+			<property name="RequestedTheme" />
+		</type>
+	</assembly>
+</linker>
