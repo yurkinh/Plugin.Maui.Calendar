@@ -311,7 +311,6 @@ public partial class Calendar : ContentView, IDisposable
 		if (disposing)
 		{
 			Events.CollectionChanged -= OnEventsCollectionChanged;
-			CancelEventsScrollRestore();
 			StopTodayRefresh();
 		}
 	}
