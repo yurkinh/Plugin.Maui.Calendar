@@ -113,6 +113,8 @@ public partial class Calendar : ContentView, IDisposable
 		UpdateDays();
 		UpdateSelectedDateLabel();
 		UpdateEvents();
+		// Only other days start their list at the top: a change of Events keeps the user's place in it.
+		eventsScrollView.ScrollToAsync(0, 0, false);
 		if (CurrentSelectionEngine is RangedSelectionEngine)
 		{
 			UpdateRangeSelection();

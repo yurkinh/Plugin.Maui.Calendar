@@ -11,8 +11,6 @@ public partial class Calendar : ContentView, IDisposable
 	void UpdateEvents()
 	{
 		SelectedDayEvents = CurrentSelectionEngine.TryGetSelectedEvents(Events, out var selectedEvents) ? selectedEvents : null;
-
-		eventsScrollView.ScrollToAsync(0, 0, false);
 	}
 
 	void UpdateLayoutUnitLabel()
