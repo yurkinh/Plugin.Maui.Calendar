@@ -5,7 +5,7 @@
   "devDependencies": {
     "appium": "3.9.0",
     "appium-mac2-driver": "4.5.1",
-    "appium-uiautomator2-driver": "8.7.3",
+    "appium-uiautomator2-driver": "9.0.1",
     "appium-windows-driver": "6.3.1",
     "appium-xcuitest-driver": "13.0.7"
   }
