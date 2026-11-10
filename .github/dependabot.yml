@@ -16,5 +16,11 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # appium-xcuitest-driver 13 needs Appium 4 (still in beta); the other drivers and Appium itself are on 3.
+      # Remove this when moving to Appium 4.
+      - dependency-name: appium-xcuitest-driver
+        versions:
+          - ">=13"
     commit-message:
       prefix: test
