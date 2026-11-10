@@ -40,7 +40,7 @@
 		<Authors>yurkinh</Authors>
 		<Copyright>Copyright © yurkinh and contributors</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>4.0.0</PackageVersion>
+		<PackageVersion>3.3.0</PackageVersion>
 		<IsPackable>True</IsPackable>
 		<PackageProjectUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/yurkinh/Plugin.Maui.Calendar</RepositoryUrl>
@@ -68,6 +68,7 @@
                         * Fix: crashes with ShownDate set to default(DateTime), near the ends of DateTime, with Events or Culture set to null, and in Native AOT apps when the footer was shown
                         * Fix: on Android a swipe that starts on a day changes the month
                         * Fix: a calendar whose handler is replaced by another one keeps handling day taps and changes of Events (#270)
+                        * Updated MAUI to version 10.0.130
                         * The full list is in CHANGELOG.md
     </PackageReleaseNotes>
 	</PropertyGroup>	
