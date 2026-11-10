@@ -7,6 +7,6 @@
     "appium-mac2-driver": "4.5.1",
     "appium-uiautomator2-driver": "8.7.3",
     "appium-windows-driver": "6.3.1",
-    "appium-xcuitest-driver": "13.0.7"
+    "appium-xcuitest-driver": "12.22.8"
   }
 }
