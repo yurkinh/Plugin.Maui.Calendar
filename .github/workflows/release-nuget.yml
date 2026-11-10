@@ -7,8 +7,11 @@ on:
     - "v[0-9]+.[0-9]+.[0-9]+"    
 jobs:
   release-nuget:
-  
     runs-on: windows-latest
+    environment: release
+    permissions:
+      id-token: write   # required for NuGet trusted publishing (OIDC)
+      contents: read
 
     steps:
       - uses: actions/checkout@v5
@@ -31,7 +34,10 @@ jobs:
         run: dotnet build src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -c Release 
       - name: Pack
         run: dotnet pack src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.slnx -c Release --no-build --output . ${{ env.PACK_VERSION }}
+      - name: NuGet login (OIDC)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}   # nuget.org profile name, not email
       - name: Push
-        run: dotnet nuget push Plugin.Maui.Calendar.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push Plugin.Maui.Calendar.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
