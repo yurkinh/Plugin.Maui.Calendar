@@ -51,3 +51,21 @@ Pro, medians of 5 launches.
 | androidLaunchMs | 396 | | – | |
 
 Simulator and emulator numbers show relative changes; they are not what a phone measures.
+
+## After phases 1–3
+
+<!-- TODO: fill in the medians of 5 launches on the same devices as the baseline (shared day templates, sample
+     expressions). Same columns as the baseline table. -->
+
+| | Android (Pixel 9 emulator, API 37) | | iOS (iPhone 17 simulator, iOS 26.5) | |
+| --- | --- | --- | --- | --- |
+| | Default | Events | Default | Events |
+| coldRenderMs | TODO | TODO | TODO | TODO |
+| warmRenderMs | TODO | TODO | TODO | TODO |
+| renderKB | TODO | TODO | TODO | TODO |
+| views | TODO | TODO | TODO | TODO |
+| monthChangeSyncMs | TODO | TODO | TODO | TODO |
+| monthChangeMs | TODO | TODO | TODO | TODO |
+| monthChangeKB | TODO | TODO | TODO | TODO |
+| startupMs | TODO | | – | |
+| androidLaunchMs | TODO | | – | |
