@@ -291,8 +291,8 @@ public partial class GoogleCalendarPage : ContentPage
 	async Task CloseDrawerAsync(CancellationToken token)
 	{
 		await Task.WhenAll(
-			drawer.TranslateToAsync(-drawer.WidthRequest, 0, animationLength, Easing.CubicIn),
-			drawerScrim.FadeToAsync(0, animationLength));
+			drawer.TranslateToAsync(-drawer.WidthRequest, 0, animationLength, Easing.CubicIn, cancellationToken: CancellationToken.None),
+			drawerScrim.FadeToAsync(0, animationLength, null, cancellationToken: CancellationToken.None));
 
 		if (!token.IsCancellationRequested)
 		{
@@ -327,14 +327,14 @@ public partial class GoogleCalendarPage : ContentPage
 			detailsLayer.IsVisible = true;
 
 			await Task.WhenAll(
-				detailsLayer.FadeToAsync(1, 200, Easing.CubicOut),
-				detailsLayer.TranslateToAsync(0, 0, 200, Easing.CubicOut));
+				detailsLayer.FadeToAsync(1, 200, Easing.CubicOut, cancellationToken: CancellationToken.None),
+				detailsLayer.TranslateToAsync(0, 0, 200, Easing.CubicOut, cancellationToken: CancellationToken.None));
 		}
 		else
 		{
 			await Task.WhenAll(
-				detailsLayer.FadeToAsync(0, 150, Easing.CubicIn),
-				detailsLayer.TranslateToAsync(0, 48, 150, Easing.CubicIn));
+				detailsLayer.FadeToAsync(0, 150, Easing.CubicIn, cancellationToken: CancellationToken.None),
+				detailsLayer.TranslateToAsync(0, 48, 150, Easing.CubicIn, cancellationToken: CancellationToken.None));
 
 			// A new event may have opened during the animation
 			if (!token.IsCancellationRequested)

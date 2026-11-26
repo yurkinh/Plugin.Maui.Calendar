@@ -29,8 +29,8 @@ library's code. The UI tests check what only a device shows: layout, drawing, ge
 
 ## Setup
 
-* .NET 10 SDK with the MAUI workload.
-* Node.js 20 or later, then once: `npm ci` in this folder. It installs Appium and its drivers here; the tests start
+* .NET 11 SDK with the MAUI workload.
+* Node.js 22.12 or later (Appium needs `^22.12` or `>=24`), then once: `npm ci` in this folder. It installs Appium and its drivers here; the tests start
   this Appium themselves (with `APPIUM_HOME` set to this folder), so nothing is installed globally.
 * **iOS**: Xcode and the simulator the baselines were recorded on (see below). The first run builds Appium's
   WebDriverAgent, which takes a few minutes.
@@ -56,7 +56,7 @@ cd tests/Plugin.Maui.Calendar.UITests
 Or by hand (also on Windows):
 
 ```bash
-dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-ios -c Debug
+dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net11.0-ios -c Debug
 UITEST_PLATFORM=ios dotnet test tests/Plugin.Maui.Calendar.UITests
 ```
 
@@ -81,8 +81,8 @@ Native AOT trims every assembly fully and compiles the app ahead of time, so it 
 reflection. To run the tests against a Native AOT build of the host app on the iOS simulator:
 
 ```bash
-dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-ios -c Release -p:UITestNativeAot=true -p:_IsPublishing=true
-UITEST_PLATFORM=ios UITEST_APP="$PWD/tests/Plugin.Maui.Calendar.UITests.HostApp/bin/Release/net10.0-ios/iossimulator-arm64/Plugin.Maui.Calendar.UITests.HostApp.app" \
+dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net11.0-ios -c Release -p:UITestNativeAot=true -p:_IsPublishing=true
+UITEST_PLATFORM=ios UITEST_APP="$PWD/tests/Plugin.Maui.Calendar.UITests.HostApp/bin/Release/net11.0-ios/iossimulator-arm64/Plugin.Maui.Calendar.UITests.HostApp.app" \
 	dotnet test tests/Plugin.Maui.Calendar.UITests
 ```
 

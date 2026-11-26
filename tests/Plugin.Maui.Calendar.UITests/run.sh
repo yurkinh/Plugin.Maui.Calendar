@@ -14,9 +14,9 @@ shift
 
 here="$(cd "$(dirname "$0")" && pwd)"
 case "$platform" in
-	ios) framework=net10.0-ios ;;
-	android) framework=net10.0-android ;;
-	maccatalyst) framework=net10.0-maccatalyst ;;
+	ios) framework=net11.0-ios ;;
+	android) framework=net11.0-android ;;
+	maccatalyst) framework=net11.0-maccatalyst ;;
 	*) echo "$usage" >&2; exit 1 ;;
 esac
 

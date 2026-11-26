@@ -15,20 +15,21 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # The SDK, the workload set and Xcode the tests were last checked with. Each .NET for iOS version needs one Xcode
-# version (the workload set 10.0.401.1 brings .NET for iOS 27, which needs Xcode 27), so update them together.
+# version (the workload set 11.0.100.1 brings .NET for iOS 27.2, which needs Xcode 27.2), so update them together.
 env:
-  DOTNET_SDK_VERSION: 10.0.400
-  DOTNET_WORKLOAD_VERSION: 10.0.400.1
-  XCODE_VERSION: '26.6'
+  DOTNET_SDK_VERSION: 11.0.100
+  DOTNET_WORKLOAD_VERSION: 11.0.100.1
+  XCODE_VERSION: '27.2'
 
 jobs:
   ios:
-    runs-on: macos-26
+    # The macos-26 image stops at Xcode 26.6; Xcode 27 is on the xcode-27 image (a preview).
+    runs-on: xcode-27
     timeout-minutes: 60
     env:
       UITEST_PLATFORM: ios
       UITEST_DEVICE: iPhone 17
-      UITEST_PLATFORM_VERSION: '26.5'
+      UITEST_PLATFORM_VERSION: '27.2'
       # The simulator the iOS baselines were recorded on, so the screenshots are compared too.
       UITEST_SCREENSHOTS: 'on'
     steps:
@@ -59,14 +60,23 @@ jobs:
       working-directory: tests/Plugin.Maui.Calendar.UITests
       run: npm ci
     # Otherwise Appium builds it when the first test starts, which together with the boot takes longer than
-    # the tests wait for the app to start.
+    # the tests wait for the app to start. The build settings are the ones Appium builds it with, so Appium finds
+    # it up to date. xcodebuild is called directly: with Xcode 27 the driver's build-wda script does not notice
+    # that xcodebuild has finished, and Node ends it with exit code 13 after a successful build.
     - name: Build WebDriverAgent
       working-directory: tests/Plugin.Maui.Calendar.UITests
-      env:
-        APPIUM_HOME: ${{ github.workspace }}/tests/Plugin.Maui.Calendar.UITests
-      run: npx appium driver run xcuitest build-wda --name "$UITEST_DEVICE" --sdk "$UITEST_PLATFORM_VERSION"
+      run: |
+        project=$(find node_modules -maxdepth 4 -path '*/appium-webdriveragent/WebDriverAgent.xcodeproj' | head -1)
+        if [ -z "$project" ]; then
+          echo "::error::WebDriverAgent.xcodeproj was not found in node_modules."
+          exit 1
+        fi
+        cd "$(dirname "$project")"
+        xcodebuild build-for-testing -quiet -project WebDriverAgent.xcodeproj -scheme WebDriverAgentRunner \
+          -destination "id=$SIMULATOR_UDID" IPHONEOS_DEPLOYMENT_TARGET="$UITEST_PLATFORM_VERSION" \
+          GCC_TREAT_WARNINGS_AS_ERRORS=0 COMPILER_INDEX_STORE_ENABLE=NO APPIUM_XCODEBUILD_WDA_MARKER=1
     - name: Build the host app
-      run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-ios -c Debug
+      run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net11.0-ios -c Debug
     - name: Wait for the simulator
       run: xcrun simctl bootstatus "$SIMULATOR_UDID"
     - name: Run the UI tests
@@ -120,7 +130,7 @@ jobs:
       working-directory: tests/Plugin.Maui.Calendar.UITests
       run: npm ci
     - name: Build the host app
-      run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net10.0-android -c Debug
+      run: dotnet build tests/Plugin.Maui.Calendar.UITests.HostApp -f net11.0-android -c Debug
     - name: Run the UI tests on an emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
