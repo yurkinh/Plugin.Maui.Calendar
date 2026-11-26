@@ -20,9 +20,6 @@
             <Color x:Key="DtAccent">#16A34A</Color>
             <Color x:Key="DtAccentBright">#22C55E</Color>
 
-            <!--  EventCount is 0 for a day without events: hide the badge then  -->
-            <toolkit:IntToBoolConverter x:Key="HasCountConverter" />
-
             <toolkit:AppThemeColor
                 x:Key="DtPageColor"
                 Dark="#0B120E"
@@ -181,14 +178,9 @@
                                 HorizontalOptions="Center"
                                 Text="{Binding Day}"
                                 TextColor="{toolkit:AppThemeResource DtPrimaryText}"
+                                TextDecorations="{IsDisabled ? TextDecorations.Strikethrough : TextDecorations.None}"
                                 VerticalOptions="Center">
                                 <Label.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding IsDisabled}"
-                                        TargetType="Label"
-                                        Value="True">
-                                        <Setter Property="TextDecorations" Value="Strikethrough" />
-                                    </DataTrigger>
                                     <!--  Later triggers win: today and selection override the weekend color  -->
                                     <DataTrigger
                                         Binding="{Binding IsWeekend}"
@@ -347,13 +339,16 @@
                         </Grid>
                     </Border>
 
-                    <!--  Number of events that day (EventCount), pinned to the tile's corner  -->
+                    <!--
+                        Number of events that day (EventCount), pinned to the tile's corner. Hidden on a day
+                        without events by a C# expression in XAML (.NET MAUI 11), with no converter.
+                    -->
                     <Border
                         Padding="4,0"
                         BackgroundColor="{toolkit:AppThemeResource DtPrimaryText}"
                         HeightRequest="16"
                         HorizontalOptions="End"
-                        IsVisible="{Binding EventCount, Converter={StaticResource HasCountConverter}}"
+                        IsVisible="{EventCount != 0}"
                         MinimumWidthRequest="16"
                         Stroke="{toolkit:AppThemeResource DtCardColor}"
                         StrokeShape="RoundRectangle 8"
@@ -697,18 +692,9 @@
                                             FontFamily="FontAwesomeSolid"
                                             FontSize="12"
                                             HorizontalOptions="Center"
-                                            Text="&#xf077;"
+                                            Text="{CalendarSectionShown ? '&#xf077;' : '&#xf078;'}"
                                             TextColor="{toolkit:AppThemeResource DtAccentText}"
-                                            VerticalOptions="Center">
-                                            <Label.Triggers>
-                                                <DataTrigger
-                                                    Binding="{Binding CalendarSectionShown}"
-                                                    TargetType="Label"
-                                                    Value="False">
-                                                    <Setter Property="Text" Value="&#xf078;" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
+                                            VerticalOptions="Center" />
                                     </Border>
                                 </Grid>
                             </VerticalStackLayout>

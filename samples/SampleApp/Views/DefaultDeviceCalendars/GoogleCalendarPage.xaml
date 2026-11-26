@@ -86,8 +86,6 @@
                 Dark="#F28B82"
                 Light="#EA4335" />
 
-            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-
             <!--  Google's medium weight: Roboto Medium on Android, bold elsewhere  -->
             <Style x:Key="GcMediumLabelStyle" TargetType="Label">
                 <Setter Property="FontFamily" Value="{OnPlatform Android=sans-serif-medium}" />
@@ -407,7 +405,7 @@
                         <Label
                             FontSize="13"
                             HorizontalOptions="Center"
-                            IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                            IsVisible="{!IsToday}"
                             Style="{StaticResource GcMediumLabelStyle}"
                             Text="{Binding Day}"
                             TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
@@ -499,7 +497,7 @@
                     <Label
                         FontSize="13"
                         HorizontalOptions="Center"
-                        IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                        IsVisible="{!IsToday}"
                         Style="{StaticResource GcMediumLabelStyle}"
                         Text="{Binding Text}"
                         TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}"
@@ -632,7 +630,7 @@
                         <Label
                             FontSize="12"
                             HorizontalOptions="Center"
-                            IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                            IsVisible="{!IsToday}"
                             Text="{Binding WeekdayText}"
                             TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
                         <Label
@@ -650,7 +648,7 @@
                             <Label
                                 FontSize="20"
                                 HorizontalOptions="Center"
-                                IsVisible="{Binding IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                                IsVisible="{!IsToday}"
                                 Text="{Binding DayText}"
                                 TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
                                 VerticalOptions="Center" />
@@ -859,7 +857,7 @@
                         <Label
                             FontSize="12"
                             HorizontalOptions="Center"
-                            IsVisible="{Binding ShownDay.IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                            IsVisible="{!ShownDay.IsToday}"
                             Text="{Binding ShownDay.WeekdayText}"
                             TextColor="{toolkit:AppThemeResource GcOnSurfaceVariantColor}" />
                         <Label
@@ -877,7 +875,7 @@
                             <Label
                                 FontSize="22"
                                 HorizontalOptions="Center"
-                                IsVisible="{Binding ShownDay.IsToday, Converter={StaticResource InvertedBoolConverter}}"
+                                IsVisible="{!ShownDay.IsToday}"
                                 Text="{Binding ShownDay.DayText}"
                                 TextColor="{toolkit:AppThemeResource GcOnSurfaceColor}"
                                 VerticalOptions="Center" />
@@ -1124,7 +1122,7 @@
                                             StrokeThickness="0" />
                                         <Grid
                                             ColumnDefinitions="40,*"
-                                            IsVisible="{Binding IsSelected, Converter={StaticResource InvertedBoolConverter}}"
+                                            IsVisible="{!IsSelected}"
                                             Style="{StaticResource GcDrawerItemStyle}">
                                             <Label Style="{StaticResource GcIconStyle}" Text="{Binding Glyph}" />
                                             <Label
