@@ -7,4 +7,10 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Benchmarks.BenchmarkLaunch.OnFirstPageAppeared();
+    }
 }
