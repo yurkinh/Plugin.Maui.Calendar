@@ -144,6 +144,13 @@ public static class ScenarioCatalog
 			calendar.EventTemplate = EventTemplate();
 			calendar.EmptyTemplate = EmptyEventsTemplate();
 			calendar.SelectedDate = TestEnvironment.Today;
+
+			// Android shows the list's scroll indicator for a moment after it appears; whether the screenshot
+			// catches it depends on how busy the machine is, so it is turned off.
+			foreach (var scrollView in calendar.GetVisualTreeDescendants().OfType<ScrollView>())
+			{
+				scrollView.VerticalScrollBarVisibility = ScrollBarVisibility.Never;
+			}
 		}, calendarHeight: 560),
 		Simple("SectionHidden", calendar => calendar.CalendarSectionShown = false),
 
