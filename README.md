@@ -679,7 +679,7 @@ A month shows up to 42 days, so the calendar creates your template 42 times, and
 
 Notes on expressions (.NET MAUI 11):
 * No project setting is needed; they need `x:DataType` and, for names like `Colors.SeaGreen`, `ImplicitUsings` (on in new MAUI projects) or the full type name.
-* Negation (`{!IsToday}`), comparisons (`{EventCount > 0}`), `&&` (written `&amp;&amp;` in XAML), the `?:` operator, interpolated strings (`{$'{Day}.'}`) and method calls work. Arithmetic needs parentheses: `{(EventCount * 2)}`, not `{EventCount * 2}`.
+* Negation (`{!IsToday}`), comparisons (`{EventCount > 0}`), `&&` (written `&amp;&amp;` in XAML), the `?:` operator, interpolated strings (`{$'{Day}.'}`) and method calls work. Arithmetic such as `{EventCount * 2}` works; wrapping it in parentheses, `{(EventCount * 2)}`, is always safe and is needed when the first name could also be read as a type or markup extension (for example a property called `Size`).
 * An expression sets a local value, which wins over a `Style`. Keep values that come from your styles (or from `AppThemeBinding`) in the style or a trigger.
 * A plain `{Binding Day}` with `x:DataType` is already compiled and typed; rewriting it as an expression gains nothing.
 
