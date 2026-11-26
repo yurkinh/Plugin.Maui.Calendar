@@ -12,24 +12,16 @@
         HeightRequest="44">
         <Label Style="{Binding SelectedDateLabelStyle}" Text="{Binding SelectedDateText}" />
 
+        <!--  Chevron up while the days are shown, down while they are hidden: a C# expression in XAML (.NET MAUI 11)  -->
         <Label
             Grid.Column="1"
             Margin="0,0,8,0"
             FontFamily="FontAwesomeSolid"
             FontSize="14"
             IsVisible="{Binding FooterArrowVisible}"
-            Text="&#xf077;"
+            Text="{CalendarSectionShown ? '&#xf077;' : '&#xf078;'}"
             TextColor="{toolkit:AppThemeResource TextSecondaryColor}"
-            VerticalOptions="Center">
-            <Label.Triggers>
-                <DataTrigger
-                    Binding="{Binding CalendarSectionShown}"
-                    TargetType="Label"
-                    Value="False">
-                    <Setter Property="Text" Value="&#xf078;" />
-                </DataTrigger>
-            </Label.Triggers>
-        </Label>
+            VerticalOptions="Center" />
         <Grid.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding ShowHideCalendarCommand}" />
         </Grid.GestureRecognizers>
