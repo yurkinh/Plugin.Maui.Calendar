@@ -4,9 +4,6 @@ namespace Plugin.Maui.Calendar.Controls;
 
 public sealed partial class DayView : ContentView
 {
-	const string defaultDayBackgroundTemplateKey = "DefaultDayBackgroundTemplate";
-	const string defaultDayContentTemplateKey = "DefaultDayContentTemplate";
-
 	// The Calendar's DayViewTemplate, possibly a DataTemplateSelector; null for the built-in cell.
 	DataTemplate dayViewTemplate;
 
@@ -185,8 +182,9 @@ public sealed partial class DayView : ContentView
 
 	void AddBuiltInContent()
 	{
-		var background = (View)((DataTemplate)Resources[defaultDayBackgroundTemplateKey]).CreateContent();
-		var content = (Layout)((DataTemplate)Resources[defaultDayContentTemplateKey]).CreateContent();
+		var templates = DefaultDayTemplates.Shared;
+		var background = (View)templates.BackgroundTemplate.CreateContent();
+		var content = (Layout)templates.ContentTemplate.CreateContent();
 
 		// Label.FontSize computes its default the first time it is read, from the nearest rendered
 		// ancestor: 0 (the platform's own label size, 17pt on iOS and Mac Catalyst) while detached,
