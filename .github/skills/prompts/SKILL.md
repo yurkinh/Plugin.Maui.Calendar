@@ -1,3 +1,8 @@
+---
+name: prompts
+description: prompts
+disable-model-invocation: true
+---
 # Prompt Instructions
 
 Include these prompt instructions if their link's name is called.
