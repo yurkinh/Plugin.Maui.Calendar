@@ -65,10 +65,10 @@ public static class UITestSettings
 		var bin = Path.GetFullPath(Path.Combine(ProjectDirectory, "..", "Plugin.Maui.Calendar.UITests.HostApp", "bin", Configuration));
 		var (framework, pattern) = Platform switch
 		{
-			TestPlatform.iOS => ("net10.0-ios", "*.app"),
-			TestPlatform.MacCatalyst => ("net10.0-maccatalyst", "*.app"),
-			TestPlatform.Android => ("net10.0-android", $"{AppId}-Signed.apk"),
-			_ => ("net10.0-windows10.0.19041.0", "Plugin.Maui.Calendar.UITests.HostApp.exe"),
+			TestPlatform.iOS => ("net11.0-ios", "*.app"),
+			TestPlatform.MacCatalyst => ("net11.0-maccatalyst", "*.app"),
+			TestPlatform.Android => ("net11.0-android", $"{AppId}-Signed.apk"),
+			_ => ("net11.0-windows10.0.19041.0", "Plugin.Maui.Calendar.UITests.HostApp.exe"),
 		};
 
 		var directory = Path.Combine(bin, framework);

@@ -7,7 +7,13 @@
     xmlns:models="clr-namespace:Plugin.Maui.Calendar.Models"
     x:Name="dayView"
     x:DataType="models:DayModel"
-    IsVisible="{Binding IsControlVisible, Mode=OneWay}">
+    IsVisible="{Binding IsControlVisible, Mode=OneWay}"
+    MinimumHeightRequest="{Binding DayViewHeight, Mode=OneWay}">
+    <!--
+        The minimum height keeps the row of a hidden day: since .NET MAUI 11 a ContentView whose content
+        is hidden measures 0, so a week of only hidden other-month days would collapse.
+    -->
+
     <ContentView.Resources>
         <ResourceDictionary>
             <conv:StrokeShapeConverter x:Key="StrokeShapeConverter"/>

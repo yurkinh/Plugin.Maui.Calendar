@@ -22,14 +22,14 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
     - name: Install .NET MAUI
       run: dotnet workload install maui
     - name: Build
       # Only the library: the root solution also holds the sample app, which cannot be built for
       # iOS/Mac Catalyst on Windows (ci-sample.yml builds it for Android and Windows). The test
       # project is built by the next step. dotnet build rather than the msbuild of Visual Studio,
-      # which is older than the MSBuild the .NET 10 SDK needs.
+      # which is older than the MSBuild the .NET 11 SDK needs.
       run: dotnet build src\Plugin.Maui.Calendar\Plugin.Maui.Calendar.csproj -c Release
     - name: Run Unit Tests
       # Fails when the line or branch coverage of the library drops below 100% (see the test project).

@@ -30,6 +30,7 @@ Every version is on [NuGet](https://www.nuget.org/packages/Plugin.Maui.Calendar/
 - A day with events kept the text colour it had when `HasEvents` was set, because `EventIndicatorTextColor` and `EventIndicatorSelectedTextColor` did not re-notify `TextColor` and the event colours are assigned after `HasEvents`; the day only recoloured on a later selection change. By @otretiak
 
 ### Changed
+- Updated to .NET 11 (Microsoft.Maui.Controls 11.0.10). Apps need .NET 11; 3.x stays the version for .NET 10. The minimum Android version is now API 24 (Android 7.0), and Mac Catalyst is now 17.0: the minimums of .NET 11.
 - The trimming, AOT and single-file analyzers check the library on every build; the MAUI build used to turn the trimming analyzer off. The library is still not marked trimmable, so apps keep all of it in their default trimming. By @MykhailoDav
 
 ### Removed

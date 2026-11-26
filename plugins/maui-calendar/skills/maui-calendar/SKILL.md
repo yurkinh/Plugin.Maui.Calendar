@@ -14,8 +14,8 @@ Human documentation: README.md. History: CHANGELOG.md.
 ## 1. Setup
 
 - Install: `dotnet add package Plugin.Maui.Calendar`
-- Requires .NET 10 and the MAUI workload (packages 3.x and 4.x). Package 2.x targets .NET 9, 1.x targets .NET 8.
-- Minimum OS: Android API 21, iOS 15.0, Mac Catalyst 15.2, Windows 10.0.17763.
+- Requires .NET 11 and the MAUI workload (package 4.x). Package 3.x targets .NET 10, 2.x targets .NET 9, 1.x targets .NET 8.
+- Minimum OS: Android API 24, iOS 15.0, Mac Catalyst 17.0, Windows 10.0.17763.
 - NO registration is needed in `MauiProgram.cs`. There is no `UseMauiCalendar()` or similar builder method; do not add one.
 - Depends on nothing but .NET MAUI since 4.0.0 (3.x brought CommunityToolkit.Mvvm along). An app that uses the toolkit references the package itself.
 - XAML namespace (use the `plugin` prefix, as the sample app does):

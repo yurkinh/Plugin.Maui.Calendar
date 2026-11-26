@@ -92,10 +92,10 @@ Calendars in popups: a date picker and two range pickers, one returning every da
 
 | | Minimum |
 | --- | --- |
-| .NET | .NET 10 with the .NET MAUI workload |
-| Android | API 21 (Android 5.0) |
+| .NET | .NET 11 with the .NET MAUI workload |
+| Android | API 24 (Android 7.0) |
 | iOS | 15.0 |
-| Mac Catalyst | 15.2 |
+| Mac Catalyst | 17.0 |
 | Windows | 10.0.17763 |
 
 Tizen is not tested.
@@ -812,7 +812,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 Every sample page has a `</>` button that shows the XAML of its calendar, and the Settings tab switches the theme, the language and the first day of the week of all samples. Open `Plugin.Maui.Calendar.slnx` and run the SampleApp project, or run it from the command line:
 
 ```bash
-dotnet build samples/SampleApp/SampleApp.csproj -t:Run -f net10.0-android
+dotnet build samples/SampleApp/SampleApp.csproj -t:Run -f net11.0-android
 ```
 
 ## For AI coding assistants
