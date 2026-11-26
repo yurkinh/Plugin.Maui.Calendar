@@ -8,14 +8,11 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		 <!--<TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<UseMaui>true</UseMaui>
-		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     
-		<!-- Enable Source Generators for XAML in .NET 11 -->
-		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 		<!--  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
     
 		<!--

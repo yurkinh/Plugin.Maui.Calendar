@@ -17,7 +17,6 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 		<IsPackable>false</IsPackable>
 
 		<ApplicationTitle>Calendar UI Tests</ApplicationTitle>
