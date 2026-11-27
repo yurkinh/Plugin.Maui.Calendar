@@ -84,7 +84,8 @@ public static class MauiProgram
     }
 
     // CommunityToolkit.Maui only has the overload with a view model
-    static IServiceCollection AddTransientWithShellRoute<TView>(this IServiceCollection services, string route)
+    // The annotation keeps the page's constructor for DI and Shell, so trimming and Native AOT can't remove it
+    static IServiceCollection AddTransientWithShellRoute<[System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembers(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.PublicConstructors)] TView>(this IServiceCollection services, string route)
         where TView : NavigableElement
     {
         services.AddTransient<TView>();

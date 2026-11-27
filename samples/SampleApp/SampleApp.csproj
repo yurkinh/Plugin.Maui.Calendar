@@ -50,6 +50,16 @@
 		<CodeSignEntitlements>Platforms/MacCatalyst/Entitlements.Debug.plist</CodeSignEntitlements>
 	</PropertyGroup>
 
+	<!--
+		-p:SampleNativeAot=true builds the iOS app with Native AOT, for example to compare it with the default CoreCLR
+		build on the Benchmark page (add -p:_IsPublishing=true for the simulator: dotnet build only publishes for
+		devices). Set here rather than on the command line, where PublishAot would also reach the library's other
+		target frameworks, which Native AOT doesn't support (NETSDK1203).
+	-->
+	<PropertyGroup Condition="'$(SampleNativeAot)' == 'true' and $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<PublishAot>true</PublishAot>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#e5e5e5" />
