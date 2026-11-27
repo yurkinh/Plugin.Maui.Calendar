@@ -8,6 +8,7 @@
 # Close other heavy work (builds, other simulators) while it runs: the numbers are wall-clock times.
 # Set NO_BUILD=1 to reuse the last build, and BUILD_ARGS to compare build settings, for example
 # BUILD_ARGS="-p:MauiEnableFullReadyToRun=true" (it starts from a clean build so no output of another variant is reused).
+# APP_PATH=<.apk or .app> runs an app built elsewhere instead of building one.
 set -euo pipefail
 
 usage="Usage: benchmark.sh <android|ios> [runs]"
@@ -45,8 +46,12 @@ collect() {
 
 case "$platform" in
 android)
-	build net11.0-android -p:AndroidPackageFormat=apk
-	apk="$(ls "$here"/bin/Release/net11.0-android/*-Signed.apk | head -1)"
+	if [[ -n "${APP_PATH:-}" ]]; then
+		apk="$APP_PATH"
+	else
+		build net11.0-android -p:AndroidPackageFormat=apk
+		apk="$(ls "$here"/bin/Release/net11.0-android/*-Signed.apk | head -1)"
+	fi
 	echo "apkKB=$(( $(stat -f %z "$apk") / 1024 )) buildArgs=${BUILD_ARGS:-none}" | tee -a "$results"
 	adb install -r "$apk" >/dev/null
 	activity="$(adb shell cmd package resolve-activity --brief "$app_id" | tail -1 | tr -d '\r')"
@@ -67,8 +72,12 @@ android)
 ios)
 	udid="${SIMULATOR_UDID:-$(xcrun simctl list devices booted -j | python3 -c 'import json,sys; d=[x for r in json.load(sys.stdin)["devices"].values() for x in r if x["state"]=="Booted"]; print(d[0]["udid"] if d else "")')}"
 	[[ -n "$udid" ]] || { echo "Boot a simulator first (or set SIMULATOR_UDID)." >&2; exit 1; }
-	build net11.0-ios -p:RuntimeIdentifier=iossimulator-arm64
-	app="$(ls -d "$here"/bin/Release/net11.0-ios/iossimulator-arm64/*.app | head -1)"
+	if [[ -n "${APP_PATH:-}" ]]; then
+		app="$APP_PATH"
+	else
+		build net11.0-ios -p:RuntimeIdentifier=iossimulator-arm64
+		app="$(ls -d "$here"/bin/Release/net11.0-ios/iossimulator-arm64/*.app | head -1)"
+	fi
 	echo "appKB=$(du -sk "$app" | cut -f1) buildArgs=${BUILD_ARGS:-none}" | tee -a "$results"
 	xcrun simctl install "$udid" "$app"
 	for run in $(seq 1 "$runs"); do
