@@ -446,6 +446,26 @@ Hide what a picker does not need, and keep the days from being swiped away:
 ```
 (`xmlns:interfaces="clr-namespace:Plugin.Maui.Calendar.Interfaces;assembly=Plugin.Maui.Calendar"`)
 
+### Performance of day templates
+- A month has up to 42 cells: the template is created 42 times and its bindings update for every cell on each month change. Keep it shallow (one Grid/Border with a few children).
+- Always set `x:DataType="interfaces:ICalendarDay"`: compiled bindings. Without it bindings use reflection (slower; full trimming/Native AOT can remove the members).
+- Prefer .NET MAUI 11 XAML C# expressions to converters and DataTriggers in the cell. No project setting is needed; they need x:DataType, and ImplicitUsings (or full type names) for names like `Colors.SeaGreen`.
+- Working forms: `{!IsToday}`, `{EventCount > 0}`, `{IsSelected &amp;&amp; IsThisMonth}`, `{IsThisMonth ? 1.0 : 0.3}`, `{IsSelected ? Colors.SeaGreen : Colors.Transparent}`, `{IsDisabled ? TextDecorations.Strikethrough : TextDecorations.None}`, `{$'{Day}.'}`, method calls. Arithmetic such as `{EventCount * 2}` works; parentheses, `{(EventCount * 2)}`, are always safe and needed when the first name could also be read as a type or markup extension (e.g. a property called `Size`).
+- An expression sets a local value, which overrides a Style setter: keep style-provided or AppThemeBinding values in styles/triggers.
+- Do not rewrite plain `{Binding Day}` as an expression: with x:DataType it is already a compiled, typed binding.
+
+```xml
+<DataTemplate x:DataType="interfaces:ICalendarDay">
+    <Border Opacity="{IsThisMonth ? 1.0 : 0.3}" BackgroundColor="{IsSelected ? Colors.SeaGreen : Colors.Transparent}"
+            StrokeShape="RoundRectangle 12" StrokeThickness="0">
+        <Label HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Day}"
+               TextDecorations="{IsDisabled ? TextDecorations.Strikethrough : TextDecorations.None}" />
+    </Border>
+</DataTemplate>
+```
+- Build settings (measured with the sample app): no trim/Native AOT warnings from the library, so `TrimMode=full` and Native AOT are safe for the calendar. Android `MauiEnableFullReadyToRun=true`: ~8 % faster start, +30 % APK. iOS Native AOT: −18 % app size, but the calendar rendered ~9 % slower and allocated more — measure first. `DynamicCodeSupport=false`: no measurable effect.
+- Measure with the sample app's Benchmark page in Release: `samples/SampleApp/benchmark.sh android|ios [runs]` (see samples/SampleApp/Benchmarks/README.md).
+
 ## 10. APIs that do NOT exist (do not generate them)
 
 - `BottomSectionTemplate`, `WeekdayTitleStyle`, `CalendarBottom`, `CalenderEvent`, `MultiselectionCalendar` (correct: `MultiSelectionCalendar`), `Calender` (correct: `Calendar`).

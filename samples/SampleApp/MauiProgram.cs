@@ -78,12 +78,14 @@ public static class MauiProgram
 		builder.Services.AddTransientWithShellRoute<Windows11CalendarPage, Windows11CalendarViewModel>(nameof(Windows11CalendarPage));
 		builder.Services.AddTransientWithShellRoute<GoogleCalendarPage, GoogleCalendarViewModel>(nameof(GoogleCalendarPage));
 		builder.Services.AddTransientWithShellRoute<TestingPage, TestingPageViewModel>(nameof(TestingPage));
+		builder.Services.AddTransientWithShellRoute<BenchmarkPage>(nameof(BenchmarkPage));
 
 		return builder;
     }
 
     // CommunityToolkit.Maui only has the overload with a view model
-    static IServiceCollection AddTransientWithShellRoute<TView>(this IServiceCollection services, string route)
+    // The annotation keeps the page's constructor for DI and Shell, so trimming and Native AOT can't remove it
+    static IServiceCollection AddTransientWithShellRoute<[System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembers(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.PublicConstructors)] TView>(this IServiceCollection services, string route)
         where TView : NavigableElement
     {
         services.AddTransient<TView>();

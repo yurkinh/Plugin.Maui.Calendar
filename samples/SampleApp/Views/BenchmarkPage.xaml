@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SampleApp.Views.BenchmarkPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Benchmark"
+    Shell.TabBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="16,8,16,24" Spacing="12">
+            <Label Style="{StaticResource CaptionLabelStyle}" Text="Creates calendars in code (May 2025, en-US) and measures the first render, the month change and the allocations on the UI thread. Run a Release build: Debug numbers are several times higher." />
+            <Button
+                x:Name="RunButton"
+                Clicked="OnRunClicked"
+                Style="{StaticResource PrimaryButtonStyle}"
+                Text="Run" />
+            <Label x:Name="StatusLabel" Style="{StaticResource CaptionLabelStyle}" />
+
+            <!-- The calendars under test are placed here, on screen, so they are laid out and drawn -->
+            <Border
+                Padding="8,0,8,8"
+                BackgroundColor="White"
+                Style="{StaticResource CardStyle}">
+                <ContentView x:Name="Host" />
+            </Border>
+
+            <Label
+                x:Name="ResultsLabel"
+                FontFamily="Courier"
+                FontSize="12" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

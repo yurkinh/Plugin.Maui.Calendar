@@ -1,5 +1,7 @@
 using FluentAssertions;
+using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Shapes;
 using Plugin.Maui.Calendar.Controls;
 using Plugin.Maui.Calendar.Models;
 using Plugin.Maui.Calendar.Tests.TestHelpers;
@@ -40,6 +42,40 @@ public class DayViewTests
 
         dayView.Handler = null;
         dayView.ShowsBuiltInCell().Should().BeTrue();
+    }
+
+    [Fact]
+    public void BuiltInCells_ShareTheTemplatesButNotTheViews()
+    {
+        var first = new DayView { BindingContext = VisibleDay() };
+        var second = new DayView { BindingContext = VisibleDay() };
+
+        first.EnsureContent();
+        second.EnsureContent();
+
+        first.ShowsBuiltInCell().Should().BeTrue();
+        second.ShowsBuiltInCell().Should().BeTrue();
+        first.Resources.Should().BeEmpty("the templates are shared by all cells, not created for each one");
+        second.Resources.Should().BeEmpty();
+        first.Container()[0].Should().NotBeSameAs(second.Container()[0], "each cell gets its own views");
+        first.Container()[1].Should().NotBeSameAs(second.Container()[1]);
+    }
+
+    [Fact]
+    public void BuiltInCell_BackgroundShapeFollowsTheCornerRadius()
+    {
+        var day = VisibleDay();
+        day.DayViewCornerRadius = 8;
+        var dayView = new DayView { BindingContext = day };
+
+        dayView.EnsureContent();
+        var background = (Border)dayView.Container()[0];
+
+        background.StrokeShape.Should().BeOfType<RoundRectangle>().Which.CornerRadius.Should().Be(new CornerRadius(8));
+
+        day.DayViewCornerRadius = 3;
+
+        background.StrokeShape.Should().BeOfType<RoundRectangle>().Which.CornerRadius.Should().Be(new CornerRadius(3));
     }
 
     [Fact]

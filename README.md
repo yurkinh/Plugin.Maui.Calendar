@@ -655,6 +655,38 @@ public class EventDayTemplateSelector : DataTemplateSelector
 * In the `Week` and `TwoWeek` layouts `IsThisMonth` is always `true`, so a template that fades other-month days shows every day normally there.
 * In a `RangeSelectionCalendar`, style the whole range with `IsSelected` and its first and last days with `IsRangeStart` and `IsRangeEnd`.
 
+### Performance of day templates
+
+A month shows up to 42 days, so the calendar creates your template 42 times, and every binding in it is updated for each cell when the month changes. What is cheap in one view adds up in a day cell:
+
+* **Set `x:DataType="interfaces:ICalendarDay"`** on the template. The bindings are then compiled. Without it they use reflection, which is slower, and full trimming or Native AOT can remove the members they look up.
+* **Keep the template shallow.** Every layout, border and label is created 42 times; one `Grid` or `Border` with a few children is usually enough.
+* **Avoid converters and `DataTrigger`s in the cell.** On .NET 11, a XAML C# expression does the same job as a compiled binding, without a converter object or a trigger per cell:
+
+```xml
+<DataTemplate x:DataType="interfaces:ICalendarDay">
+    <Border Opacity="{IsThisMonth ? 1.0 : 0.3}"
+            BackgroundColor="{IsSelected ? Colors.SeaGreen : Colors.Transparent}"
+            StrokeShape="RoundRectangle 12" StrokeThickness="0">
+        <Grid RowDefinitions="*,Auto">
+            <Label HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Day}"
+                   TextDecorations="{IsDisabled ? TextDecorations.Strikethrough : TextDecorations.None}" />
+            <BoxView Grid.Row="1" IsVisible="{EventCount > 0}" HeightRequest="4" WidthRequest="4" CornerRadius="2" Color="Gray" />
+        </Grid>
+    </Border>
+</DataTemplate>
+```
+
+Notes on expressions (.NET MAUI 11):
+* No project setting is needed; they need `x:DataType` and, for names like `Colors.SeaGreen`, `ImplicitUsings` (on in new MAUI projects) or the full type name.
+* Negation (`{!IsToday}`), comparisons (`{EventCount > 0}`), `&&` (written `&amp;&amp;` in XAML), the `?:` operator, interpolated strings (`{$'{Day}.'}`) and method calls work. Arithmetic such as `{EventCount * 2}` works; wrapping it in parentheses, `{(EventCount * 2)}`, is always safe and is needed when the first name could also be read as a type or markup extension (for example a property called `Size`).
+* An expression sets a local value, which wins over a `Style`. Keep values that come from your styles (or from `AppThemeBinding`) in the style or a trigger.
+* A plain `{Binding Day}` with `x:DataType` is already compiled and typed; rewriting it as an expression gains nothing.
+
+Build settings, measured with the sample app (details in the benchmark README linked below): the library gives no trim or Native AOT warnings, so `TrimMode=full` and Native AOT are safe as far as the calendar is concerned. On Android, `MauiEnableFullReadyToRun=true` started the sample ~8 % faster for a 30 % bigger APK. On iOS, Native AOT made the app 18 % smaller, but the calendar rendered ~9 % slower and allocated more; measure your own app before switching. `DynamicCodeSupport=false` made no measurable difference.
+
+To measure a change, run the Benchmark page of the [sample app](#sample-app) in Release; [samples/SampleApp/Benchmarks/README.md](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/samples/SampleApp/Benchmarks/README.md) explains the numbers and how `benchmark.sh` collects them on an emulator or simulator.
+
 ## Swipe gestures
 
 By default a swipe left or right shows the next or previous month (or week), and a swipe up hides or shows the days.
@@ -808,6 +840,7 @@ The tables list every bindable property of `Calendar`, which the other three con
 | Week view | One week, two weeks |
 | Picker popups | A date picker and two range pickers in a popup |
 | Device look-alikes | The Windows 11 calendar flyout, the Google Calendar app (Schedule, Day, Week and Month views) |
+| Performance | A benchmark of the first render, the month change and the allocations (see [Benchmarks/README.md](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/samples/SampleApp/Benchmarks/README.md)) |
 
 Every sample page has a `</>` button that shows the XAML of its calendar, and the Settings tab switches the theme, the language and the first day of the week of all samples. Open `Plugin.Maui.Calendar.slnx` and run the SampleApp project, or run it from the command line:
 

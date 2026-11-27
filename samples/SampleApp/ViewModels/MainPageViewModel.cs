@@ -43,6 +43,10 @@ public class MainPageViewModel : BasePageViewModel
                 new("Windows 11 Calendar", "The calendar flyout of the Windows 11 taskbar", "\uf2d0", () => GoTo(nameof(Windows11CalendarPage))),
                 new("Google Calendar", "The Schedule, Day, Week and Month views of the Google Calendar app", "\uf783", () => GoTo(nameof(GoogleCalendarPage))),
             ]),
+            new("Performance",
+            [
+                new("Benchmark", "First render, month change and allocations (use a Release build)", "\uf625", () => GoTo(nameof(BenchmarkPage))),
+            ]),
         ];
 
 #if DEBUG

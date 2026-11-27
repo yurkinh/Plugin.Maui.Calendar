@@ -18,10 +18,7 @@
 		<UseMaui>true</UseMaui>		
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
-		<!-- Enable Source Generators for XAML in .NET 10 -->
-		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 		 <!-- <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles> -->
 
 		<!-- Enable trimming and AOT analyzers on all platforms -->
@@ -51,6 +48,16 @@
 
 	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst' and '$(Configuration)' == 'Debug'">
 		<CodeSignEntitlements>Platforms/MacCatalyst/Entitlements.Debug.plist</CodeSignEntitlements>
+	</PropertyGroup>
+
+	<!--
+		-p:SampleNativeAot=true builds the iOS app with Native AOT, for example to compare it with the default CoreCLR
+		build on the Benchmark page (add -p:_IsPublishing=true for the simulator: dotnet build only publishes for
+		devices). Set here rather than on the command line, where PublishAot would also reach the library's other
+		target frameworks, which Native AOT doesn't support (NETSDK1203).
+	-->
+	<PropertyGroup Condition="'$(SampleNativeAot)' == 'true' and $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<PublishAot>true</PublishAot>
 	</PropertyGroup>
 
 	<ItemGroup>
