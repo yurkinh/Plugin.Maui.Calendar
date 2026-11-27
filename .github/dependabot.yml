@@ -17,8 +17,15 @@ updates:
           - minor
           - patch
     ignore:
-      # appium-xcuitest-driver 13 and appium-uiautomator2-driver 9 need Appium 4; Appium itself and the other drivers
-      # are on 3. Remove these when moving to Appium 4.
+      # The UI tests stay on Appium 3 until every driver supports Appium 4: appium-windows-driver has no Appium 4
+      # version yet, while appium-xcuitest-driver 13, appium-uiautomator2-driver 9 and appium-mac2-driver 5 need it.
+      # Remove these entries together when moving to Appium 4.
+      - dependency-name: appium
+        versions:
+          - ">=4"
+      - dependency-name: appium-mac2-driver
+        versions:
+          - ">=5"
       - dependency-name: appium-xcuitest-driver
         versions:
           - ">=13"
