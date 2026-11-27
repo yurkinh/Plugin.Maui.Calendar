@@ -463,6 +463,7 @@ Hide what a picker does not need, and keep the days from being swiped away:
     </Border>
 </DataTemplate>
 ```
+- Build settings (measured with the sample app): no trim/Native AOT warnings from the library, so `TrimMode=full` and Native AOT are safe for the calendar. Android `MauiEnableFullReadyToRun=true`: ~8 % faster start, +30 % APK. iOS Native AOT: −18 % app size, but the calendar rendered ~9 % slower and allocated more — measure first. `DynamicCodeSupport=false`: no measurable effect.
 - Measure with the sample app's Benchmark page in Release: `samples/SampleApp/benchmark.sh android|ios [runs]` (see samples/SampleApp/Benchmarks/README.md).
 
 ## 10. APIs that do NOT exist (do not generate them)

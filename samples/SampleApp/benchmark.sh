@@ -75,7 +75,8 @@ ios)
 	if [[ -n "${APP_PATH:-}" ]]; then
 		app="$APP_PATH"
 	else
-		build net11.0-ios -p:RuntimeIdentifier=iossimulator-arm64
+		# A simulator build is not trimmed by default (TrimMode=copy); a device Release build is, so trim it the same way
+		build net11.0-ios -p:RuntimeIdentifier=iossimulator-arm64 -p:TrimMode=partial
 		app="$(ls -d "$here"/bin/Release/net11.0-ios/iossimulator-arm64/*.app | head -1)"
 	fi
 	echo "appKB=$(du -sk "$app" | cut -f1) buildArgs=${BUILD_ARGS:-none}" | tee -a "$results"

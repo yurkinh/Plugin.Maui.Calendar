@@ -683,6 +683,8 @@ Notes on expressions (.NET MAUI 11):
 * An expression sets a local value, which wins over a `Style`. Keep values that come from your styles (or from `AppThemeBinding`) in the style or a trigger.
 * A plain `{Binding Day}` with `x:DataType` is already compiled and typed; rewriting it as an expression gains nothing.
 
+Build settings, measured with the sample app (details in the benchmark README linked below): the library gives no trim or Native AOT warnings, so `TrimMode=full` and Native AOT are safe as far as the calendar is concerned. On Android, `MauiEnableFullReadyToRun=true` started the sample ~8 % faster for a 30 % bigger APK. On iOS, Native AOT made the app 18 % smaller, but the calendar rendered ~9 % slower and allocated more; measure your own app before switching. `DynamicCodeSupport=false` made no measurable difference.
+
 To measure a change, run the Benchmark page of the [sample app](#sample-app) in Release; [samples/SampleApp/Benchmarks/README.md](https://github.com/yurkinh/Plugin.Maui.Calendar/blob/main/samples/SampleApp/Benchmarks/README.md) explains the numbers and how `benchmark.sh` collects them on an emulator or simulator.
 
 ## Swipe gestures
