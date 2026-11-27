@@ -54,18 +54,24 @@ Simulator and emulator numbers show relative changes; they are not what a phone 
 
 ## After phases 1–3
 
-<!-- TODO: fill in the medians of 5 launches on the same devices as the baseline (shared day templates, sample
-     expressions). Same columns as the baseline table. -->
+Shared built-in day templates (phase 2) and the sample's XAML expressions (phase 3), branch `perf/net11-performance`.
+Android: medians of an interleaved A/B on the same warmed-up emulator (5 launches of the baseline build alternating
+with 5 of this one), which removes the drift between separate sessions; the baseline build measured 105.3 / 70.8 ms
+cold and 62.7 / 54.8 ms warm in that run. iOS: medians of 5 launches.
 
 | | Android (Pixel 9 emulator, API 37) | | iOS (iPhone 17 simulator, iOS 26.5) | |
 | --- | --- | --- | --- | --- |
 | | Default | Events | Default | Events |
-| coldRenderMs | TODO | TODO | TODO | TODO |
-| warmRenderMs | TODO | TODO | TODO | TODO |
-| renderKB | TODO | TODO | TODO | TODO |
-| views | TODO | TODO | TODO | TODO |
-| monthChangeSyncMs | TODO | TODO | TODO | TODO |
-| monthChangeMs | TODO | TODO | TODO | TODO |
-| monthChangeKB | TODO | TODO | TODO | TODO |
-| startupMs | TODO | | – | |
-| androidLaunchMs | TODO | | – | |
+| coldRenderMs | 105.0 | 69.8 | 202 | 202 |
+| warmRenderMs | 63.1 | 55.4 | 188.4 | 192.7 |
+| renderKB | 7775 (−4.6 %) | 7869 (−5.0 %) | 7663 (−3.8 %) | 7888 (−3.8 %) |
+| views | 365 | 377 | 365 | 377 |
+| monthChangeSyncMs | 0.80 | 0.95 | 7.63 | 7.27 |
+| monthChangeMs | 24.8 | 24.9 | 38.0 | 40.2 |
+| monthChangeKB | 166 | 165 | 207 | 207 |
+| startupMs | 324 | | – | |
+| androidLaunchMs | 404 | | – | |
+
+Result: about 300–420 KB (4–5 %) less allocated per calendar render on both platforms, the same in every run. The
+times are within the run-to-run variation (±5–10 %): the per-cell objects that are gone were cheap to create, and the
+render time is spent in the 365 views themselves.
